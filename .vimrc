@@ -55,4 +55,4 @@ set noequalalways
 set dir=~/.vim/swap
 set nobackup writebackup
 set t_Co=256
-colorscheme desert256
+colorscheme synic256
