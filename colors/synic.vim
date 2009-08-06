@@ -29,7 +29,7 @@ if exists("syntax_on")
   syntax reset
 endif
 let g:colors_name = "synic"
-hi Normal guifg=ivory guibg=Black ctermfg=231 ctermbg=16
+hi Normal guifg=ivory guibg=Black ctermfg=231 ctermbg=NONE
 hi SpecialKey gui=NONE guifg=Cyan guibg=NONE cterm=NONE ctermfg=51 ctermbg=NONE
 hi NonText gui=bold guifg=Blue guibg=NONE cterm=bold ctermfg=21 ctermbg=NONE
 hi Directory gui=NONE guifg=Cyan guibg=NONE cterm=NONE ctermfg=51 ctermbg=NONE
@@ -76,41 +76,41 @@ hi TabLine guifg=MistyRose3 guibg=#272d2f gui=None cterm=None ctermfg=181 ctermb
 hi TabLineSel guifg=LightBlue3 guibg=#272d2f gui=None cterm=None ctermfg=110 ctermbg=236
 hi ErrorMsg gui=NONE guifg=Red guibg=Linen cterm=NONE ctermfg=196 ctermbg=15
 hi IncSearch gui=NONE guibg=LightGreen guifg=Black cterm=NONE ctermfg=16 ctermbg=120
-hi ModeMsg gui=NONE guifg=fg guibg=bg cterm=NONE ctermfg=fg ctermbg=bg
+hi ModeMsg gui=NONE guifg=fg guibg=bg cterm=NONE ctermfg=fg ctermbg=NONE
 hi StatusLine gui=NONE guifg=LightBlue3 guibg=#272d2f cterm=NONE ctermfg=110 ctermbg=236
 hi StatusLineNC gui=NONE guifg=MistyRose3 guibg=#272d2f cterm=NONE ctermfg=181 ctermbg=236
-hi VertSplit gui=NONE guifg=LightBlue4 guibg=Black cterm=NONE ctermfg=66 ctermbg=16
+hi VertSplit gui=NONE guifg=LightBlue4 guibg=Black cterm=NONE ctermfg=66 ctermbg=NONE
 hi Visual gui=reverse guifg=LightBlue4 guibg=Black cterm=reverse ctermfg=66 ctermbg=16
-hi VisualNOS gui=underline guifg=fg guibg=bg cterm=underline ctermfg=fg ctermbg=bg
+hi VisualNOS gui=underline guifg=fg guibg=bg cterm=underline ctermfg=fg ctermbg=NONE
 hi DiffText gui=NONE guifg=Yellow guibg=LightSkyBlue4 cterm=NONE ctermfg=226 ctermbg=66
 hi Cursor guibg=Lavender guifg=Black ctermfg=16 ctermbg=255
 hi lCursor guibg=Lavender guifg=Black ctermfg=16 ctermbg=255
-hi Directory guifg=LightGreen guibg=bg ctermfg=120 ctermbg=bg
-hi LineNr guifg=LightBlue3 guibg=bg ctermfg=110 ctermbg=bg
-hi MoreMsg gui=NONE guifg=SeaGreen guibg=bg cterm=NONE ctermfg=29 ctermbg=bg
-hi NonText gui=NONE guifg=Cyan4 guibg=Black cterm=NONE ctermfg=30 ctermbg=16
-hi Question gui=NONE guifg=LimeGreen guibg=bg cterm=NONE ctermfg=77 ctermbg=bg
+hi Directory guifg=LightGreen guibg=bg ctermfg=120 ctermbg=NONE
+hi LineNr guifg=LightBlue3 guibg=bg ctermfg=110 ctermbg=NONE
+hi MoreMsg gui=NONE guifg=SeaGreen guibg=bg cterm=NONE ctermfg=29 ctermbg=NONE
+hi NonText gui=NONE guifg=Cyan4 guibg=Black cterm=NONE ctermfg=30 ctermbg=NONE
+hi Question gui=NONE guifg=LimeGreen guibg=bg cterm=NONE ctermfg=77 ctermbg=NONE
 hi Search gui=NONE guifg=SkyBlue4 guibg=Bisque cterm=NONE ctermfg=60 ctermbg=224
-hi SpecialKey guifg=Cyan guibg=bg ctermfg=51 ctermbg=bg
-hi Title gui=NONE guifg=Yellow2 guibg=bg cterm=NONE ctermfg=226 ctermbg=bg
+hi SpecialKey guifg=Cyan guibg=bg ctermfg=51 ctermbg=NONE
+hi Title gui=NONE guifg=Yellow2 guibg=bg cterm=NONE ctermfg=226 ctermbg=NONE
 hi WarningMsg guifg=Tomato3 guibg=Black ctermfg=167 ctermbg=16
 hi WildMenu gui=NONE guifg=Black guibg=SkyBlue4 cterm=NONE ctermfg=16 ctermbg=60
-hi Folded guifg=#f4aba2 guibg=bg ctermfg=217 ctermbg=bg
+hi Folded guifg=#f4aba2 guibg=bg ctermfg=217 ctermbg=NONE
 hi FoldColumn guifg=DarkBlue guibg=Grey ctermfg=18 ctermbg=250
 hi DiffAdd gui=NONE guifg=Blue guibg=LightCyan cterm=NONE ctermfg=21 ctermbg=195
 hi DiffChange gui=NONE guifg=white guibg=LightCyan4 cterm=NONE ctermfg=231 ctermbg=102
 hi DiffDelete gui=None guifg=LightBlue guibg=LightCyan cterm=None ctermfg=152 ctermbg=195
-hi Constant gui=NONE guifg=MistyRose3 guibg=bg cterm=NONE ctermfg=181 ctermbg=bg
-hi String gui=NONE guifg=LightBlue3 guibg=bg cterm=NONE ctermfg=110 ctermbg=bg
-hi Special gui=NONE guifg=GoldenRod guibg=bg cterm=NONE ctermfg=178 ctermbg=bg
-hi Statement gui=NONE guifg=khaki guibg=bg cterm=NONE ctermfg=222 ctermbg=bg
-hi Operator gui=NONE guifg=#8673e8 guibg=bg cterm=NONE ctermfg=98 ctermbg=bg
-hi Ignore gui=NONE guifg=bg guibg=bg cterm=NONE ctermfg=bg ctermbg=bg
-hi ToDo gui=NONE guifg=DodgerBlue guibg=bg cterm=NONE ctermfg=33 ctermbg=bg
+hi Constant gui=NONE guifg=MistyRose3 guibg=bg cterm=NONE ctermfg=181 ctermbg=NONE
+hi String gui=NONE guifg=LightBlue3 guibg=bg cterm=NONE ctermfg=110 ctermbg=NONE
+hi Special gui=NONE guifg=GoldenRod guibg=bg cterm=NONE ctermfg=178 ctermbg=NONE
+hi Statement gui=NONE guifg=khaki guibg=bg cterm=NONE ctermfg=222 ctermbg=NONE
+hi Operator gui=NONE guifg=#8673e8 guibg=bg cterm=NONE ctermfg=98 ctermbg=NONE
+hi Ignore gui=NONE guifg=bg guibg=bg cterm=NONE ctermfg=NONE ctermbg=NONE
+hi ToDo gui=NONE guifg=DodgerBlue guibg=bg cterm=NONE ctermfg=33 ctermbg=NONE
 hi Error gui=NONE guifg=Red guibg=Linen cterm=NONE ctermfg=196 ctermbg=15
-hi Comment gui=NONE guifg=SlateGrey guibg=bg cterm=NONE ctermfg=66 ctermbg=bg
-hi Comment gui=NONE guifg=#62c600 guibg=bg cterm=NONE ctermfg=76 ctermbg=bg
-hi Identifier gui=bold guifg=LightBlue4 guibg=bg cterm=bold ctermfg=66 ctermbg=bg
-hi PreProc gui=NONE guifg=#ffa0a0 guibg=bg cterm=NONE ctermfg=217 ctermbg=bg
-hi Type gui=NONE guifg=NavajoWhite guibg=bg cterm=NONE ctermfg=223 ctermbg=bg
-hi Underlined gui=underline guifg=fg guibg=bg cterm=underline ctermfg=fg ctermbg=bg
+hi Comment gui=NONE guifg=SlateGrey guibg=bg cterm=NONE ctermfg=66 ctermbg=NONE
+hi Comment gui=NONE guifg=#62c600 guibg=bg cterm=NONE ctermfg=76 ctermbg=NONE
+hi Identifier gui=bold guifg=LightBlue4 guibg=bg cterm=bold ctermfg=66 ctermbg=NONE
+hi PreProc gui=NONE guifg=#ffa0a0 guibg=bg cterm=NONE ctermfg=217 ctermbg=NONE
+hi Type gui=NONE guifg=NavajoWhite guibg=bg cterm=NONE ctermfg=223 ctermbg=NONE
+hi Underlined gui=underline guifg=fg guibg=bg cterm=underline ctermfg=fg ctermbg=NONE

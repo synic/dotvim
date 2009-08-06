@@ -56,3 +56,6 @@ set dir=~/.vim/swap
 set nobackup writebackup
 set t_Co=256
 colorscheme synic
+let Tlist_Show_One_File = 1
+let Tlist_Use_Horiz_Window = 1
+let Tlist_Enable_Fold_Column = 0
