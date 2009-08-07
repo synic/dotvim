@@ -30,30 +30,6 @@ if exists("syntax_on")
 endif
 let g:colors_name = "synic"
 hi Normal guifg=ivory guibg=Black ctermfg=231 ctermbg=NONE
-hi SpecialKey gui=NONE guifg=Cyan guibg=NONE cterm=NONE ctermfg=51 ctermbg=NONE
-hi NonText gui=bold guifg=Blue guibg=NONE cterm=bold ctermfg=21 ctermbg=NONE
-hi Directory gui=NONE guifg=Cyan guibg=NONE cterm=NONE ctermfg=51 ctermbg=NONE
-hi ErrorMsg gui=NONE guifg=White guibg=Red cterm=NONE ctermfg=231 ctermbg=196
-hi IncSearch gui=reverse guifg=NONE guibg=NONE cterm=reverse ctermfg=NONE ctermbg=NONE
-hi Search gui=NONE guifg=Black guibg=Yellow cterm=NONE ctermfg=16 ctermbg=226
-hi MoreMsg gui=bold guifg=SeaGreen guibg=NONE cterm=bold ctermfg=29 ctermbg=NONE
-hi ModeMsg gui=bold guifg=NONE guibg=NONE cterm=bold ctermfg=NONE ctermbg=NONE
-hi LineNr gui=NONE guifg=Yellow guibg=NONE cterm=NONE ctermfg=226 ctermbg=NONE
-hi Question gui=bold guifg=Green guibg=NONE cterm=bold ctermfg=46 ctermbg=NONE
-hi StatusLine gui=bold,reverse guifg=NONE guibg=NONE cterm=bold,reverse ctermfg=NONE ctermbg=NONE
-hi StatusLineNC gui=reverse guifg=NONE guibg=NONE cterm=reverse ctermfg=NONE ctermbg=NONE
-hi VertSplit gui=reverse guifg=NONE guibg=NONE cterm=reverse ctermfg=NONE ctermbg=NONE
-hi Title gui=bold guifg=Magenta guibg=NONE cterm=bold ctermfg=201 ctermbg=NONE
-hi Visual gui=NONE guifg=NONE guibg=DarkGrey cterm=NONE ctermfg=NONE ctermbg=248
-hi VisualNOS gui=bold,underline guifg=NONE guibg=NONE cterm=bold,underline ctermfg=NONE ctermbg=NONE
-hi WarningMsg gui=NONE guifg=Red guibg=NONE cterm=NONE ctermfg=196 ctermbg=NONE
-hi WildMenu gui=NONE guifg=Black guibg=Yellow cterm=NONE ctermfg=16 ctermbg=226
-hi Folded gui=NONE guifg=Cyan guibg=DarkGrey cterm=NONE ctermfg=51 ctermbg=248
-hi FoldColumn gui=NONE guifg=Cyan guibg=Grey cterm=NONE ctermfg=51 ctermbg=250
-hi DiffAdd gui=NONE guifg=NONE guibg=DarkBlue cterm=NONE ctermfg=NONE ctermbg=18
-hi DiffChange gui=NONE guifg=NONE guibg=DarkMagenta cterm=NONE ctermfg=NONE ctermbg=90
-hi DiffDelete gui=bold guifg=Blue guibg=DarkCyan cterm=bold ctermfg=21 ctermbg=30
-hi DiffText gui=bold guifg=NONE guibg=Red cterm=bold ctermfg=NONE ctermbg=196
 hi SignColumn gui=NONE guifg=Cyan guibg=Grey cterm=NONE ctermfg=51 ctermbg=250
 hi SpellBad gui=undercurl guifg=NONE guisp=Red cterm=undercurl ctermfg=NONE ctermbg=196
 hi SpellCap gui=undercurl guifg=NONE guisp=Blue cterm=undercurl ctermfg=NONE ctermbg=21
@@ -63,18 +39,13 @@ hi Pmenu gui=NONE guifg=NONE guibg=Magenta cterm=NONE ctermfg=NONE ctermbg=201
 hi PmenuSel gui=NONE guifg=NONE guibg=DarkGrey cterm=NONE ctermfg=NONE ctermbg=248
 hi PmenuSbar gui=NONE guifg=NONE guibg=Grey cterm=NONE ctermfg=NONE ctermbg=250
 hi PmenuThumb gui=reverse guifg=NONE guibg=NONE cterm=reverse ctermfg=NONE ctermbg=NONE
-hi TabLine gui=underline guifg=NONE guibg=DarkGrey cterm=underline ctermfg=NONE ctermbg=248
-hi TabLineSel gui=bold guifg=NONE guibg=NONE cterm=bold ctermfg=NONE ctermbg=NONE
-hi TabLineFill gui=reverse guifg=NONE guibg=NONE cterm=reverse ctermfg=NONE ctermbg=NONE
 hi CursorColumn gui=NONE guifg=NONE guibg=Grey40 cterm=NONE ctermfg=NONE ctermbg=241
 hi CursorLine gui=NONE guifg=NONE guibg=Grey40 cterm=NONE ctermfg=NONE ctermbg=241
-hi Cursor guifg=Black guibg=Lavender cterm=reverse ctermfg=NONE ctermbg=NONE
-hi lCursor guifg=Black guibg=Lavender cterm=reverse ctermfg=NONE ctermbg=NONE
 hi MatchParen gui=NONE guifg=NONE guibg=DarkCyan cterm=NONE ctermfg=NONE ctermbg=30
 hi TabLineFill guifg=#272d2f guibg=#272d2f gui=None cterm=None ctermfg=236 ctermbg=236
 hi TabLine guifg=MistyRose3 guibg=#272d2f gui=None cterm=None ctermfg=181 ctermbg=236
 hi TabLineSel guifg=LightBlue3 guibg=#272d2f gui=None cterm=None ctermfg=110 ctermbg=236
-hi ErrorMsg gui=NONE guifg=Red guibg=Linen cterm=NONE ctermfg=196 ctermbg=15
+hi ErrorMsg gui=NONE guifg=Red guibg=Linen cterm=NONE ctermfg=196 ctermbg=NONE
 hi IncSearch gui=NONE guibg=LightGreen guifg=Black cterm=NONE ctermfg=16 ctermbg=120
 hi ModeMsg gui=NONE guifg=fg guibg=bg cterm=NONE ctermfg=fg ctermbg=NONE
 hi StatusLine gui=NONE guifg=LightBlue3 guibg=#272d2f cterm=NONE ctermfg=110 ctermbg=236
@@ -93,10 +64,11 @@ hi Question gui=NONE guifg=LimeGreen guibg=bg cterm=NONE ctermfg=77 ctermbg=NONE
 hi Search gui=NONE guifg=SkyBlue4 guibg=Bisque cterm=NONE ctermfg=60 ctermbg=224
 hi SpecialKey guifg=Cyan guibg=bg ctermfg=51 ctermbg=NONE
 hi Title gui=NONE guifg=Yellow2 guibg=bg cterm=NONE ctermfg=226 ctermbg=NONE
-hi WarningMsg guifg=Tomato3 guibg=Black ctermfg=167 ctermbg=16
+hi WarningMsg guifg=Tomato3 guibg=Black ctermfg=167 ctermbg=NONE
 hi WildMenu gui=NONE guifg=Black guibg=SkyBlue4 cterm=NONE ctermfg=16 ctermbg=60
 hi Folded guifg=#f4aba2 guibg=bg ctermfg=217 ctermbg=NONE
 hi FoldColumn guifg=DarkBlue guibg=Grey ctermfg=18 ctermbg=250
+hi DiffText gui=bold guifg=NONE guibg=Red cterm=bold ctermfg=NONE ctermbg=196
 hi DiffAdd gui=NONE guifg=Blue guibg=LightCyan cterm=NONE ctermfg=21 ctermbg=195
 hi DiffChange gui=NONE guifg=white guibg=LightCyan4 cterm=NONE ctermfg=231 ctermbg=102
 hi DiffDelete gui=None guifg=LightBlue guibg=LightCyan cterm=None ctermfg=152 ctermbg=195
@@ -108,7 +80,6 @@ hi Operator gui=NONE guifg=#8673e8 guibg=bg cterm=NONE ctermfg=98 ctermbg=NONE
 hi Ignore gui=NONE guifg=bg guibg=bg cterm=NONE ctermfg=NONE ctermbg=NONE
 hi ToDo gui=NONE guifg=DodgerBlue guibg=bg cterm=NONE ctermfg=33 ctermbg=NONE
 hi Error gui=NONE guifg=Red guibg=Linen cterm=NONE ctermfg=196 ctermbg=15
-hi Comment gui=NONE guifg=SlateGrey guibg=bg cterm=NONE ctermfg=66 ctermbg=NONE
 hi Comment gui=NONE guifg=#62c600 guibg=bg cterm=NONE ctermfg=76 ctermbg=NONE
 hi Identifier gui=bold guifg=LightBlue4 guibg=bg cterm=bold ctermfg=66 ctermbg=NONE
 hi PreProc gui=NONE guifg=#ffa0a0 guibg=bg cterm=NONE ctermfg=217 ctermbg=NONE
