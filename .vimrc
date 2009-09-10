@@ -10,6 +10,8 @@ set ruler		        " show the cursor position all the time
 set nowrap              " make sure that long lines don't wrap
 set laststatus=2        " Make sure the status line is always displayed
 filetype plugin on
+command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
+    \ | wincmd p | diffthis
 
 " Switch syntax highlighting on
 syntax enable
@@ -54,8 +56,15 @@ set hidden
 set noequalalways
 set dir=~/.vim/swap
 set nobackup writebackup
-set t_Co=256
-colorscheme synic
 let Tlist_Show_One_File = 1
 let Tlist_Use_Horiz_Window = 1
 let Tlist_Enable_Fold_Column = 0
+set ttymouse=xterm2
+
+if $TERM_PROGRAM =~ 'APPLE'
+    colorscheme ron
+else
+    set t_Co=256
+    colorscheme synic
+endif
+set colorcolumn=80

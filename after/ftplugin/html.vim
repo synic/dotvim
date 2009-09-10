@@ -1,5 +1,4 @@
-setlocal ts=2
-setlocal softtabstop=2
-setlocal shiftwidth=2
+setlocal ts=4
+setlocal softtabstop=4
+setlocal shiftwidth=4
 set textwidth=0
-setlocal noet
