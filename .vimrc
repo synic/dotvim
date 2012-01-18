@@ -68,3 +68,9 @@ else
     colorscheme synic
 endif
 set colorcolumn=80
+
+" nerdtree
+let NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.db$']
+let NERDTreeShowBookmarks=1
+let NERDTreeMinimalUI=1
+let NERDTreeWinSize=25
