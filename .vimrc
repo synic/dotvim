@@ -49,7 +49,7 @@ set textwidth=78
 set autoindent
 
 map <F2> :BufExplorer<CR>
-map <F12> :Project<CR>
+map <F12> :NERDTree<CR>
 
 set hidden
 
@@ -74,3 +74,36 @@ let NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.db$']
 let NERDTreeShowBookmarks=1
 let NERDTreeMinimalUI=1
 let NERDTreeWinSize=25
+let NERDTreeChDirMode=2
+
+let g:gundo_width=35
+let g:gundo_right=1
+let g:gundo_preview_height=25
+nnoremap <F5> :GundoToggle<CR>
+
+function MyTabLine() 
+    let s = '' 
+    let t = tabpagenr() 
+    let i = 1 
+    while i <= tabpagenr('$') 
+        let buflist = tabpagebuflist(i) 
+        let winnr = tabpagewinnr(i) 
+        if i != 0
+            let s .= " "
+        endif
+        let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#') 
+        let s .= i . ":"
+        let file = bufname(buflist[winnr - 1]) 
+        let file = fnamemodify(file, ':p:t') 
+        if file == '' 
+            let file = '[No Name]' 
+        endif 
+        let s .= file 
+        let i = i + 1 
+    endwhile 
+    let s .= '%T%#TabLineFill#%=' 
+    let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X') 
+    return s 
+endfunction 
+set stal=2 
+set tabline=%!MyTabLine() 

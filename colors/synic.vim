@@ -42,9 +42,9 @@ hi PmenuThumb gui=reverse guifg=NONE guibg=NONE cterm=reverse ctermfg=NONE cterm
 hi CursorColumn gui=NONE guifg=NONE guibg=Grey40 cterm=NONE ctermfg=NONE ctermbg=241
 hi CursorLine gui=NONE guifg=NONE guibg=Grey40 cterm=NONE ctermfg=NONE ctermbg=241
 hi MatchParen gui=NONE guifg=NONE guibg=DarkCyan cterm=NONE ctermfg=NONE ctermbg=30
-hi TabLineFill guifg=#272d2f guibg=#272d2f gui=None cterm=None ctermfg=236 ctermbg=236
+hi TabLineFill guifg=MistyRose3 guibg=#272d2f gui=None cterm=None ctermfg=236 ctermbg=236
 hi TabLine guifg=MistyRose3 guibg=#272d2f gui=None cterm=None ctermfg=181 ctermbg=236
-hi TabLineSel guifg=LightBlue3 guibg=#272d2f gui=None cterm=None ctermfg=110 ctermbg=236
+hi TabLineSel guifg=black guibg=LightBlue4 gui=None cterm=None ctermfg=110 ctermbg=236
 hi ErrorMsg gui=NONE guifg=Red guibg=Linen cterm=NONE ctermfg=196 ctermbg=NONE
 hi IncSearch gui=NONE guibg=LightGreen guifg=Black cterm=NONE ctermfg=16 ctermbg=120
 hi ModeMsg gui=NONE guifg=fg guibg=bg cterm=NONE ctermfg=fg ctermbg=NONE
