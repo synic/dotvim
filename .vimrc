@@ -81,29 +81,48 @@ let g:gundo_right=1
 let g:gundo_preview_height=25
 nnoremap <F5> :GundoToggle<CR>
 
-function MyTabLine() 
-    let s = '' 
-    let t = tabpagenr() 
-    let i = 1 
-    while i <= tabpagenr('$') 
-        let buflist = tabpagebuflist(i) 
-        let winnr = tabpagewinnr(i) 
-        if i != 0
-            let s .= " "
+function MyTabLine()
+    let s = ''
+    let i = 1
+    let t = tabpagenr()
+    while i < tabpagenr('$')
+        let buflist = tabpagebuflist(i + 1) 
+        let winnr = tabpagewinnr(i + 1) 
+        " select the highlighting
+        if (i + 1) == t
+            let s .= '%#TabLineSel#'
+        else
+            let s .= '%#TabLine#'
         endif
-        let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#') 
-        let s .= i . ":"
-        let file = bufname(buflist[winnr - 1]) 
-        let file = fnamemodify(file, ':p:t') 
-        if file == '' 
-            let file = '[No Name]' 
-        endif 
-        let s .= file 
-        let i = i + 1 
-    endwhile 
-    let s .= '%T%#TabLineFill#%=' 
-    let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X') 
-    return s 
-endfunction 
-set stal=2 
+
+        " set the tab page number (for mouse clicks)
+        let s .= '%' . (i + 1) . 'T'
+        let s .= '['
+        let file = bufname(buflist[winnr - 1])
+        let file = fnamemodify(file, ':p:t')
+        if file == ''
+            let file = 'x'
+        endif
+        let s .= i . ':' . file
+
+        if i != 0
+            let s .= ']'
+"            let s .= '%#TabLine#'
+"            let s .= ' '
+        endif
+
+        let i = i + 1
+    endwhile
+
+    " after the last tab fill with TabLineFill and reset tab page nr
+    let s .= '%#TabLineFill#%T'
+
+    " right-align the label to close the current tab page
+    if tabpagenr('$') > 1
+        let s .= '%=%#TabLine#%999Xclose'
+    endif
+
+    return s
+endfunction
+
 set tabline=%!MyTabLine() 
