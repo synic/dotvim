@@ -49,7 +49,7 @@ set textwidth=78
 set autoindent
 
 map <F2> :BufExplorer<CR>
-map <F12> :NERDTree<CR>
+map <F12> :NERDTreeToggle<CR>
 
 set hidden
 
@@ -83,7 +83,7 @@ nnoremap <F5> :GundoToggle<CR>
 
 function MyTabLine()
     let s = ''
-    let i = 1
+    let i = 0
     let t = tabpagenr()
     while i < tabpagenr('$')
         let buflist = tabpagebuflist(i + 1) 
@@ -105,11 +105,7 @@ function MyTabLine()
         endif
         let s .= i . ':' . file
 
-        if i != 0
-            let s .= ']'
-"            let s .= '%#TabLine#'
-"            let s .= ' '
-        endif
+        let s .= ']'
 
         let i = i + 1
     endwhile
@@ -119,7 +115,7 @@ function MyTabLine()
 
     " right-align the label to close the current tab page
     if tabpagenr('$') > 1
-        let s .= '%=%#TabLine#%999Xclose'
+        let s .= '%=%#TabLine#%999XX'
     endif
 
     return s
