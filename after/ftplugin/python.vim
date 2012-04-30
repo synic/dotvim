@@ -97,3 +97,4 @@ endif
 nnoremap <buffer> % :call PyJump("")<Enter>
 vnoremap <buffer> % omao<Esc>:call PyJump(visualmode())<Enter>
 set colorcolumn=80
+set foldmethod=marker
