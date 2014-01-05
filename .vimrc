@@ -1,4 +1,5 @@
 set nocompatible " disable vi settings
+filetype off
 
 set bs=2		        " allow backspacing over everything in insert mode
 set ai			        " always set autoindenting on
@@ -9,7 +10,6 @@ set history=50		    " keep 50 lines of command line history
 set ruler		        " show the cursor position all the time
 set nowrap              " make sure that long lines don't wrap
 set laststatus=2        " Make sure the status line is always displayed
-filetype plugin on
 command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
     \ | wincmd p | diffthis
 
@@ -41,6 +41,14 @@ set textwidth=78
 set smarttab
 set shiftround
 set expandtab
+
+" Vundle Junk
+set rtp+=~/.vim/bundle/vundle
+call vundle#rc()
+Bundle "davidhalter/jedi-vim"
+
+filetype plugin indent on
+
 
 " Setup auto wrapping
 set textwidth=78
@@ -127,3 +135,6 @@ set tabline=%!MyTabLine()
 " autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 " autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 let g:jedi#popup_on_dot = 0
+au BufRead,BufNewFile *.pde set filetype=arduino
+au BufRead,BufNewFile *.ino set filetype=arduino
+autocmd FileType python setlocal completeopt-=preview

@@ -462,4 +462,28 @@ class Test${1:Class}(${2:unittest.TestCase}):
 		${6:pass}
 endsnippet
 
+# ender labs specific
+snippet deco "basic_api_login" b
+@method_decorator(basic_api_login_required(realm='EventBoard API'))
+endsnippet
+
+# django stuff
+snippet apiurl "api urlconf" b
+from django.conf.urls import patterns, url, include
+from django.views.decorators.csrf import csrf_exempt
+
+from ${1:appname} import api
+
+urlpatterns = patterns('$1.api',
+$0
+)
+endsnippet
+
+snippet settingsblock "settings block" b
+### ${1:blockname} {{{1
+###############################################################################
+${2:content}
+
+endsnippet
+
 # vim:ft=snippets:
