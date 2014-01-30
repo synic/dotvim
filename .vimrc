@@ -46,6 +46,7 @@ set expandtab
 set rtp+=~/.vim/bundle/vundle
 call vundle#rc()
 Bundle "davidhalter/jedi-vim"
+Bundle "scrooloose/nerdtree"
 
 filetype plugin indent on
 
@@ -137,4 +138,5 @@ set tabline=%!MyTabLine()
 let g:jedi#popup_on_dot = 0
 au BufRead,BufNewFile *.pde set filetype=arduino
 au BufRead,BufNewFile *.ino set filetype=arduino
+let g:jedi#show_call_signatures = "0"
 autocmd FileType python setlocal completeopt-=preview
