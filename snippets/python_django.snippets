@@ -1,0 +1,43 @@
+# django stuff
+snippet apiurl "api urlconf" b
+from django.conf.urls import patterns, url, include
+from django.views.decorators.csrf import csrf_exempt
+
+from ${1:appname} import api
+
+urlpatterns = patterns('$1.api',
+$0
+)
+endsnippet
+
+snippet urlconf "urlconf" b
+from django.conf.urls import patterns, url, include
+
+from ${1:appname} import views
+
+urlpatterns = patterns('$1.views',
+$0
+)
+endsnippet
+
+snippet settingsblock "settings block" b
+### ${1:blockname} {{{1
+###############################################################################
+${2:content}
+
+endsnippet
+
+snippet views "views imports, etc" b
+from django.core.urlresolvers import reverse
+from django import http
+from django.views import generic
+from django.contrib import messages
+from django.shortcuts import get_object_or_404
+from django.conf import settings
+
+from ${1:appname} import models
+
+endsnippet
+
+
+# vim:ft=snippets:

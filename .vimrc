@@ -1,5 +1,26 @@
 set nocompatible " disable vi settings
+
+" Vundle Junk
 filetype off
+set rtp+=~/.vim/bundle/vundle
+call vundle#rc()
+Bundle "davidhalter/jedi-vim"
+Bundle "scrooloose/nerdtree"
+Bundle "SirVer/ultisnips"
+Bundle "Gundo"
+Bundle "bufexplorer.zip"
+Bundle "openssl.vim"
+Bundle "taglist.vim"
+Bundle "virtualenv.vim"
+Bundle "scala.vim"
+Bundle "Arduino-syntax-file"
+Bundle "tpope/vim-surround"
+Bundle "tpope/vim-fugitive"
+Bundle "scrooloose/nerdcommenter"
+Bundle "Lokaltog/vim-easymotion"
+Bundle "dantler/vim-alternate"
+
+filetype plugin on
 
 set bs=2		        " allow backspacing over everything in insert mode
 set ai			        " always set autoindenting on
@@ -10,6 +31,7 @@ set history=50		    " keep 50 lines of command line history
 set ruler		        " show the cursor position all the time
 set nowrap              " make sure that long lines don't wrap
 set laststatus=2        " Make sure the status line is always displayed
+set spell               " turn on spellcheck
 command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
     \ | wincmd p | diffthis
 
@@ -17,7 +39,7 @@ command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
 syntax enable
 
 " Display bufnr:filetype (dos,unix,mac) in status line
-set statusline=%<%n:%f%h%m%r%=%{&ff}\ %l,%c%V\ %P
+set statusline=%<%n:%f%h%m%r%=%{fugitive#statusline()}\ %{&ff}\ %l,%c%V\ %P
 
 " Hide the mouse pointer while typing
 " The window with the mouse pointer does not automatically become the active window
@@ -42,14 +64,6 @@ set smarttab
 set shiftround
 set expandtab
 
-" Vundle Junk
-set rtp+=~/.vim/bundle/vundle
-call vundle#rc()
-Bundle "davidhalter/jedi-vim"
-Bundle "scrooloose/nerdtree"
-
-filetype plugin indent on
-
 
 " Setup auto wrapping
 set textwidth=78
@@ -65,9 +79,6 @@ set hidden
 set noequalalways
 set dir=~/.vim/swap
 set nobackup writebackup
-let Tlist_Show_One_File = 1
-let Tlist_Use_Horiz_Window = 1
-let Tlist_Enable_Fold_Column = 0
 set ttymouse=xterm2
 
 if $TERM_PROGRAM =~ 'APPLE'
@@ -78,19 +89,8 @@ else
 endif
 set colorcolumn=80
 
-" nerdtree
-let NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.db$']
-let NERDTreeShowBookmarks=1
-let NERDTreeMinimalUI=1
-let NERDTreeWinSize=25
-let NERDTreeChDirMode=2
-
-let g:gundo_width=35
-let g:gundo_right=1
-let g:gundo_preview_height=25
-nnoremap <F5> :GundoToggle<CR>
-
-function MyTabLine()
+" setup custom tab lines with numbers and the close button
+function CustomTabLine()
     let s = ''
     let i = 0
     let t = tabpagenr()
@@ -130,13 +130,43 @@ function MyTabLine()
     return s
 endfunction
 
-set tabline=%!MyTabLine() 
-" autocmd FileType python set omnifunc=pythoncomplete#Complete
-" autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-" autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-" autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+set tabline=%!CustomTabLine() 
+
+" fugitive
+noremap <leader>gc :Gcommit<cr>
+
+" tablist
+let Tlist_Show_One_File = 1
+let Tlist_Use_Horiz_Window = 1
+let Tlist_Enable_Fold_Column = 0
+
+" nerdtree
+let NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.db$']
+let NERDTreeShowBookmarks=1
+let NERDTreeMinimalUI=1
+let NERDTreeWinSize=25
+let NERDTreeChDirMode=2
+
+" gundo settings
+let g:gundo_width=35
+let g:gundo_right=1
+let g:gundo_preview_height=25
+nnoremap <F5> :GundoToggle<CR>
+
+
+" jedi settings
 let g:jedi#popup_on_dot = 0
+let g:jedi#show_call_signatures = "0"
+
+" tell jedi not to show docstrings when autocompleting
+autocmd FileType python setlocal completeopt-=preview
+
+" arduino syntax setup
 au BufRead,BufNewFile *.pde set filetype=arduino
 au BufRead,BufNewFile *.ino set filetype=arduino
-let g:jedi#show_call_signatures = "0"
-autocmd FileType python setlocal completeopt-=preview
+
+" ultisnips settings
+let g:UltiSnipsSnippetDirectories = ['UltiSnips', 'snippets']
+
+" bufexplorer
+let g:bufExplorerSortBy = 'mru'
