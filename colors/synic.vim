@@ -1,6 +1,6 @@
 " ------------------------------------------------------------------
 " Filename:	 synic.vim
-" Last Modified: Aug, 5 2009 (12:17)
+" Last Modified: Jan 31, 2014 (12:17)
 " Maintainer:	 Adam Olsen (arolsen@gmail.com)
 " Copyright:	 2008 Adam Olsen
 "                This script is free software; you can redistribute it and/or 
@@ -86,3 +86,10 @@ hi PreProc gui=NONE guifg=#ffa0a0 guibg=bg cterm=NONE ctermfg=217 ctermbg=NONE
 hi Type gui=NONE guifg=NavajoWhite guibg=bg cterm=NONE ctermfg=223 ctermbg=NONE
 hi Underlined gui=underline guifg=fg guibg=bg cterm=underline ctermfg=fg ctermbg=NONE
 hi ColorColumn guibg=#222222 ctermbg=110
+
+if version >= 700
+  hi SpellBad   guisp=Maroon    gui=undercurl guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE term=underline cterm=underline
+  hi SpellCap   guisp=yellow gui=undercurl guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE term=underline cterm=underline
+  hi SpellRare  guisp=blue   gui=undercurl guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE term=underline cterm=underline
+  hi SpellLocal guisp=orange gui=undercurl guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE term=underline cterm=underline
+endif

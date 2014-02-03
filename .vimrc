@@ -2,23 +2,28 @@ set nocompatible " disable vi settings
 
 " Vundle Junk
 filetype off
-set rtp+=~/.vim/bundle/vundle
-call vundle#rc()
-Bundle "davidhalter/jedi-vim"
-Bundle "scrooloose/nerdtree"
-Bundle "SirVer/ultisnips"
-Bundle "Gundo"
-Bundle "bufexplorer.zip"
-Bundle "openssl.vim"
-Bundle "taglist.vim"
-Bundle "virtualenv.vim"
-Bundle "scala.vim"
-Bundle "Arduino-syntax-file"
-Bundle "tpope/vim-surround"
-Bundle "tpope/vim-fugitive"
-Bundle "scrooloose/nerdcommenter"
-Bundle "Lokaltog/vim-easymotion"
-Bundle "dantler/vim-alternate"
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'gmarik/Vundle.vim'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'SirVer/ultisnips'
+Plugin 'Gundo'
+Plugin 'bufexplorer.zip'
+Plugin 'openssl.vim'
+Plugin 'taglist.vim'
+Plugin 'virtualenv.vim'
+Plugin 'scala.vim'
+Plugin 'Arduino-syntax-file'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-fugitive'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'dantler/vim-alternate'
+Plugin 'skammer/vim-css-color'
+Plugin 'vim-scripts/EnhCommentify.vim'
+Plugin 'ntpeters/vim-better-whitespace'
+Plugin 'kien/ctrlp.vim'
+call vundle#end()
 
 filetype plugin on
 
@@ -155,7 +160,7 @@ let Tlist_Use_Horiz_Window = 1
 let Tlist_Enable_Fold_Column = 0
 
 " nerdtree
-let NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.db$']
+let NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.db$', '\.o$', '\.d$', '\.elf$', '\.map$']
 let NERDTreeShowBookmarks=1
 let NERDTreeMinimalUI=1
 let NERDTreeWinSize=25
@@ -180,7 +185,7 @@ au BufRead,BufNewFile *.pde set filetype=arduino
 au BufRead,BufNewFile *.ino set filetype=arduino
 
 " ultisnips settings
-let g:UltiSnipsSnippetDirectories = ['UltiSnips', 'snippets']
+let g:UltiSnipsSnippetDirectories = ['UltiSnips.Local']
 
 " bufexplorer
 let g:bufExplorerSortBy = 'mru'

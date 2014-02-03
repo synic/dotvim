@@ -1,5 +1,5 @@
-setlocal ts=2
+setlocal ts=4
 setlocal expandtab
-setlocal softtabstop=2
-setlocal shiftwidth=2
+setlocal softtabstop=4
+setlocal shiftwidth=4
 setlocal textwidth=0
