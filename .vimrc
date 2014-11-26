@@ -23,6 +23,8 @@ Plugin 'skammer/vim-css-color'
 Plugin 'vim-scripts/EnhCommentify.vim'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'kien/ctrlp.vim'
+Plugin 'pangloss/vim-javascript'
+Plugin 'gorodinskiy/vim-coloresque'
 call vundle#end()
 
 filetype plugin on
