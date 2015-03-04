@@ -24,6 +24,7 @@ Plugin 'vim-scripts/EnhCommentify.vim'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'kien/ctrlp.vim'
 Plugin 'pangloss/vim-javascript'
+Plugin 'honza/vim-snippets'
 Plugin 'gorodinskiy/vim-coloresque'
 call vundle#end()
 
@@ -105,8 +106,8 @@ function CustomTabLine()
     let i = 0
     let t = tabpagenr()
     while i < tabpagenr('$')
-        let buflist = tabpagebuflist(i + 1) 
-        let winnr = tabpagewinnr(i + 1) 
+        let buflist = tabpagebuflist(i + 1)
+        let winnr = tabpagewinnr(i + 1)
         " select the highlighting
         if (i + 1) == t
             let s .= '%#TabLineSel#'
@@ -140,7 +141,7 @@ function CustomTabLine()
     return s
 endfunction
 
-set tabline=%!CustomTabLine() 
+set tabline=%!CustomTabLine()
 
 " fugitive
 nnoremap <silent> <leader>gs :Gstatus<CR>
@@ -187,7 +188,8 @@ au BufRead,BufNewFile *.pde set filetype=arduino
 au BufRead,BufNewFile *.ino set filetype=arduino
 
 " ultisnips settings
-let g:UltiSnipsSnippetDirectories = ['UltiSnips.Local']
+let g:UltiSnipsSnippetDirectories = [$HOME.'/.vim/bundle/vim-snippets/UltiSnips', 'UltiSnips.Local']
 
 " bufexplorer
 let g:bufExplorerSortBy = 'mru'
+au VimEnter * ToggleStripWhitespaceOnSave
