@@ -5,6 +5,7 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
+Plugin 'nvie/vim-flake8'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'SirVer/ultisnips'
@@ -193,3 +194,6 @@ let g:UltiSnipsSnippetDirectories = [$HOME.'/.vim/bundle/vim-snippets/UltiSnips'
 " bufexplorer
 let g:bufExplorerSortBy = 'mru'
 au VimEnter * ToggleStripWhitespaceOnSave
+
+" flake8-vim
+autocmd BufWritePost *.py call Flake8()
