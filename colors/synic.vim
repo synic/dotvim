@@ -3,10 +3,10 @@
 " Last Modified: Jan 31, 2014 (12:17)
 " Maintainer:	 Adam Olsen (arolsen@gmail.com)
 " Copyright:	 2008 Adam Olsen
-"                This script is free software; you can redistribute it and/or 
-"                modify it under the terms of the GNU General Public License as 
-"                published by the Free Software Foundation; either version 2 of 
-"                the License, or (at your option) any later version. 
+"                This script is free software; you can redistribute it and/or
+"                modify it under the terms of the GNU General Public License as
+"                published by the Free Software Foundation; either version 2 of
+"                the License, or (at your option) any later version.
 " Description:   Vim colorscheme file.
 " Install:       Put this file in the users colors directory (~/.vim/colors)
 "                then load it with :colorscheme synic
@@ -14,14 +14,14 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ""
 ""                        SPECIAL NOTE:
-"" I believe this colorscheme is based off of Hans 
-"" Fugal's colorscheme "desert".  
+"" I believe this colorscheme is based off of Hans
+"" Fugal's colorscheme "desert".
 "" http://hans.fugal.net/vim/colors/desert.html
-"" I might be wrong on this... if it looks like it was based off 
+"" I might be wrong on this... if it looks like it was based off
 "" of your colorscheme, let me know so I can give you credits.
 ""
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"" The 256 color terminal version of this theme was created by 
+"" The 256 color terminal version of this theme was created by
 "" colorsupport.vim
 hi clear
 set background=dark
@@ -30,7 +30,7 @@ if exists("syntax_on")
 endif
 let g:colors_name = "synic"
 hi Normal guifg=ivory guibg=Black ctermfg=231 ctermbg=NONE
-hi SignColumn gui=NONE guifg=Cyan guibg=Grey cterm=NONE ctermfg=51 ctermbg=250
+hi SignColumn gui=NONE guifg=Cyan guibg=#272d2f cterm=NONE ctermfg=51 ctermbg=236
 hi SpellBad gui=undercurl guifg=NONE guisp=Red cterm=undercurl ctermfg=NONE ctermbg=196
 hi SpellCap gui=undercurl guifg=NONE guisp=Blue cterm=undercurl ctermfg=NONE ctermbg=21
 hi SpellRare gui=undercurl guifg=NONE guisp=Magenta cterm=undercurl ctermfg=NONE ctermbg=201

@@ -5,6 +5,8 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
 Plugin 'nvie/vim-flake8'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'scrooloose/nerdtree'
@@ -84,7 +86,7 @@ set textwidth=78
 set autoindent
 
 map <F2> :BufExplorer<CR>
-map <F12> :NERDTreeToggle<CR>
+map <F10> :NERDTreeToggle<CR>
 
 set hidden
 
@@ -197,3 +199,5 @@ au VimEnter * ToggleStripWhitespaceOnSave
 
 " flake8-vim
 autocmd BufWritePost *.py call Flake8()
+let g:flake8_show_in_gutter = 1
+let g:flake8_cmd = "/usr/local/bin/flake8"
