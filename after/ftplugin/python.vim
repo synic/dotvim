@@ -96,5 +96,6 @@ endif
 
 nnoremap <buffer> % :call PyJump("")<Enter>
 vnoremap <buffer> % omao<Esc>:call PyJump(visualmode())<Enter>
-set colorcolumn=80
-set foldmethod=marker
+setlocal colorcolumn=80
+setlocal foldmethod=marker
+setlocal iskeyword=@,48-57,_,192-255
