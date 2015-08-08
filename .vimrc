@@ -6,6 +6,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'mattn/gist-vim'
+Plugin 'python-rope/ropevim'
 Plugin 'mattn/webapi-vim'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
@@ -203,3 +204,12 @@ au VimEnter * ToggleStripWhitespaceOnSave
 autocmd BufWritePost *.py call Flake8()
 let g:flake8_show_in_gutter = 1
 let g:flake8_cmd = "/usr/local/bin/flake8"
+
+" rope
+let g:ropevim_guess_project = 1
+
+" Gist
+let g:gist_detect_filetype = 1
+let g:gist_open_browser_after_post = 1
+let g:gist_clip_command = 'pbcopy' " for os X
+let g:gist_post_private = 1
