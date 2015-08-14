@@ -5,7 +5,6 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
-Plugin 'mattn/gist-vim'
 Plugin 'python-rope/ropevim'
 Plugin 'mattn/webapi-vim'
 Plugin 'godlygeek/tabular'
@@ -20,11 +19,12 @@ Plugin 'openssl.vim'
 Plugin 'taglist.vim'
 Plugin 'virtualenv.vim'
 Plugin 'scala.vim'
-Plugin 'Arduino-syntax-file'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-fugitive'
 Plugin 'Lokaltog/vim-easymotion'
+Plugin 'tpope/vim-surround'
+Plugin 'mattn/gist-vim'
+Plugin 'tpope/vim-fugitive'
 Plugin 'dantler/vim-alternate'
+Plugin 'michaeljsmith/vim-indent-object'
 Plugin 'skammer/vim-css-color'
 Plugin 'vim-scripts/EnhCommentify.vim'
 Plugin 'ntpeters/vim-better-whitespace'
@@ -32,6 +32,7 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'honza/vim-snippets'
 Plugin 'gorodinskiy/vim-coloresque'
+Plugin 'Arduino-syntax-file'
 call vundle#end()
 
 filetype plugin on
@@ -80,7 +81,6 @@ set textwidth=78
 set smarttab
 set shiftround
 set expandtab
-
 
 " Setup auto wrapping
 set textwidth=78
@@ -159,6 +159,7 @@ nnoremap <silent> <leader>gp :Git push<CR>
 nnoremap <silent> <leader>gr :Gread<CR>
 nnoremap <silent> <leader>gw :Gwrite<CR>
 nnoremap <silent> <leader>ge :Gedit<CR>
+
 " Mnemonic _i_nteractive
 nnoremap <silent> <leader>gi :Git add -p %<CR>
 nnoremap <silent> <leader>gg :SignifyToggle<CR>
@@ -180,7 +181,6 @@ let g:gundo_width=35
 let g:gundo_right=1
 let g:gundo_preview_height=25
 nnoremap <F5> :GundoToggle<CR>
-
 
 " jedi settings
 let g:jedi#popup_on_dot = 0
@@ -213,3 +213,11 @@ let g:gist_detect_filetype = 1
 let g:gist_open_browser_after_post = 1
 let g:gist_clip_command = 'pbcopy' " for os X
 let g:gist_post_private = 1
+
+" easy motion
+map <Leader>l <Plug>(easymotion-lineforward)
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+map <Leader>h <Plug>(easymotion-linebackward)
+
+let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
