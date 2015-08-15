@@ -13,10 +13,10 @@ Plugin 'nvie/vim-flake8'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'SirVer/ultisnips'
-Plugin 'Gundo'
-Plugin 'bufexplorer.zip'
-Plugin 'openssl.vim'
-Plugin 'taglist.vim'
+Plugin 'sjl/gundo.vim'
+Plugin 'jlanzarotta/bufexplorer'
+Plugin 'vim-scripts/openssl.vim'
+Plugin 'vim-scripts/taglist.vim'
 Plugin 'virtualenv.vim'
 Plugin 'scala.vim'
 Plugin 'Lokaltog/vim-easymotion'
@@ -96,7 +96,6 @@ set hidden
 set noequalalways
 set dir=~/.vim/swap
 set nobackup writebackup
-set ttymouse=xterm2
 
 if $TERM_PROGRAM =~ 'APPLE'
     colorscheme ron
@@ -215,13 +214,13 @@ let g:gist_clip_command = 'pbcopy' " for os X
 let g:gist_post_private = 1
 
 " easy motion
-map <Leader>l <Plug>(easymotion-lineforward)
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
-map <Leader>h <Plug>(easymotion-linebackward)
-map <Leader>w <Plug>(easymotion-w)
-map <Leader>W <Plug>(easymotion-W)
-map <Leader>b <Plug>(easymotion-b)
-map <Leader>B <Plug>(easymotion-B)
+noremap <Leader>l <Plug>(easymotion-lineforward)
+noremap <Leader>j <Plug>(easymotion-j)
+noremap <Leader>k <Plug>(easymotion-k)
+noremap <Leader>h <Plug>(easymotion-linebackward)
+noremap <Leader>w <Plug>(easymotion-w)
+noremap <Leader>W <Plug>(easymotion-W)
+noremap <Leader>b <Plug>(easymotion-b)
+noremap <Leader>B <Plug>(easymotion-B)
 
 let g:EasyMotion_startofline = 1 " don't keep cursor column when JK motion
