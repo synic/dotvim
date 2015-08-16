@@ -12,6 +12,8 @@ endif
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+Plugin 'rking/ag.vim'
+Plugin 'embear/vim-localvimrc'
 Plugin 'gmarik/Vundle.vim'
 Plugin 'python-rope/ropevim'
 Plugin 'mattn/webapi-vim'
@@ -235,9 +237,9 @@ let g:EasyMotion_startofline = 1 " don't keep cursor column when JK motion
 
 " Ctrl-P
 
-set wildignore=*.pyc,*.dat,*/static/CACHE/*,*/media/*,*/bower_components/*
-set wildignore+=*/static/js/locales/*,*.eot,*.svg,*.ttf,*.woff,*/locale/*
-set wildignore+=*/assets/scss/*,*/swagger_docs/*,*/js/plugin/*
-set wildignore+=/Users/synic/Projects/eventboard.io/static/*
+set wildignore=*.pyc,*.eot,*.svg,*.ttf,*.woff
 
 nnoremap <silent> <leader>R :CtrlPClearCache<CR>:CtrlP<CR>
+
+" localvimrc
+let g:localvimrc_whitelist="/Users/synic/Projects/eventboard.io/.*"
