@@ -232,3 +232,9 @@ nmap <Leader>b <Plug>(easymotion-b)
 nmap <Leader>B <Plug>(easymotion-B)
 
 let g:EasyMotion_startofline = 1 " don't keep cursor column when JK motion
+
+" Ctrl-P
+
+set wildignore=*.pyc,*.dat,*/static/CACHE/*,*/media/*,*/bower_components/*
+set wildignore+=*/static/js/locales/*,*.eot,*.svg,*.ttf,*.woff,*/local/*
+set wildignore+=*/assets/scss/*
