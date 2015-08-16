@@ -1,2 +1,4 @@
 swap/
 .netrwhist
+bundle/
+!bundle/Vundle.vim

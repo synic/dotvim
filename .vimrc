@@ -1,5 +1,13 @@
 set nocompatible " disable vi settings
 
+if has("unix")
+  let s:uname = system("echo -n \"$(uname)\"")
+  if s:uname == "Darwin"
+    python import sys; sys.path.insert(0, '/usr/local/lib/python2.7/site-packages')
+    set visualbell
+  endif
+endif
+
 " Vundle Junk
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -214,13 +222,13 @@ let g:gist_clip_command = 'pbcopy' " for os X
 let g:gist_post_private = 1
 
 " easy motion
-noremap <Leader>l <Plug>(easymotion-lineforward)
-noremap <Leader>j <Plug>(easymotion-j)
-noremap <Leader>k <Plug>(easymotion-k)
-noremap <Leader>h <Plug>(easymotion-linebackward)
-noremap <Leader>w <Plug>(easymotion-w)
-noremap <Leader>W <Plug>(easymotion-W)
-noremap <Leader>b <Plug>(easymotion-b)
-noremap <Leader>B <Plug>(easymotion-B)
+nmap <Leader>l <Plug>(easymotion-lineforward)
+nmap <Leader>j <Plug>(easymotion-j)
+nmap <Leader>k <Plug>(easymotion-k)
+nmap <Leader>h <Plug>(easymotion-linebackward)
+nmap <Leader>w <Plug>(easymotion-w)
+nmap <Leader>W <Plug>(easymotion-W)
+nmap <Leader>b <Plug>(easymotion-b)
+nmap <Leader>B <Plug>(easymotion-B)
 
 let g:EasyMotion_startofline = 1 " don't keep cursor column when JK motion
