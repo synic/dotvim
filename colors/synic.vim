@@ -61,7 +61,7 @@ hi LineNr guifg=LightBlue3 guibg=bg ctermfg=110 ctermbg=NONE
 hi MoreMsg gui=NONE guifg=SeaGreen guibg=bg cterm=NONE ctermfg=29 ctermbg=NONE
 hi NonText gui=NONE guifg=Cyan4 guibg=Black cterm=NONE ctermfg=30 ctermbg=NONE
 hi Question gui=NONE guifg=LimeGreen guibg=bg cterm=NONE ctermfg=77 ctermbg=NONE
-hi Search gui=NONE guifg=SkyBlue4 guibg=Bisque cterm=NONE ctermfg=60 ctermbg=224
+hi Search gui=NONE guifg=Black guibg=LightBlue3 cterm=NONE ctermfg=60 ctermbg=224
 hi SpecialKey guifg=Cyan guibg=bg ctermfg=51 ctermbg=NONE
 hi Title gui=NONE guifg=Yellow2 guibg=bg cterm=NONE ctermfg=226 ctermbg=NONE
 hi WarningMsg guifg=Tomato3 guibg=Black ctermfg=167 ctermbg=NONE
@@ -79,7 +79,7 @@ hi Statement gui=NONE guifg=khaki guibg=bg cterm=NONE ctermfg=222 ctermbg=NONE
 hi Operator gui=NONE guifg=#8673e8 guibg=bg cterm=NONE ctermfg=98 ctermbg=NONE
 hi Ignore gui=NONE guifg=bg guibg=bg cterm=NONE ctermfg=NONE ctermbg=NONE
 hi ToDo gui=NONE guifg=DodgerBlue guibg=bg cterm=NONE ctermfg=33 ctermbg=NONE
-hi Error gui=NONE guifg=Red guibg=Linen cterm=NONE ctermfg=196 ctermbg=15
+hi Error gui=NONE guifg=Red guibg=NONE cterm=NONE ctermfg=196 ctermbg=15
 hi Comment gui=NONE guifg=#62c600 guibg=bg cterm=NONE ctermfg=76 ctermbg=NONE
 hi Identifier gui=bold guifg=LightBlue4 guibg=bg cterm=bold ctermfg=66 ctermbg=NONE
 hi PreProc gui=NONE guifg=#ffa0a0 guibg=bg cterm=NONE ctermfg=217 ctermbg=NONE
