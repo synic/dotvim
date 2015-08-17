@@ -18,7 +18,7 @@ Plug 'python-rope/ropevim'
 Plug 'mattn/webapi-vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
-Plug 'nvie/vim-flake8'
+Plug 'scrooloose/syntastic'
 Plug 'davidhalter/jedi-vim'
 Plug 'scrooloose/nerdtree'
 Plug 'SirVer/ultisnips'
@@ -209,10 +209,12 @@ let g:UltiSnipsSnippetDirectories = [$HOME.'/.vim/bundle/vim-snippets/UltiSnips'
 let g:bufExplorerSortBy = 'mru'
 au VimEnter * ToggleStripWhitespaceOnSave
 
-" flake8-vim
-autocmd BufWritePost *.py call Flake8()
-let g:flake8_show_in_gutter = 1
-let g:flake8_cmd = "/usr/local/bin/flake8"
+" syntasic
+let g:syntastic_check_on_open = 1 " check on open and on write
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_loc_list_height = 7
 
 " rope
 let g:ropevim_guess_project = 1

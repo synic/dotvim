@@ -7,3 +7,6 @@ bundle/
 
 # vim-plug
 plugged/
+
+# nvim spell
+spell/
