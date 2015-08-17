@@ -8,42 +8,42 @@ if has("unix")
   endif
 endif
 
-" Vundle Junk
+" vim-plug plugin list
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'rking/ag.vim'
-Plugin 'embear/vim-localvimrc'
-Plugin 'gmarik/Vundle.vim'
-Plugin 'python-rope/ropevim'
-Plugin 'mattn/webapi-vim'
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'nvie/vim-flake8'
-Plugin 'davidhalter/jedi-vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'SirVer/ultisnips'
-Plugin 'sjl/gundo.vim'
-Plugin 'jlanzarotta/bufexplorer'
-Plugin 'vim-scripts/openssl.vim'
-Plugin 'vim-scripts/taglist.vim'
-Plugin 'virtualenv.vim'
-Plugin 'scala.vim'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'tpope/vim-surround'
-Plugin 'mattn/gist-vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'dantler/vim-alternate'
-Plugin 'michaeljsmith/vim-indent-object'
-Plugin 'skammer/vim-css-color'
-Plugin 'vim-scripts/EnhCommentify.vim'
-Plugin 'ntpeters/vim-better-whitespace'
-Plugin 'kien/ctrlp.vim'
-Plugin 'pangloss/vim-javascript'
-Plugin 'honza/vim-snippets'
-Plugin 'gorodinskiy/vim-coloresque'
-Plugin 'Arduino-syntax-file'
-call vundle#end()
+call plug#begin('~/.vim/plugged')
+Plug 'rking/ag.vim'
+Plug 'embear/vim-localvimrc'
+Plug 'gmarik/Vundle.vim'
+Plug 'python-rope/ropevim'
+Plug 'mattn/webapi-vim'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+Plug 'nvie/vim-flake8'
+Plug 'davidhalter/jedi-vim'
+Plug 'scrooloose/nerdtree'
+Plug 'SirVer/ultisnips'
+Plug 'sjl/gundo.vim'
+Plug 'jlanzarotta/bufexplorer'
+Plug 'vim-scripts/openssl.vim'
+Plug 'vim-scripts/taglist.vim'
+Plug 'virtualenv.vim'
+Plug 'scala.vim'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'tpope/vim-surround'
+Plug 'mattn/gist-vim'
+Plug 'tpope/vim-fugitive'
+Plug 'dantler/vim-alternate'
+Plug 'michaeljsmith/vim-indent-object'
+Plug 'skammer/vim-css-color'
+Plug 'vim-scripts/EnhCommentify.vim'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'kien/ctrlp.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'honza/vim-snippets'
+Plug 'gorodinskiy/vim-coloresque'
+Plug 'Arduino-syntax-file'
+
+call plug#end()
 
 filetype plugin on
 
@@ -170,7 +170,7 @@ nnoremap <silent> <leader>gw :Gwrite<CR>
 nnoremap <silent> <leader>ge :Gedit<CR>
 
 " Mnemonic _i_nteractive
-nnoremap <silent> <leader>gi :Git add -p %<CR>
+nnoremap <silent> <leader>gi :Git add %<CR>
 nnoremap <silent> <leader>gg :SignifyToggle<CR>
 
 " tablist

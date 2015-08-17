@@ -20,4 +20,4 @@ cd ~
 ln -sf .vim/.vimrc
 ln -sf .vim/.gvimrc
 cd $CWD
-vim +BundleInstall
+vim +PlugInstall
