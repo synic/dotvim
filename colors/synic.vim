@@ -88,7 +88,7 @@ hi Underlined gui=underline guifg=fg guibg=bg cterm=underline ctermfg=fg ctermbg
 hi ColorColumn guibg=#222222 ctermbg=110
 
 if version >= 700
-  hi SpellBad   guisp=Maroon    gui=undercurl guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE term=underline cterm=underline
+  hi SpellBad   guisp=Red gui=undercurl guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE term=underline cterm=underline
   hi SpellCap   guisp=yellow gui=undercurl guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE term=underline cterm=underline
   hi SpellRare  guisp=blue   gui=undercurl guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE term=underline cterm=underline
   hi SpellLocal guisp=orange gui=undercurl guifg=NONE guibg=NONE ctermfg=NONE ctermbg=NONE term=underline cterm=underline

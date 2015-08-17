@@ -1,5 +1,6 @@
 set nocompatible " disable vi settings
 
+" set the correct python path for homebrew if we're on OS X
 if has("unix")
   let s:uname = system("echo -n \"$(uname)\"")
   if s:uname == "Darwin"
@@ -11,41 +12,58 @@ endif
 " vim-plug plugin list
 filetype off
 call plug#begin('~/.vim/plugged')
-Plug 'rking/ag.vim'
-Plug 'embear/vim-localvimrc'
-Plug 'gmarik/Vundle.vim'
-Plug 'python-rope/ropevim'
+
+" python specific plugins
+Plug 'hynek/vim-python-pep8-indent'          " for auto indenting pep8 style
+Plug 'python-rope/ropevim'                   " refactoring, finding occurrences
+Plug 'michaeljsmith/vim-indent-object'       " for selecting indent objects
+Plug 'davidhalter/jedi-vim'                  " for code completion
+
+" misc plugins
+Plug 'rking/ag.vim'                          " project searching
+Plug 'embear/vim-localvimrc'                 " per-project .vimrc
 Plug 'mattn/webapi-vim'
-Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
-Plug 'scrooloose/syntastic'
-Plug 'davidhalter/jedi-vim'
-Plug 'scrooloose/nerdtree'
-Plug 'SirVer/ultisnips'
-Plug 'sjl/gundo.vim'
-Plug 'jlanzarotta/bufexplorer'
 Plug 'vim-scripts/openssl.vim'
-Plug 'vim-scripts/taglist.vim'
-Plug 'virtualenv.vim'
-Plug 'scala.vim'
-Plug 'Lokaltog/vim-easymotion'
-Plug 'tpope/vim-surround'
-Plug 'mattn/gist-vim'
-Plug 'tpope/vim-fugitive'
-Plug 'dantler/vim-alternate'
-Plug 'michaeljsmith/vim-indent-object'
-Plug 'skammer/vim-css-color'
-Plug 'vim-scripts/EnhCommentify.vim'
-Plug 'ntpeters/vim-better-whitespace'
-Plug 'kien/ctrlp.vim'
-Plug 'pangloss/vim-javascript'
-Plug 'honza/vim-snippets'
-Plug 'gorodinskiy/vim-coloresque'
-Plug 'Arduino-syntax-file'
+
+" project management
+Plug 'jlanzarotta/bufexplorer'        " small buffer explorer
+Plug 'scrooloose/nerdtree'            " directory tree, project management
+Plug 'kien/ctrlp.vim'                 " fuzzy file searching
+Plug 'godlygeek/tabular'              " align text, even tables
+
+" coding
+Plug 'pangloss/vim-javascript'        " javascript utils
+Plug 'vim-scripts/taglist.vim'        " shows classes, methods, etc
+Plug 'SirVer/ultisnips'               " textmate style snippets
+Plug 'honza/vim-snippets'             " the actual snippest themselves
+Plug 'tpope/vim-surround'             " add, change, delete surround text
+Plug 'scrooloose/syntastic'           " syntax checking
+Plug 'jmcantrell/vim-virtualenv'      " virtualenv
+Plug 'ntpeters/vim-better-whitespace' " highlights and removes spurious
+                                      "     whitespace
+Plug 'tomtom/tcomment_vim'            " comment blocks of code
+
+" syntax files
+Plug 'plasticboy/vim-markdown'        " markdown syntax highlighting
+Plug 'sudar/vim-arduino-syntax'       " arduino syntax file
+Plug 'gorodinskiy/vim-coloresque'     " highlight color codes in CSS
+Plug 'derekwyatt/vim-scala'           " scala syntax
+
+" undo
+Plug 'sjl/gundo.vim'                  " undo tree
+
+" git
+Plug 'mattn/gist-vim'                 " post gists to gist.github.com
+Plug 'tpope/vim-fugitive'             " git utils
+
+" movement
+Plug 'Lokaltog/vim-easymotion'        " much quicker movement
+Plug 'dantler/vim-alternate'          " switch from .c to .h and visa versa
 
 call plug#end()
 
 filetype plugin on
+filetype plugin indent on
 
 set bs=2		        " allow backspacing over everything in insert mode
 set ai			        " always set autoindenting on
@@ -59,6 +77,7 @@ set laststatus=2        " Make sure the status line is always displayed
 set spell               " turn on spellcheck
 set splitright
 set splitbelow
+set nohlsearch
 
 command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
     \ | wincmd p | diffthis
@@ -87,16 +106,13 @@ set matchtime=5
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
-set textwidth=78
-set smarttab
+" set smarttab
 set shiftround
 set expandtab
+set noautoindent
 
 " Setup auto wrapping
 set textwidth=78
-
-" Setup indenting
-set autoindent
 
 map <F2> :BufExplorer<CR>
 map <F10> :NERDTreeToggle<CR>
@@ -158,6 +174,9 @@ endfunction
 
 set tabline=%!CustomTabLine()
 
+" set up hlsearch toggling with F4 as the hotkey
+:noremap <F4> :set hlsearch! hlsearch?<CR>
+
 " fugitive
 nnoremap <silent> <leader>gs :Gstatus<CR>
 nnoremap <silent> <leader>gd :Gdiff<CR>
@@ -213,6 +232,7 @@ au VimEnter * ToggleStripWhitespaceOnSave
 let g:syntastic_check_on_open = 1 " check on open and on write
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_loc_list_height = 7
 
