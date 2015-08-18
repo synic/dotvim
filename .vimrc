@@ -1,69 +1,82 @@
-set nocompatible " disable vi settings
+" Note: skip init for vim-tiny or vim-small
+if 0 | endif
+
+if has('vim_starting')
+    if &compatible
+        set nocompatible " disable vi settings
+    endif
+
+    set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
 
 " set the correct python path for homebrew if we're on OS X
 if has("unix")
   let s:uname = system("echo -n \"$(uname)\"")
   if s:uname == "Darwin"
-    python import sys; sys.path.insert(0, '/usr/local/lib/python2.7/site-packages')
-    set visualbell
+    python import sys
+    python sys.path.insert(0, '/usr/local/lib/python2.7/site-packages')
   endif
 endif
 
-" vim-plug plugin list
-filetype off
-call plug#begin('~/.vim/plugged')
+" plugin list
+call neobundle#begin(expand('~/.vim/bundle/'))
+
+NeoBundleFetch 'Shougo/neobundle.vim'
 
 " python specific plugins
-Plug 'hynek/vim-python-pep8-indent'          " for auto indenting pep8 style
-Plug 'python-rope/ropevim'                   " refactoring, finding occurrences
-Plug 'michaeljsmith/vim-indent-object'       " for selecting indent objects
-Plug 'davidhalter/jedi-vim'                  " for code completion
+NeoBundle 'hynek/vim-python-pep8-indent'    " for auto indenting pep8 style
+NeoBundle 'python-rope/ropevim'             " refactoring, finding occurrences
+NeoBundle 'michaeljsmith/vim-indent-object' " for selecting indent objects
+NeoBundle 'davidhalter/jedi-vim'            " for code completion
 
 " misc plugins
-Plug 'rking/ag.vim'                          " project searching
-Plug 'embear/vim-localvimrc'                 " per-project .vimrc
-Plug 'mattn/webapi-vim'
-Plug 'vim-scripts/openssl.vim'
+NeoBundle 'rking/ag.vim'                    " project searching
+NeoBundle 'embear/vim-localvimrc'           " per-project .vimrc
+NeoBundle 'mattn/webapi-vim'
+NeoBundle 'vim-scripts/openssl.vim'
+NeoBundle 'tpope/vim-unimpaired'
 
 " project management
-Plug 'jlanzarotta/bufexplorer'        " small buffer explorer
-Plug 'scrooloose/nerdtree'            " directory tree, project management
-Plug 'kien/ctrlp.vim'                 " fuzzy file searching
-Plug 'godlygeek/tabular'              " align text, even tables
+NeoBundle 'jlanzarotta/bufexplorer'        " small buffer explorer
+NeoBundle 'scrooloose/nerdtree'            " directory tree, project management
+NeoBundle 'kien/ctrlp.vim'                 " fuzzy file searching
+NeoBundle 'godlygeek/tabular'              " align text, even tables
 
 " coding
-Plug 'pangloss/vim-javascript'        " javascript utils
-Plug 'vim-scripts/taglist.vim'        " shows classes, methods, etc
-Plug 'SirVer/ultisnips'               " textmate style snippets
-Plug 'honza/vim-snippets'             " the actual snippest themselves
-Plug 'tpope/vim-surround'             " add, change, delete surround text
-Plug 'scrooloose/syntastic'           " syntax checking
-Plug 'jmcantrell/vim-virtualenv'      " virtualenv
-Plug 'ntpeters/vim-better-whitespace' " highlights and removes spurious
+NeoBundle 'pangloss/vim-javascript'        " javascript utils
+NeoBundle 'vim-scripts/taglist.vim'        " shows classes, methods, etc
+NeoBundle 'SirVer/ultisnips'               " textmate style snippets
+NeoBundle 'honza/vim-snippets'             " the actual snippest themselves
+NeoBundle 'tpope/vim-surround'             " add, change, delete surround text
+NeoBundle 'scrooloose/syntastic'           " syntax checking
+NeoBundle 'jmcantrell/vim-virtualenv'      " virtualenv
+NeoBundle 'ntpeters/vim-better-whitespace' " highlights and removes spurious
                                       "     whitespace
-Plug 'tomtom/tcomment_vim'            " comment blocks of code
+NeoBundle 'tomtom/tcomment_vim'            " comment blocks of code
 
 " syntax files
-Plug 'plasticboy/vim-markdown'        " markdown syntax highlighting
-Plug 'sudar/vim-arduino-syntax'       " arduino syntax file
-Plug 'gorodinskiy/vim-coloresque'     " highlight color codes in CSS
-Plug 'derekwyatt/vim-scala'           " scala syntax
+NeoBundle 'plasticboy/vim-markdown'        " markdown syntax highlighting
+NeoBundle 'sudar/vim-arduino-syntax'       " arduino syntax file
+NeoBundle 'gorodinskiy/vim-coloresque'     " highlight color codes in CSS
+NeoBundle 'derekwyatt/vim-scala'           " scala syntax
 
 " undo
-Plug 'sjl/gundo.vim'                  " undo tree
+NeoBundle 'sjl/gundo.vim'                  " undo tree
 
 " git
-Plug 'mattn/gist-vim'                 " post gists to gist.github.com
-Plug 'tpope/vim-fugitive'             " git utils
+NeoBundle 'mattn/gist-vim'                 " post gists to gist.github.com
+NeoBundle 'tpope/vim-fugitive'             " git utils
 
 " movement
-Plug 'Lokaltog/vim-easymotion'        " much quicker movement
-Plug 'dantler/vim-alternate'          " switch from .c to .h and visa versa
+NeoBundle 'Lokaltog/vim-easymotion'        " much quicker movement
+NeoBundle 'dantler/vim-alternate'          " switch from .c to .h and visa versa
 
-call plug#end()
+call neobundle#end()
 
 filetype plugin on
 filetype plugin indent on
+
+NeoBundleCheck          " see if we need to install plugins
 
 set bs=2		        " allow backspacing over everything in insert mode
 set ai			        " always set autoindenting on
@@ -78,19 +91,21 @@ set spell               " turn on spellcheck
 set splitright
 set splitbelow
 set nohlsearch
+set visualbell
 
 command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
     \ | wincmd p | diffthis
 
 " Switch syntax highlighting on
-syntax enable
+syntax enable   
 
 " Display bufnr:filetype (dos,unix,mac) in status line
-set statusline=%<%n:%f%h%m%r%=%{fugitive#statusline()}\ %{&ff}\ %l,%c%V\ %P
+if exists('g:loaded_fugitive')
+    set statusline=%<%n:%f%h%m%r%=%{fugitive#statusline()}\ %{&ff}\ %l,%c%V\ %P
+else
+    set statusline=%<%n:%f%h%m%r%=\ %{&ff}\ %l,%c%V\ %P
+endif
 
-" Hide the mouse pointer while typing
-" The window with the mouse pointer does not automatically become the active window
-" Right mouse button extends selections
 " Turn on mouse support
 set mousehide
 set nomousefocus
@@ -222,11 +237,18 @@ au BufRead,BufNewFile *.pde set filetype=arduino
 au BufRead,BufNewFile *.ino set filetype=arduino
 
 " ultisnips settings
-let g:UltiSnipsSnippetDirectories = [$HOME.'/.vim/bundle/vim-snippets/UltiSnips', 'UltiSnips.Local']
+let g:UltiSnipsSnippetDirectories = [
+    \ $HOME.'/.vim/bundle/vim-snippets/UltiSnips', 
+    \ 'UltiSnips.Local'
+    \ ]
 
 " bufexplorer
 let g:bufExplorerSortBy = 'mru'
-au VimEnter * ToggleStripWhitespaceOnSave
+
+" better-whitespace
+if exists('g:loaded_better_whitespace_plugin')
+    au VimEnter * ToggleStripWhitespaceOnSave
+endif
 
 " syntasic
 let g:syntastic_check_on_open = 1 " check on open and on write
@@ -265,3 +287,7 @@ nnoremap <silent> <leader>R :CtrlPClearCache<CR>:CtrlP<CR>
 
 " localvimrc
 let g:localvimrc_whitelist="/Users/synic/Projects/eventboard.io/.*"
+
+" my mappings
+nmap <C-n> :lnext<CR>
+nmap <C-m> :lprev<CR>

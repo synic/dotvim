@@ -47,4 +47,13 @@ snippet ipdb "BREAKPOINT" w
 import ipdb; ipdb.set_trace()  # TODO: remove this
 endsnippet
 
+snippet supertest "supertest" w
+settings.SUPERTEST = True  # TODO: remove this
+endsnippet
+
+snippet ifsuper "ifsupertest" w
+if getattr(settings, 'SUPERTEST', False):
+	import ipdb; ipdb.set_trace()  # TODO: remove this
+endsnippet
+
 # vim:ft=snippets:
