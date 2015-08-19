@@ -51,7 +51,7 @@ NeoBundle 'tpope/vim-surround'             " add, change, delete surround text
 NeoBundle 'scrooloose/syntastic'           " syntax checking
 NeoBundle 'jmcantrell/vim-virtualenv'      " virtualenv
 NeoBundle 'ntpeters/vim-better-whitespace' " highlights and removes spurious
-                                      "     whitespace
+                                           "    whitespace
 NeoBundle 'tomtom/tcomment_vim'            " comment blocks of code
 
 " syntax files
@@ -97,14 +97,10 @@ command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
     \ | wincmd p | diffthis
 
 " Switch syntax highlighting on
-syntax enable   
+syntax enable
 
 " Display bufnr:filetype (dos,unix,mac) in status line
-if exists('g:loaded_fugitive')
-    set statusline=%<%n:%f%h%m%r%=%{fugitive#statusline()}\ %{&ff}\ %l,%c%V\ %P
-else
-    set statusline=%<%n:%f%h%m%r%=\ %{&ff}\ %l,%c%V\ %P
-endif
+set statusline=%<%n:%f%h%m%r%=\ %{&ff}\ %l,%c%V\ %P
 
 " Turn on mouse support
 set mousehide
@@ -238,17 +234,12 @@ au BufRead,BufNewFile *.ino set filetype=arduino
 
 " ultisnips settings
 let g:UltiSnipsSnippetDirectories = [
-    \ $HOME.'/.vim/bundle/vim-snippets/UltiSnips', 
+    \ $HOME.'/.vim/bundle/vim-snippets/UltiSnips',
     \ 'UltiSnips.Local'
     \ ]
 
 " bufexplorer
 let g:bufExplorerSortBy = 'mru'
-
-" better-whitespace
-if exists('g:loaded_better_whitespace_plugin')
-    au VimEnter * ToggleStripWhitespaceOnSave
-endif
 
 " syntasic
 let g:syntastic_check_on_open = 1 " check on open and on write
@@ -257,6 +248,28 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_loc_list_height = 7
+nnoremap <leader>s :SyntasticCheck<CR>
+
+function! <SID>LocationPrevious()
+  try
+    lprev
+  catch /^Vim\%((\a\+)\)\=:E553/
+    llast
+  endtry
+endfunction
+
+function! <SID>LocationNext()
+  try
+    lnext
+  catch /^Vim\%((\a\+)\)\=:E553/
+    lfirst
+  endtry
+endfunction
+
+nnoremap <silent> <Plug>LocationPrevious :<C-u>exe 'call <SID>LocationPrevious()'<CR>
+nnoremap <silent> <Plug>LocationNext :<C-u>exe 'call <SID>LocationNext()'<CR>
+nmap <silent> ,, <Plug>LocationPrevious
+nmap <silent> .. <Plug>LocationNext
 
 " rope
 let g:ropevim_guess_project = 1
@@ -281,13 +294,12 @@ let g:EasyMotion_startofline = 1 " don't keep cursor column when JK motion
 
 " Ctrl-P
 
-set wildignore=*.pyc,*.eot,*.svg,*.ttf,*.woff
+set wildignore=*.pyc,*.eot,*.svg,*.ttf,*.woff,*.png,*.jpg,*.gif
 
 nnoremap <silent> <leader>R :CtrlPClearCache<CR>:CtrlP<CR>
 
 " localvimrc
 let g:localvimrc_whitelist="/Users/synic/Projects/eventboard.io/.*"
 
-" my mappings
-nmap <C-n> :lnext<CR>
-nmap <C-m> :lprev<CR>
+" solarized
+let g:solarized_termcolors=256

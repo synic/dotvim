@@ -1,4 +1,4 @@
-colorscheme synic
+colorscheme jellybeans
 set number
 let loaded_minibufexplorer=0
 set guifont=Monaco:h10
