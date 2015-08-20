@@ -71,6 +71,12 @@ NeoBundle 'tpope/vim-fugitive'             " git utils
 NeoBundle 'Lokaltog/vim-easymotion'        " much quicker movement
 NeoBundle 'dantler/vim-alternate'          " switch from .c to .h and visa versa
 
+" colorschemes
+NeoBundle 'synic/jellybeans.vim'
+NeoBundle 'synic/synic.vim'
+" NeoBundle 'synic/jedit.vim'
+NeoBundle 'altercation/vim-colors-solarized'
+
 call neobundle#end()
 
 filetype plugin on
@@ -134,13 +140,14 @@ set noequalalways
 set dir=~/.vim/swap
 set nobackup writebackup
 
-if $TERM_PROGRAM =~ 'APPLE'
+try
+    colorscheme jellybeans
+catch /^Vim\%((\a\+)\)\=:E185/
     colorscheme ron
-else
-    set t_Co=256
-    colorscheme synic
-endif
+endtry
+
 set colorcolumn=80
+set number
 
 " setup custom tab lines with numbers and the close button
 function CustomTabLine()
@@ -153,7 +160,7 @@ function CustomTabLine()
         " select the highlighting
         if (i + 1) == t
             let s .= '%#TabLineSel#'
-        else
+        else:
             let s .= '%#TabLine#'
         endif
 
