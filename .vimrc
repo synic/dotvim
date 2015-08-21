@@ -39,6 +39,7 @@ NeoBundle 'tpope/vim-unimpaired'
 " project management
 NeoBundle 'jlanzarotta/bufexplorer'        " small buffer explorer
 NeoBundle 'scrooloose/nerdtree'            " directory tree, project management
+NeoBundle 'tpope/vim-vinegar'
 NeoBundle 'kien/ctrlp.vim'                 " fuzzy file searching
 NeoBundle 'godlygeek/tabular'              " align text, even tables
 
