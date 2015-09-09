@@ -85,13 +85,13 @@ filetype plugin indent on
 
 NeoBundleCheck          " see if we need to install plugins
 
-set bs=2		        " allow backspacing over everything in insert mode
-set ai			        " always set autoindenting on
-set nobackup	        " don't keep a backup file
-set viminfo='20,\"50	" read/write a .viminfo file, don't store more
-			            " than 50 lines of registers
-set history=50		    " keep 50 lines of command line history
-set ruler		        " show the cursor position all the time
+set bs=2                " allow backspacing over everything in insert mode
+set ai                  " always set autoindenting on
+set nobackup            " don't keep a backup file
+set viminfo='20,\"50    " read/write a .viminfo file, don't store more
+                        " than 50 lines of registers
+set history=50          " keep 50 lines of command line history
+set ruler               " show the cursor position all the time
 set nowrap              " make sure that long lines don't wrap
 set laststatus=2        " Make sure the status line is always displayed
 set spell               " turn on spellcheck
@@ -149,6 +149,10 @@ endtry
 
 set colorcolumn=80
 set number
+
+" map the escape key to `fd` (to match spacemacs)
+imap fd <Esc>
+vmap fd <Esc>
 
 " setup custom tab lines with numbers and the close button
 function CustomTabLine()
