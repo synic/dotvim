@@ -97,8 +97,8 @@ set laststatus=2        " Make sure the status line is always displayed
 set spell               " turn on spellcheck
 set splitright
 set splitbelow
-set nohlsearch
 set visualbell
+set incsearch
 
 command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
     \ | wincmd p | diffthis
@@ -131,6 +131,9 @@ set noautoindent
 
 " Setup auto wrapping
 set textwidth=78
+
+" Make spacebar the leader
+let mapleader = "\<Space>"
 
 map <F2> :BufExplorer<CR>
 map <F10> :NERDTreeToggle<CR>
@@ -253,6 +256,16 @@ let g:UltiSnipsSnippetDirectories = [
 " bufexplorer
 let g:bufExplorerSortBy = 'mru'
 
+" easy window switching
+nmap <silent> <Leader>wk :wincmd k<CR>
+nmap <silent> <Leader>wj :wincmd j<CR>
+nmap <silent> <Leader>wh :wincmd h<CR>
+nmap <silent> <Leader>wl :wincmd l<CR>
+nmap <silent> <Leader><Tab> :b#<CR>
+nmap <silent> <Leader>w/ :vs<CR>
+nmap <silent> <Leader>w- :sp<CR>
+nmap <silent> <Leader>wc :q<CR>
+
 " syntasic
 let g:syntastic_check_on_open = 1 " check on open and on write
 let g:syntastic_always_populate_loc_list = 1
@@ -293,14 +306,8 @@ let g:gist_clip_command = 'pbcopy' " for os X
 let g:gist_post_private = 1
 
 " easy motion
-nmap <Leader>l <Plug>(easymotion-lineforward)
-nmap <Leader>j <Plug>(easymotion-j)
-nmap <Leader>k <Plug>(easymotion-k)
-nmap <Leader>h <Plug>(easymotion-linebackward)
-nmap <Leader>w <Plug>(easymotion-w)
-nmap <Leader>W <Plug>(easymotion-W)
-nmap <Leader>b <Plug>(easymotion-b)
-nmap <Leader>B <Plug>(easymotion-B)
+map  <Leader><Leader> <Plug>(easymotion-bd-f)
+nmap <Leader><Leader> <Plug>(easymotion-overwin-f)
 
 let g:EasyMotion_startofline = 1 " don't keep cursor column when JK motion
 
@@ -308,7 +315,7 @@ let g:EasyMotion_startofline = 1 " don't keep cursor column when JK motion
 
 set wildignore=*.pyc,*.eot,*.svg,*.ttf,*.woff,*.png,*.jpg,*.gif
 
-nnoremap <silent> <leader>R :CtrlPClearCache<CR>:CtrlP<CR>
+nnoremap <silent> <leader>o :CtrlP<CR>
 
 " localvimrc
 let g:localvimrc_whitelist="/Users/synic/Projects/eventboard.io/.*"
