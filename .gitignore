@@ -10,3 +10,7 @@ plugged/
 
 # nvim spell
 spell/
+
+# session
+session/
+sessions/
