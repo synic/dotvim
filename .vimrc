@@ -31,35 +31,30 @@ NeoBundle 'davidhalter/jedi-vim'            " for code completion
 
 " misc plugins
 NeoBundle 'rking/ag.vim'                    " project searching
-NeoBundle 'embear/vim-localvimrc'           " per-project .vimrc
-NeoBundle 'mattn/webapi-vim'
 NeoBundle 'vim-scripts/openssl.vim'
 NeoBundle 'tpope/vim-unimpaired'
 
 " project management
-NeoBundle 'jlanzarotta/bufexplorer'        " small buffer explorer
-NeoBundle 'scrooloose/nerdtree'            " directory tree, project management
-NeoBundle 'tpope/vim-vinegar'
 NeoBundle 'kien/ctrlp.vim'                 " fuzzy file searching
 NeoBundle 'godlygeek/tabular'              " align text, even tables
+NeoBundle 'junegunn/fzf'
+
+" file management
+NeoBundle 'jlanzarotta/bufexplorer'        " small buffer explorer
 
 " coding
 NeoBundle 'pangloss/vim-javascript'        " javascript utils
-NeoBundle 'vim-scripts/taglist.vim'        " shows classes, methods, etc
 NeoBundle 'SirVer/ultisnips'               " textmate style snippets
 NeoBundle 'honza/vim-snippets'             " the actual snippest themselves
 NeoBundle 'tpope/vim-surround'             " add, change, delete surround text
 NeoBundle 'scrooloose/syntastic'           " syntax checking
 NeoBundle 'jmcantrell/vim-virtualenv'      " virtualenv
-NeoBundle 'ntpeters/vim-better-whitespace' " highlights and removes spurious
-                                           "    whitespace
+NeoBundle 'ntpeters/vim-better-whitespace' " removes spurious whitespace
 NeoBundle 'tomtom/tcomment_vim'            " comment blocks of code
 
 " syntax files
 NeoBundle 'plasticboy/vim-markdown'        " markdown syntax highlighting
-NeoBundle 'sudar/vim-arduino-syntax'       " arduino syntax file
 NeoBundle 'gorodinskiy/vim-coloresque'     " highlight color codes in CSS
-NeoBundle 'derekwyatt/vim-scala'           " scala syntax
 
 " undo
 NeoBundle 'sjl/gundo.vim'                  " undo tree
@@ -70,13 +65,10 @@ NeoBundle 'tpope/vim-fugitive'             " git utils
 
 " movement
 NeoBundle 'Lokaltog/vim-easymotion'        " much quicker movement
-NeoBundle 'dantler/vim-alternate'          " switch from .c to .h and visa versa
 
 " colorschemes
 NeoBundle 'synic/jellybeans.vim'
 NeoBundle 'synic/synic.vim'
-" NeoBundle 'synic/jedit.vim'
-NeoBundle 'altercation/vim-colors-solarized'
 
 call neobundle#end()
 
@@ -124,7 +116,6 @@ set matchtime=5
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
-" set smarttab
 set shiftround
 set expandtab
 set noautoindent
@@ -133,10 +124,11 @@ set noautoindent
 set textwidth=78
 
 " Make spacebar the leader
+nnoremap <Space> <Nop>
 let mapleader = "\<Space>"
 
-map <F2> :BufExplorer<CR>
-map <F10> :NERDTreeToggle<CR>
+map <F2> :BufExplorer<cr>
+map <F10> :NERDTreeToggle<cr>
 
 set hidden
 
@@ -152,6 +144,11 @@ endtry
 
 set colorcolumn=80
 set number
+
+" file management
+let g:netrw_liststyle = 1
+let g:netrw_banner = 0
+let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+,\(^\|\s\s\)ntuser\.\S\+,__pycache__'
 
 " map the escape key to `fd` (to match spacemacs)
 imap fd <Esc>
@@ -201,22 +198,22 @@ endfunction
 set tabline=%!CustomTabLine()
 
 " set up hlsearch toggling with F4 as the hotkey
-:noremap <F4> :set hlsearch! hlsearch?<CR>
+:noremap <F4> :set hlsearch! hlsearch?<cr>
 
 " fugitive
-nnoremap <silent> <leader>gs :Gstatus<CR>
-nnoremap <silent> <leader>gd :Gdiff<CR>
-nnoremap <silent> <leader>gc :Gcommit<CR>
-nnoremap <silent> <leader>gb :Gblame<CR>
-nnoremap <silent> <leader>gl :Glog<CR>
-nnoremap <silent> <leader>gp :Git push<CR>
-nnoremap <silent> <leader>gr :Gread<CR>
-nnoremap <silent> <leader>gw :Gwrite<CR>
-nnoremap <silent> <leader>ge :Gedit<CR>
+nnoremap <silent> <leader>gs :Gstatus<cr>
+nnoremap <silent> <leader>gd :Gdiff<cr>
+nnoremap <silent> <leader>gc :Gcommit<cr>
+nnoremap <silent> <leader>gb :Gblame<cr>
+nnoremap <silent> <leader>gl :Glog<cr>
+nnoremap <silent> <leader>gp :Git push<cr>
+nnoremap <silent> <leader>gr :Gread<cr>
+nnoremap <silent> <leader>gw :Gwrite<cr>
+nnoremap <silent> <leader>ge :Gedit<cr>
 
 " Mnemonic _i_nteractive
-nnoremap <silent> <leader>gi :Git add %<CR>
-nnoremap <silent> <leader>gg :SignifyToggle<CR>
+nnoremap <silent> <leader>gi :Git add %<cr>
+nnoremap <silent> <leader>gg :SignifyToggle<cr>
 
 " tablist
 let Tlist_Show_One_File = 1
@@ -234,7 +231,7 @@ let NERDTreeChDirMode=2
 let g:gundo_width=35
 let g:gundo_right=1
 let g:gundo_preview_height=25
-nnoremap <F5> :GundoToggle<CR>
+nnoremap <F5> :GundoToggle<cr>
 
 " jedi settings
 let g:jedi#popup_on_dot = 0
@@ -257,14 +254,15 @@ let g:UltiSnipsSnippetDirectories = [
 let g:bufExplorerSortBy = 'mru'
 
 " easy window switching
-nmap <silent> <Leader>wk :wincmd k<CR>
-nmap <silent> <Leader>wj :wincmd j<CR>
-nmap <silent> <Leader>wh :wincmd h<CR>
-nmap <silent> <Leader>wl :wincmd l<CR>
-nmap <silent> <Leader><Tab> :b#<CR>
-nmap <silent> <Leader>w/ :vs<CR>
-nmap <silent> <Leader>w- :sp<CR>
-nmap <silent> <Leader>wc :q<CR>
+nmap <silent> <leader>wk :wincmd k<cr>
+nmap <silent> <leader>wj :wincmd j<cr>
+nmap <silent> <leader>wh :wincmd h<cr>
+nmap <silent> <leader>wl :wincmd l<cr>
+nmap <silent> <leader><tab> :b#<cr>
+nmap <silent> <leader>w/ :vs<cr>
+nmap <silent> <leader>w- :sp<cr>
+nmap <silent> <leader>wc :buffer close<cr>
+nmap <silent> <leader>wd :q<cr>
 
 " syntasic
 let g:syntastic_check_on_open = 1 " check on open and on write
@@ -273,7 +271,7 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_loc_list_height = 5
-nnoremap <leader>s :SyntasticCheck<CR>
+nnoremap <leader>s :SyntasticCheck<cr>
 
 function! <SID>LocationPrevious()
   try
@@ -291,10 +289,10 @@ function! <SID>LocationNext()
   endtry
 endfunction
 
-nnoremap <silent> <Plug>LocationPrevious :<C-u>exe 'call <SID>LocationPrevious()'<CR>
-nnoremap <silent> <Plug>LocationNext :<C-u>exe 'call <SID>LocationNext()'<CR>
-nmap <silent> ,, <Plug>LocationPrevious
-nmap <silent> .. <Plug>LocationNext
+nnoremap <silent> <plug>LocationPrevious :<C-u>exe 'call <SID>LocationPrevious()'<cr>
+nnoremap <silent> <plug>LocationNext :<C-u>exe 'call <SID>LocationNext()'<cr>
+nmap <silent> ,, <plug>LocationPrevious
+nmap <silent> .. <plug>LocationNext
 
 " rope
 let g:ropevim_guess_project = 1
@@ -306,19 +304,13 @@ let g:gist_clip_command = 'pbcopy' " for os X
 let g:gist_post_private = 1
 
 " easy motion
-map  <Leader><Leader> <Plug>(easymotion-bd-f)
-nmap <Leader><Leader> <Plug>(easymotion-overwin-f)
+map <leader><leader> <plug>(easymotion-bd-f)
+nmap <leader><leader> <plug>(easymotion-bd-f)
+nmap <leader><leader> <plug>(easymotion-overwin-f)
 
 let g:EasyMotion_startofline = 1 " don't keep cursor column when JK motion
 
 " Ctrl-P
-
 set wildignore=*.pyc,*.eot,*.svg,*.ttf,*.woff,*.png,*.jpg,*.gif
+nnoremap <silent> <leader>o :CtrlP<cr>
 
-nnoremap <silent> <leader>o :CtrlP<CR>
-
-" localvimrc
-let g:localvimrc_whitelist="/Users/synic/Projects/eventboard.io/.*"
-
-" solarized
-let g:solarized_termcolors=256

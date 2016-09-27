@@ -1,3 +1,3 @@
-set guifont=Monaco:h10
+set guifont=Hack:h9
 set guioptions=agitc
 set colorcolumn=80
