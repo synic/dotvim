@@ -32,7 +32,7 @@ function! GrepProjectCurrentDir()
 endfunction
 
 function! SearchAndReplaceInProject()
-    let pathname = ProjectRootGuess()()
+    let pathname = ProjectRootGuess()
     call inputsave()
     let replace = input('Replace: ')
     if empty(replace)
@@ -134,7 +134,7 @@ function! NetRWCurrentFile()
 endfunction
 
 function! NetRWCurrentProject()
-    let pathname = ProjectRootGuess()()
+    let pathname = ProjectRootGuess()
     execute 'edit ' . pathname
 endfunction
 

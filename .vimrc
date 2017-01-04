@@ -35,7 +35,15 @@ NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'mhinz/vim-startify'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
-NeoBundle 'Shougo/vimproc.vim'
+NeoBundle 'Shougo/vimproc.vim', {
+            \ 'build' : {
+            \     'windows' : 'tools\\update-dll-mingw',
+            \     'cygwin' : 'make -f make_cygwin.mak',
+            \     'mac' : 'make',
+            \     'linux' : 'make',
+            \     'unix' : 'gmake',
+            \    },
+            \ }
 
 " project management
 NeoBundle 'godlygeek/tabular'              " align text, even tables
