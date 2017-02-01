@@ -25,6 +25,9 @@ nnoremap <silent> <leader>ge :Gedit<cr>
 nnoremap <silent> <leader>gi :Git add %<cr>
 nnoremap <silent> <leader>gg :SignifyToggle<cr>
 
+" location list
+nnoremap <silent> <space>en :lnext<cr>
+
 " commenting
 nmap <space>cl :call ToggleComment()<cr>
 vmap <space>cl :call ToggleComment()<cr>

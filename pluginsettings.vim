@@ -21,20 +21,8 @@ let g:UltiSnipsSnippetDirectories = [
     \ 'UltiSnips.Local'
     \ ]
 
-" syntasic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_check_on_open = 1 " check on open and on write
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_wq = 0
-let g:syntastic_javascript_checkers = ['jshint']
-let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_loc_list_height = 7
-let g:syntastic_python_checker_args = "--ignore=E501,W601,D100"
+" ListToggle
 let g:lt_location_list_toggle_map = '<space>el'
-let g:syntastic_mode_map = {'mode': 'active'}
 
 " rope
 let g:ropevim_guess_project = 1

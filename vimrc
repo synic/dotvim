@@ -52,6 +52,7 @@ NeoBundle 'dbakker/vim-projectroot'
 
 " window management
 NeoBundle 'zhaocai/GoldenView.Vim'
+NeoBundle 'vim-scripts/tinykeymap'
 
 " file management
 NeoBundle 'dkprice/vim-easygrep'
@@ -61,7 +62,7 @@ NeoBundle 'pangloss/vim-javascript'        " javascript utils
 NeoBundle 'SirVer/ultisnips'               " textmate style snippets
 NeoBundle 'honza/vim-snippets'             " the actual snippest themselves
 NeoBundle 'tpope/vim-surround'             " add, change, delete surround text
-NeoBundle 'scrooloose/syntastic'           " syntax checking
+NeoBundle 'w0rp/ale'
 NeoBundle 'Valloric/ListToggle'
 NeoBundle 'jmcantrell/vim-virtualenv'      " virtualenv
 NeoBundle 'ntpeters/vim-better-whitespace' " removes spurious whitespace
@@ -69,12 +70,12 @@ NeoBundle 'tpope/vim-commentary'
 
 " syntax files
 NeoBundle 'plasticboy/vim-markdown'        " markdown syntax highlighting
-NeoBundle 'gorodinskiy/vim-coloresque'     " highlight color codes in CSS
 
 " undo
 NeoBundle 'sjl/gundo.vim'                  " undo tree
 
 " git
+NeoBundle 'jreybert/vimagit'
 NeoBundle 'mattn/webapi-vim'               " required for gist-vim
 NeoBundle 'mattn/gist-vim'                 " post gists to gist.github.com
 NeoBundle 'tpope/vim-fugitive'             " git utils
@@ -87,6 +88,9 @@ NeoBundle 'vim-scripts/quit-another-window'
 " colorschemes
 NeoBundle 'synic/jellybeans.vim'
 NeoBundle 'synic/synic.vim'
+
+" misc
+NeoBundle 'Valloric/ListToggle'
 
 call neobundle#end()
 
@@ -151,7 +155,7 @@ syntax enable
 
 " try to enable jellybeans theme, but if that fails, choose `ron`
 try
-    colorscheme jellybeans
+    colorscheme synic
 catch /^Vim\%((\a\+)\)\=:E185/
     colorscheme ron
 endtry
