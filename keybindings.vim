@@ -2,15 +2,24 @@
 imap fd <Esc>
 vmap fd <Esc>
 
-" Misc
+" misc
 map yig :call SelectBuffer()<cr>
 map vig ggVG
 
-" Change the leader key to spacebar
+" change the leader key to spacebar
 let mapleader = '\<space>'
 
-" set up hlsearch toggling with F4 as the hotkey
-noremap <F4> :set hlsearch! hlsearch?<cr>
+" search
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+
+map n  <Plug>(incsearch-nohl-n)
+map N  <Plug>(incsearch-nohl-N)
+map *  <Plug>(incsearch-nohl-*)
+map #  <Plug>(incsearch-nohl-#)
+map g* <Plug>(incsearch-nohl-g*)
+map g# <Plug>(incsearch-nohl-g#)
 
 " fugitive
 nnoremap <silent> <leader>gs :Gstatus<cr>
@@ -27,6 +36,7 @@ nnoremap <silent> <leader>gg :SignifyToggle<cr>
 
 " location list
 nnoremap <silent> <space>en :lnext<cr>
+nnoremap <silent> <space>ep :lprev<cr>
 
 " commenting
 nmap <space>cl :call ToggleComment()<cr>
@@ -58,8 +68,26 @@ nmap <silent> <space>w7 :execute ':7wincmd w'<cr>
 nmap <silent> <space>w8 :execute ':8wincmd w'<cr>
 nmap <silent> <space>w9 :execute ':9wincmd w'<cr>
 
-" syntastic
-nnoremap <space>ss :SyntasticCheck<cr>
+" buffers
+nnoremap <silent> <space>bb :CtrlPBuffer<cr>
+
+" tabs
+nnoremap <silent> <space>ll :$tabnew<cr>:Startify<cr>
+nnoremap <silent> <space>ln :tabnext<cr>
+nnoremap <silent> <space>lp :tabprev<cr>
+nnoremap <silent> <space>lc :tabclose<cr>
+nnoremap <silent> <space>l1 1gt
+nnoremap <silent> <space>l2 2gt
+nnoremap <silent> <space>l3 3gt
+nnoremap <silent> <space>l4 4gt
+nnoremap <silent> <space>l5 5gt
+nnoremap <silent> <space>l6 6gt
+nnoremap <silent> <space>l7 7gt
+nnoremap <silent> <space>l8 8gt
+nnoremap <silent> <space>l9 9gt
+
+" ycm
+nnoremap <silent>gd :YcmCompleter GoToDeclaration<cr>
 
 " git
 map <space>gr :Gist<cr>
@@ -92,8 +120,12 @@ map <space>ls :call SessionSavePrompt()<cr>
 map <space>ld :call SessionDeletePrompt()<cr>
 
 " join lines while removing extra spaces
-nnoremap J :call JoinSpaceless()<cr>
+nnoremap <silent> J :call JoinSpaceless()<cr>
 
 " toggle relative line numbering
-nmap <space>tr :call NumberToggle()<cr>
+nmap <silent> <space>tr :call NumberToggle()<cr>
 
+" toggle nerdtree
+nmap <silent> <space>pn :call NERDTreeCurrentProject()<cr>
+nmap <silent> <space>pc :call NERDTreeCurrentFile()<cr>
+nmap <silent> <space>pd :NERDTreeClose<cr>

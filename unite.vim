@@ -35,17 +35,21 @@ let g:unite_source_history_yank_enable = 1
 let g:unite_enable_start_insert = 1
 let g:unite_enable_auto_select = 1
 let g:unite_split_rule = 'bot'
-call unite#filters#matcher_default#use(['matcher_fuzzy', 'matcher_hide_hidden_files'])
-call unite#custom#source('buffer', 'matchers', ['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_rank'])
 let g:unite_source_rec_async_command = ['ag', '-l', '-g', '', '--nocolor', '--python']
-autocmd FileType unite call s:UniteSettings()
-call unite#sources#rec#define()
-call unite#custom#source('file_rec/async,file_mru,file,buffer,grep', 'ignore_pattern', 'node_modules')
 let g:unite_source_alias_aliases = {
     \ 'files': 'file_rec/async',
     \ 'buffers': 'buffer',
     \ 'mru': 'file_mru',
     \ }
 
-map <space>bb :Unite -toggle -buffer-name=search buffers<cr>
+if exists(':Unite')
+    autocmd FileType unite call s:UniteSettings()
+    call unite#filters#matcher_default#use(['matcher_fuzzy', 'matcher_hide_hidden_files'])
+    call unite#custom#source('buffer', 'matchers', ['matcher_fuzzy'])
+    call unite#filters#sorter_default#use(['sorter_rank'])
+
+    call unite#sources#rec#define()
+    call unite#custom#source('file_rec/async,file_mru,file,buffer,grep', 'ignore_pattern', 'node_modules')
+    map <space>bb :Unite -toggle -buffer-name=search buffers<cr>
+endif
+

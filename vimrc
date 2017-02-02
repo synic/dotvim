@@ -1,12 +1,21 @@
-" Note: skip init for vim-tiny or vim-small
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                           __     _____ __  __                              "
+"                           \ \   / /_ _|  \/  |                             "
+"                            \ \ / / | || |\/| |                             "
+"                             \ V /  | || |  | |                             "
+"                              \_/  |___|_|  |_|                             "
+"                                                                            "
+"                 Adam Olsen's (aka synic) vim configuration.                "
+"                                                                            "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""   Note: skip init for vim-tiny or vim-small
 if 0 | endif
 
 if has('vim_starting')
     if &compatible
         set nocompatible " disable vi settings
     endif
-
-    set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
 
 " set the correct python path for homebrew if we're on OS X
@@ -18,86 +27,103 @@ if has("unix")
     endif
 endif
 
-" plugin list
-call neobundle#begin(expand('~/.vim/bundle/'))
+" install vim-plug if it's not already installed
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC | Startify | Ql
+endif
 
-NeoBundleFetch 'Shougo/neobundle.vim'
+" plugin list
+call plug#begin('~/.vim/plugged')
 
 " python specific plugins
-NeoBundle 'hynek/vim-python-pep8-indent'    " for auto indenting pep8 style
-NeoBundle 'python-rope/ropevim'             " refactoring, finding occurrences
-NeoBundle 'michaeljsmith/vim-indent-object' " for selecting indent objects
-NeoBundle 'davidhalter/jedi-vim'            " for code completion
+Plug 'hynek/vim-python-pep8-indent'    " for auto indenting pep8 style
+Plug 'python-rope/ropevim'             " refactoring, finding occurrences
+Plug 'michaeljsmith/vim-indent-object' " for selecting indent objects
 
-" misc plugins
-NeoBundle 'vim-scripts/openssl.vim'
-NeoBundle 'tpope/vim-unimpaired'
-NeoBundle 'mhinz/vim-startify'
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/neomru.vim'
-NeoBundle 'Shougo/vimproc.vim', {
-            \ 'build' : {
-            \     'windows' : 'tools\\update-dll-mingw',
-            \     'cygwin' : 'make -f make_cygwin.mak',
-            \     'mac' : 'make',
-            \     'linux' : 'make',
-            \     'unix' : 'gmake',
-            \    },
-            \ }
+" home screen
+Plug 'mhinz/vim-startify'
 
 " project management
-NeoBundle 'godlygeek/tabular'              " align text, even tables
-NeoBundle 'kien/ctrlp.vim'
-NeoBundle 'dbakker/vim-projectroot'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'dbakker/vim-projectroot'
+Plug 'Shougo/unite.vim'
+Plug 'Shougo/neomru.vim'
+Plug 'Shougo/vimproc.vim', {'do': 'make'}
+Plug 'scrooloose/nerdtree'
+
+" text management
+Plug 'godlygeek/tabular'               " align text, even tables
 
 " window management
-NeoBundle 'zhaocai/GoldenView.Vim'
-NeoBundle 'vim-scripts/tinykeymap'
+Plug 'zhaocai/GoldenView.Vim'
+Plug 'vim-scripts/tinykeymap'
 
 " file management
-NeoBundle 'dkprice/vim-easygrep'
+Plug 'dkprice/vim-easygrep'
 
 " coding
-NeoBundle 'pangloss/vim-javascript'        " javascript utils
-NeoBundle 'SirVer/ultisnips'               " textmate style snippets
-NeoBundle 'honza/vim-snippets'             " the actual snippest themselves
-NeoBundle 'tpope/vim-surround'             " add, change, delete surround text
-NeoBundle 'w0rp/ale'
-NeoBundle 'Valloric/ListToggle'
-NeoBundle 'jmcantrell/vim-virtualenv'      " virtualenv
-NeoBundle 'ntpeters/vim-better-whitespace' " removes spurious whitespace
-NeoBundle 'tpope/vim-commentary'
+Plug 'pangloss/vim-javascript'         " javascript utils
+Plug 'SirVer/ultisnips'                " textmate style snippets
+Plug 'honza/vim-snippets'              " the actual snippest themselves
+Plug 'tpope/vim-surround'              " add, change, delete surround text
+Plug 'w0rp/ale'
+Plug 'Valloric/ListToggle'
+Plug 'jmcantrell/vim-virtualenv'       " virtualenv
+Plug 'ntpeters/vim-better-whitespace'  " removes spurious whitespace
+Plug 'tpope/vim-commentary'
+Plug 'szw/vim-tags'
+Plug 'davidhalter/jedi-vim'            " for code completion
+
+function! BuildYCM(info)
+  " info is a dictionary with 3 fields
+  " - name:   name of the plugin
+  " - status: 'installed', 'updated', or 'unchanged'
+  " - force:  set on PlugInstall! or PlugUpdate!
+  if a:info.status == 'installed' || a:info.force
+    !./install.py
+  endif
+endfunction
+
+Plug 'Valloric/YouCompleteMe', {'do': function('BuildYCM')}
+
+" search
+Plug 'haya14busa/incsearch.vim'
 
 " syntax files
-NeoBundle 'plasticboy/vim-markdown'        " markdown syntax highlighting
+Plug 'plasticboy/vim-markdown'         " markdown syntax highlighting
 
 " undo
-NeoBundle 'sjl/gundo.vim'                  " undo tree
+Plug 'sjl/gundo.vim'                   " undo tree
 
 " git
-NeoBundle 'jreybert/vimagit'
-NeoBundle 'mattn/webapi-vim'               " required for gist-vim
-NeoBundle 'mattn/gist-vim'                 " post gists to gist.github.com
-NeoBundle 'tpope/vim-fugitive'             " git utils
-NeoBundle 'airblade/vim-gitgutter'
+Plug 'jreybert/vimagit'
+Plug 'mattn/webapi-vim'                " required for gist-vim
+Plug 'mattn/gist-vim'                  " post gists to gist.github.com
+Plug 'tpope/vim-fugitive'              " git utils
+Plug 'airblade/vim-gitgutter'
 
 " movement
-NeoBundle 'Lokaltog/vim-easymotion'        " much quicker movement
-NeoBundle 'vim-scripts/quit-another-window'
+Plug 'Lokaltog/vim-easymotion'         " much quicker movement
+Plug 'vim-scripts/quit-another-window'
 
 " colorschemes
-NeoBundle 'synic/jellybeans.vim'
-NeoBundle 'synic/synic.vim'
+Plug 'synic/jellybeans.vim'
+Plug 'jnurmine/Zenburn'
+Plug 'morhetz/gruvbox'
+Plug 'synic/synic.vim'
 
 " misc
-NeoBundle 'Valloric/ListToggle'
+Plug 'vim-scripts/openssl.vim'
+Plug 'tpope/vim-unimpaired'
+Plug 'Valloric/ListToggle'
+Plug 'kshenoy/vim-signature'
 
-call neobundle#end()
+call plug#end()
 
 filetype plugin on
 filetype plugin indent on
-
-NeoBundleCheck          " see if we need to install plugins
 
 set bs=2                " allow backspacing over everything in insert mode
 set cindent
@@ -108,13 +134,13 @@ set history=50          " keep 50 lines of command line history
 set ruler               " show the cursor position all the time
 set nowrap              " make sure that long lines don't wrap
 set laststatus=2        " Make sure the status line is always displayed
-set spell               " turn on spellcheck
 set splitright
 set splitbelow
 set visualbell
 set incsearch
 set wildmenu
 set wildmode=longest:full,full
+set hlsearch
 
 " display bufnr:filetype (dos,unix,mac) in status line
 set statusline=%<%n:%f%h%m%r%=\ %{&ff}\ %l,%c%V\ %P
@@ -147,15 +173,16 @@ set dir=~/.vim/swap
 set nobackup writebackup
 
 " automatically reload .vimrc and .gvimrc on save
-autocmd! bufwritepost .vimrc source %
-autocmd! bufwritepost .gvimrc source %
+autocmd! bufwritepost vimrc source %
+autocmd! bufwritepost gvimrc source %
 
 " switch syntax highlighting on
 syntax enable
 
 " try to enable jellybeans theme, but if that fails, choose `ron`
 try
-    colorscheme synic
+    colorscheme gruvbox
+    set background=dark
 catch /^Vim\%((\a\+)\)\=:E185/
     colorscheme ron
 endtry
@@ -167,6 +194,6 @@ else
     let $VIMHOME = $HOME . '/.vim'
 endif
 source $VIMHOME/pluginsettings.vim
-source $VIMHOME/unite.vim
 source $VIMHOME/functions.vim
 source $VIMHOME/keybindings.vim
+source $VIMHOME/unite.vim

@@ -7,28 +7,22 @@ endfunction
 
 function! GrepProject()
     let pathname = ProjectRootGuess()
-    " call inputsave()
-    " let keywords = input('Search: ')
-    " call inputrestore()
-    " if empty(keywords)
-        " return
-    " endif
     execute ':Unite -toggle -buffer-name=search grep:' . pathname
-    " execute ':GrepRoot ' . pathname
-    " execute ':Grep ' . keywords
 endfunction
 
 function! GrepProjectCurrentDir()
     let pathname = expand('%:p:h')
-    " call inputsave()
-    " let keywords = input('Search: ')
-    " call inputrestore()
-    " if empty(keywords)
-        " return
-    " endif
-    " execute ':GrepRoot ' . pathname
-    " execute ':Grep ' . keywords
     execute ':Unite -toggle -buffer-name=search grep:' . pathname
+endfunction
+
+function! NERDTreeCurrentProject()
+    let pathname = ProjectRootGuess()
+    execute ':NERDTree ' . pathname
+endfunction
+
+function! NERDTreeCurrentFile()
+    let pathname = expand('%:p:h')
+    execute ':NERDTree ' . pathname
 endfunction
 
 function! SearchAndReplaceInProject()
@@ -79,6 +73,17 @@ function! SessionDeletePrompt()
     execute ':SDelete ' . name
 endfunction
 
+function! NewTab()
+    call inputsave()
+    let name = input('Tab name: ')
+    if empty(name)
+        return
+    endif
+    call inputrestore()
+    execute ':$tabnew'
+    execute ':TabooRename ' . name
+endfunction
+
 function! ToggleComment()
     if mode() !~# "^[vV\<C-v>]"
         " not visual mode
@@ -110,7 +115,7 @@ function! TabLine()
         if file == ''
             let file = 'x'
         endif
-        let s .= i . ':' . file
+        let s .= (i + 1) . ':' . file
 
         let s .= ']'
 

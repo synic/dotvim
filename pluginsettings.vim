@@ -1,6 +1,9 @@
 " set setting variables
 let g:golden_ratio_enabled = 0
 
+" incsearch
+let g:incsearch#auto_nohlsearch = 1
+
 " setup custom tab lines with numbers and the close button
 set tabline=%!TabLine()
 
@@ -9,6 +12,9 @@ let g:gundo_width=35
 let g:gundo_right=1
 let g:gundo_preview_height=25
 nnoremap <F5> :GundoToggle<cr>
+
+" youcomplete
+let g:ycm_autoclose_preview_window_after_completion = 1
 
 " jedi settings
 let g:jedi#popup_on_dot = 0
@@ -21,8 +27,11 @@ let g:UltiSnipsSnippetDirectories = [
     \ 'UltiSnips.Local'
     \ ]
 
-" ListToggle
+" listtoggle
 let g:lt_location_list_toggle_map = '<space>el'
+
+" ale
+let g:ale_sign_column_always = 1
 
 " rope
 let g:ropevim_guess_project = 1
@@ -33,6 +42,7 @@ let g:gist_open_browser_after_post = 1
 let g:gist_clip_command = 'pbcopy' " for os X
 let g:gist_post_private = 1
 let g:magit_show_help = 0
+let g:gitgutter_sign_column_always = 1
 
 " easy motion
 let g:EasyMotion_smartcase = 1
@@ -60,8 +70,8 @@ let g:startify_custom_header = [
     \ '       \_/  |___|_|  |_|',
     \ ]
 let g:startify_bookmarks = [
-    \ {'eventboard.io': '~/Projects/eventboard.io'},
-    \ {'skedup': '~/Projects/skedup'},
+    \ {'eventboard.io': '/Users/synic/Projects/eventboard.io'},
+    \ {'skedup': '/Users/synic/Projects/skedup'},
     \ ]
 let g:startify_list_order = ['bookmarks', 'files', 'sessions']
 
@@ -72,7 +82,6 @@ if executable('ag')
     set grepprg=ag\ --vimgrep\ --ignore\ "*.sql"\ --ignore\ "*.dat"\ --ignore\ "*.png" --ignore-dir\ node_modules\ --ignore-dir\ globalstatic\ \$*
 endif
 
-
 " file management
 let g:netrw_liststyle = 1
 let g:netrw_banner = 0
@@ -82,4 +91,10 @@ let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+,\(^\|\s\s\)ntuser\.\S\+,__pycache_
 let g:goldenview__enable_at_startup = 0
 let g:goldenview__enable_default_mapping = 0
 
-
+" nerdtree
+" nerdtree
+let NERDTreeIgnore = ['__pycache__', '\.pyc$', '\.pyo$', '\.db$', '\.o$', '\.d$', '\.elf$', '\.map$']
+let NERDTreeShowBookmarks = 1
+let NERDTreeMinimalUI = 1
+let NERDTreeWinSize = 25
+let NERDTreeChDirMode = 2

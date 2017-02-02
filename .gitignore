@@ -1,12 +1,9 @@
 swap/
 .netrwhist
 
-# Vundle
-bundle/
-!bundle/Vundle.vim
-
 # vim-plug
 plugged/
+autoload/plug.vim
 
 # nvim spell
 spell/
