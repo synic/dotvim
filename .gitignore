@@ -11,3 +11,5 @@ spell/
 # session
 session/
 sessions/
+
+.DS_Store

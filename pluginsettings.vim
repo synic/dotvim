@@ -98,3 +98,4 @@ let NERDTreeShowBookmarks = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeWinSize = 25
 let NERDTreeChDirMode = 2
+let NERDTreeHijackNetrw = 0
