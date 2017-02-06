@@ -57,7 +57,7 @@ nmap <silent> <space>wJ :call WindowCommand(':Qj')<cr>
 nmap <silent> <space>wH :call WindowCommand(':Qh')<cr>
 nmap <silent> <space>wK :call WindowCommand(':Qk')<cr>
 nmap <silent> <space>wL :call WindowCommand(':Ql')<cr>
-nmap <silent> <space>fed :e ~/.vimrc<cr>
+nmap <silent> <space>fed :e ~/.vim/vimrc<cr>
 nmap <silent> <space>w1 :execute ':1wincmd w'<cr>
 nmap <silent> <space>w2 :execute ':2wincmd w'<cr>
 nmap <silent> <space>w3 :execute ':3wincmd w'<cr>
@@ -103,11 +103,6 @@ nmap <space><space> <plug>(easymotion-overwin-f)
 " startify
 nmap <space>bh :Startify<cr>
 
-" Searching, etc
-nmap <space>sp :call GrepProject()<cr>
-nmap <space>sd :call GrepProjectCurrentDir()<cr>
-nmap <space>sr :call SearchAndReplaceInProject()<cr>
-
 " file management
 map - :call NetRWCurrentFile()<cr>
 map _ :call NetRWCurrentProject()<cr>
@@ -129,3 +124,7 @@ nmap <silent> <space>tr :call NumberToggle()<cr>
 nmap <silent> <space>pn :call NERDTreeCurrentProject()<cr>
 nmap <silent> <space>pc :call NERDTreeCurrentFile()<cr>
 nmap <silent> <space>pd :NERDTreeClose<cr>
+
+" project searching
+nmap <silent> <space>* :CtrlSF<cr>
+nmap <silent> <space>sp :call SearchInProjectRoot()<cr>

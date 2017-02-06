@@ -48,9 +48,6 @@ Plug 'mhinz/vim-startify'
 " project management
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'dbakker/vim-projectroot'
-Plug 'Shougo/unite.vim'
-Plug 'Shougo/neomru.vim'
-Plug 'Shougo/vimproc.vim', {'do': 'make'}
 Plug 'scrooloose/nerdtree'
 
 " text management
@@ -60,16 +57,12 @@ Plug 'godlygeek/tabular'               " align text, even tables
 Plug 'zhaocai/GoldenView.Vim'
 Plug 'vim-scripts/tinykeymap'
 
-" file management
-Plug 'dkprice/vim-easygrep'
-
 " coding
 Plug 'pangloss/vim-javascript'         " javascript utils
 Plug 'SirVer/ultisnips'                " textmate style snippets
 Plug 'honza/vim-snippets'              " the actual snippest themselves
 Plug 'tpope/vim-surround'              " add, change, delete surround text
 Plug 'w0rp/ale'
-Plug 'Valloric/ListToggle'
 Plug 'jmcantrell/vim-virtualenv'       " virtualenv
 Plug 'ntpeters/vim-better-whitespace'  " removes spurious whitespace
 Plug 'tpope/vim-commentary'
@@ -90,6 +83,7 @@ Plug 'Valloric/YouCompleteMe', {'do': function('BuildYCM')}
 
 " search
 Plug 'haya14busa/incsearch.vim'
+Plug 'dyng/ctrlsf.vim'
 
 " syntax files
 Plug 'plasticboy/vim-markdown'         " markdown syntax highlighting
@@ -196,4 +190,3 @@ endif
 source $VIMHOME/pluginsettings.vim
 source $VIMHOME/functions.vim
 source $VIMHOME/keybindings.vim
-source $VIMHOME/unite.vim

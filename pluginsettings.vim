@@ -92,10 +92,12 @@ let g:goldenview__enable_at_startup = 0
 let g:goldenview__enable_default_mapping = 0
 
 " nerdtree
-" nerdtree
 let NERDTreeIgnore = ['__pycache__', '\.pyc$', '\.pyo$', '\.db$', '\.o$', '\.d$', '\.elf$', '\.map$']
 let NERDTreeShowBookmarks = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeWinSize = 25
 let NERDTreeChDirMode = 2
 let NERDTreeHijackNetrw = 0
+
+" ctrlsf
+let g:better_whitespace_filetypes_blacklist=['ctrlsf']

@@ -25,22 +25,11 @@ function! NERDTreeCurrentFile()
     execute ':NERDTree ' . pathname
 endfunction
 
-function! SearchAndReplaceInProject()
-    let pathname = ProjectRootGuess()
+function! SearchInProjectRoot()
     call inputsave()
-    let replace = input('Replace: ')
-    if empty(replace)
-        call inputrestore()
-        return
-    endif
-    let what = input('With: ')
+    let terms = input('Search: ')
     call inputrestore()
-
-    if empty(what)
-        return
-    endif
-    execute ':GrepRoot ' . pathname
-    execute ':Grep ' . keywords
+    execute ':CtrlSF "' . terms . '"'
 endfunction
 
 function! JoinSpaceless()
