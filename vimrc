@@ -54,7 +54,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'godlygeek/tabular'               " align text, even tables
 
 " window management
-Plug 'zhaocai/GoldenView.Vim'
+Plug 'roman/golden-ratio'
 Plug 'vim-scripts/tinykeymap'
 
 " coding
@@ -114,6 +114,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'Valloric/ListToggle'
 Plug 'kshenoy/vim-signature'
 Plug 'bling/vim-airline'
+Plug 'vim-scripts/Align'
 
 call plug#end()
 

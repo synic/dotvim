@@ -1,5 +1,6 @@
-" set setting variables
+" golden ratio
 let g:golden_ratio_enabled = 0
+let g:golden_ratio_autocommand = 0
 
 " incsearch
 let g:incsearch#auto_nohlsearch = 1
@@ -8,9 +9,9 @@ let g:incsearch#auto_nohlsearch = 1
 set tabline=%!TabLine()
 
 " gundo settings
-let g:gundo_width=35
-let g:gundo_right=1
-let g:gundo_preview_height=25
+let g:gundo_width = 35
+let g:gundo_right = 1
+let g:gundo_preview_height = 25
 
 " youcomplete
 let g:ycm_autoclose_preview_window_after_completion = 1
@@ -88,10 +89,6 @@ let g:netrw_liststyle = 1
 let g:netrw_banner = 0
 let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+,\(^\|\s\s\)ntuser\.\S\+,__pycache__,\.pyc'
 
-" golden ratio
-let g:goldenview__enable_at_startup = 0
-let g:goldenview__enable_default_mapping = 0
-
 " nerdtree
 let NERDTreeIgnore = ['__pycache__', '\.pyc$', '\.pyo$', '\.db$', '\.o$', '\.d$', '\.elf$', '\.map$']
 let NERDTreeShowBookmarks = 1
@@ -110,3 +107,5 @@ let g:airline#extensions#tabline#tab_nr_type = 1
 let g:airline#extensions#tabline#tab_min_count = 1
 let g:airline#extensions#tabline#show_splits = 0
 let g:airline#extensions#tabline#show_buffers = 0
+let g:airline#extensions#tabline#show_tab_type = 0
+

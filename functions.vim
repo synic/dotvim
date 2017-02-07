@@ -149,11 +149,14 @@ function! WindowCommand(cmd)
 endfunction
 
 function! ToggleGoldenRatio()
-    execute ':ToggleGoldenViewAutoResize'
+    execute ':GoldenRatioToggle'
     if g:golden_ratio_enabled == 0
         let g:golden_ratio_enabled = 1
+        echo 'Enabled golden ratio'
     else
         let g:golden_ratio_enabled = 0
+        echo 'Disabled golden ratio'
+        wincmd =
     endif
 endfunction
 
