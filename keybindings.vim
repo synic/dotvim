@@ -90,7 +90,8 @@ nnoremap <silent> <space>l9 9gt
 nnoremap <silent>gd :YcmCompleter GoToDeclaration<cr>
 
 " git
-map <space>gr :Gist<cr>
+map <space>gr :Gist --private<cr>
+map <space>gR :Gist --public<cr>
 map <space>gs :call magit#show_magit('h')<cr>
 nmap <space>gb :Gblame<cr>
 nmap <space>ga :Gadd<cr>
@@ -128,3 +129,6 @@ nmap <silent> <space>pd :NERDTreeClose<cr>
 " project searching
 nmap <silent> <space>* :CtrlSF<cr>
 nmap <silent> <space>sp :call SearchInProjectRoot()<cr>
+
+" gundo
+nmap <silent> <space>ag :GundoToggle<cr>

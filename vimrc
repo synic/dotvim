@@ -113,6 +113,7 @@ Plug 'vim-scripts/openssl.vim'
 Plug 'tpope/vim-unimpaired'
 Plug 'Valloric/ListToggle'
 Plug 'kshenoy/vim-signature'
+Plug 'bling/vim-airline'
 
 call plug#end()
 
