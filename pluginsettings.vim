@@ -38,7 +38,7 @@ let g:jedi#completions_command = '<C-n>'
 " ultisnips settings
 let g:UltiSnipsSnippetDirectories = [
     \ $HOME.'/.vim/bundle/vim-snippets/UltiSnips',
-    \ 'UltiSnips.Local'
+    \ 'ultisnippets'
     \ ]
 let g:UltiSnipsExpandTrigger = '<tab>'
 let g:UltiSnipsJumpForwardTrigger = '<tab>'
@@ -125,4 +125,3 @@ let g:airline#extensions#tabline#tab_min_count = 1
 let g:airline#extensions#tabline#show_splits = 0
 let g:airline#extensions#tabline#show_buffers = 0
 let g:airline#extensions#tabline#show_tab_type = 0
-

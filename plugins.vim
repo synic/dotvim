@@ -37,7 +37,6 @@ Plug 'szw/vim-tags'
 Plug 'davidhalter/jedi-vim'            " python autocomplete
 
 " editing
-Plug 'terryma/vim-multiple-cursors'
 Plug 'kshenoy/vim-signature'
 Plug 'vim-scripts/Align'
 Plug 'godlygeek/tabular'               " align text, even tables
