@@ -19,167 +19,42 @@ if has('vim_starting')
 endif
 
 " set the correct python path for homebrew if we're on OS X
-if has("unix")
-    let s:uname = system("echo -n \"$(uname)\"")
-    if s:uname == "Darwin"
+if has('unix')
+    let s:uname = system('echo -n "$(uname)"')
+    if s:uname == 'Darwin'
         python import sys
         python sys.path.insert(0, '/usr/local/lib/python2.7/site-packages')
     endif
 endif
 
-" install vim-plug if it's not already installed
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC | Startify | Ql
-endif
-
-" plugin list
-call plug#begin('~/.vim/plugged')
-
-" python specific plugins
-Plug 'hynek/vim-python-pep8-indent'    " for auto indenting pep8 style
-Plug 'python-rope/ropevim'             " refactoring, finding occurrences
-Plug 'michaeljsmith/vim-indent-object' " for selecting indent objects
-
-" home screen
-Plug 'mhinz/vim-startify'
-
-" project management
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'dbakker/vim-projectroot'
-Plug 'scrooloose/nerdtree'
-
-" text management
-Plug 'godlygeek/tabular'               " align text, even tables
-
-" window management
-Plug 'roman/golden-ratio'
-Plug 'vim-scripts/tinykeymap'
-
-" coding
-Plug 'pangloss/vim-javascript'         " javascript utils
-Plug 'SirVer/ultisnips'                " textmate style snippets
-Plug 'honza/vim-snippets'              " the actual snippest themselves
-Plug 'tpope/vim-surround'              " add, change, delete surround text
-Plug 'w0rp/ale'
-Plug 'jmcantrell/vim-virtualenv'       " virtualenv
-Plug 'ntpeters/vim-better-whitespace'  " removes spurious whitespace
-Plug 'tpope/vim-commentary'
-Plug 'szw/vim-tags'
-Plug 'davidhalter/jedi-vim'            " python autocomplete
-
-" search
-Plug 'haya14busa/incsearch.vim'
-Plug 'dyng/ctrlsf.vim'
-
-" syntax files
-Plug 'plasticboy/vim-markdown'         " markdown syntax highlighting
-
-" undo
-Plug 'sjl/gundo.vim'                   " undo tree
-
-" git
-Plug 'jreybert/vimagit'
-Plug 'mattn/webapi-vim'                " required for gist-vim
-Plug 'mattn/gist-vim'                  " post gists to gist.github.com
-Plug 'tpope/vim-fugitive'              " git utils
-Plug 'airblade/vim-gitgutter'
-
-" movement
-Plug 'Lokaltog/vim-easymotion'         " much quicker movement
-Plug 'vim-scripts/quit-another-window'
-
-" colorschemes
-Plug 'synic/jellybeans.vim'
-Plug 'jnurmine/Zenburn'
-Plug 'morhetz/gruvbox'
-Plug 'synic/synic.vim'
-
-" misc
-Plug 'vim-scripts/openssl.vim'
-Plug 'tpope/vim-unimpaired'
-Plug 'Valloric/ListToggle'
-Plug 'kshenoy/vim-signature'
-Plug 'bling/vim-airline'
-Plug 'vim-scripts/Align'
-
-call plug#end()
-
-filetype plugin on
-filetype plugin indent on
-
-set bs=2                " allow backspacing over everything in insert mode
-set cindent
-set si
-set nobackup            " don't keep a backup file
-set viminfo='20,\"50    " read/write a .viminfo file
-set history=50          " keep 50 lines of command line history
-set ruler               " show the cursor position all the time
-set nowrap              " make sure that long lines don't wrap
-set laststatus=2        " Make sure the status line is always displayed
-set splitright
-set splitbelow
-set visualbell
-set incsearch
-set wildmenu
-set wildmode=longest:full,full
-set hlsearch
-
-" display bufnr:filetype (dos,unix,mac) in status line
-set statusline=%<%n:%f%h%m%r%=\ %{&ff}\ %l,%c%V\ %P
-
-" turn on mouse support
-set mousehide
-set nomousefocus
-set mousemodel=extend
-set mouse=a
-
-" show paren matches for 5 tenths of a second
-set showmatch
-set matchtime=5
-
-" setup tabs for 4 spaces
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
-set shiftround
-set expandtab
-set noautoindent
-
-" setup auto wrapping
-set textwidth=78
-set hidden
-set colorcolumn=80
-set number
-set noequalalways
-set dir=~/.vim/swap
-set nobackup writebackup
-
-" disable completion preview
-set completeopt-=preview
-
-" automatically reload .vimrc and .gvimrc on save
-autocmd! bufwritepost vimrc source %
-autocmd! bufwritepost gvimrc source %
-
-" switch syntax highlighting on
-syntax enable
-
-" try to enable jellybeans theme, but if that fails, choose `ron`
-try
-    colorscheme gruvbox
-    set background=dark
-catch /^Vim\%((\a\+)\)\=:E185/
-    colorscheme ron
-endtry
-
-" load extra scripts
+" set VIM home diretory depending on the platform
 if has('win32') || has ('win64')
     let $VIMHOME = $VIM . '/vimfiles'
 else
     let $VIMHOME = $HOME . '/.vim'
 endif
-source $VIMHOME/pluginsettings.vim
-source $VIMHOME/functions.vim
-source $VIMHOME/keybindings.vim
+
+" plugins.vim         - list of plugins to install/use
+" vimsettings.vim     - vim specific (non-plugin) settings
+" pluginsettings.vim  - plugin specific settings
+" functions.vim       - user-defined functions
+" keybindings.vim     - keybindings
+let scripts = [
+            \ 'plugins.vim',
+            \ 'vimsettings.vim',
+            \ 'pluginsettings.vim',
+            \ 'functions.vim',
+            \ 'keybindings.vim',
+            \]
+
+for script in scripts
+    " read the script now
+    exec ':source $VIMHOME/' . script
+    " read the script on save
+    exec ':autocmd! bufwritepost ' . script . ' source %'
+endfor
+
+" automatically reload vimrc and gvimrc on save
+autocmd! bufwritepost vimrc source %
+autocmd! bufwritepost gvimrc source %
+

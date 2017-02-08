@@ -1,3 +1,10 @@
+" install vim-plug if it's not already installed
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC | Startify | Ql
+endif
+
 " golden ratio
 let g:golden_ratio_enabled = 0
 let g:golden_ratio_autocommand = 0
