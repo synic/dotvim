@@ -125,3 +125,6 @@ nmap <silent> <space>sp :call SearchInProjectRoot()<cr>
 
 " gundo
 nmap <silent> <space>ag :GundoToggle<cr>
+
+" auto-reload this file when saving
+autocmd! bufwritepost keybindings.vim source %

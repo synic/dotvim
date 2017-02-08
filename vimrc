@@ -9,8 +9,68 @@
 "                                                                            "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-""   Note: skip init for vim-tiny or vim-small
+" skip init for vim-tiny or vim-small
 if 0 | endif
+
+" load plugins
+source ~/.vim/plugins.vim
+
+" VIM Specific settings
+filetype plugin on
+filetype plugin indent on
+
+set bs=2                " allow backspacing over everything in insert mode
+set cindent
+set si
+set nobackup            " don't keep a backup file
+set viminfo='20,\"50    " read/write a .viminfo file
+set history=50          " keep 50 lines of command line history
+set ruler               " show the cursor position all the time
+set nowrap              " make sure that long lines don't wrap
+set laststatus=2        " Make sure the status line is always displayed
+set splitright
+set splitbelow
+set visualbell          " use a visual bell instead of beeping
+set incsearch           " use incremental search
+set wildmenu
+set wildmode=longest:full,full
+set hlsearch            " keep search results highlighted
+
+" display bufnr:filetype (dos,unix,mac) in status line
+set statusline=%<%n:%f%h%m%r%=\ %{&ff}\ %l,%c%V\ %P
+
+" turn on mouse support
+set mousehide
+set nomousefocus
+set mousemodel=extend
+set mouse=a
+
+" show paren matches for 5 tenths of a second
+set showmatch
+set matchtime=5
+
+" setup tabs for 4 spaces
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set shiftround
+set expandtab
+set noautoindent
+
+" setup auto wrapping
+set textwidth=78
+set hidden
+set colorcolumn=80
+set number
+set noequalalways
+set dir=~/.vim/swap
+set nobackup writebackup
+
+" disable completion preview
+set completeopt-=preview
+
+" switch syntax highlighting on
+syntax enable
 
 if has('vim_starting')
     if &compatible
@@ -18,43 +78,19 @@ if has('vim_starting')
     endif
 endif
 
-" set the correct python path for homebrew if we're on OS X
-if has('unix')
-    let s:uname = system('echo -n "$(uname)"')
-    if s:uname == 'Darwin'
-        python import sys
-        python sys.path.insert(0, '/usr/local/lib/python2.7/site-packages')
-    endif
-endif
-
-" set VIM home diretory depending on the platform
-if has('win32') || has ('win64')
-    let $VIMHOME = $VIM . '/vimfiles'
-else
-    let $VIMHOME = $HOME . '/.vim'
-endif
-
-" plugins.vim         - list of plugins to install/use
-" vimsettings.vim     - vim specific (non-plugin) settings
-" pluginsettings.vim  - plugin specific settings
-" functions.vim       - user-defined functions
-" keybindings.vim     - keybindings
-let scripts = [
-            \ 'plugins.vim',
-            \ 'vimsettings.vim',
-            \ 'pluginsettings.vim',
-            \ 'functions.vim',
-            \ 'keybindings.vim',
-            \]
-
-for script in scripts
-    " read the script now
-    exec ':source $VIMHOME/' . script
-    " read the script on save
-    exec ':autocmd! bufwritepost ' . script . ' source %'
-endfor
+" try to enable jellybeans theme, but if that fails, choose `ron`
+try
+    colorscheme gruvbox
+    set background=dark
+catch /^Vim\%((\a\+)\)\=:E185/
+    colorscheme ron
+endtry
 
 " automatically reload vimrc and gvimrc on save
 autocmd! bufwritepost vimrc source %
 autocmd! bufwritepost gvimrc source %
 
+" load scripts
+source ~/.vim/pluginsettings.vim      " plugin specific settings
+source ~/.vim/functions.vim           " user-defined functions
+source ~/.vim/keybindings.vim         " custom keybindings

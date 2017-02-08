@@ -170,3 +170,6 @@ endfunction
 
 command! DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
     \ | wincmd p | diffthis
+
+" auto-reload this file when saving
+autocmd! bufwritepost functions.vim source %

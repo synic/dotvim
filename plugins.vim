@@ -77,3 +77,6 @@ Plug 'vim-scripts/openssl.vim'
 Plug 'Valloric/ListToggle'
 
 call plug#end()
+
+" auto-reload this file when saving
+autocmd! bufwritepost plugins.vim source %
