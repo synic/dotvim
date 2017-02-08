@@ -103,7 +103,6 @@ Plug 'Valloric/ListToggle'
 Plug 'kshenoy/vim-signature'
 Plug 'bling/vim-airline'
 Plug 'vim-scripts/Align'
-Plug 'ervandew/supertab'
 
 call plug#end()
 
