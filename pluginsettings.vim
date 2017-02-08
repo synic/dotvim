@@ -6,7 +6,7 @@ let g:golden_ratio_autocommand = 0
 let g:incsearch#auto_nohlsearch = 1
 
 " setup custom tab lines with numbers and the close button
-set tabline=%!TabLine()
+" set tabline=%!TabLine()
 
 " gundo settings
 let g:gundo_width = 35
@@ -15,17 +15,26 @@ let g:gundo_preview_height = 25
 
 " youcomplete
 let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
+
+" supertab
+let g:SuperTabDefaultCompletionType = '<C-j>'
 
 " jedi settings
 let g:jedi#popup_on_dot = 0
 let g:jedi#show_call_signatures = 1
 let g:jedi#smart_auto_mappings = 0
+let g:jedi#goto_definitions_command = 'gd'
 
 " ultisnips settings
 let g:UltiSnipsSnippetDirectories = [
     \ $HOME.'/.vim/bundle/vim-snippets/UltiSnips',
     \ 'UltiSnips.Local'
     \ ]
+let g:UltiSnipsExpandTrigger = '<tab>'
+let g:UltiSnipsJumpForwardTrigger = '<tab>'
+let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 
 " listtoggle
 let g:lt_location_list_toggle_map = '<space>el'

@@ -32,7 +32,6 @@ nnoremap <silent> <leader>gr :Gread<cr>
 nnoremap <silent> <leader>gw :Gwrite<cr>
 nnoremap <silent> <leader>ge :Gedit<cr>
 nnoremap <silent> <leader>gi :Git add %<cr>
-nnoremap <silent> <leader>gg :SignifyToggle<cr>
 
 " location list
 nnoremap <silent> <space>en :lnext<cr>
@@ -86,16 +85,10 @@ nnoremap <silent> <space>l7 7gt
 nnoremap <silent> <space>l8 8gt
 nnoremap <silent> <space>l9 9gt
 
-" ycm
-nnoremap <silent>gd :YcmCompleter GoToDeclaration<cr>
-
 " git
 map <space>gr :Gist --private<cr>
 map <space>gR :Gist --public<cr>
 map <space>gs :call magit#show_magit('h')<cr>
-nmap <space>gb :Gblame<cr>
-nmap <space>ga :Gadd<cr>
-nmap <space>gl :Glog<cr>
 
 " easymotion
 map <space><space> <plug>(easymotion-bd-f)

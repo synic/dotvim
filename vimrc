@@ -67,19 +67,7 @@ Plug 'jmcantrell/vim-virtualenv'       " virtualenv
 Plug 'ntpeters/vim-better-whitespace'  " removes spurious whitespace
 Plug 'tpope/vim-commentary'
 Plug 'szw/vim-tags'
-Plug 'davidhalter/jedi-vim'            " for code completion
-
-function! BuildYCM(info)
-  " info is a dictionary with 3 fields
-  " - name:   name of the plugin
-  " - status: 'installed', 'updated', or 'unchanged'
-  " - force:  set on PlugInstall! or PlugUpdate!
-  if a:info.status == 'installed' || a:info.force
-    !./install.py
-  endif
-endfunction
-
-Plug 'Valloric/YouCompleteMe', {'do': function('BuildYCM')}
+Plug 'davidhalter/jedi-vim'            " python autocomplete
 
 " search
 Plug 'haya14busa/incsearch.vim'
@@ -115,6 +103,7 @@ Plug 'Valloric/ListToggle'
 Plug 'kshenoy/vim-signature'
 Plug 'bling/vim-airline'
 Plug 'vim-scripts/Align'
+Plug 'ervandew/supertab'
 
 call plug#end()
 
@@ -167,6 +156,9 @@ set number
 set noequalalways
 set dir=~/.vim/swap
 set nobackup writebackup
+
+" disable completion preview
+set completeopt-=preview
 
 " automatically reload .vimrc and .gvimrc on save
 autocmd! bufwritepost vimrc source %
