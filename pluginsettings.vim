@@ -79,6 +79,8 @@ let g:ctrlp_map = '<space>ph'
 let g:ctrlp_command = 'CtrlPMixed'
 let g:ctrlp_max_files = 80000
 let g:ctrlp_match_window = 'bottom,order:ttb,min:10,max:10,results:10'
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+let g:ctrlp_use_caching = 0
 
 " startify
 let g:startify_custom_header = [
@@ -98,8 +100,9 @@ else
 endif
 
 let g:startify_list_order = ['bookmarks', 'files', 'sessions']
-let g:startify_change_to_vcs_root = 1
-let g:startify_fortune_use_unicode = 1
+let g:startify_change_to_dir = 1
+let g:startify_fortune_use_unicode = 0
+let g:startify_enable_special = 0
 
 " file management
 let g:netrw_liststyle = 1
