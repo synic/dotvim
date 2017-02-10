@@ -108,9 +108,6 @@ map <space>tg :call ToggleGoldenRatio()<cr>
 map <space>ls :call SessionSavePrompt()<cr>
 map <space>ld :call SessionDeletePrompt()<cr>
 
-" join lines while removing extra spaces
-nnoremap <silent> J :call JoinSpaceless()<cr>
-
 " toggle relative line numbering
 nmap <silent> <space>tr :call NumberToggle()<cr>
 
@@ -125,6 +122,10 @@ nmap <silent> <space>sp :call SearchInProjectRoot()<cr>
 
 " gundo
 nmap <silent> <space>ag :GundoToggle<cr>
+
+" toggles
+nmap <silent> <space>th :set nohlsearch!<cr>
+nmap <silent> ,, :noh<cr>
 
 " auto-reload this file when saving
 autocmd! bufwritepost keybindings.vim source %

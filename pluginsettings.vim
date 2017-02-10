@@ -84,10 +84,10 @@ let g:ctrlp_match_window = 'bottom,order:ttb,min:10,max:10,results:10'
 
 if executable('ag')
     let g:ctrlp_working_path_mode = 'ra'
-    let g:ctrlp_use_caching = 0
-    let g:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
+    let g:ctrlp_use_caching = 1
 
     let g:ctrlp_grep_ignore = '\(\.rst\|\.jpg\|\.png\|node_modules\)$'
+    let g:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
 
     let g:ctrlp_user_command = {
             \ 'types': {

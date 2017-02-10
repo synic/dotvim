@@ -32,16 +32,6 @@ function! SearchInProjectRoot()
     execute ':CtrlSF "' . terms . '"'
 endfunction
 
-function! JoinSpaceless()
-    execute 'normal gJ'
-
-    " Character under cursor is whitespace?
-    if matchstr(getline('.'), '\%' . col('.') . 'c.') =~ '\s'
-        " When remove it!
-        execute 'normal dw'
-    endif
-endfunction
-
 function! SessionSavePrompt()
     call inputsave()
     let name = input('Session name: ')
@@ -170,6 +160,12 @@ endfunction
 
 command! DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
     \ | wincmd p | diffthis
+
+function! TrimEndLines()
+    let save_cursor = getpos('.')
+    :silent! %s#\($\n\s*\)\+\%$##
+    call setpos('.', save_cursor)
+endfunction
 
 " auto-reload this file when saving
 autocmd! bufwritepost functions.vim source %
