@@ -2,7 +2,7 @@ swap/
 .netrwhist
 
 # vim-plug
-plugged/
+plugins/
 autoload/plug.vim
 
 # nvim spell

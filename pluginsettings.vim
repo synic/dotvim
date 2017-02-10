@@ -48,6 +48,8 @@ let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 let g:lt_location_list_toggle_map = '<space>el'
 
 " ale
+let g:ale_python_flake8_executable = 'python3'
+let g:ale_python_flake8_args = '-m flake8'
 let g:ale_sign_column_always = 1
 
 " rope
@@ -79,8 +81,22 @@ let g:ctrlp_map = '<space>ph'
 let g:ctrlp_command = 'CtrlPMixed'
 let g:ctrlp_max_files = 80000
 let g:ctrlp_match_window = 'bottom,order:ttb,min:10,max:10,results:10'
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-let g:ctrlp_use_caching = 0
+
+if executable('ag')
+    let g:ctrlp_working_path_mode = 'ra'
+    let g:ctrlp_use_caching = 0
+    let g:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
+
+    let g:ctrlp_grep_ignore = '\(\.rst\|\.jpg\|\.png\|node_modules\)$'
+
+    let g:ctrlp_user_command = {
+            \ 'types': {
+                \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others | grep -v "' . g:ctrlp_grep_ignore . '"'],
+                \ 2: ['.hg', 'hg --cwd %s locate -I . | grep -v "' . g:ctrlp_grep_ignore . '"'],
+            \ },
+            \ 'fallback': g:ctrlp_fallback
+        \ }
+endif
 
 " startify
 let g:startify_custom_header = [

@@ -6,7 +6,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 " plugin list
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.vim/plugins')
 
 " python specific plugins
 Plug 'hynek/vim-python-pep8-indent'    " for auto indenting pep8 style
