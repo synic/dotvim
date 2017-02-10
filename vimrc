@@ -66,6 +66,10 @@ set noequalalways
 set dir=~/.vim/swap
 set nobackup writebackup
 
+" enable project specific vim settings
+set exrc
+set secure
+
 " disable completion preview
 set completeopt-=preview
 

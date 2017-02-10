@@ -48,8 +48,6 @@ let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 let g:lt_location_list_toggle_map = '<space>el'
 
 " ale
-let g:ale_python_flake8_executable = 'python3'
-let g:ale_python_flake8_args = '-m flake8'
 let g:ale_sign_column_always = 1
 
 " rope
@@ -134,7 +132,7 @@ let NERDTreeChDirMode = 2
 let NERDTreeHijackNetrw = 0
 
 " ctrlsf
-let g:better_whitespace_filetypes_blacklist=['ctrlsf']
+let g:better_whitespace_filetypes_blacklist = ['ctrlsf']
 
 " airline/powerline
 let g:airline_powerline_fonts = 1
@@ -144,6 +142,9 @@ let g:airline#extensions#tabline#tab_min_count = 1
 let g:airline#extensions#tabline#show_splits = 0
 let g:airline#extensions#tabline#show_buffers = 0
 let g:airline#extensions#tabline#show_tab_type = 0
+
+" virtualenv
+let g:virtualenv_auto_activate = 1
 
 " auto-reload this file when saving
 autocmd! bufwritepost pluginsettings.vim source %
