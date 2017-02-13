@@ -69,28 +69,30 @@ let g:EasyMotion_use_smartsign_us = 1
 let g:EasyMotion_startofline = 1 " don't keep cursor column when JK motion
 
 " CtrlP
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,__pycache__,*.rst,*.png,*.jpg,node_modules,globalstatic,dumps,*.pyc,build
+let ctrlp_dir_ignore =
+    \ '(\.svn|\.git|\.hg|node_modules|globalstatic|dumps|sql|build|dist|docs)$'
 let g:ctrlp_custom_ignore = {
-    \ 'dir':  '(\.svn|\.git|\.hg|node_modules|globalstatic|dumps|sql|build|dist|docs)$',
-    \ 'file': '\v\.(exe|so|dll|dat)$',
-    \ 'link': 'some_bad_symbolic_links',
+        \ 'dir': ctrlp_dir_ignore,
     \ }
 let g:ctrlp_map = '<space>ph'
 let g:ctrlp_command = 'CtrlPMixed'
 let g:ctrlp_max_files = 80000
 let g:ctrlp_match_window = 'bottom,order:ttb,min:10,max:10,results:10'
+let ctrlp_git_ls_command =
+    \ 'cd %s && git ls-files . --cached --exclude-standard'
+let ctrlp_hg_ls_command = 'hg --cwd %s locate -I .'
 
 if executable('ag')
     let g:ctrlp_working_path_mode = 'ra'
-    let g:ctrlp_use_caching = 1
+    let g:ctrlp_use_caching = 0
 
     let g:ctrlp_grep_ignore = '\(\.rst\|\.jpg\|\.png\|node_modules\)$'
     let g:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
 
     let g:ctrlp_user_command = {
             \ 'types': {
-                \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others | grep -v "' . g:ctrlp_grep_ignore . '"'],
-                \ 2: ['.hg', 'hg --cwd %s locate -I . | grep -v "' . g:ctrlp_grep_ignore . '"'],
+                \ 1: ['.git', ctrlp_git_ls_command],
+                \ 2: ['.hg', ctrlp_hg_ls_command],
             \ },
             \ 'fallback': g:ctrlp_fallback
         \ }
@@ -121,10 +123,13 @@ let g:startify_enable_special = 0
 " file management
 let g:netrw_liststyle = 1
 let g:netrw_banner = 0
-let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+,\(^\|\s\s\)ntuser\.\S\+,__pycache__,\.pyc'
+let g:netrw_list_hide =
+    \ '\(^\|\s\s\)\zs\.\S\+,\(^\|\s\s\)ntuser\.\S\+,__pycache__,\.pyc'
 
 " nerdtree
-let NERDTreeIgnore = ['__pycache__', '\.pyc$', '\.pyo$', '\.db$', '\.o$', '\.d$', '\.elf$', '\.map$']
+let NERDTreeIgnore = [
+    \ '__pycache__', '\.pyc$', '\.pyo$', '\.db$',
+    \ '\.o$', '\.d$', '\.elf$', '\.map$']
 let NERDTreeShowBookmarks = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeWinSize = 25
@@ -138,7 +143,7 @@ let g:better_whitespace_filetypes_blacklist = ['ctrlsf']
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#tab_nr_type = 1
-let g:airline#extensions#tabline#tab_min_count = 1
+let g:airline#extensions#tabline#tab_min_count = 2
 let g:airline#extensions#tabline#show_splits = 0
 let g:airline#extensions#tabline#show_buffers = 0
 let g:airline#extensions#tabline#show_tab_type = 0
