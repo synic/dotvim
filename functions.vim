@@ -1,30 +1,23 @@
+" yank entire buffer into clipboard
 function! CopyBuffer()
-    " yank entire buffer into clipboard
     let cursor_pos = getpos('.')
     normal ggVGy
     call setpos('.', cursor_pos)
 endfunction
 
-function! GrepProject()
-    let pathname = ProjectRootGuess()
-    execute ':Unite -toggle -buffer-name=search grep:' . pathname
-endfunction
-
-function! GrepProjectCurrentDir()
-    let pathname = expand('%:p:h')
-    execute ':Unite -toggle -buffer-name=search grep:' . pathname
-endfunction
-
+" open nerdtree at the current project root
 function! NERDTreeCurrentProject()
     let pathname = ProjectRootGuess()
     execute ':NERDTree ' . pathname
 endfunction
 
+" open nerdtree in the current file's directory
 function! NERDTreeCurrentFile()
     let pathname = expand('%:p:h')
     execute ':NERDTree ' . pathname
 endfunction
 
+" search in the project root
 function! SearchInProjectRoot()
     call inputsave()
     let terms = input('Search: ')
@@ -32,6 +25,7 @@ function! SearchInProjectRoot()
     execute ':CtrlSF "' . terms . '"'
 endfunction
 
+" save session
 function! SessionSavePrompt()
     call inputsave()
     let name = input('Session name: ')
@@ -42,6 +36,7 @@ function! SessionSavePrompt()
     execute ':SSave ' . name
 endfunction
 
+" delete a session
 function! SessionDeletePrompt()
     call inputsave()
     let name = input('Session name: ')
@@ -52,17 +47,7 @@ function! SessionDeletePrompt()
     execute ':SDelete ' . name
 endfunction
 
-function! NewTab()
-    call inputsave()
-    let name = input('Tab name: ')
-    if empty(name)
-        return
-    endif
-    call inputrestore()
-    execute ':$tabnew'
-    execute ':TabooRename ' . name
-endfunction
-
+" toggle comments for a block
 function! ToggleComment()
     if mode() !~# "^[vV\<C-v>]"
         " not visual mode
@@ -72,56 +57,19 @@ function! ToggleComment()
     endif
 endfunction
 
-function! TabLine()
-    let s = ''
-    let i = 0
-    let t = tabpagenr()
-    while i < tabpagenr('$')
-        let buflist = tabpagebuflist(i + 1)
-        let winnr = tabpagewinnr(i + 1)
-        " select the highlighting
-        if (i + 1) == t
-            let s .= '%#TabLineSel#'
-        else
-            let s .= '%#TabLine#'
-        endif
-
-        " set the tab page number (for mouse clicks)
-        let s .= '%' . (i + 1) . 'T'
-        let s .= '['
-        let file = bufname(buflist[winnr - 1])
-        let file = fnamemodify(file, ':p:t')
-        if file == ''
-            let file = 'x'
-        endif
-        let s .= (i + 1) . ':' . file
-
-        let s .= ']'
-
-        let i = i + 1
-    endwhile
-
-    " after the last tab fill with TabLineFill and reset tab page nr
-    let s .= '%#TabLineFill#%T'
-
-    " right-align the label to close the current tab page
-    if tabpagenr('$') > 1
-        let s .= '%=%#TabLine#%999XX'
-    endif
-
-    return s
-endfunction
-
+" open netrw in the current file's directory
 function! NetRWCurrentFile()
     let pathname = expand('%:p:h')
     execute 'edit ' . pathname
 endfunction
 
+" open netrw in the current file's project root
 function! NetRWCurrentProject()
     let pathname = ProjectRootGuess()
     execute 'edit ' . pathname
 endfunction
 
+" toggle line numbering modes
 function! NumberToggle()
   if(&relativenumber == 1)
     set number
@@ -131,6 +79,7 @@ function! NumberToggle()
   endif
 endfunc
 
+" execute a window command, and then equalize windows
 function! WindowCommand(cmd)
     execute a:cmd
     if !g:golden_ratio_enabled
@@ -138,6 +87,7 @@ function! WindowCommand(cmd)
     endif
 endfunction
 
+" toggle golden ratio functionality
 function! ToggleGoldenRatio()
     execute ':GoldenRatioToggle'
     if g:golden_ratio_enabled == 0
@@ -150,21 +100,32 @@ function! ToggleGoldenRatio()
     endif
 endfunction
 
-function! ProjectFiles()
-    execute ':Unite -toggle -buffer-name=files files:' . ProjectRootGuess()
-endfunction
-
-function! Buffers()
-    execute ':Unite -toggle -buffer-name=buffers buffers'
-endfunction
-
+" diffing files
 command! DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
     \ | wincmd p | diffthis
 
+" trim the blank lines at the end of the current file
 function! TrimEndLines()
     let save_cursor = getpos('.')
     :silent! %s#\($\n\s*\)\+\%$##
     call setpos('.', save_cursor)
+endfunction
+
+" toggle the current split to be maximized
+function! MaximizeToggle()
+    if exists("s:maximize_session")
+        exec "source " . s:maximize_session
+        call delete(s:maximize_session)
+        unlet s:maximize_session
+        let &hidden=s:maximize_hidden_save
+        unlet s:maximize_hidden_save
+    else
+        let s:maximize_hidden_save = &hidden
+        let s:maximize_session = tempname()
+        set hidden
+        exec "mksession! " . s:maximize_session
+        only
+    endif
 endfunction
 
 " auto-reload this file when saving
