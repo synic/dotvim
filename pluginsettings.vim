@@ -153,3 +153,9 @@ let g:virtualenv_auto_activate = 1
 
 " auto-reload this file when saving
 autocmd! bufwritepost pluginsettings.vim source %
+
+" python-mode
+let g:pymode_folding = 0
+let g:pymode_lint = 0
+let g:pymode_rope = 0
+
