@@ -11,6 +11,7 @@ call plug#begin('~/.vim/plugins')
 " python specific plugins
 Plug 'hynek/vim-python-pep8-indent'    " for auto indenting pep8 style
 Plug 'python-rope/ropevim'             " refactoring, finding occurrences
+Plug 'python-mode/python-mode'
 
 " home screen
 Plug 'mhinz/vim-startify'              " pretty start page

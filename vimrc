@@ -62,6 +62,7 @@ set textwidth=78
 set hidden
 set colorcolumn=80
 set number
+set relativenumber
 set noequalalways
 set dir=~/.vim/swap
 set nobackup writebackup
