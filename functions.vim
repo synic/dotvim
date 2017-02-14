@@ -111,21 +111,17 @@ function! TrimEndLines()
     call setpos('.', save_cursor)
 endfunction
 
-" toggle the current split to be maximized
-function! MaximizeToggle()
-    if exists("s:maximize_session")
-        exec "source " . s:maximize_session
-        call delete(s:maximize_session)
-        unlet s:maximize_session
-        let &hidden=s:maximize_hidden_save
-        unlet s:maximize_hidden_save
-    else
-        let s:maximize_hidden_save = &hidden
-        let s:maximize_session = tempname()
-        set hidden
-        exec "mksession! " . s:maximize_session
-        only
-    endif
+" a function to set ctrl-p mappings
+function! CtrlPMappings()
+  nnoremap <buffer> <silent> <C--> :call <sid>DeleteBuffer()<cr>
+endfunction
+
+" delete buffers from ctrlp
+function! s:DeleteBuffer()
+  let path = fnamemodify(getline('.')[2:], ':p')
+  let bufn = matchstr(path, '\v\d+\ze\*No Name')
+  exec "bd" bufn ==# "" ? path : bufn
+  exec "norm \<F5>"
 endfunction
 
 " auto-reload this file when saving

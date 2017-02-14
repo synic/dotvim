@@ -75,6 +75,7 @@ let g:ctrlp_custom_ignore = {
         \ 'dir': ctrlp_dir_ignore,
     \ }
 let g:ctrlp_map = '<space>ph'
+let g:ctrlp_buffer_func = {'enter': 'CtrlPMappings'}
 let g:ctrlp_command = 'CtrlPMixed'
 let g:ctrlp_max_files = 80000
 let g:ctrlp_match_window = 'bottom,order:ttb,min:10,max:10,results:10'

@@ -53,7 +53,7 @@ nmap <silent> <space>wJ :call WindowCommand(':Qj')<cr>
 nmap <silent> <space>wH :call WindowCommand(':Qh')<cr>
 nmap <silent> <space>wK :call WindowCommand(':Qk')<cr>
 nmap <silent> <space>wL :call WindowCommand(':Ql')<cr>
-nmap <silent> <space>wm :call MaximizeToggle()<cr>
+nmap <silent> <space>wm <plug>ZoomWin
 nmap <silent> <space>fed :e ~/.vim/vimrc<cr>
 nmap <silent> <space>w1 :execute ':1wincmd w'<cr>
 nmap <silent> <space>w2 :execute ':2wincmd w'<cr>

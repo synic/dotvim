@@ -18,13 +18,13 @@ Plug 'mhinz/vim-startify'              " pretty start page
 
 " project management
 Plug 'ctrlpvim/ctrlp.vim'              " project file fuzzy-matcher
-Plug 'j5shi/ctrlp_bdelete.vim'
 Plug 'dbakker/vim-projectroot'         " locate project
 Plug 'scrooloose/nerdtree'             " file tree
 
 " window management
 Plug 'roman/golden-ratio'
 Plug 'vim-scripts/tinykeymap'
+Plug 'vim-scripts/ZoomWin'
 
 " coding/editing
 Plug 'SirVer/ultisnips'                " textmate style snippets
