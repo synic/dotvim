@@ -1,22 +1,22 @@
 " map the escape key to `fd`
-imap fd <Esc>
-vmap fd <Esc>
+inoremap fd <esc>
+vnoremap fd <esc>
 
 " misc
 map yig :call SelectBuffer()<cr>
 map vig ggVG
 
 " search
-map /  <Plug>(incsearch-forward)
-map ?  <Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-stay)
+map /  <plug>(incsearch-forward)
+map ?  <plug>(incsearch-backward)
+map g/ <plug>(incsearch-stay)
 
-map n  <Plug>(incsearch-nohl-n)
-map N  <Plug>(incsearch-nohl-N)
-map *  <Plug>(incsearch-nohl-*)
-map #  <Plug>(incsearch-nohl-#)
-map g* <Plug>(incsearch-nohl-g*)
-map g# <Plug>(incsearch-nohl-g#)
+map n  <plug>(incsearch-nohl-n)
+map N  <plug>(incsearch-nohl-N)
+map *  <plug>(incsearch-nohl-*)
+map #  <plug>(incsearch-nohl-#)
+map g* <plug>(incsearch-nohl-g*)
+map g# <plug>(incsearch-nohl-g#)
 
 " fugitive
 nnoremap <silent> <space>gs :Gstatus<cr>
