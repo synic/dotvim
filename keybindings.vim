@@ -6,9 +6,6 @@ vmap fd <Esc>
 map yig :call SelectBuffer()<cr>
 map vig ggVG
 
-" change the leader key to spacebar
-let mapleader = '\<space>'
-
 " search
 map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
@@ -22,16 +19,16 @@ map g* <Plug>(incsearch-nohl-g*)
 map g# <Plug>(incsearch-nohl-g#)
 
 " fugitive
-nnoremap <silent> <leader>gs :Gstatus<cr>
-nnoremap <silent> <leader>gd :Gdiff<cr>
-nnoremap <silent> <leader>gc :Gcommit<cr>
-nnoremap <silent> <leader>gb :Gblame<cr>
-nnoremap <silent> <leader>gl :Glog<cr>
-nnoremap <silent> <leader>gp :Git push<cr>
-nnoremap <silent> <leader>gr :Gread<cr>
-nnoremap <silent> <leader>gw :Gwrite<cr>
-nnoremap <silent> <leader>ge :Gedit<cr>
-nnoremap <silent> <leader>gi :Git add %<cr>
+nnoremap <silent> <space>gs :Gstatus<cr>
+nnoremap <silent> <space>gd :Gdiff<cr>
+nnoremap <silent> <space>gc :Gcommit<cr>
+nnoremap <silent> <space>gb :Gblame<cr>
+nnoremap <silent> <space>gl :Glog<cr>
+nnoremap <silent> <space>gp :Git push<cr>
+nnoremap <silent> <space>gr :Gread<cr>
+nnoremap <silent> <space>gw :Gwrite<cr>
+nnoremap <silent> <space>ge :Gedit<cr>
+nnoremap <silent> <space>gi :Git add %<cr>
 
 " location list
 nnoremap <silent> <space>en :lnext<cr>
