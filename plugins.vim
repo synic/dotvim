@@ -1,3 +1,8 @@
+" Plugin List
+" Use `zR` to open all folds
+
+" ### Install vim-plug {{{1
+"----------------------------------------------------------------------------"
 " install vim-plug if it's not already installed
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -5,7 +10,8 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC | Startify | Ql
 endif
 
-" plugin list
+" ### PLUGIN LIST {{{1
+"----------------------------------------------------------------------------"
 call plug#begin('~/.vim/plugins')
 
 " python specific plugins
@@ -77,5 +83,9 @@ Plug 'Valloric/ListToggle'
 
 call plug#end()
 
+" ### FOOTER/MODELINE {{{1
+"----------------------------------------------------------------------------"
 " auto-reload this file when saving
 autocmd! bufwritepost plugins.vim source %
+
+" vim:foldmethod=marker

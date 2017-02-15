@@ -1,12 +1,18 @@
-" map the escape key to `fd`
+" VIM Base and Plugin Keybindings
+" Use `zR` to open all folds
+
+" ### REMAP ESCAPE KEY {{{1
+"----------------------------------------------------------------------------"
 inoremap fd <esc>
 vnoremap fd <esc>
 
-" misc
+" ### CUSTOM TEXT OBJECTS {{{1
+"----------------------------------------------------------------------------"
 map yig :call SelectBuffer()<cr>
 map vig ggVG
 
-" search
+" ### SEARCHING {{{1
+"----------------------------------------------------------------------------"
 map /  <plug>(incsearch-forward)
 map ?  <plug>(incsearch-backward)
 map g/ <plug>(incsearch-stay)
@@ -18,7 +24,8 @@ map #  <plug>(incsearch-nohl-#)
 map g* <plug>(incsearch-nohl-g*)
 map g# <plug>(incsearch-nohl-g#)
 
-" fugitive
+" ### GIT/REVISION CONTROL {{{1
+"----------------------------------------------------------------------------"
 nnoremap <silent> <space>gs :Gstatus<cr>
 nnoremap <silent> <space>gd :Gdiff<cr>
 nnoremap <silent> <space>gc :Gcommit<cr>
@@ -29,16 +36,25 @@ nnoremap <silent> <space>gr :Gread<cr>
 nnoremap <silent> <space>gw :Gwrite<cr>
 nnoremap <silent> <space>ge :Gedit<cr>
 nnoremap <silent> <space>gi :Git add %<cr>
+map <space>gr :Gist --private<cr>
+map <space>gR :Gist --public<cr>
+map <space>gs :call magit#show_magit('h')<cr>
 
-" location list
-nnoremap <silent> <space>en :lnext<cr>
+" ### SYNTAX CHECKING {{{1
+"----------------------------------------------------------------------------"
+" go to next error
+nnoremap <silent> <space>en :lnext<cr> 
+" go to previous error
 nnoremap <silent> <space>ep :lprev<cr>
 
-" commenting
+
+" ### COMMENTING {{{1
+"----------------------------------------------------------------------------"
 nmap <space>cl :call ToggleComment()<cr>
 vmap <space>cl :call ToggleComment()<cr>
 
-" easy window switching
+" ### WINDOW MANAGEMENT {{{1
+"----------------------------------------------------------------------------"
 nmap <silent> <space>wk :wincmd k<cr>
 nmap <silent> <space>wj :wincmd j<cr>
 nmap <silent> <space>wh :wincmd h<cr>
@@ -65,11 +81,15 @@ nmap <silent> <space>w6 :execute ':6wincmd w'<cr>
 nmap <silent> <space>w7 :execute ':7wincmd w'<cr>
 nmap <silent> <space>w8 :execute ':8wincmd w'<cr>
 nmap <silent> <space>w9 :execute ':9wincmd w'<cr>
+" golden ratio
+map <space>tg :call ToggleGoldenRatio()<cr>
 
-" buffers
+" ### BUFFERS {{{1
+"----------------------------------------------------------------------------"
 nnoremap <silent> <space>bb :CtrlPBuffer<cr>
 
-" tabs
+" ### TABS/LAYOUT {{{1
+"----------------------------------------------------------------------------"
 nnoremap <silent> <space>ll :$tabnew<cr>:Startify<cr>
 nnoremap <silent> <space>ln :tabnext<cr>
 nnoremap <silent> <space>lp :tabprev<cr>
@@ -84,33 +104,40 @@ nnoremap <silent> <space>l7 7gt
 nnoremap <silent> <space>l8 8gt
 nnoremap <silent> <space>l9 9gt
 
-" git
-map <space>gr :Gist --private<cr>
-map <space>gR :Gist --public<cr>
-map <space>gs :call magit#show_magit('h')<cr>
-
-" easymotion
+" ### MOVEMENT {{{1
+"----------------------------------------------------------------------------"
 map <space><space> <plug>(easymotion-bd-f)
 nmap <space><space> <plug>(easymotion-overwin-f)
 
-" startify
+" ### HOMEPAGE {{{1
+"----------------------------------------------------------------------------"
 nmap <space>bh :Startify<cr>
 
-" file management
+" ### FILE MANAGEMENT {{{1
+"----------------------------------------------------------------------------"
 map - :call NetRWCurrentFile()<cr>
 map _ :call NetRWCurrentProject()<cr>
 
-" golden ratio
-map <space>tg :call ToggleGoldenRatio()<cr>
-
-" sessions
+" ### SESSIONS {{{1
+"----------------------------------------------------------------------------"
 map <space>ls :call SessionSavePrompt()<cr>
 map <space>ld :call SessionDeletePrompt()<cr>
 
+" ### TOGGLES {{{1
+"----------------------------------------------------------------------------"
 " toggle relative line numbering
 nmap <silent> <space>tr :call NumberToggle()<cr>
 
-" toggle nerdtree
+" toggle search highlighting
+nmap <silent> <space>th :set nohlsearch!<cr>
+
+" remove last search 
+nmap <silent> ,, :noh<cr>
+
+" ### PROJECT MANAGEMENT {{{1
+"----------------------------------------------------------------------------"
+nmap <silent> <space>ph :CtrlP<cr>
+nmap <silent> <space>pf :CtrlP<cr>
 nmap <silent> <space>pn :call NERDTreeCurrentProject()<cr>
 nmap <silent> <space>pc :call NERDTreeCurrentFile()<cr>
 nmap <silent> <space>pd :NERDTreeClose<cr>
@@ -122,9 +149,9 @@ nmap <silent> <space>sp :call SearchInProjectRoot()<cr>
 " gundo
 nmap <silent> <space>ag :GundoToggle<cr>
 
-" toggles
-nmap <silent> <space>th :set nohlsearch!<cr>
-nmap <silent> ,, :noh<cr>
-
+" ### FOOTER/MODELINE {{{1
+"----------------------------------------------------------------------------"
 " auto-reload this file when saving
 autocmd! bufwritepost keybindings.vim source %
+
+" vim:foldmethod=marker

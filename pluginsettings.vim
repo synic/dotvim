@@ -1,41 +1,31 @@
-" install vim-plug if it's not already installed
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC | Startify | Ql
-endif
+" VIM Plugin Specific Settings
+" Use `zR` to open all folds
 
-" golden ratio
+" ### roman/golden-ratio {{{1
+"----------------------------------------------------------------------------"
 let g:golden_ratio_enabled = 0
 let g:golden_ratio_autocommand = 0
 
-" incsearch
+" ### haya14busa/incsearch.vim {{{1
+"----------------------------------------------------------------------------"
 let g:incsearch#auto_nohlsearch = 1
 
-" setup custom tab lines with numbers and the close button
-" set tabline=%!TabLine()
-
-" gundo settings
+" ### Gsjl/gundo.vim {{{1
+"----------------------------------------------------------------------------"
 let g:gundo_width = 35
 let g:gundo_right = 1
 let g:gundo_preview_height = 25
 
-" youcomplete
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
-
-" supertab
-let g:SuperTabDefaultCompletionType = '<C-j>'
-
-" jedi settings
+" ### davidhalter/jedi-vim {{{1
+"----------------------------------------------------------------------------"
 let g:jedi#popup_on_dot = 0
 let g:jedi#show_call_signatures = 1
 let g:jedi#smart_auto_mappings = 0
 let g:jedi#goto_definitions_command = 'gd'
 let g:jedi#completions_command = '<C-n>'
 
-" ultisnips settings
+" ### SirVer/ultisnips {{{1
+"----------------------------------------------------------------------------"
 let g:UltiSnipsSnippetDirectories = [
     \ $HOME.'/.vim/bundle/vim-snippets/UltiSnips',
     \ 'ultisnippets'
@@ -44,37 +34,47 @@ let g:UltiSnipsExpandTrigger = '<tab>'
 let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 
-" listtoggle
+" ### Valloric/ListToggle {{{1
+"----------------------------------------------------------------------------"
 let g:lt_location_list_toggle_map = '<space>el'
 
-" ale
+" ### w0rp/ale {{{1
+"----------------------------------------------------------------------------"
 let g:ale_sign_column_always = 1
 
-" rope
+" ### python-rope/ropevim {{{1
+"----------------------------------------------------------------------------"
 let g:ropevim_guess_project = 1
 
-" git
+" ### mattn/gist-vim {{{1
+"----------------------------------------------------------------------------"
 let g:gist_detect_filetype = 1
 let g:gist_open_browser_after_post = 0
 let g:gist_clip_command = 'pbcopy' " for os X
 let g:gist_post_private = 1
 
+" ### airblade/vim-gitgutter {{{1
+"----------------------------------------------------------------------------"
 let g:gitgutter_sign_column_always = 1
 
+
+" ### ajreybert/vimagit {{{1
+"----------------------------------------------------------------------------"
 let g:magit_show_help = 0
 
-" easy motion
+" ### Lokaltog/vim-easymotion {{{1
+"----------------------------------------------------------------------------"
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_use_smartsign_us = 1
 let g:EasyMotion_startofline = 1 " don't keep cursor column when JK motion
 
-" CtrlP
+" ### ctrlpvim/ctrlp.vim {{{1
+"----------------------------------------------------------------------------"
 let ctrlp_dir_ignore =
     \ '(\.svn|\.git|\.hg|node_modules|globalstatic|dumps|sql|build|dist|docs)$'
 let g:ctrlp_custom_ignore = {
         \ 'dir': ctrlp_dir_ignore,
     \ }
-let g:ctrlp_map = '<space>ph'
 let g:ctrlp_buffer_func = {'enter': 'CtrlPMappings'}
 let g:ctrlp_command = 'CtrlPMixed'
 let g:ctrlp_max_files = 80000
@@ -99,7 +99,8 @@ if executable('ag')
         \ }
 endif
 
-" startify
+" ### mhinz/vim-startify {{{1
+"----------------------------------------------------------------------------"
 let g:startify_custom_header = [
     \ '    \ \   / /_ _|  \/  |',
     \ ' ____\ \ / / | || |\/| |_____',
@@ -121,13 +122,15 @@ let g:startify_change_to_dir = 1
 let g:startify_fortune_use_unicode = 0
 let g:startify_enable_special = 0
 
-" file management
+" ### netrw {{{1
+"----------------------------------------------------------------------------"
 let g:netrw_liststyle = 1
 let g:netrw_banner = 0
 let g:netrw_list_hide =
     \ '\(^\|\s\s\)\zs\.\S\+,\(^\|\s\s\)ntuser\.\S\+,__pycache__,\.pyc'
 
-" nerdtree
+" ### scrooloose/nerdtree {{{1
+"----------------------------------------------------------------------------"
 let NERDTreeIgnore = [
     \ '__pycache__', '\.pyc$', '\.pyo$', '\.db$',
     \ '\.o$', '\.d$', '\.elf$', '\.map$']
@@ -137,10 +140,12 @@ let NERDTreeWinSize = 25
 let NERDTreeChDirMode = 2
 let NERDTreeHijackNetrw = 0
 
-" ctrlsf
+" ### dyng/ctrlsf.vim {{{1
+"----------------------------------------------------------------------------"
 let g:better_whitespace_filetypes_blacklist = ['ctrlsf']
 
-" airline/powerline
+" ### bling/vim-airline {{{1
+"----------------------------------------------------------------------------"
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#tab_nr_type = 1
@@ -149,14 +154,19 @@ let g:airline#extensions#tabline#show_splits = 0
 let g:airline#extensions#tabline#show_buffers = 0
 let g:airline#extensions#tabline#show_tab_type = 0
 
-" virtualenv
+" ### jmcantrell/vim-virtualenv {{{1
+"----------------------------------------------------------------------------"
 let g:virtualenv_auto_activate = 1
 
-" auto-reload this file when saving
-autocmd! bufwritepost pluginsettings.vim source %
-
-" python-mode
+" ### python-mode/python-mode {{{1
+"----------------------------------------------------------------------------"
 let g:pymode_folding = 0
 let g:pymode_lint = 0
 let g:pymode_rope = 0
 
+" ### FOOTER/MODELINE {{{1
+"----------------------------------------------------------------------------"
+" auto-reload this file when saving
+autocmd! bufwritepost pluginsettings.vim source %
+
+" vim:foldmethod=marker

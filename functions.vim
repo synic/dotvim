@@ -1,3 +1,8 @@
+" VIM Custom Functions
+" Use `zR` to open all folds
+
+" ### CUSTOM FUNCTIONS {{{1
+"----------------------------------------------------------------------------"
 " yank entire buffer into clipboard
 function! CopyBuffer()
     let cursor_pos = getpos('.')
@@ -138,5 +143,9 @@ function! s:ZoomToggle() abort
 endfunction
 command! ZoomToggle call s:ZoomToggle()
 
+" ### FOOTER/MODELINE {{{1
+"----------------------------------------------------------------------------"
 " auto-reload this file when saving
+ 
 autocmd! bufwritepost functions.vim source %
+" vim:foldmethod=marker
