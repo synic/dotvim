@@ -154,7 +154,7 @@ let g:airline#extensions#tabline#show_splits = 0
 let g:airline#extensions#tabline#show_buffers = 0
 let g:airline#extensions#tabline#show_tab_type = 0
 
-let g:airline#extensions#hunks#enabled = 0
+let g:airline#extensions#whitespace#enabled = 0
 
 " ### jmcantrell/vim-virtualenv {{{1
 "----------------------------------------------------------------------------"
