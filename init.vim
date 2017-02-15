@@ -1,1 +1,1 @@
-config/vimrc
+vimrc

@@ -8,7 +8,7 @@ vnoremap fd <esc>
 
 " ### CONFIGURATION FILES {{{1
 "----------------------------------------------------------------------------"
-nmap <silent> <space>fed :e $VIMHOME/config/vimrc<cr>
+nmap <silent> <space>fed :e $VIMHOME/vimrc<cr>
 nmap <silent> <space>fes :e $VIMHOME/config<cr>
 
 " ### CUSTOM TEXT OBJECTS {{{1
