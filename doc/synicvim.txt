@@ -1,0 +1,176 @@
+*synicvim*           documentation for synic's vim configuration.
+
+Author:            Adam Olsen
+Repository:        <https://github.com/synic/dotvim>
+
+===============================================================================
+                              _      _             _                          ~
+              ___ _   _ _ __ (_) ___( )___  __   _(_)_ __ ___                ~
+              / __| | | | '_ \| |/ __|// __| \ \ / / | '_ ` _ \              ~
+              \__ \ |_| | | | | | (__  \__ \  \ V /| | | | | | |             ~
+              |___/\__, |_| |_|_|\___| |___/   \_/ |_|_| |_| |_|             ~
+                  |___/                                                      ~
+                                                                             ~
+===============================================================================
+CONTENTS                                                     *synicvim-contents*
+
+  1.  Introduction ................. |synicvim-introduction|
+  2.  Installation ................. |synicvim-installation|
+  3.  Project List ................. |synicvim-projectlist|
+  4.  Keybindings .................. |synicvim-keybindings|
+  5.  Configuration Files .......... |synicvim-configfiles|
+
+===============================================================================
+1. INTRODUCTION                                          *synicvim-introduction*
+
+This is synic's (Adam Olsen <arolsen@gmail.com>) VIM configuration.  Can be
+found at https://github.com/synic/dotvim.
+
+===============================================================================
+2. INSTALLATION                                          *synicvim-installation*
+
+To install, make sure you remove your previous VIM configuration (after you
+back it up, of course), `"rm -rf ~/.vim*"`:
+
+Then install:
+>
+  git clone https://github.com/synic/dotvim ~/.vim && vi
+<
+VIM will automatically download the plugins specified in `plugins.vim` and
+install them.
+
+===============================================================================
+3. PROJECT LIST                                           *synicvim-projectlist*
+
+When you first open VIM, you'll be presented with a start page that lists my 
+default projects, and you probably want to change this. Open the file
+`~/.cache/startify_bookmarks.vim` and make it look something like this:
+>
+    let g:startify_bookmarks = [
+        \ {'frf': '/Users/synic/Projects/frf'},
+        \ {'eventmq': '/Users/synic/Projects/eventmq'},
+        \ {'whyvim': '/Users/synic/Projects/whyvim'},
+        \ ]
+<
+Obviously, change the actual bookmarks to your own projects.
+
+===============================================================================
+4. KEYBINDINGS                                            *synicvim-keybindings*
+
+   This only lists the keybindings that are different than the defaults.
+
+   Note that `SPC` means "spacebar".
+
+   `fd`        Default escape mapping (press quickly to escape to normal mode) 
+   `SPC bh`    Go to start page.
+
+MOVEMENT
+
+   `SPC SPC`   Type `SPC SPC` followed by the first character in the place you
+             want to move.  Type the highlighted characters to jump to that
+             location.
+
+PROJECT MANAGEMENT
+
+   `SPC pf`    Invoke fuzzy file search for the project.
+   `SPC pn`    Open NERDTree for the current project.
+   `SPC pd`    Close NERDTree.
+   `SPC *`     Search project for term under cursor.
+   `SPC sp`    Prompt for a term and search the project for that term.
+   `_`         Open directory browser at project root.
+
+FILE MANAGEMENT
+
+   `SPC fn`    Open NERDTree at current file's directory.
+   `-`         Open directory browser at current file's directory.
+
+WINDOW MANAGEMENT
+
+   `SPC wj`    Move cursor to the window below this one.
+   `SPC wk`    Move cursor to the window above this one.
+   `SPC wh`    Move cursor to the window left of this one.
+   `SPC wl`    Move cursor to the window right of this one.
+
+   `SPC TAB`   Switch window to view the last buffer that was in this window.
+
+   `SPC w/`    Split window horizontally.
+   `SPC w-`    Split window vertically.
+
+   `SPC wc`    Close current window.
+   `SPC wJ`    Close window below this one.
+   `SPC wK`    Close the window above this one.
+   `SPC wH`    Close the window left of this one.
+   `SPC wL`    Close the window right of this one.
+
+   `SPC wm`    Toggle maximize current window.
+   `SPC wM`    Open current window in it's own tab.
+
+   `SPC w1`    Move to window 1.
+   `SPC w2`    Move to window 2.
+   `SPC w3`    Move to window 3.
+   `SPC w4`    Move to window 4.
+   `SPC w5`    Move to window 5.
+   `SPC w6`    Move to window 6.
+   `SPC w7`    Move to window 7.
+   `SPC w8`    Move to window 8.
+   `SPC w9`    Move to window 9. 
+
+   `SPC wC1`   Close window 1.
+   `SPC wC2`   Close window 2.
+   `SPC wC3`   Close window 3.
+   `SPC wC4`   Close window 4.
+   `SPC wC5`   Close window 5.
+   `SPC wC6`   Close window 6.
+   `SPC wC7`   Close window 7.
+   `SPC wC8`   Close window 8.
+   `SPC wC9`   Close window 9.
+
+BUFFERS
+
+   `SPC bb`    List open buffers.
+
+TABS/LAYOUT
+
+   `SPC ll`    Create new tab.
+   `SPC ln`    Move to next tab.
+   `SPC lp`    Move to previous tab.
+   `SPC lc`    Close current tab.
+   `SPC l1`    Move to tab 1.
+   `SPC l2`    Move to tab 2.
+   `SPC l3`    Move to tab 3.
+   `SPC l4`    Move to tab 4.
+   `SPC l5`    Move to tab 5.
+   `SPC l6`    Move to tab 6.
+   `SPC l7`    Move to tab 7.
+   `SPC l8`    Move to tab 8.
+   `SPC l9`    Move to tab 9.
+
+COMMENTING
+
+   `SPC cl`    Toggle comments.
+
+TOGGLES
+
+   `SPC tg`    Toggle Golden Ratio (windows resize as you move between them).
+   `SPC tn`    Toggle line numbering.
+   `SPC tr`    Toggle relative line numbering.
+
+APPLICATIONS
+
+   `SPC ag`    Gundo.
+
+===============================================================================
+4. CONFIGURATION FILES                                    *synicvim-configfiles*
+
+The files listed here are kept in `~/.vim` and contain all my configuration
+files for VIM.
+
+   `vimrc`               Main configuration file, has VIM specific settings.
+   `gvimrc`              GUI only settings for VIM
+   `plugins.vim`         Contains the list of plugins to install from github.
+   `pluginsettings.vim`  Contains plugin specific configuration.
+   `keybindings.vim`     Contains my preferred keybindings.
+   `init.vim`            Symlink to `vimrc` (for neovim).
+
+===============================================================================
+vim:ft=help:et:ts=2:sw=2:sts=2:norl

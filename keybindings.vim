@@ -6,6 +6,10 @@
 inoremap fd <esc>
 vnoremap fd <esc>
 
+" ### CONFIGURATION FILES {{{1
+"----------------------------------------------------------------------------"
+nmap <silent> <space>fed :e ~/.vim/vimrc<cr>
+
 " ### CUSTOM TEXT OBJECTS {{{1
 "----------------------------------------------------------------------------"
 map yig :call SelectBuffer()<cr>
@@ -71,7 +75,6 @@ nmap <silent> <space>wK :call WindowCommand(':Qk')<cr>
 nmap <silent> <space>wL :call WindowCommand(':Ql')<cr>
 nmap <silent> <space>wm :ZoomToggle<cr>
 nmap <silent> <space>wM :tabedit %<cr>
-nmap <silent> <space>fed :e ~/.vim/vimrc<cr>
 nmap <silent> <space>w1 :execute ':1wincmd w'<cr>
 nmap <silent> <space>w2 :execute ':2wincmd w'<cr>
 nmap <silent> <space>w3 :execute ':3wincmd w'<cr>
@@ -81,8 +84,15 @@ nmap <silent> <space>w6 :execute ':6wincmd w'<cr>
 nmap <silent> <space>w7 :execute ':7wincmd w'<cr>
 nmap <silent> <space>w8 :execute ':8wincmd w'<cr>
 nmap <silent> <space>w9 :execute ':9wincmd w'<cr>
-" golden ratio
-map <space>tg :call ToggleGoldenRatio()<cr>
+nmap <silent> <space>wC1 :execute ':1wincmd w'<cr>:call WindowCommand(':close')<cr>
+nmap <silent> <space>wC2 :execute ':2wincmd w'<cr>:call WindowCommand(':close')<cr>
+nmap <silent> <space>wC3 :execute ':3wincmd w'<cr>:call WindowCommand(':close')<cr>
+nmap <silent> <space>wC4 :execute ':4wincmd w'<cr>:call WindowCommand(':close')<cr>
+nmap <silent> <space>wC5 :execute ':5wincmd w'<cr>:call WindowCommand(':close')<cr>
+nmap <silent> <space>wC6 :execute ':6wincmd w'<cr>:call WindowCommand(':close')<cr>
+nmap <silent> <space>wC7 :execute ':7wincmd w'<cr>:call WindowCommand(':close')<cr>
+nmap <silent> <space>wC8 :execute ':8wincmd w'<cr>:call WindowCommand(':close')<cr>
+nmap <silent> <space>wC9 :execute ':9wincmd w'<cr>:call WindowCommand(':close')<cr>
 
 " ### BUFFERS {{{1
 "----------------------------------------------------------------------------"
@@ -116,7 +126,7 @@ nmap <space>bh :Startify<cr>
 " ### FILE MANAGEMENT {{{1
 "----------------------------------------------------------------------------"
 map - :call NetRWCurrentFile()<cr>
-map _ :call NetRWCurrentProject()<cr>
+nmap <silent> <space>fn :call NERDTreeCurrentFile()<cr>
 
 " ### SESSIONS {{{1
 "----------------------------------------------------------------------------"
@@ -127,19 +137,23 @@ map <space>ld :call SessionDeletePrompt()<cr>
 "----------------------------------------------------------------------------"
 " toggle relative line numbering
 nmap <silent> <space>tr :call NumberToggle()<cr>
+" toggle line numbering
+nmap <silent> <space>tn :set number!<cr>
 
 " toggle search highlighting
 nmap <silent> <space>th :set nohlsearch!<cr>
-
 " remove last search 
 nmap <silent> ,, :noh<cr>
 
+" golden ratio
+map <space>tg :call ToggleGoldenRatio()<cr>
+
 " ### PROJECT MANAGEMENT {{{1
 "----------------------------------------------------------------------------"
+map _ :call NetRWCurrentProject()<cr>
 nmap <silent> <space>ph :CtrlP<cr>
 nmap <silent> <space>pf :CtrlP<cr>
 nmap <silent> <space>pn :call NERDTreeCurrentProject()<cr>
-nmap <silent> <space>pc :call NERDTreeCurrentFile()<cr>
 nmap <silent> <space>pd :NERDTreeClose<cr>
 
 " project searching
