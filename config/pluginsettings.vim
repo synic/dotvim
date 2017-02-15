@@ -28,7 +28,7 @@ let g:jedi#completions_command = '<C-n>'
 "----------------------------------------------------------------------------"
 let g:UltiSnipsSnippetDirectories = [
     \ $HOME.'/.vim/bundle/vim-snippets/UltiSnips',
-    \ 'ultisnippets'
+    \ 'snips'
     \ ]
 let g:UltiSnipsExpandTrigger = '<tab>'
 let g:UltiSnipsJumpForwardTrigger = '<tab>'
@@ -154,6 +154,8 @@ let g:airline#extensions#tabline#show_splits = 0
 let g:airline#extensions#tabline#show_buffers = 0
 let g:airline#extensions#tabline#show_tab_type = 0
 
+let g:airline#extensions#hunks#enabled = 0
+
 " ### jmcantrell/vim-virtualenv {{{1
 "----------------------------------------------------------------------------"
 let g:virtualenv_auto_activate = 1
@@ -163,6 +165,7 @@ let g:virtualenv_auto_activate = 1
 let g:pymode_folding = 0
 let g:pymode_lint = 0
 let g:pymode_rope = 0
+let g:pymode_options = 0
 
 " ### FOOTER/MODELINE {{{1
 "----------------------------------------------------------------------------"

@@ -42,7 +42,7 @@ install them.
 ===============================================================================
 3. PROJECT LIST                                           *synicvim-projectlist*
 
-When you first open VIM, you'll be presented with a start page that lists my 
+When you first open VIM, you'll be presented with a start page that lists my
 default projects, and you probably want to change this. Open the file
 `~/.cache/startify_bookmarks.vim` and make it look something like this:
 >
@@ -59,105 +59,107 @@ Obviously, change the actual bookmarks to your own projects.
 
    This only lists the keybindings that are different than the defaults.
 
-   Note that `SPC` means "spacebar".
+   Note that <space> means to press the spacebar.
 
-   `fd`        Default escape mapping (press quickly to escape to normal mode) 
-   `SPC bh`    Go to start page.
+   fd               Default escape mapping (press quickly to escape to
+                    normal mode).
+   <space>bh        Go to start page.
 
 MOVEMENT
 
-   `SPC SPC`   Type `SPC SPC` followed by the first character in the place you
-             want to move.  Type the highlighted characters to jump to that
-             location.
+   <space><space>   Type `<space><space>` followed by the first character in
+                    the place you want to move.  Type the highlighted
+                    characters to jump to that location.
 
 PROJECT MANAGEMENT
 
-   `SPC pf`    Invoke fuzzy file search for the project.
-   `SPC pn`    Open NERDTree for the current project.
-   `SPC pd`    Close NERDTree.
-   `SPC *`     Search project for term under cursor.
-   `SPC sp`    Prompt for a term and search the project for that term.
-   `_`         Open directory browser at project root.
+   <space>pf        Invoke fuzzy file search for the project.
+   <space>pn        Open NERDTree for the current project.
+   <space>pd        Close NERDTree.
+   <space>*         Search project for term under cursor.
+   <space>sp        Prompt for a term and search the project for that term.
+   _                Open directory browser at project root.
 
 FILE MANAGEMENT
 
-   `SPC fn`    Open NERDTree at current file's directory.
-   `-`         Open directory browser at current file's directory.
+   <space>fn        Open NERDTree at current file's directory.
+   -                Open directory browser at current file's directory.
 
 WINDOW MANAGEMENT
 
-   `SPC wj`    Move cursor to the window below this one.
-   `SPC wk`    Move cursor to the window above this one.
-   `SPC wh`    Move cursor to the window left of this one.
-   `SPC wl`    Move cursor to the window right of this one.
+   <space>wj        Move cursor to the window below this one.
+   <space>wk        Move cursor to the window above this one.
+   <space>wh        Move cursor to the window left of this one.
+   <space>wl        Move cursor to the window right of this one.
 
-   `SPC TAB`   Switch window to view the last buffer that was in this window.
+   <space>TAB       Switch window to view the last buffer that was in this window.
 
-   `SPC w/`    Split window horizontally.
-   `SPC w-`    Split window vertically.
+   <space>w/        Split window horizontally.
+   <space>w-        Split window vertically.
 
-   `SPC wc`    Close current window.
-   `SPC wJ`    Close window below this one.
-   `SPC wK`    Close the window above this one.
-   `SPC wH`    Close the window left of this one.
-   `SPC wL`    Close the window right of this one.
+   <space>wc        Close current window.
+   <space>wJ        Close window below this one.
+   <space>wK        Close the window above this one.
+   <space>wH        Close the window left of this one.
+   <space>wL        Close the window right of this one.
 
-   `SPC wm`    Toggle maximize current window.
-   `SPC wM`    Open current window in it's own tab.
+   <space>wm        Toggle maximize current window.
+   <space>wM        Open current window in it's own tab.
 
-   `SPC w1`    Move to window 1.
-   `SPC w2`    Move to window 2.
-   `SPC w3`    Move to window 3.
-   `SPC w4`    Move to window 4.
-   `SPC w5`    Move to window 5.
-   `SPC w6`    Move to window 6.
-   `SPC w7`    Move to window 7.
-   `SPC w8`    Move to window 8.
-   `SPC w9`    Move to window 9. 
+   <space>w1        Move to window 1.
+   <space>w2        Move to window 2.
+   <space>w3        Move to window 3.
+   <space>w4        Move to window 4.
+   <space>w5        Move to window 5.
+   <space>w6        Move to window 6.
+   <space>w7        Move to window 7.
+   <space>w8        Move to window 8.
+   <space>w9        Move to window 9.
 
-   `SPC wC1`   Close window 1.
-   `SPC wC2`   Close window 2.
-   `SPC wC3`   Close window 3.
-   `SPC wC4`   Close window 4.
-   `SPC wC5`   Close window 5.
-   `SPC wC6`   Close window 6.
-   `SPC wC7`   Close window 7.
-   `SPC wC8`   Close window 8.
-   `SPC wC9`   Close window 9.
+   <space>wC1       Close window 1.
+   <space>wC2       Close window 2.
+   <space>wC3       Close window 3.
+   <space>wC4       Close window 4.
+   <space>wC5       Close window 5.
+   <space>wC6       Close window 6.
+   <space>wC7       Close window 7.
+   <space>wC8       Close window 8.
+   <space>wC9       Close window 9.
 
 BUFFERS
 
-   `SPC bb`    List open buffers.
+   <space>bb        List open buffers.
 
 TABS/LAYOUT
 
-   `SPC ll`    Create new tab.
-   `SPC ln`    Move to next tab.
-   `SPC lp`    Move to previous tab.
-   `SPC lc`    Close current tab.
-   `SPC l1`    Move to tab 1.
-   `SPC l2`    Move to tab 2.
-   `SPC l3`    Move to tab 3.
-   `SPC l4`    Move to tab 4.
-   `SPC l5`    Move to tab 5.
-   `SPC l6`    Move to tab 6.
-   `SPC l7`    Move to tab 7.
-   `SPC l8`    Move to tab 8.
-   `SPC l9`    Move to tab 9.
+   <space>ll        Create new tab.
+   <space>ln        Move to next tab.
+   <space>lp        Move to previous tab.
+   <space>lc        Close current tab.
+   <space>l1        Move to tab 1.
+   <space>l2        Move to tab 2.
+   <space>l3        Move to tab 3.
+   <space>l4        Move to tab 4.
+   <space>l5        Move to tab 5.
+   <space>l6        Move to tab 6.
+   <space>l7        Move to tab 7.
+   <space>l8        Move to tab 8.
+   <space>l9        Move to tab 9.
 
 COMMENTING
 
-   `SPC cl`    Toggle comments.
+   <space>cl        Toggle comments.
 
 TOGGLES
 
-   `SPC tg`    Toggle Golden Ratio (windows resize as you move between them).
-   `SPC tn`    Toggle line numbering.
-   `SPC tr`    Toggle relative line numbering.
+   <space>tg        Toggle Golden Ratio (windows resize as you move 
+                    between them).
+   <space>tn        Toggle line numbering.
+   <space>tr        Toggle relative line numbering.
 
 APPLICATIONS
 
-   `SPC ag`    Gundo.
+   <space>ag        Gundo.
 
 ===============================================================================
 4. CONFIGURATION FILES                                    *synicvim-configfiles*

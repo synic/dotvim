@@ -1,9 +1,0 @@
-[submodule "bundle/neobundle.vim"]
-	path = bundle/neobundle.vim
-	url = https://github.com/Shougo/neobundle.vim
-[submodule "bundle/Vundle.vim"]
-	path = bundle/Vundle.vim
-	url = https://github.com/VundleVim/Vundle.vim.git
-[submodule "bundle/repos/github.com/Shougo/dein.vim"]
-	path = bundle/repos/github.com/Shougo/dein.vim
-	url = https://github.com/Shougo/dein.vim

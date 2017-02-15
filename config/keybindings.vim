@@ -8,7 +8,8 @@ vnoremap fd <esc>
 
 " ### CONFIGURATION FILES {{{1
 "----------------------------------------------------------------------------"
-nmap <silent> <space>fed :e ~/.vim/vimrc<cr>
+nmap <silent> <space>fed :e $VIMHOME/config/vimrc<cr>
+nmap <silent> <space>fes :e $VIMHOME/config<cr>
 
 " ### CUSTOM TEXT OBJECTS {{{1
 "----------------------------------------------------------------------------"
@@ -166,6 +167,6 @@ nmap <silent> <space>ag :GundoToggle<cr>
 " ### FOOTER/MODELINE {{{1
 "----------------------------------------------------------------------------"
 " auto-reload this file when saving
-autocmd! bufwritepost keybindings.vim source %
+autocmd! bufwritepost keybindingsvim source %
 
 " vim:foldmethod=marker
