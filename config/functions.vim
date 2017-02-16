@@ -1,6 +1,10 @@
 " VIM Custom Functions
 " Use `zR` to open all folds
 
+" ### CUSTOM VARIABLES {{{1
+"----------------------------------------------------------------------------"
+let s:auto_resize_windows = 1
+
 " ### CUSTOM FUNCTIONS {{{1
 "----------------------------------------------------------------------------"
 " yank entire buffer into clipboard
@@ -87,7 +91,7 @@ endfunc
 " execute a window command, and then equalize windows
 function! WindowCommand(cmd)
     execute a:cmd
-    if !g:golden_ratio_enabled
+    if !g:golden_ratio_enabled && s:auto_resize_windows
        wincmd =
     endif
 endfunction
@@ -101,7 +105,20 @@ function! ToggleGoldenRatio()
     else
         let g:golden_ratio_enabled = 0
         echo 'Disabled golden ratio'
-        wincmd =
+        if s:auto_resize_windows
+            wincmd =
+        end
+    endif
+endfunction
+
+" toggle auto resize windows
+function! ToggleAutoResizeWindows()
+    if s:auto_resize_windows
+        let s:auto_resize_windows = 0
+        echo 'Disabled window auto resizing'
+    else
+        let s:auto_resize_windows = 1
+        echo 'Enabled window auto resizing'
     endif
 endfunction
 

@@ -147,7 +147,10 @@ nmap <silent> <space>th :set nohlsearch!<cr>
 nmap <silent> ,, :noh<cr>
 
 " golden ratio
-map <space>tg :call ToggleGoldenRatio()<cr>
+map <silent> <space>tg :call ToggleGoldenRatio()<cr>
+
+" auto resize windows
+map <silent> <space>tw :call ToggleAutoResizeWindows()<cr>
 
 " ### PROJECT MANAGEMENT {{{1
 "----------------------------------------------------------------------------"
@@ -167,6 +170,6 @@ nmap <silent> <space>ag :GundoToggle<cr>
 " ### FOOTER/MODELINE {{{1
 "----------------------------------------------------------------------------"
 " auto-reload this file when saving
-autocmd! bufwritepost keybindingsvim source %
+autocmd! bufwritepost keybindings.vim source %
 
 " vim:foldmethod=marker
