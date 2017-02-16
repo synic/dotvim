@@ -59,7 +59,6 @@ Plug 'pangloss/vim-javascript'         " javascript utils
 Plug 'sjl/gundo.vim'                   " undo tree
 
 " git
-Plug 'jreybert/vimagit'
 Plug 'mattn/webapi-vim'                " required for gist-vim
 Plug 'mattn/gist-vim'                  " post gists to gist.github.com
 Plug 'tpope/vim-fugitive'              " git utils

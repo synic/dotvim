@@ -43,7 +43,7 @@ nnoremap <silent> <space>ge :Gedit<cr>
 nnoremap <silent> <space>gi :Git add %<cr>
 map <space>gr :Gist --private<cr>
 map <space>gR :Gist --public<cr>
-map <space>gs :call magit#show_magit('h')<cr>
+map <space>gs :Gstatus<cr>
 
 " ### SYNTAX CHECKING {{{1
 "----------------------------------------------------------------------------"
