@@ -19,7 +19,7 @@ let g:gundo_preview_height = 25
 " ### davidhalter/jedi-vim {{{1
 "----------------------------------------------------------------------------"
 let g:jedi#popup_on_dot = 0
-let g:jedi#show_call_signatures = 1
+let g:jedi#show_call_signatures = 0
 let g:jedi#smart_auto_mappings = 0
 let g:jedi#goto_definitions_command = 'gd'
 let g:jedi#completions_command = '<C-n>'
@@ -70,12 +70,14 @@ let g:EasyMotion_startofline = 1 " don't keep cursor column when JK motion
 
 " ### ctrlpvim/ctrlp.vim {{{1
 "----------------------------------------------------------------------------"
+" enable buffer deletion plugin
+call ctrlp_bdelete#init()
+
 let ctrlp_dir_ignore =
     \ '(\.svn|\.git|\.hg|node_modules|globalstatic|dumps|sql|build|dist|docs)$'
 let g:ctrlp_custom_ignore = {
         \ 'dir': ctrlp_dir_ignore,
     \ }
-let g:ctrlp_buffer_func = {'enter': 'CtrlPMappings'}
 let g:ctrlp_command = 'CtrlPMixed'
 let g:ctrlp_max_files = 80000
 let g:ctrlp_match_window = 'bottom,order:ttb,min:10,max:10,results:10'

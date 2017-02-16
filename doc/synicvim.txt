@@ -152,7 +152,11 @@ COMMENTING
 
 TOGGLES
 
-   <space>tg        Toggle Golden Ratio (windows resize as you move 
+   <space>tw        Toggle auto equalizing of windows.  When you open and
+                    close windows, they will be automatically equalized using
+                    `:wincmd =` - this doesn't really work with Golden Ratio,
+                    so it will be disabled if you toggle Golden Ratio on.
+   <space>tg        Toggle Golden Ratio (windows resize as you move
                     between them).
    <space>tn        Toggle line numbering.
    <space>tr        Toggle relative line numbering.

@@ -133,19 +133,6 @@ function! TrimEndLines()
     call setpos('.', save_cursor)
 endfunction
 
-" a function to set ctrl-p mappings
-function! CtrlPMappings()
-  nnoremap <buffer> <silent> <C--> :call <sid>DeleteBuffer()<cr>
-endfunction
-
-" delete buffers from ctrlp
-function! s:DeleteBuffer()
-  let path = fnamemodify(getline('.')[2:], ':p')
-  let bufn = matchstr(path, '\v\d+\ze\*No Name')
-  exec "bd" bufn ==# "" ? path : bufn
-  exec "norm \<F5>"
-endfunction
-
 " Zoom / Restore window.
 function! s:ZoomToggle() abort
     if exists('t:zoomed') && t:zoomed
