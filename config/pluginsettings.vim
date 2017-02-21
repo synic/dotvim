@@ -145,6 +145,7 @@ let NERDTreeHijackNetrw = 0
 " ### dyng/ctrlsf.vim {{{1
 "----------------------------------------------------------------------------"
 let g:better_whitespace_filetypes_blacklist = ['ctrlsf']
+let g:ctrlsf_default_view_mode = 'compact'
 
 " ### bling/vim-airline {{{1
 "----------------------------------------------------------------------------"

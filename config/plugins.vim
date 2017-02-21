@@ -18,6 +18,7 @@ call plug#begin('~/.vim/plugins')
 Plug 'hynek/vim-python-pep8-indent'    " for auto indenting pep8 style
 Plug 'python-rope/ropevim'             " refactoring, finding occurrences
 Plug 'python-mode/python-mode'
+Plug 'davidhalter/jedi-vim'            " python autocomplete
 
 " home screen
 Plug 'mhinz/vim-startify'              " pretty start page
@@ -41,7 +42,6 @@ Plug 'jmcantrell/vim-virtualenv'       " virtualenv
 Plug 'ntpeters/vim-better-whitespace'  " removes spurious whitespace
 Plug 'tpope/vim-commentary'            " quickly toggle comments
 Plug 'szw/vim-tags'
-Plug 'davidhalter/jedi-vim'            " python autocomplete
 Plug 'michaeljsmith/vim-indent-object' " for selecting indent objects
 Plug 'kshenoy/vim-signature'           " visible marks
 Plug 'vim-scripts/Align'
