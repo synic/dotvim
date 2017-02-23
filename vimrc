@@ -105,3 +105,4 @@ autocmd! bufwritepost gvimrc source %
 source $VIMHOME/config/pluginsettings.vim      " plugin specific settings
 source $VIMHOME/config/functions.vim           " user-defined functions
 source $VIMHOME/config/keybindings.vim         " custom keybindings
+source $VIMHOME/config/autocmds.vim            " auto commands
