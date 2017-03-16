@@ -80,6 +80,7 @@ Plug 'bling/vim-airline'
 " misc
 Plug 'vim-scripts/openssl.vim'
 Plug 'Valloric/ListToggle'
+Plug 'ConradIrwin/vim-bracketed-paste'
 
 call plug#end()
 
