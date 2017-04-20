@@ -63,6 +63,7 @@ Plug 'mattn/webapi-vim'                " required for gist-vim
 Plug 'mattn/gist-vim'                  " post gists to gist.github.com
 Plug 'tpope/vim-fugitive'              " git utils
 Plug 'airblade/vim-gitgutter'
+Plug 'gregsexton/gitv', {'on': ['Gitv']}
 
 " movement
 Plug 'Lokaltog/vim-easymotion'         " much quicker movement

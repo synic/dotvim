@@ -156,6 +156,7 @@ map <silent> <space>tw :call ToggleAutoResizeWindows()<cr>
 "----------------------------------------------------------------------------"
 map _ :call NetRWCurrentProject()<cr>
 nmap <silent> <space>ph :CtrlP<cr>
+nmap <silent> <leader> <space>ph :CtrlP<cr>
 nmap <silent> <space>pf :CtrlP<cr>
 nmap <silent> <space>pn :call NERDTreeCurrentProject()<cr>
 nmap <silent> <space>pd :NERDTreeClose<cr>
@@ -163,6 +164,7 @@ nmap <silent> <space>pd :NERDTreeClose<cr>
 " project searching
 nmap <silent> <space>* :CtrlSF<cr>
 nmap <silent> <space>sp :call SearchInProjectRoot()<cr>
+nmap <silent> <space>rl :call RepeatLastSearch()<cr>
 
 " gundo
 nmap <silent> <space>ag :GundoToggle<cr>
