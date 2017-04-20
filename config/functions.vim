@@ -4,6 +4,7 @@
 " ### CUSTOM VARIABLES {{{1
 "----------------------------------------------------------------------------"
 let s:auto_resize_windows = 1
+let s:last_search_term = ''
 
 " ### CUSTOM FUNCTIONS {{{1
 "----------------------------------------------------------------------------"
@@ -29,9 +30,18 @@ endfunction
 " search in the project root
 function! SearchInProjectRoot()
     call inputsave()
-    let terms = input('Search: ')
+    let s:last_search_term = input('Search: ')
     call inputrestore()
-    execute ':CtrlSF "' . terms . '"'
+    execute ':CtrlSF "' . s:last_search_term . '"'
+endfunction
+
+" repeat last search
+function! RepeatLastSearch()
+    if s:last_search_term != ''
+        execute ':CtrlSF "' . s:last_search_term . '"'
+    else
+        echo 'No search to repeat!'
+    endif
 endfunction
 
 " save session
