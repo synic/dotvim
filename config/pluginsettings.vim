@@ -71,7 +71,9 @@ let g:EasyMotion_startofline = 1 " don't keep cursor column when JK motion
 " ### ctrlpvim/ctrlp.vim {{{1
 "----------------------------------------------------------------------------"
 " enable buffer deletion plugin
-call ctrlp_bdelete#init()
+if !empty(glob(expand('~/.vim/plugins/ctrlp_bdelete.vim')))
+    call ctrlp_bdelete#init()
+endif
 
 let ctrlp_dir_ignore =
     \ '(\.svn|\.git|\.hg|node_modules|globalstatic|dumps|sql|build|dist|docs)$'
