@@ -1,5 +1,5 @@
 " set the font for the gui application
-set guifont=Source\ Code\ Pro\ for\ Powerline:h10
+set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 8
 
 " turn off gui-only toolbars, etc
 set guioptions=agitc
