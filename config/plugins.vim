@@ -82,6 +82,7 @@ Plug 'bling/vim-airline'
 Plug 'vim-scripts/openssl.vim'
 Plug 'Valloric/ListToggle'
 Plug 'ConradIrwin/vim-bracketed-paste'
+Plug 'wakatime/vim-wakatime'
 
 call plug#end()
 
