@@ -48,6 +48,10 @@ set nomousefocus
 set mousemodel=extend
 set mouse=a
 
+" enable modeline support
+set modeline
+set modelines=5
+
 " show paren matches for 5 tenths of a second
 set showmatch
 set matchtime=5

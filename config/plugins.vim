@@ -46,6 +46,7 @@ Plug 'michaeljsmith/vim-indent-object' " for selecting indent objects
 Plug 'kshenoy/vim-signature'           " visible marks
 Plug 'vim-scripts/Align'
 Plug 'godlygeek/tabular'               " align text, even tables
+Plug 'ap/vim-css-color'
 
 " search
 Plug 'haya14busa/incsearch.vim'
