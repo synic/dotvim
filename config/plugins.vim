@@ -47,6 +47,7 @@ Plug 'kshenoy/vim-signature'           " visible marks
 Plug 'vim-scripts/Align'
 Plug 'godlygeek/tabular'               " align text, even tables
 Plug 'ap/vim-css-color'
+Plug 'mustache/vim-mustache-handlebars'
 
 " search
 Plug 'haya14busa/incsearch.vim'
