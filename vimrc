@@ -38,6 +38,7 @@ set incsearch           " use incremental search
 set wildmenu
 set wildmode=longest:full,full
 set hlsearch            " keep search results highlighted
+set equalalways         " keep windows equalized
 
 " display bufnr:filetype (dos,unix,mac) in status line
 set statusline=%<%n:%f%h%m%r%=\ %{&ff}\ %l,%c%V\ %P
@@ -69,9 +70,11 @@ set textwidth=78
 set formatoptions+=t
 set hidden
 set colorcolumn=80
+
+" line numbering
 set number
 set relativenumber
-set noequalalways
+
 " attempt to create swap directory if it doesn't exist
 silent !mkdir $VIMHOME/swap > /dev/null 2>&1  
 set dir=$VIMHOME/swap

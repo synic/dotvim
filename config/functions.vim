@@ -3,8 +3,8 @@
 
 " ### CUSTOM VARIABLES {{{1
 "----------------------------------------------------------------------------"
-let s:auto_resize_windows = 1
 let s:last_search_term = ''
+let s:current_equalalways = 1
 
 " ### CUSTOM FUNCTIONS {{{1
 "----------------------------------------------------------------------------"
@@ -98,14 +98,6 @@ function! NumberToggle()
   endif
 endfunc
 
-" execute a window command, and then equalize windows
-function! WindowCommand(cmd)
-    execute a:cmd
-    if !g:golden_ratio_enabled && s:auto_resize_windows
-       wincmd =
-    endif
-endfunction
-
 " toggle golden ratio functionality
 function! ToggleGoldenRatio()
     execute ':GoldenRatioToggle'
@@ -115,20 +107,8 @@ function! ToggleGoldenRatio()
     else
         let g:golden_ratio_enabled = 0
         echo 'Disabled golden ratio'
-        if s:auto_resize_windows
-            wincmd =
-        end
-    endif
-endfunction
-
-" toggle auto resize windows
-function! ToggleAutoResizeWindows()
-    if s:auto_resize_windows
-        let s:auto_resize_windows = 0
-        echo 'Disabled window auto resizing'
-    else
-        let s:auto_resize_windows = 1
-        echo 'Enabled window auto resizing'
+        set equalalways
+        wincmd =
     endif
 endfunction
 

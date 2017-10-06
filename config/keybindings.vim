@@ -65,15 +65,15 @@ nmap <silent> <space>wj :wincmd j<cr>
 nmap <silent> <space>wh :wincmd h<cr>
 nmap <silent> <space>wl :wincmd l<cr>
 nmap <silent> <space><tab> :b#<cr>
-nmap <silent> <space>w/ :call WindowCommand(':vs')<cr>
-nmap <silent> <space>w- :call WindowCommand(':sp')<cr>
-nmap <silent> <space>wc :call WindowCommand(':close')<cr>
-nmap <silent> <space>wd :call WindowCommand(':q')<cr>
+nmap <silent> <space>w/ :vs<cr>
+nmap <silent> <space>w- :sp<cr>
+nmap <silent> <space>wc :close<cr>
+nmap <silent> <space>wd :q<cr>
 nmap <silent> <space>w= <C-w>=
-nmap <silent> <space>wJ :call WindowCommand(':Qj')<cr>
-nmap <silent> <space>wH :call WindowCommand(':Qh')<cr>
-nmap <silent> <space>wK :call WindowCommand(':Qk')<cr>
-nmap <silent> <space>wL :call WindowCommand(':Ql')<cr>
+nmap <silent> <space>wJ :Qj<cr>
+nmap <silent> <space>wH :Qh<cr>
+nmap <silent> <space>wK :Qk<cr>
+nmap <silent> <space>wL :Ql<cr>
 nmap <silent> <space>wm :ZoomToggle<cr>
 nmap <silent> <space>wM :tabedit %<cr>
 nmap <silent> <space>w1 :execute ':1wincmd w'<cr>
@@ -85,15 +85,15 @@ nmap <silent> <space>w6 :execute ':6wincmd w'<cr>
 nmap <silent> <space>w7 :execute ':7wincmd w'<cr>
 nmap <silent> <space>w8 :execute ':8wincmd w'<cr>
 nmap <silent> <space>w9 :execute ':9wincmd w'<cr>
-nmap <silent> <space>wC1 :execute ':1wincmd w'<cr>:call WindowCommand(':close')<cr>
-nmap <silent> <space>wC2 :execute ':2wincmd w'<cr>:call WindowCommand(':close')<cr>
-nmap <silent> <space>wC3 :execute ':3wincmd w'<cr>:call WindowCommand(':close')<cr>
-nmap <silent> <space>wC4 :execute ':4wincmd w'<cr>:call WindowCommand(':close')<cr>
-nmap <silent> <space>wC5 :execute ':5wincmd w'<cr>:call WindowCommand(':close')<cr>
-nmap <silent> <space>wC6 :execute ':6wincmd w'<cr>:call WindowCommand(':close')<cr>
-nmap <silent> <space>wC7 :execute ':7wincmd w'<cr>:call WindowCommand(':close')<cr>
-nmap <silent> <space>wC8 :execute ':8wincmd w'<cr>:call WindowCommand(':close')<cr>
-nmap <silent> <space>wC9 :execute ':9wincmd w'<cr>:call WindowCommand(':close')<cr>
+nmap <silent> <space>wC1 :execute ':1wincmd w'<cr>:close<cr>
+nmap <silent> <space>wC2 :execute ':2wincmd w'<cr>:close<cr>
+nmap <silent> <space>wC3 :execute ':3wincmd w'<cr>:close<cr>
+nmap <silent> <space>wC4 :execute ':4wincmd w'<cr>:close<cr>
+nmap <silent> <space>wC5 :execute ':5wincmd w'<cr>:close<cr>
+nmap <silent> <space>wC6 :execute ':6wincmd w'<cr>:close<cr>
+nmap <silent> <space>wC7 :execute ':7wincmd w'<cr>:close<cr>
+nmap <silent> <space>wC8 :execute ':8wincmd w'<cr>:close<cr>
+nmap <silent> <space>wC9 :execute ':9wincmd w'<cr>:close<cr>
 
 " ### BUFFERS {{{1
 "----------------------------------------------------------------------------"
