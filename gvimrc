@@ -1,5 +1,11 @@
 " set the font for the gui application
-set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 8
+if has('macunix')
+    " mac version
+    set guifont=Hack:h10
+else
+    " linux version
+    set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 8
+endi
 
 " turn off gui-only toolbars, etc
 set guioptions=agitc
