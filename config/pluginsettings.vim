@@ -55,7 +55,10 @@ let g:gist_post_private = 1
 
 " ### airblade/vim-gitgutter {{{1
 "----------------------------------------------------------------------------"
-set signcolumn=yes
+
+if !has('nvim')
+    set signcolumn=yes
+endif
 
 " ### ajreybert/vimagit {{{1
 "----------------------------------------------------------------------------"
@@ -147,6 +150,7 @@ let NERDTreeHijackNetrw = 0
 "----------------------------------------------------------------------------"
 let g:better_whitespace_filetypes_blacklist = ['ctrlsf']
 let g:ctrlsf_default_view_mode = 'compact'
+let g:ctrlsf_default_root = 'project'
 
 " ### bling/vim-airline {{{1
 "----------------------------------------------------------------------------"

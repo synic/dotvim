@@ -97,6 +97,7 @@ endif
 try
     colorscheme gruvbox
     set background=dark
+    hi ColorColumn guibg=#303030 ctermbg=236
 catch /^Vim\%((\a\+)\)\=:E185/
     colorscheme ron
 endtry
