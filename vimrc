@@ -90,6 +90,11 @@ set completeopt-=preview
 " switch syntax highlighting on
 syntax enable
 
+" if using a mac, set LC_CTYPE if it's not already
+if has('macunix') && empty($LC_CTYPE)
+    let $LC_CTYPE = 'en_US.UTF-8'
+endif
+
 if has('vim_starting')
     if &compatible
         set nocompatible " disable vi settings

@@ -5,7 +5,7 @@ if has('macunix')
 else
     " linux version
     set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 8
-endi
+endif
 
 " turn off gui-only toolbars, etc
 set guioptions=agitc
