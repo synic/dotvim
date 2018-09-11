@@ -90,6 +90,10 @@ set completeopt-=preview
 " switch syntax highlighting on
 syntax enable
 
+" keep selection after indent
+vnoremap < <gv
+vnoremap > >gv
+
 " if using a mac, set LC_CTYPE if it's not already
 if has('macunix') && empty($LC_CTYPE)
     let $LC_CTYPE = 'en_US.UTF-8'

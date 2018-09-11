@@ -51,6 +51,7 @@ Plug 'mustache/vim-mustache-handlebars'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'keith/swift.vim'
 Plug 'posva/vim-vue'
+Plug 'milch/vim-fastlane'
 
 " search
 Plug 'haya14busa/incsearch.vim'
