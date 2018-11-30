@@ -155,6 +155,9 @@ let g:ctrlsf_auto_close = {
             \ "normal": 0,
             \ "compact": 1
             \ }
+let g:ctrlsf_auto_focus = {
+            \ "at": "start"
+            \ }
 
 " ### bling/vim-airline {{{1
 "----------------------------------------------------------------------------"
