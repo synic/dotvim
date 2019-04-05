@@ -169,6 +169,11 @@ nmap <silent> <space>rl :call RepeatLastSearch()<cr>
 " gundo
 nmap <silent> <space>ag :GundoToggle<cr>
 
+" ### COMMAND MODIFICATIONS {{{1
+"----------------------------------------------------------------------------"
+" make J join lines without inserting spaces
+nnoremap J :call JoinSpaceless()<CR>
+
 " ### FOOTER/MODELINE {{{1
 "----------------------------------------------------------------------------"
 " auto-reload this file when saving

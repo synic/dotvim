@@ -150,7 +150,7 @@ let NERDTreeHijackNetrw = 0
 "----------------------------------------------------------------------------"
 let g:better_whitespace_filetypes_blacklist = ['ctrlsf']
 let g:ctrlsf_default_view_mode = 'compact'
-let g:ctrlsf_default_root = 'project'
+let g:ctrlsf_default_root = 'project+wf'
 let g:ctrlsf_auto_close = {
             \ "normal": 0,
             \ "compact": 1

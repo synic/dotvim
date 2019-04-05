@@ -119,27 +119,38 @@ command! DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
 " trim the blank lines at the end of the current file
 function! TrimEndLines()
     let save_cursor = getpos('.')
-    :silent! %s#\($\n\s*\)\+\%$##
+    silent! %s#\($\n\s*\)\+\%$##
     call setpos('.', save_cursor)
 endfunction
 
 " Zoom / Restore window.
 function! s:ZoomToggle() abort
-    if exists('t:zoomed') && t:zoomed
-        execute t:zoom_winrestcmd
-        let t:zoomed = 0
-    else
-        let t:zoom_winrestcmd = winrestcmd()
-        resize
-        vertical resize
-        let t:zoomed = 1
-    endif
+if exists('t:zoomed') && t:zoomed
+    execute t:zoom_winrestcmd
+    let t:zoomed = 0
+else
+    let t:zoom_winrestcmd = winrestcmd()
+    resize
+    vertical resize
+    let t:zoomed = 1
+endif
 endfunction
 command! ZoomToggle call s:ZoomToggle()
+
+" join lines without inserting spaces
+fun! JoinSpaceless()
+execute 'normal gJ'
+
+    " Character under cursor is whitespace?
+    if matchstr(getline('.'), '\%' . col('.') . 'c.') =~ '\s'
+        " When remove it!
+        execute 'normal dw'
+    endif
+endfun
 
 " ### FOOTER/MODELINE {{{1
 "----------------------------------------------------------------------------"
 " auto-reload this file when saving
- 
+
 autocmd! bufwritepost functions.vim source %
 " vim:foldmethod=marker

@@ -10,7 +10,7 @@ autocmd VimResized * :wincmd =
 "----------------------------------------------------------------------------"
 
 " automatically change to the file's directory when editing
-autocmd BufEnter * lcd %:p:h
+autocmd BufEnter * silent! lcd %:p:h
 
 " auto-reload this file when saving
 autocmd! bufwritepost autocmds.vim source %
