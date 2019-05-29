@@ -128,6 +128,7 @@ nmap <space>bh :Startify<cr>
 "----------------------------------------------------------------------------"
 map - :call NetRWCurrentFile()<cr>
 nmap <silent> <space>fn :call NERDTreeCurrentFile()<cr>
+nmap <silent> <space>ob 1<C-g>:<C-U>echo v:statusmsg<CR>
 
 " ### SESSIONS {{{1
 "----------------------------------------------------------------------------"
