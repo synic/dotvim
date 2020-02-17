@@ -33,6 +33,7 @@ let g:UltiSnipsSnippetDirectories = [
 let g:UltiSnipsExpandTrigger = '<tab>'
 let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+let g:UltiSnipsUsePythonVersion = 3
 
 " ### Valloric/ListToggle {{{1
 "----------------------------------------------------------------------------"
@@ -118,8 +119,8 @@ if filereadable(expand('~/.cache/startify_bookmarks.vim'))
     source ~/.cache/startify_bookmarks.vim
 else
     let g:startify_bookmarks = [
-        \ {'eventboard.io': '/Users/synic/Projects/eventboard.io'},
-        \ {'skedup': '/Users/synic/Projects/skedup'},
+        \ {'uplynk': '/Users/aolsen/Projects/eventboard.io'},
+        \ {'services': '/Users/aolsen/Projects/skedup'},
         \ ]
 endif
 
