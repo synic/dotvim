@@ -25,8 +25,6 @@ Plug 'mhinz/vim-startify'              " pretty start page
 
 " project management
 Plug 'ctrlpvim/ctrlp.vim'              " project file fuzzy-matcher
-Plug 'junegunn/fzf', { 'do': './install --bin' }
-Plug 'junegunn/fzf.vim'
 Plug 'd11wtq/ctrlp_bdelete.vim'
 Plug 'dbakker/vim-projectroot'         " locate project
 Plug 'scrooloose/nerdtree'             " file tree
@@ -54,6 +52,7 @@ Plug 'hail2u/vim-css3-syntax'
 Plug 'keith/swift.vim'
 Plug 'posva/vim-vue'
 Plug 'milch/vim-fastlane'
+Plug 'editorconfig/editorconfig-vim'
 
 " search
 Plug 'haya14busa/incsearch.vim'
