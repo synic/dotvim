@@ -10,7 +10,7 @@ snippet todostub "TODO stub comment" w
 endsnippet
 
 snippet ipdb "BREAKPOINT" w
-import ipdb; ipdb.set_trace()  # TODO: remove this
+breakpoint()  # TODO: remove this
 endsnippet
 
 snippet tpdb "TEST BREAKPOINT" w
@@ -24,6 +24,10 @@ endsnippet
 snippet ifsuper "ifsupertest" w
 if getattr(settings, 'SUPERTEST', False):
 	import ipdb; ipdb.set_trace()  # TODO: remove this
+endsnippet
+
+snippet bb "BREAKPOINT" w
+breakpoint()  # TODO: remove this
 endsnippet
 
 # vim:ft=snippets:
