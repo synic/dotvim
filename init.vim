@@ -1,1 +1,1 @@
-vimrc
+/home/synic/.vim/vimrc

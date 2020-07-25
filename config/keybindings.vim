@@ -11,6 +11,10 @@
 nmap <silent> <space>fed :e $VIMHOME/vimrc<cr>
 nmap <silent> <space>fes :e $VIMHOME/config<cr>
 
+" ### FILES {{{1
+"----------------------------------------------------------------------------"
+nmap <silent> <space>fs :w<cr>
+
 " ### CUSTOM TEXT OBJECTS {{{1
 "----------------------------------------------------------------------------"
 map yig :call SelectBuffer()<cr>
