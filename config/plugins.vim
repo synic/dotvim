@@ -5,15 +5,9 @@
 "----------------------------------------------------------------------------"
 " install vim-plug if it's not already installed
 if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -sfLo /tmp/vim-plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/0.10.0/plug.vim
-  let hash = trim(system('md5sum /tmp/vim-plug.vim | cut -d " " -f1'))
-  if hash != 'd4f29f28e38c6bb552b69bf7eb723b68'
-      autocmd VimEnter * echo('vim-plug has incorrect hash: ' . hash)
-  else
-    silent !cp /tmp/vim-plug.vim ~/.vim/autoload/plug.vim
+  silent !curl -sfLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC | Startify | Ql
-  endif
 endif
 
 " ### PLUGIN LIST {{{1
