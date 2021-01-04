@@ -57,6 +57,7 @@ Plug 'editorconfig/editorconfig-vim'
 " search
 Plug 'haya14busa/incsearch.vim'
 Plug 'dyng/ctrlsf.vim'                 " search project
+Plug 'pelodelfuego/vim-swoop'
 
 " syntax files
 Plug 'plasticboy/vim-markdown'         " markdown syntax highlighting
