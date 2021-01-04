@@ -71,11 +71,15 @@ set formatoptions+=t
 set hidden
 set colorcolumn=80
 
+" messages
+set shortmess=a
+set cmdheight=2
+
 " line numbering
 set number
 
 " attempt to create swap directory if it doesn't exist
-silent !mkdir $VIMHOME/swap > /dev/null 2>&1  
+silent !mkdir $VIMHOME/swap > /dev/null 2>&1
 set dir=$VIMHOME/swap
 set nobackup writebackup
 

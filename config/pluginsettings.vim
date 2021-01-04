@@ -65,6 +65,12 @@ endif
 "----------------------------------------------------------------------------"
 let g:magit_show_help = 0
 
+" ### Yggdroot/indentLine {{{1
+"----------------------------------------------------------------------------"
+let g:indentLine_char_list = ['┊']
+let g:indentLine_color_term = 239
+let g:indentLine_color_gui = '#A4E57E'
+
 " ### Lokaltog/vim-easymotion {{{1
 "----------------------------------------------------------------------------"
 let g:EasyMotion_smartcase = 1
@@ -74,9 +80,10 @@ let g:EasyMotion_startofline = 1 " don't keep cursor column when JK motion
 " ### ctrlpvim/ctrlp.vim {{{1
 "----------------------------------------------------------------------------"
 " enable buffer deletion plugin
-if !empty(glob(expand('~/.vim/plugins/ctrlp_bdelete.vim')))
+try
     call ctrlp_bdelete#init()
-endif
+catch
+endtry
 
 let ctrlp_dir_ignore =
     \ '(\.svn|\.git|\.hg|node_modules|globalstatic|dumps|sql|build|dist|docs)$'
@@ -119,8 +126,8 @@ if filereadable(expand('~/.cache/startify_bookmarks.vim'))
     source ~/.cache/startify_bookmarks.vim
 else
     let g:startify_bookmarks = [
-        \ {'uplynk': '/Users/aolsen/Projects/eventboard.io'},
-        \ {'services': '/Users/aolsen/Projects/skedup'},
+        \ {'hitched-web': '/home/synic/Projects/hitched-web'},
+        \ {'hitched-react-frontend': '/home/synic/Projects/hitched-react-frontend'},
         \ ]
 endif
 
