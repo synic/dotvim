@@ -71,10 +71,6 @@ set formatoptions+=t
 set hidden
 set colorcolumn=80
 
-" messages
-set shortmess=a
-set cmdheight=2
-
 " line numbering
 set number
 
