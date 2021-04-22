@@ -86,7 +86,7 @@ if !empty(glob('~/.vim/autoload/plug.vim'))
 
   " interface
   Plug 'bling/vim-airline'
-  Plug 'Yggdroot/indentLine'
+  " Plug 'Yggdroot/indentLine'
 
   " misc
   Plug 'vim-scripts/openssl.vim'
