@@ -1,16 +1,6 @@
 " VIM Base and Plugin Keybindings
 " Use `zR` to open all folds
 
-" ### REMAP ESCAPE KEY {{{1
-"----------------------------------------------------------------------------"
-inoremap fd <esc>
-vnoremap fd <esc>
-
-" ### CONFIGURATION FILES {{{1
-"----------------------------------------------------------------------------"
-nmap <silent> <space>fed :e $VIMHOME/vimrc<cr>
-nmap <silent> <space>fes :e $VIMHOME/config<cr>
-
 " ### FILES {{{1
 "----------------------------------------------------------------------------"
 nmap <silent> <space>fs :w<cr>
@@ -52,7 +42,7 @@ map <space>gs :Gstatus<cr>
 " ### SYNTAX CHECKING {{{1
 "----------------------------------------------------------------------------"
 " go to next error
-nnoremap <silent> <space>en :lnext<cr> 
+nnoremap <silent> <space>en :lnext<cr>
 " go to previous error
 nnoremap <silent> <space>ep :lprev<cr>
 
@@ -64,20 +54,6 @@ vmap <space>cl :call ToggleComment()<cr>
 
 " ### WINDOW MANAGEMENT {{{1
 "----------------------------------------------------------------------------"
-nmap <silent> <space>wk :wincmd k<cr>
-nmap <silent> <space>wj :wincmd j<cr>
-nmap <silent> <space>wh :wincmd h<cr>
-nmap <silent> <space>wl :wincmd l<cr>
-nmap <silent> <space><tab> :b#<cr>
-nmap <silent> <space>w/ :vs<cr>
-nmap <silent> <space>w- :sp<cr>
-nmap <silent> <space>wc :close<cr>
-nmap <silent> <space>wd :q<cr>
-nmap <silent> <space>w= <C-w>=
-nmap <silent> <space>wJ :Qj<cr>
-nmap <silent> <space>wH :Qh<cr>
-nmap <silent> <space>wK :Qk<cr>
-nmap <silent> <space>wL :Ql<cr>
 nmap <silent> <space>wm :ZoomToggle<cr>
 nmap <silent> <space>wM :tabedit %<cr>
 nmap <silent> <space>w1 :execute ':1wincmd w'<cr>
@@ -148,7 +124,7 @@ nmap <silent> <space>tn :set number!<cr>
 
 " toggle search highlighting
 nmap <silent> <space>th :set nohlsearch!<cr>
-" remove last search 
+" remove last search
 nmap <silent> ,, :noh<cr>
 
 " golden ratio

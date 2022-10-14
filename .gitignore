@@ -6,7 +6,6 @@ plugins/
 autoload/plug.vim
 autoload/plug.vim.old
 
-
 # nvim spell
 spell/
 
@@ -16,3 +15,6 @@ sessions/
 
 # mac stuff
 .DS_Store
+
+# packer
+plugin/packer_compiled.lua
