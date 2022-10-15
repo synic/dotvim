@@ -76,12 +76,6 @@ function! ToggleComment()
     endif
 endfunction
 
-" open netrw in the current file's directory
-function! NetRWCurrentFile()
-    let pathname = expand('%:p:h')
-    execute 'edit ' . pathname
-endfunction
-
 " open netrw in the current file's project root
 function! NetRWCurrentProject()
     let pathname = ProjectRootGuess()

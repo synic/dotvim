@@ -136,13 +136,6 @@ let g:startify_change_to_dir = 1
 let g:startify_fortune_use_unicode = 0
 let g:startify_enable_special = 0
 
-" ### netrw {{{1
-"----------------------------------------------------------------------------"
-let g:netrw_liststyle = 1
-let g:netrw_banner = 0
-let g:netrw_list_hide =
-    \ '\(^\|\s\s\)\zs\.\S\+,\(^\|\s\s\)ntuser\.\S\+,__pycache__,\.pyc'
-
 " ### scrooloose/nerdtree {{{1
 "----------------------------------------------------------------------------"
 let NERDTreeIgnore = [

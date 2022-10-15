@@ -113,6 +113,21 @@ nmap <silent> <space>wL :Ql<cr>
 " configuration management
 nmap <silent> <space>fed :e $VIMHOME/<cr>
 
+" netrw configuration
+let g:netrw_liststyle = 1
+let g:netrw_banner = 0
+let g:netrw_list_hide =
+    \ '\(^\|\s\s\)\zs\.\S\+,\(^\|\s\s\)ntuser\.\S\+,__pycache__,\.pyc'
+
+" open netrw in the current file's directory
+function! NetRWCurrentFile()
+    let pathname = expand('%:p:h')
+    execute 'edit ' . pathname
+endfunction
+
+map - :call NetRWCurrentFile()<cr>
+nmap <silent> <space>ob 1<C-g>:<C-U>echo v:statusmsg<CR>
+
 " if using a mac, set LC_CTYPE if it's not already
 if has('macunix') && empty($LC_CTYPE)
     let $LC_CTYPE = 'en_US.UTF-8'

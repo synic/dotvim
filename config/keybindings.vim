@@ -104,11 +104,6 @@ nmap <space><space> <plug>(easymotion-overwin-f)
 "----------------------------------------------------------------------------"
 nmap <space>bh :Startify<cr>
 
-" ### FILE MANAGEMENT {{{1
-"----------------------------------------------------------------------------"
-map - :call NetRWCurrentFile()<cr>
-nmap <silent> <space>fn :call NERDTreeCurrentFile()<cr>
-nmap <silent> <space>ob 1<C-g>:<C-U>echo v:statusmsg<CR>
 
 " ### SESSIONS {{{1
 "----------------------------------------------------------------------------"
