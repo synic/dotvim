@@ -19,6 +19,7 @@ let $VIMHOME = expand('<sfile>:p:h')
 filetype plugin on
 filetype plugin indent on
 
+let mapleader=","
 set bs=2                " allow backspacing over everything in insert mode
 set cindent
 set si
@@ -93,6 +94,9 @@ vnoremap > >gv
 " remap escape key
 inoremap fd <esc>
 vnoremap fd <esc>
+
+" movement
+map vig ggVG
 
 " window management
 nmap <silent> <space>wk :wincmd k<cr>

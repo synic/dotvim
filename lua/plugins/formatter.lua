@@ -16,6 +16,9 @@ require("formatter").setup({
 		typescript = {
 			require("formatter.filetypes.typescript").prettier,
 		},
+		python = {
+			require("formatter.filetypes.python").black,
+		},
 
 		["*"] = {
 			function(pattern, replacement, flags)

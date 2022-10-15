@@ -44,7 +44,6 @@ require("packer").startup({
 				end
 
 				telescope.load_extension("projects")
-				telescope.extensions.project.project({})
 			end,
 		})
 
@@ -62,6 +61,23 @@ require("packer").startup({
 		use("jmcantrell/vim-virtualenv")
 		use("editorconfig/editorconfig-vim")
 		use("tpope/vim-commentary")
+		use({
+			"smjonas/inc-rename.nvim",
+			config = function()
+				require("inc_rename").setup()
+			end,
+		})
+		use({
+			"folke/trouble.nvim",
+			requires = "kyazdani42/nvim-web-devicons",
+			config = function()
+				require("trouble").setup({
+					-- your configuration comes here
+					-- or leave it empty to use the default settings
+					-- refer to the configuration section below
+				})
+			end,
+		})
 
 		-- formatting
 		use("ntpeters/vim-better-whitespace")

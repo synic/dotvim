@@ -28,3 +28,6 @@ telescope.load_extension("fzf")
 
 vim.keymap.set("n", "<space>bb", ":Telescope buffers<cr>")
 vim.keymap.set("n", "<space>ph", ":Telescope git_files<cr>")
+vim.keymap.set("n", "<space>bh", ":Telescope projects<cr>")
+vim.keymap.set("n", "<space>pr", ":Telescope oldfiles<cr>")
+vim.keymap.set("n", "<space>sp", ":Telescope live_grep<cr>")
