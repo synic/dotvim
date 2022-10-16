@@ -1,6 +1,7 @@
 local f = require("core.functions")
 
 vim.g.netrw_liststyle = 1
+vim.g.netrw_keepdir = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\.\S\+]]
 vim.g.NERDTreeHijackNetrw = 0
@@ -38,6 +39,11 @@ return function(use)
 						case_mode = "smart_case", -- or "ignore_case" or "respect_case"
 						-- the default case_mode is "smart_case"
 					},
+					project = {
+						base_dirs = {
+							{ "~/Projects", max_depth = 1 },
+						},
+					},
 				},
 			})
 
@@ -65,6 +71,15 @@ return function(use)
 			end
 
 			telescope.load_extension("project")
+
+			local function load_projects()
+				require("telescope").extensions.project.project({
+					display_type = "full",
+					layout_config = { width = 0.5, height = 0.5 },
+				})
+			end
+
+			vim.keymap.set("n", "<space>pp", load_projects)
 		end,
 	})
 	use({
@@ -84,7 +99,6 @@ return function(use)
 			end
 
 			vim.keymap.set("n", "<space>bh", load_projects)
-			vim.keymap.set("n", "<space>pp", ":Telescope find_files cwd=~/Projects find_command=fd,-d,1,.<cr>")
 		end,
 	})
 end
