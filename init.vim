@@ -35,7 +35,7 @@ set visualbell          " use a visual bell instead of beeping
 set incsearch           " use incremental search
 set wildmenu
 set wildmode=longest:full,full
-set hlsearch            " keep search results highlighted
+set nohlsearch
 set equalalways         " keep windows equalized
 
 " display bufnr:filetype (dos,unix,mac) in status line
@@ -117,6 +117,9 @@ nmap <silent> <space>wL :Ql<cr>
 " configuration management
 nmap <silent> <space>fed :e $VIMHOME/<cr>
 
+" toggle hlsearch
+nnoremap <silent><expr> <space>ts (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
+
 " netrw configuration
 let g:netrw_liststyle = 1
 let g:netrw_banner = 0
@@ -147,13 +150,8 @@ if has('termguicolors')
     set termguicolors
 end
 
-try
-    colorscheme gruvbox_material
-    set background=dark
-    hi ColorColumn guibg=#303030 ctermbg=236
-catch /^Vim\%((\a\+)\)\=:E185/
-    colorscheme desert
-endtry
+set background=dark
+colorscheme desert
 
 if has('nvim')
   lua require('init')
@@ -161,7 +159,7 @@ else
 
   " load plugins
   source $VIMHOME/config/plugins.vim
-  colorscheme gruvbox_material
+  colorscheme gruvbox-material
 
   " automatically reload vimrc and gvimrc on save
   autocmd! bufwritepost vimrc source %

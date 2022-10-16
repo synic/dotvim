@@ -9,7 +9,12 @@ return function(use)
 		"sonph/onehalf",
 		rtp = "vim",
 	})
-	use("sainnhe/gruvbox-material")
+	use({
+		"sainnhe/gruvbox-material",
+		config = function()
+			vim.cmd("colorscheme gruvbox-material")
+		end,
+	})
 	use("NLKNguyen/papercolor-theme")
 	use("sainnhe/everforest")
 	use("gosukiwi/vim-atom-dark")
