@@ -143,6 +143,10 @@ if has('vim_starting')
     endif
 endif
 
+if has('termguicolors')
+    set termguicolors
+end
+
 try
     colorscheme gruvbox
     set background=dark
