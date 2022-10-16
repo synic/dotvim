@@ -45,10 +45,26 @@ return function(use)
 
 			vim.keymap.set("n", "<space>bb", ":Telescope buffers<cr>")
 			vim.keymap.set("n", "<space>ph", ":Telescope git_files<cr>")
-			vim.keymap.set("n", "<space>bh", ":Telescope projects<cr>")
 			vim.keymap.set("n", "<space>pr", ":Telescope oldfiles<cr>")
 			vim.keymap.set("n", "<space>sp", ":Telescope live_grep<cr>")
-			vim.keymap.set("n", "<space>rl", telescope.builtin.resume)
+			vim.keymap.set("n", "<space>rl", ":Telescope resume<cr>")
+		end,
+	})
+	use({
+		"airblade/vim-rooter",
+		config = function()
+			vim.g.rooter_silent_chdir = 1
+		end,
+	})
+	use({
+		"nvim-telescope/telescope-project.nvim",
+		config = function()
+			local ok, telescope = pcall(require, "telescope")
+			if not ok then
+				return
+			end
+
+			telescope.load_extension("project")
 		end,
 	})
 	use({
@@ -56,12 +72,19 @@ return function(use)
 		config = function()
 			require("project_nvim").setup({})
 
-			local status, telescope = pcall(require, "telescope")
-			if not status then
+			local ok, telescope = pcall(require, "telescope")
+			if not ok then
 				return
 			end
 
 			telescope.load_extension("projects")
+
+			local function load_projects()
+				require("telescope").extensions.projects.projects({ layout_config = { width = 0.5, height = 0.3 } })
+			end
+
+			vim.keymap.set("n", "<space>bh", load_projects)
+			vim.keymap.set("n", "<space>pp", ":Telescope find_files cwd=~/Projects find_command=fd,-d,1,.<cr>")
 		end,
 	})
 end

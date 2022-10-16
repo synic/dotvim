@@ -1,40 +1,45 @@
 return function(use)
 	use({
-		"mhartington/formatter.nvim",
+		"jose-elias-alvarez/null-ls.nvim",
+		requires = { { "nvim-lua/plenary.nvim" } },
 		config = function()
-			local util = require("formatter.util")
+			local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
-			require("formatter").setup({
-				logging = true,
-				log_level = vim.log.levels.WARN,
-				filetype = {
-					lua = {
-						require("formatter.filetypes.lua").stylua,
-					},
-					typescript = {
-						require("formatter.filetypes.typescript").prettier,
-					},
-					python = {
-						require("formatter.filetypes.python").black,
-					},
+			require("null-ls").setup({
+				debug = true,
+				sources = {
+					-- formatting
+					require("null-ls").builtins.formatting.stylua,
+					require("null-ls").builtins.formatting.trim_whitespace,
+					require("null-ls").builtins.formatting.prettier,
+					require("null-ls").builtins.formatting.black,
 
-					["*"] = {
-						function(pattern, replacement, flags)
-							local cmd = vim.fn.has("macunix") and "gsed" or "sed"
-							return {
-								exe = cmd,
-								args = {
-									"--in-place",
-									util.quote_cmd_arg(util.wrap_sed_replace(pattern, replacement, flags)),
-								},
-								stdin = false,
-							}
-						end,
-					},
+					-- diagnostics
+					require("null-ls").builtins.diagnostics.eslint,
+
+					-- completion
+					require("null-ls").builtins.completion.spell,
+					require("null-ls").builtins.completion.luasnip,
 				},
-			})
 
-			vim.api.nvim_create_autocmd("BufWritePost", { pattern = "*", command = "FormatWrite" })
+				on_attach = function(client, bufnr)
+					if client.supports_method("textDocument/formatting") then
+						vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+						vim.api.nvim_create_autocmd("BufWritePre", {
+							group = augroup,
+							buffer = bufnr,
+							callback = function()
+								vim.lsp.buf.format({
+									bufnr = bufnr,
+									filter = function(c)
+										return c.name == "null-ls"
+									end,
+								})
+							end,
+						})
+					end
+				end,
+			})
 		end,
 	})
 end

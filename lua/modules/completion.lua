@@ -51,16 +51,16 @@ return function(use)
 				}),
 				format = function(entry, vim_item)
 					vim_item.kind = require("lspkind").presets.codicons[vim_item.kind] .. "  " .. vim_item.kind
-					-- if entry.completion_item.detail ~=  and entry.completion_item.detail ~= "" then
-					-- vim_item.menu = entry.completion_item.detail
-					-- else
-					-- vim_item.menu = ({
-					-- nvim_lsp = "[LSP]",
-					-- luasnip = "[Snippet]",
-					-- buffer = "[Buffer]",
-					-- path = "[Path]",
-					-- })[entry.source.name]
-					-- end
+					if entry.completion_item.detail ~= nil and entry.completion_item.detail ~= "" then
+						vim_item.menu = entry.completion_item.detail
+					else
+						vim_item.menu = ({
+							nvim_lsp = "[LSP]",
+							luasnip = "[Snippet]",
+							buffer = "[Buffer]",
+							path = "[Path]",
+						})[entry.source.name]
+					end
 					return vim_item
 				end,
 			})

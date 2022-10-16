@@ -23,7 +23,19 @@ return function(use)
 			})
 
 			-- python
-			lsp.pylsp.setup({})
+			lsp.pylsp.setup({
+				settings = {
+					pylsp = {
+						plugins = {
+							flake8 = { enabled = true },
+							pycodestyle = { enabled = false },
+							pyflakes = { enabled = false },
+							pylint = { enabled = false },
+							mccabe = { enabled = false },
+						},
+					},
+				},
+			})
 
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition)
 		end,
