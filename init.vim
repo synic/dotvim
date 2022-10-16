@@ -148,7 +148,7 @@ if has('termguicolors')
 end
 
 try
-    colorscheme gruvbox
+    colorscheme gruvbox_material
     set background=dark
     hi ColorColumn guibg=#303030 ctermbg=236
 catch /^Vim\%((\a\+)\)\=:E185/
@@ -161,7 +161,7 @@ else
 
   " load plugins
   source $VIMHOME/config/plugins.vim
-  colorscheme gruvbox
+  colorscheme gruvbox_material
 
   " automatically reload vimrc and gvimrc on save
   autocmd! bufwritepost vimrc source %
