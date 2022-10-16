@@ -1,4 +1,6 @@
 return function(use)
+	use("editorconfig/editorconfig-vim")
+	use("tpope/vim-surround")
 	use({
 		"tpope/vim-commentary",
 		config = function()

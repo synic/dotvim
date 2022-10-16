@@ -1,4 +1,14 @@
 return function(use)
+	-- syntax
+	use("plasticboy/vim-markdown")
+	use("ap/vim-css-color")
+	use("pangloss/vim-javascript")
+	use("dart-lang/dart-vim-plugin")
+
+	-- python
+	use("jmcantrell/vim-virtualenv")
+
+	-- lsp
 	use("onsails/lspkind-nvim")
 	use({
 		"neovim/nvim-lspconfig",
@@ -41,16 +51,4 @@ return function(use)
 		end,
 	})
 	use("L3MON4D3/LuaSnip")
-	use("tpope/vim-surround")
-	use("w0rp/ale")
-	use("jmcantrell/vim-virtualenv")
-	use("editorconfig/editorconfig-vim")
-	use({
-		"folke/trouble.nvim",
-		requires = "kyazdani42/nvim-web-devicons",
-		config = function()
-			require("trouble").setup({})
-			vim.keymap.set("n", "<space>el", ":TroubleToggle<cr>")
-		end,
-	})
 end
