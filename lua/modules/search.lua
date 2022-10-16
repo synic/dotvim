@@ -1,5 +1,15 @@
 return function(use)
 	use({
+		"smjonas/inc-rename.nvim",
+		config = function()
+			require("inc_rename").setup()
+
+			vim.keymap.set("n", "<leader>r", function()
+				return ":IncRename " --.. vim.fn.expand("<cword>")
+			end, { expr = true })
+		end,
+	})
+	use({
 		"dyng/ctrlsf.vim",
 		config = function()
 			vim.g.better_whitespace_filetypes_blacklist = { "ctrlsf" }
@@ -14,27 +24,17 @@ return function(use)
 			}
 
 			vim.cmd([[
-" search in the project root
-function! SearchInProjectRoot()
-    call inputsave()
-    let s:last_search_term = input('Search: ')
-    call inputrestore()
-    execute ':CtrlSF "' . s:last_search_term . '"'
-endfunction
-
-" repeat last search
-function! RepeatLastSearch()
-    if s:last_search_term != ''
-        execute ':CtrlSF "' . s:last_search_term . '"'
-    else
-        echo 'No search to repeat!'
-    endif
-endfunction
-]])
+				" search in the project root
+				function! SearchInProjectRoot()
+						call inputsave()
+						let s:last_search_term = input('Search: ')
+						call inputrestore()
+						execute ':CtrlSF "' . s:last_search_term . '"'
+				endfunction
+			]])
 
 			vim.keymap.set("n", "<space>*", ":CtrlSF<cr>")
-			vim.keymap.set("n", "<space>Sp", ":call SearchInProjectRoot()")
-			vim.keymap.set("n", "<space>rl", ":call RepeatLastSearch()")
+			vim.keymap.set("n", "<space>Sp", ":call SearchInProjectRoot()<cr>")
 		end,
 	})
 	use("haya14busa/incsearch.vim")

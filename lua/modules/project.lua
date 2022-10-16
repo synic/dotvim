@@ -48,6 +48,7 @@ return function(use)
 			vim.keymap.set("n", "<space>bh", ":Telescope projects<cr>")
 			vim.keymap.set("n", "<space>pr", ":Telescope oldfiles<cr>")
 			vim.keymap.set("n", "<space>sp", ":Telescope live_grep<cr>")
+			vim.keymap.set("n", "<space>rl", telescope.builtin.resume)
 		end,
 	})
 	use({

@@ -10,6 +10,7 @@ require("packer").startup({
 		require("modules.project")(use)
 		require("modules.language")(use)
 		require("modules.formatting")(use)
+		require("modules.completion")(use)
 		require("modules.git")(use)
 		require("modules.search")(use)
 		require("modules.motion")(use)
