@@ -145,7 +145,7 @@ endif
 
 " try to enable jellybeans theme, but if that fails, choose `ron`
 try
-    colorscheme gruvbox
+    colorscheme jellybeans
     set background=dark
     hi ColorColumn guibg=#303030 ctermbg=236
 catch /^Vim\%((\a\+)\)\=:E185/
@@ -158,7 +158,7 @@ else
 
   " load plugins
   source $VIMHOME/config/plugins.vim
-  colorscheme gruvbox
+  colorscheme jellybeans
 
   " automatically reload vimrc and gvimrc on save
   autocmd! bufwritepost vimrc source %

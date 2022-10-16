@@ -101,6 +101,7 @@ require("packer").startup({
 		use("tpope/vim-fugitive")
 		use("airblade/vim-gitgutter")
 		use("gregsexton/gitv")
+		use({ "TimUntersberger/neogit", requires = "nvim-lua/plenary.nvim" })
 
 		-- movement
 		use("Lokaltog/vim-easymotion")
