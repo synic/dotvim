@@ -19,7 +19,7 @@ let $VIMHOME = expand('<sfile>:p:h')
 filetype plugin on
 filetype plugin indent on
 
-let mapleader=","
+let mapleader=" "
 set bs=2                " allow backspacing over everything in insert mode
 set cindent
 set si

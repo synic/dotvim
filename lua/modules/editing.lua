@@ -5,17 +5,17 @@ return function(use)
 		"tpope/vim-commentary",
 		config = function()
 			vim.cmd([[
-		function! ToggleComment()
-				if mode() !~# "^[vV\<C-v>]"
+				function! ToggleComment()
+					if mode() !~# "^[vV\<C-v>]"
 						" not visual mode
 						normal gcc
-				else
+  				else
 						visual gc
-				endif
-		endfunction
+					endif
+				endfunction
 
-		:nmap <space>cl :call ToggleComment()<cr>
-		:vmap <space>cl :call ToggleComment()<cr>
+				:nmap <leader>cl :call ToggleComment()<cr>
+				:vmap <leader>cl :call ToggleComment()<cr>
 		]])
 		end,
 	})

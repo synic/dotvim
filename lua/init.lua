@@ -16,7 +16,7 @@ require("packer").startup({
 		require("modules.themes")(use)
 		require("modules.editing")(use)
 		require("modules.debugging")(use)
-		require("modules.misc")(use)
+		require("modules.utils")(use)
 		require("modules.interface")(use)
 
 		if packer_bootstrap then

@@ -33,8 +33,8 @@ return function(use)
 				endfunction
 			]])
 
-			vim.keymap.set("n", "<space>*", ":CtrlSF<cr>")
-			vim.keymap.set("n", "<space>Sp", ":call SearchInProjectRoot()<cr>")
+			vim.keymap.set("n", "<leader>*", ":CtrlSF<cr>")
+			vim.keymap.set("n", "<leader>Sp", ":call SearchInProjectRoot()<cr>")
 		end,
 	})
 	use("haya14busa/incsearch.vim")

@@ -12,7 +12,7 @@ return function(use)
 				kind = "vsplit",
 			})
 
-			vim.keymap.set("n", "<space>gs", ":Neogit<cr>")
+			vim.keymap.set("n", "<leader>gs", ":Neogit<cr>")
 		end,
 		requires = "nvim-lua/plenary.nvim",
 	})
