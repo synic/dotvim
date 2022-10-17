@@ -83,6 +83,7 @@ if !empty(glob('~/.vim/autoload/plug.vim'))
   Plug 'jnurmine/Zenburn'
   Plug 'morhetz/gruvbox'
   Plug 'synic/synic.vim'
+  Plug 'sainnhe/gruvbox-material'
 
   " interface
   Plug 'bling/vim-airline'

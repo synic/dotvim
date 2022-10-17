@@ -156,10 +156,8 @@ colorscheme desert
 if has('nvim')
   lua require('init')
 else
-
   " load plugins
   source $VIMHOME/config/plugins.vim
-  colorscheme gruvbox-material
 
   " automatically reload vimrc and gvimrc on save
   autocmd! bufwritepost vimrc source %
@@ -170,4 +168,12 @@ else
   source $VIMHOME/config/functions.vim           " user-defined functions
   source $VIMHOME/config/keybindings.vim         " custom keybindings
   source $VIMHOME/config/autocmds.vim            " auto commands
+
+  try
+    colorscheme gruvbox-material
+    let g:gruvbox_material_background = 'hard'
+    hi ColorColumn guibg=#303030 ctermbg=236
+  catch /^Vim\%((\a\+)\)\=:E185/
+    colorscheme desert
+  endtry
 end

@@ -15,7 +15,6 @@ return function(use)
 		"sainnhe/gruvbox-material",
 		config = function()
 			vim.cmd("colorscheme gruvbox-material")
-			vim.g.airline_theme = "gruvbox_material"
 		end,
 	})
 	use("NLKNguyen/papercolor-theme")
@@ -25,5 +24,10 @@ return function(use)
 	use("ray-x/aurora")
 	use("sainnhe/sonokai")
 
-	use("vim-airline/vim-airline-themes")
+	use({
+		"vim-airline/vim-airline-themes",
+		config = function()
+			vim.g.airline_theme = "gruvbox_material"
+		end,
+	})
 end
