@@ -4,7 +4,7 @@ return function(use)
 		config = function()
 			require("inc_rename").setup()
 
-			vim.keymap.set("n", "<leader>r", function()
+			vim.keymap.set("n", "<space>r", function()
 				return ":IncRename " --.. vim.fn.expand("<cword>")
 			end, { expr = true })
 		end,
@@ -13,7 +13,7 @@ return function(use)
 		"dyng/ctrlsf.vim",
 		config = function()
 			vim.g.better_whitespace_filetypes_blacklist = { "ctrlsf" }
-			vim.g.ctrlsf_default_view_mode = "compact"
+			vim.g.ctrlsf_default_view_mode = "normal"
 			vim.g.ctrlsf_default_root = "project+wf"
 			vim.g.ctrlsf_auto_close = {
 				normal = 0,
@@ -33,8 +33,8 @@ return function(use)
 				endfunction
 			]])
 
-			vim.keymap.set("n", "<leader>*", ":CtrlSF<cr>")
-			vim.keymap.set("n", "<leader>Sp", ":call SearchInProjectRoot()<cr>")
+			vim.keymap.set("n", "<space>*", ":CtrlSF<cr>")
+			vim.keymap.set("n", "<space>sf", ":call SearchInProjectRoot()<cr>")
 		end,
 	})
 	use("haya14busa/incsearch.vim")

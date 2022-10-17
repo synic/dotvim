@@ -14,8 +14,8 @@ return function(use)
 					endif
 				endfunction
 
-				:nmap <leader>cl :call ToggleComment()<cr>
-				:vmap <leader>cl :call ToggleComment()<cr>
+				:nmap <space>cl :call ToggleComment()<cr>
+				:vmap <space>cl :call ToggleComment()<cr>
 		]])
 		end,
 	})

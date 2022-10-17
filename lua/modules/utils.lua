@@ -9,7 +9,7 @@ return function(use)
 				disable_default_keymaps = true,
 			})
 
-			vim.keymap.set("n", "<leader>'", ':lua NTGlobal["terminal"]:toggle()<cr>', { silent = true })
+			vim.keymap.set("n", "<space>'", ':lua NTGlobal["terminal"]:toggle()<cr>', { silent = true })
 		end,
 	})
 end
