@@ -37,6 +37,8 @@ set wildmenu
 set wildmode=longest:full,full
 set nohlsearch
 set equalalways         " keep windows equalized
+set nowritebackup
+set nobackup
 
 " display bufnr:filetype (dos,unix,mac) in status line
 set statusline=%<%n:%f%h%m%r%=\ %{&ff}\ %l,%c%V\ %P
