@@ -18,7 +18,6 @@ return function(use)
 					require("null-ls").builtins.diagnostics.eslint,
 
 					-- completion
-					require("null-ls").builtins.completion.spell,
 					require("null-ls").builtins.completion.luasnip,
 				},
 

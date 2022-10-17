@@ -50,7 +50,6 @@ return function(use)
 					{ name = "buffer" },
 				}),
 				format = function(entry, vim_item)
-					vim_item.kind = require("lspkind").presets.codicons[vim_item.kind] .. "  " .. vim_item.kind
 					if entry.completion_item.detail ~= nil and entry.completion_item.detail ~= "" then
 						vim_item.menu = entry.completion_item.detail
 					else
@@ -60,6 +59,7 @@ return function(use)
 							buffer = "[Buffer]",
 							path = "[Path]",
 						})[entry.source.name]
+						vim_item.kind = require("lspkind").presets.codicons[vim_item.kind] .. "  " .. vim_item.kind
 					end
 					return vim_item
 				end,

@@ -11,7 +11,7 @@ return function(use)
 	use({
 		"mfussenegger/nvim-dap",
 		config = function()
-			require("dap.ext.vscode").load_launchjs(nil, { node = { "typescript", "javascript" } })
+			require("dap.ext.vscode").load_launchjs(nil, { ["pwa-node"] = { "typescript", "javascript" } })
 
 			for _, language in ipairs({ "typescript", "javascript" }) do
 				require("dap").configurations[language] = {
@@ -22,19 +22,20 @@ return function(use)
 						program = "${file}",
 						cwd = "${workspaceFolder}",
 					},
-					-- {
-					-- type = "pwa-node",
-					-- request = "attach",
-					-- name = "Attach",
-					-- processId = require("dap.utils").pick_process,
-					-- cwd = "${workspaceFolder}",
-					-- },
 					{
 						type = "pwa-node",
 						request = "attach",
 						name = "Attach",
-						port = "9229",
+						processId = require("dap.utils").pick_process,
+						cwd = "${workspaceFolder}",
+					},
+					{
+						type = "pwa-node",
+						request = "attach",
+						name = "Attach Docker",
+						port = 9229,
 						restart = true,
+						stopOnEntry = false,
 						protocol = "inspector",
 						trace = true,
 						sourceMaps = true,

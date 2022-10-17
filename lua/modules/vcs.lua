@@ -1,5 +1,4 @@
 return function(use)
-	use("mattn/webapi-vim")
 	use("mattn/gist-vim")
 	use({
 		"tpope/vim-fugitive",
@@ -8,7 +7,6 @@ return function(use)
 		end,
 	})
 	use("airblade/vim-gitgutter")
-	use("gregsexton/gitv")
 	use({
 		"TimUntersberger/neogit",
 		config = function()
