@@ -86,6 +86,10 @@ set secure
 " disable completion preview
 set completeopt-=preview
 
+" gui options
+set guifont=Hack\ Nerd\ Font\ Mono:h10
+let g:neovide_remember_window_size = v:true
+
 " switch syntax highlighting on
 syntax enable
 
