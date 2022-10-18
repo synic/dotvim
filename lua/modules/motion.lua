@@ -8,5 +8,4 @@ return function(use)
 			vim.keymap.set("n", "<space><space>", "<plug>(easymotion-overwin-f)")
 		end,
 	})
-	use("vim-scripts/quit-another-window")
 end

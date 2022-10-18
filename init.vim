@@ -87,14 +87,14 @@ set secure
 " switch syntax highlighting on
 syntax enable
 
+" enable clipboard on os x
+set clipboard+=unnamedplus
+
 " netrw configuration
 let g:netrw_liststyle = 1
 let g:netrw_banner = 0
 let g:netrw_list_hide =
       \ '\(^\|\s\s\)\zs\.\S\+,\(^\|\s\s\)ntuser\.\S\+,__pycache__,\.pyc'
-
-" change to the file's directory when opening it
-autocmd BufEnter * silent! cd %:p:h
 
 " if using a mac, set LC_CTYPE if it's not already
 if has('macunix') && empty($LC_CTYPE)

@@ -10,12 +10,13 @@ vim.keymap.set("n", "-", f.netrw_current_file)
 vim.keymap.set("n", "_", f.netrw_current_project)
 
 return function(use)
-	use("ibhagwan/fzf-lua")
 	use("dbakker/vim-projectroot")
+
 	use({
 		"nvim-telescope/telescope.nvim",
 		requires = { { "nvim-lua/plenary.nvim" } },
 	})
+
 	use({
 		"nvim-telescope/telescope-fzf-native.nvim",
 		run = "make",
@@ -59,18 +60,20 @@ return function(use)
 
 			vim.keymap.set("n", "<space>bb", ":Telescope buffers<cr>")
 			vim.keymap.set("n", "<space>ph", ":Telescope git_files<cr>")
-			vim.keymap.set("n", "<space>pr", ":Telescope oldfiles<cr>")
+			vim.keymap.set("n", "<space>fr", ":Telescope oldfiles<cr>")
 			vim.keymap.set("n", "<space>sp", ":Telescope live_grep<cr>")
 			vim.keymap.set("n", "<space>rl", ":Telescope resume<cr>")
 			vim.keymap.set("n", "<space>sd", search_cwd)
 		end,
 	})
+
 	use({
 		"airblade/vim-rooter",
 		config = function()
 			vim.g.rooter_silent_chdir = 1
 		end,
 	})
+
 	use({
 		"nvim-telescope/telescope-project.nvim",
 		config = function()
@@ -91,10 +94,32 @@ return function(use)
 			vim.keymap.set("n", "<space>pp", load_projects)
 		end,
 	})
+
 	use({
 		"ahmedkhalf/project.nvim",
 		config = function()
-			require("project_nvim").setup({})
+			require("project_nvim").setup({
+				manual_mode = false,
+				detection_methods = { "pattern", "lsp" },
+				patterns = {
+					".git",
+					"_darcs",
+					".hg",
+					".bzr",
+					".svn",
+					"Makefile",
+					"package.json",
+					"setup.cfg",
+					"setup.py",
+					"pyproject.toml",
+				},
+				ignore_lsp = {},
+				exclude_dirs = {},
+				show_hidden = false,
+				silent_chdir = true,
+				scope_chdir = "global",
+				datapath = vim.fn.stdpath("data"),
+			})
 
 			local ok, telescope = pcall(require, "telescope")
 			if not ok then
@@ -107,9 +132,10 @@ return function(use)
 				require("telescope").extensions.projects.projects({ layout_config = { width = 0.5, height = 0.3 } })
 			end
 
-			vim.keymap.set("n", "<space>bh", load_projects)
+			vim.keymap.set("n", "<space>pr", load_projects)
 		end,
 	})
+
 	use({
 		"nvim-telescope/telescope-file-browser.nvim",
 		config = function()
