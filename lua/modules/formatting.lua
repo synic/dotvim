@@ -11,7 +11,7 @@ return function(use)
 					-- formatting
 					require("null-ls").builtins.formatting.stylua,
 					require("null-ls").builtins.formatting.trim_whitespace,
-					require("null-ls").builtins.formatting.prettier,
+					require("null-ls").builtins.formatting.prettierd,
 					require("null-ls").builtins.formatting.black,
 
 					-- diagnostics

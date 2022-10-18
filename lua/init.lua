@@ -1,5 +1,8 @@
-local f = require("core.functions")
+vim.api.nvim_set_option("guifont", "Hack Nerd Font Mono:h10")
+vim.g.neovide_remember_window_size = true
+vim.g.neovide_cursor_animation_length = 0
 
+local f = require("core.functions")
 local packer_bootstrap = f.ensure_packer()
 
 require("packer").startup({
