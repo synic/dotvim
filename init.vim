@@ -84,6 +84,9 @@ set nobackup writebackup
 set exrc
 set secure
 
+" automatically check to see if files have changed
+au CursorHold * if getcmdwintype() == '' | checktime | endif
+
 " switch syntax highlighting on
 syntax enable
 

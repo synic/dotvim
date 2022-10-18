@@ -31,8 +31,6 @@ return function(use)
 						i = function(_)
 							if cmp.visible() then
 								cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
-							elseif vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-								vim.api.nvim_feedkeys(t("<plug>(ultisnips_jump_forward)"), "m", true)
 							else
 								vim.api.nvim_feedkeys(t("<tab>"), "n", true) -- fallback()
 							end
