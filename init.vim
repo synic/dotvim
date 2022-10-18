@@ -87,52 +87,14 @@ set secure
 " switch syntax highlighting on
 syntax enable
 
-" keep selection after indent
-vnoremap < <gv
-vnoremap > >gv
-
-" remap escape key
-inoremap fd <esc>
-vnoremap fd <esc>
-
-" movement
-map vig ggVG
-
-" window management
-nmap <silent> <space>wk :wincmd k<cr>
-nmap <silent> <space>wj :wincmd j<cr>
-nmap <silent> <space>wh :wincmd h<cr>
-nmap <silent> <space>wl :wincmd l<cr>
-nmap <silent> <space><tab> :b#<cr>
-nmap <silent> <space>w/ :vs<cr>
-nmap <silent> <space>w- :sp<cr>
-nmap <silent> <space>wc :close<cr>
-nmap <silent> <space>wd :q<cr>
-nmap <silent> <space>bd :q<cr>
-nmap <silent> <space>w= <C-w>=
-nmap <silent> <space>wJ :Qj<cr>
-nmap <silent> <space>wH :Qh<cr>
-nmap <silent> <space>wK :Qk<cr>
-nmap <silent> <space>wL :Ql<cr>
-
-" configuration management
-nmap <silent> <space>fed :e $VIMHOME/<cr>
-
-" toggle hlsearch
-nnoremap <silent><space>ts :let &hls = !&hls<cr>
-
-" line number toggles
-nnoremap <silent> <space>tr :let &rnu = !&rnu<cr>
-nnoremap <silent> <space>tn :let &nu = !&nu<cr>
-
 " netrw configuration
 let g:netrw_liststyle = 1
 let g:netrw_banner = 0
 let g:netrw_list_hide =
       \ '\(^\|\s\s\)\zs\.\S\+,\(^\|\s\s\)ntuser\.\S\+,__pycache__,\.pyc'
 
-map - :execute 'edit ' . expand('%:p%:h')<cr>
-nmap <silent> <space>ob 1<C-g>:<C-U>echo v:statusmsg<CR>
+" change to the file's directory when opening it
+autocmd BufEnter * silent! cd %:p:h
 
 " if using a mac, set LC_CTYPE if it's not already
 if has('macunix') && empty($LC_CTYPE)
@@ -151,6 +113,9 @@ end
 
 set background=dark
 colorscheme desert
+
+" require basic keybindings
+source $VIMHOME/keymap.vim
 
 if has('nvim')
   lua require('init')

@@ -1,3 +1,5 @@
+vim.g.EasyMotion_smartcase = true
+
 return function(use)
 	use({
 		"Lokaltog/vim-easymotion",
