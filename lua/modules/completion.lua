@@ -71,6 +71,4 @@ return function(use)
 			]])
 		end,
 	})
-	use("SirVer/ultisnips")
-	use("honza/vim-snippets")
 end

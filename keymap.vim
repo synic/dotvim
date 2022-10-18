@@ -49,3 +49,18 @@ nnoremap <silent> <space>cd :cd %:p:h<cr>
 " open netrw at current file's directory
 map - :execute 'edit ' . expand('%:p%:h')<cr>
 nmap <silent> <space>ob 1<C-g>:<C-U>echo v:statusmsg<CR>
+
+" layouts/tabs
+nnoremap <silent> <space>ll :tabnew<cr>
+nnoremap <silent> <space>ln :tabnext<cr>
+nnoremap <silent> <space>lp :tabprev<cr>
+nnoremap <silent> <space>lc :tabclose<cr>
+nnoremap <silent> <space>l1 1gt
+nnoremap <silent> <space>l2 2gt
+nnoremap <silent> <space>l3 3gt
+nnoremap <silent> <space>l4 4gt
+nnoremap <silent> <space>l5 5gt
+nnoremap <silent> <space>l6 6gt
+nnoremap <silent> <space>l7 7gt
+nnoremap <silent> <space>l8 8gt
+nnoremap <silent> <space>l9 9gt

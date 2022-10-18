@@ -11,4 +11,5 @@ return function(use)
 			vim.keymap.set("n", "<space>'", ':lua NTGlobal["terminal"]:toggle()<cr>', { silent = true })
 		end,
 	})
+	use("wakatime/vim-wakatime")
 end

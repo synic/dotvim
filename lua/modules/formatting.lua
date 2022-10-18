@@ -14,9 +14,6 @@ return function(use)
 					require("null-ls").builtins.formatting.prettierd,
 					require("null-ls").builtins.formatting.black,
 
-					-- diagnostics
-					require("null-ls").builtins.diagnostics.eslint,
-
 					-- completion
 					require("null-ls").builtins.completion.luasnip,
 				},
