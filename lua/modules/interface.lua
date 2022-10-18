@@ -1,3 +1,6 @@
+vim.g.golden_ratio_enabled = 0
+vim.g.golden_ratio_autocmd = 0
+
 return function(use)
 	use({
 		"bling/vim-airline",
@@ -10,6 +13,33 @@ return function(use)
 			vim.g["airline#extensions#tabline#show_buffers"] = 0
 			vim.g["airline#extensions#tabline#show_tab_type"] = 0
 			vim.g["airline#extensions#whitespace#enabled"] = 0
+		end,
+	})
+	use({
+		"roman/golden-ratio",
+		config = function()
+			vim.cmd([[
+				function! ToggleGoldenRatio()
+					execute ':GoldenRatioToggle'
+					if g:golden_ratio_enabled == 0
+						let g:golden_ratio_enabled = 1
+						echo 'Enabled golden ratio'
+					else
+						let g:golden_ratio_enabled = 0
+						echo 'Disabled golden ratio'
+						set equalalways
+						wincmd =
+					endif
+				endfunction
+			]])
+
+			vim.api.nvim_create_autocmd("VimEnter", {
+				callback = function()
+					vim.cmd([[:GoldenRatioToggle]])
+				end,
+			})
+
+			vim.keymap.set("n", "<space>tg", ":call ToggleGoldenRatio()<cr>")
 		end,
 	})
 end

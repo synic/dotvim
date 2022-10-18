@@ -39,6 +39,7 @@ set nohlsearch
 set equalalways         " keep windows equalized
 set nowritebackup
 set nobackup
+set noswapfile
 
 " display bufnr:filetype (dos,unix,mac) in status line
 set statusline=%<%n:%f%h%m%r%=\ %{&ff}\ %l,%c%V\ %P
@@ -83,14 +84,6 @@ set nobackup writebackup
 set exrc
 set secure
 
-" disable completion preview
-set completeopt-=preview
-
-" gui options
-set guifont=Hack\ Nerd\ Font\ Mono:h10
-let g:neovide_remember_window_size = v:true
-let g:neovide_cursor_animation_length = 0
-
 " switch syntax highlighting on
 syntax enable
 
@@ -115,6 +108,7 @@ nmap <silent> <space>w/ :vs<cr>
 nmap <silent> <space>w- :sp<cr>
 nmap <silent> <space>wc :close<cr>
 nmap <silent> <space>wd :q<cr>
+nmap <silent> <space>bd :q<cr>
 nmap <silent> <space>w= <C-w>=
 nmap <silent> <space>wJ :Qj<cr>
 nmap <silent> <space>wH :Qh<cr>
@@ -125,36 +119,34 @@ nmap <silent> <space>wL :Ql<cr>
 nmap <silent> <space>fed :e $VIMHOME/<cr>
 
 " toggle hlsearch
-nnoremap <silent><expr> <space>ts (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
+nnoremap <silent><space>ts :let &hls = !&hls<cr>
+
+" line number toggles
+nnoremap <silent> <space>tr :let &rnu = !&rnu<cr>
+nnoremap <silent> <space>tn :let &nu = !&nu<cr>
 
 " netrw configuration
 let g:netrw_liststyle = 1
 let g:netrw_banner = 0
 let g:netrw_list_hide =
-    \ '\(^\|\s\s\)\zs\.\S\+,\(^\|\s\s\)ntuser\.\S\+,__pycache__,\.pyc'
+      \ '\(^\|\s\s\)\zs\.\S\+,\(^\|\s\s\)ntuser\.\S\+,__pycache__,\.pyc'
 
-" open netrw in the current file's directory
-function! NetRWCurrentFile()
-    let pathname = expand('%:p:h')
-    execute 'edit ' . pathname
-endfunction
-
-map - :call NetRWCurrentFile()<cr>
+map - :execute 'edit ' . expand('%:p%:h')<cr>
 nmap <silent> <space>ob 1<C-g>:<C-U>echo v:statusmsg<CR>
 
 " if using a mac, set LC_CTYPE if it's not already
 if has('macunix') && empty($LC_CTYPE)
-    let $LC_CTYPE = 'en_US.UTF-8'
+  let $LC_CTYPE = 'en_US.UTF-8'
 endif
 
 if has('vim_starting')
-    if &compatible
-        set nocompatible " disable vi settings
-    endif
+  if &compatible
+    set nocompatible " disable vi settings
+  endif
 endif
 
 if has('termguicolors')
-    set termguicolors
+  set termguicolors
 end
 
 set background=dark
