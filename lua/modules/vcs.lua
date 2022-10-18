@@ -4,6 +4,7 @@ return function(use)
 		"tpope/vim-fugitive",
 		config = function()
 			vim.keymap.set("n", "<space>gb", ":Git blame<cr>")
+			vim.keymap.set("n", "<space>ga", ":Git add %<cr>")
 		end,
 	})
 	use("airblade/vim-gitgutter")
