@@ -56,7 +56,7 @@ return function(use)
 			vim.keymap.set("n", "<space>gB", ":Telescope git_branches<cr>")
 			vim.keymap.set("n", "<space>gS", ":Telescope git_stash<cr>")
 			vim.keymap.set("n", "<space>ml", ":Telescope marks<cr>")
-			vim.keymap.set("n", "<space>rl", ":Telescope registers<cr>")
+			vim.keymap.set("n", "<space>rr", ":Telescope registers<cr>")
 			vim.keymap.set("n", "<space>ss", ":Telescope spell_suggest<cr>")
 		end,
 	})
