@@ -1,14 +1,3 @@
-local f = require("core.functions")
-
-vim.g.netrw_liststyle = 0
-vim.g.netrw_keepdir = 0
-vim.g.netrw_banner = 0
-vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\.\S\+]]
-vim.g.NERDTreeHijackNetrw = 0
-
-vim.keymap.set("n", "-", f.netrw_current_file)
-vim.keymap.set("n", "_", f.netrw_current_project)
-
 return function(use)
 	use("dbakker/vim-projectroot")
 
@@ -64,6 +53,11 @@ return function(use)
 			vim.keymap.set("n", "<space>sp", ":Telescope live_grep<cr>")
 			vim.keymap.set("n", "<space>rl", ":Telescope resume<cr>")
 			vim.keymap.set("n", "<space>sd", search_cwd)
+			vim.keymap.set("n", "<space>gB", ":Telescope git_branches<cr>")
+			vim.keymap.set("n", "<space>gS", ":Telescope git_stash<cr>")
+			vim.keymap.set("n", "<space>ml", ":Telescope marks<cr>")
+			vim.keymap.set("n", "<space>rl", ":Telescope registers<cr>")
+			vim.keymap.set("n", "<space>ss", ":Telescope spell_suggest<cr>")
 		end,
 	})
 
@@ -133,18 +127,6 @@ return function(use)
 			end
 
 			vim.keymap.set("n", "<space>pr", load_projects)
-		end,
-	})
-
-	use({
-		"nvim-telescope/telescope-file-browser.nvim",
-		config = function()
-			local ok, telescope = pcall(require, "telescope")
-			if not ok then
-				return
-			end
-
-			telescope.load_extension("file_browser")
 		end,
 	})
 end

@@ -11,6 +11,7 @@ require("packer").startup({
 		require("modules.language")(use)
 		require("modules.formatting")(use)
 		require("modules.completion")(use)
+		require("modules.filesystem")(use)
 		require("modules.vcs")(use)
 		require("modules.search")(use)
 		require("modules.motion")(use)
