@@ -111,6 +111,7 @@ return function(use)
 			})
 
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition)
+			vim.keymap.set("n", "gD", ":vsplit<cr>:lua vim.lsp.buf.definition()<cr>")
 		end,
 	})
 	use("L3MON4D3/LuaSnip")

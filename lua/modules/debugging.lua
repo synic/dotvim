@@ -4,8 +4,14 @@ return function(use)
 		"folke/trouble.nvim",
 		requires = "kyazdani42/nvim-web-devicons",
 		config = function()
-			require("trouble").setup({})
+			require("trouble").setup({
+				mode = "loclist",
+			})
 			vim.keymap.set("n", "<space>el", ":TroubleToggle<cr>")
+			vim.keymap.set("n", "<space>en", ":lnext<cr>")
+			vim.keymap.set("n", "<space>ep", ":lprev<cr>")
+			vim.keymap.set("n", "<space>ed", ":TroubleToggle document_diagnostics<cr>")
+			vim.keymap.set("n", "<space>ew", ":TroubleToggle workspace_diagnostics<cr>")
 		end,
 	})
 	use({
@@ -60,6 +66,8 @@ return function(use)
 		opt = true,
 		run = "npm install --legacy-peer-deps && npm run compile",
 	})
+
+	-- NOTE: dapui is the plugin causing the "setup called twice" message
 	use({
 		"rcarriga/nvim-dap-ui",
 		requires = { "mfussenegger/nvim-dap" },

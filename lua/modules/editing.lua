@@ -19,4 +19,10 @@ return function(use)
 		]])
 		end,
 	})
+	use({
+		"mbbill/undotree",
+		config = function()
+			vim.keymap.set("n", "<space>tu", ":UndotreeToggle<cr>")
+		end,
+	})
 end
