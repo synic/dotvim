@@ -5,13 +5,21 @@ return function(use)
 		requires = "kyazdani42/nvim-web-devicons",
 		config = function()
 			require("trouble").setup({
-				mode = "loclist",
+				mode = "document_diagnostics",
 			})
 			vim.keymap.set("n", "<space>el", ":TroubleToggle<cr>")
-			vim.keymap.set("n", "<space>en", ":lnext<cr>")
-			vim.keymap.set("n", "<space>ep", ":lprev<cr>")
+			vim.keymap.set("n", "<space>en", ":lua vim.diagnostic.goto_next()<cr>")
+			vim.keymap.set("n", "<space>ep", ":lua vim.diagnostic.goto_prev()<cr>")
 			vim.keymap.set("n", "<space>ed", ":TroubleToggle document_diagnostics<cr>")
 			vim.keymap.set("n", "<space>ew", ":TroubleToggle workspace_diagnostics<cr>")
+		end,
+	})
+	use({
+		"WhoIsSethDaniel/toggle-lsp-diagnostics.nvim",
+		config = function()
+			require("toggle_lsp_diagnostics").init()
+
+			vim.keymap.set("n", "<space>ts", ":ToggleDiag<cr>")
 		end,
 	})
 	use({
@@ -46,6 +54,7 @@ return function(use)
 						trace = true,
 						sourceMaps = true,
 						localRoot = "${workspaceFolder}",
+						cwd = "${workspaceFolder}",
 						remoteRoot = "/app",
 					},
 				}
