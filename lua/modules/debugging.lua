@@ -25,10 +25,11 @@ return function(use)
 	use({
 		"mfussenegger/nvim-dap",
 		config = function()
+			local dap = require("dap")
 			require("dap.ext.vscode").load_launchjs(nil, { ["pwa-node"] = { "typescript", "javascript" } })
 
 			for _, language in ipairs({ "typescript", "javascript" }) do
-				require("dap").configurations[language] = {
+				dap.configurations[language] = {
 					{
 						type = "pwa-node",
 						request = "launch",
@@ -59,6 +60,15 @@ return function(use)
 					},
 				}
 			end
+
+			vim.keymap.set("n", "<space>db", dap.toggle_breakpoint)
+			vim.keymap.set("n", "<space>dc", dap.continue)
+			vim.keymap.set("n", "<space>dd", dap.run_last)
+			vim.keymap.set("n", "<space>dq", dap.close)
+			vim.keymap.set("n", "<space>dn", dap.step_over)
+			vim.keymap.set("n", "<space>ds", dap.step_into)
+			vim.keymap.set("n", "<space>do", dap.step_out)
+			vim.keymap.set("n", "<space>dc", dap.continue)
 		end,
 	})
 	use({
@@ -81,7 +91,20 @@ return function(use)
 		"rcarriga/nvim-dap-ui",
 		requires = { "mfussenegger/nvim-dap" },
 		config = function()
-			require("dapui").setup({
+			local dap = require("dap")
+			local dapui = require("dapui")
+
+			dap.listeners.after.event_initialized["dapui_config"] = function()
+				dapui.open()
+			end
+			dap.listeners.before.event_terminated["dapui_config"] = function()
+				dapui.close()
+			end
+			dap.listeners.before.event_exited["dapui_config"] = function()
+				dapui.close()
+			end
+
+			dapui.setup({
 				icons = { expanded = "▾", collapsed = "▸", current_frame = "▸" },
 				mappings = {
 					expand = { "<CR>", "<2-LeftMouse>" },
