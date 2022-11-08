@@ -4,11 +4,14 @@ return function(use)
 	use("ap/vim-css-color")
 	use("pangloss/vim-javascript")
 	use("dart-lang/dart-vim-plugin")
-	use({ "nvim-treesitter/nvim-treesitter", { cmd = ":TSUpdate" } })
 	use({
-		"nvim-treesitter/nvim-treesitter-textobjects",
+		"nvim-treesitter/nvim-treesitter",
+		{ cmd = ":TSUpdate" },
 		config = function()
 			require("nvim-treesitter.configs").setup({
+				rainbow = {
+					enable = true,
+				},
 				textobjects = {
 					select = {
 						enable = true,
@@ -67,6 +70,8 @@ return function(use)
 			})
 		end,
 	})
+
+	use("nvim-treesitter/nvim-treesitter-textobjects")
 
 	-- python
 	use("jmcantrell/vim-virtualenv")
