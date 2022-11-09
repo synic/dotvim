@@ -40,6 +40,7 @@ set equalalways         " keep windows equalized
 set nowritebackup
 set nobackup
 set noswapfile
+set autoread
 
 " display bufnr:filetype (dos,unix,mac) in status line
 set statusline=%<%n:%f%h%m%r%=\ %{&ff}\ %l,%c%V\ %P
@@ -86,6 +87,7 @@ set secure
 
 " automatically check to see if files have changed
 au CursorHold * if getcmdwintype() == '' | checktime | endif
+au FocusGained,BufEnter * :silent! !
 
 " switch syntax highlighting on
 syntax enable
