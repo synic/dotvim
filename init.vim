@@ -87,7 +87,8 @@ set secure
 
 " automatically check to see if files have changed
 au CursorHold * if getcmdwintype() == '' | checktime | endif
-au FocusGained,BufEnter * :silent! !
+au FocusGained,BufEnter * if getcmdwintype() == '' | checktime | endif
+au FocusLost,WinLeave * if getcmdwintype() == '' | checktime | endif
 
 " switch syntax highlighting on
 syntax enable
