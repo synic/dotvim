@@ -4,6 +4,9 @@ return function(use)
 	use("ap/vim-css-color")
 	use("pangloss/vim-javascript")
 	use("dart-lang/dart-vim-plugin")
+	use("jparise/vim-graphql")
+
+	-- treesitter
 	use({
 		"nvim-treesitter/nvim-treesitter",
 		{ cmd = ":TSUpdate" },
@@ -119,5 +122,4 @@ return function(use)
 			vim.keymap.set("n", "gD", ":vsplit<cr>:lua vim.lsp.buf.definition()<cr>")
 		end,
 	})
-	use("L3MON4D3/LuaSnip")
 end

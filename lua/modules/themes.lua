@@ -13,6 +13,7 @@ return function(use)
 	})
 	use({
 		"sainnhe/gruvbox-material",
+		commit = "2807579bd0a9981575dbb518aa65d3206f04ea02",
 		config = function()
 			vim.cmd("colorscheme gruvbox-material")
 		end,

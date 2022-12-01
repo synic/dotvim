@@ -42,4 +42,7 @@ return function(use)
 			vim.opt.listchars:append("eol:↴")
 		end,
 	})
+
+	-- snippets
+	use("L3MON4D3/LuaSnip")
 end

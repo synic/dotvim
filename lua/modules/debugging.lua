@@ -19,7 +19,7 @@ return function(use)
 		config = function()
 			require("toggle_lsp_diagnostics").init()
 
-			vim.keymap.set("n", "<space>ts", ":ToggleDiag<cr>")
+			vim.keymap.set("n", "<space>ta", ":ToggleDiag<cr>")
 		end,
 	})
 	use({

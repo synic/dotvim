@@ -8,4 +8,11 @@ return function(use)
 			vim.keymap.set("n", "<space><space>", "<plug>(easymotion-overwin-f)")
 		end,
 	})
+
+	use({
+		"justinmk/vim-sneak",
+		config = function()
+			vim.g["sneak#label"] = 1
+		end,
+	})
 end

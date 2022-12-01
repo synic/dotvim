@@ -125,6 +125,7 @@ source $VIMHOME/keymap.vim
 
 if has('nvim')
   lua require('init')
+  set shada=!,'20,<50,s10,h
 else
   " load plugins
   source $VIMHOME/config/plugins.vim
