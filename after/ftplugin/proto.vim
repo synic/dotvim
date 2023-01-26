@@ -2,5 +2,4 @@ setlocal ts=2
 setlocal expandtab
 setlocal softtabstop=2
 setlocal shiftwidth=2
-setlocal textwidth=115
-setlocal colorcolumn=0
+setlocal textwidth=120

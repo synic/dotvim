@@ -3,6 +3,7 @@ return function(use)
 	use("plasticboy/vim-markdown")
 	use("ap/vim-css-color")
 	use("pangloss/vim-javascript")
+	use("leafgarland/typescript-vim")
 	use("dart-lang/dart-vim-plugin")
 	use("jparise/vim-graphql")
 
