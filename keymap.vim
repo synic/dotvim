@@ -51,7 +51,7 @@ map - :execute 'edit ' . expand('%:p%:h')<cr>
 nmap <silent> <space>ob 1<C-g>:<C-U>echo v:statusmsg<CR>
 
 " layouts/tabs
-nnoremap <silent> <space>ll :tabnew<cr>
+" nnoremap <silent> <space>ll :tabnew<cr>
 nnoremap <silent> <space>ln :tabnext<cr>
 nnoremap <silent> <space>lp :tabprev<cr>
 nnoremap <silent> <space>lc :tabclose<cr>

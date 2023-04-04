@@ -33,7 +33,6 @@ return function(use)
 				endfunction
 			]])
 
-			vim.keymap.set("n", "<space>*", ":CtrlSF<cr>")
 			vim.keymap.set("n", "<space>sf", ":call SearchInProjectRoot()<cr>")
 		end,
 	})

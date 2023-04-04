@@ -13,6 +13,12 @@ return function(use)
 			local telescope = require("telescope")
 			local builtin = require("telescope.builtin")
 
+			local function search_for_term(prompt_bufnr)
+				local current_picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
+				local prompt = current_picker:_get_prompt()
+				vim.cmd(":CtrlSF " .. prompt)
+			end
+
 			telescope.setup({
 				defaults = {
 					mappings = {
@@ -39,6 +45,26 @@ return function(use)
 						hijack_netrw = false,
 					},
 				},
+				pickers = {
+					buffers = {
+						sort_mru = true,
+						ignore_current_buffer = true,
+					},
+					live_grep = {
+						mappings = {
+							i = {
+								["<C-e>"] = search_for_term,
+							},
+						}
+					},
+					grep_string = {
+						mappings = {
+							i = {
+								["<C-e>"] = search_for_term,
+							},
+						}
+					},
+				},
 			})
 
 			telescope.load_extension("fzf")
@@ -47,7 +73,12 @@ return function(use)
 				builtin.live_grep({ cwd = vim.fn.expand("%:p:h") })
 			end
 
-			vim.keymap.set("n", "<space>bb", ":Telescope buffers<cr>")
+			vim.keymap.set(
+				"n",
+				"<space>bb",
+				":lua require('telescope.builtin').buffers"
+					.. "({ sort_mru=true, sort_lastused=true, ignore_current_buffer=true })<cr>"
+			)
 			vim.keymap.set("n", "<space>ph", ":Telescope git_files<cr>")
 			vim.keymap.set("n", "<space>fr", ":Telescope oldfiles<cr>")
 			vim.keymap.set("n", "<space>sp", ":Telescope live_grep<cr>")
@@ -58,6 +89,14 @@ return function(use)
 			vim.keymap.set("n", "<space>ml", ":Telescope marks<cr>")
 			vim.keymap.set("n", "<space>rr", ":Telescope registers<cr>")
 			vim.keymap.set("n", "<space>ss", ":Telescope spell_suggest<cr>")
+			vim.keymap.set("n", "<space>*", function()
+				local current_word = vim.fn.expand("<cword>")
+				local project_dir = vim.fn.ProjectRootGuess()
+				builtin.grep_string({
+					cwd = project_dir,
+					search = current_word,
+				})
+			end)
 		end,
 	})
 
@@ -126,7 +165,13 @@ return function(use)
 				require("telescope").extensions.projects.projects({ layout_config = { width = 0.5, height = 0.3 } })
 			end
 
+			local function new_tab_with_projects()
+				vim.cmd(":tabnew<cr>")
+				load_projects()
+			end
+
 			vim.keymap.set("n", "<space>pr", load_projects)
+			vim.keymap.set("n", "<space>ll", new_tab_with_projects)
 		end,
 	})
 end

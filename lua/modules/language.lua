@@ -82,6 +82,7 @@ return function(use)
 
 	-- lsp
 	use("onsails/lspkind-nvim")
+	use("LuaLS/lua-language-server")
 	use({
 		"neovim/nvim-lspconfig",
 		config = function()
@@ -94,7 +95,7 @@ return function(use)
 			})
 
 			-- lua
-			lsp.sumneko_lua.setup({
+			lsp.lua_ls.setup({
 				settings = {
 					Lua = {
 						diagnostics = {
