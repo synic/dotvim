@@ -44,5 +44,15 @@ return function(use)
 	})
 
 	-- snippets
-	use("L3MON4D3/LuaSnip")
+	use({
+		"L3MON4D3/LuaSnip",
+		config = function()
+			require("luasnip.loaders.from_snipmate").lazy_load({
+				paths = { "~/.config/nvim/snippets/vim-snippets/snippets", "~/.config/nvim/snippets/mine" },
+			})
+		end,
+	})
+
+	-- openai
+	use({ "madox2/vim-ai", run = "./install.sh" })
 end

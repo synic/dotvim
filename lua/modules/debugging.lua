@@ -83,7 +83,7 @@ return function(use)
 	use({
 		"microsoft/vscode-js-debug",
 		opt = true,
-		run = "npm install --legacy-peer-deps && npm run compile",
+		run = "git reset --hard && npm install --legacy-peer-deps && npm run compile",
 	})
 
 	-- NOTE: dapui is the plugin causing the "setup called twice" message
