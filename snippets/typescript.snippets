@@ -4,22 +4,22 @@ snippet resolver "NestJS GraphQL Resolver"
 	import { Resolver } from '@nestjs/graphql';
 
 	@Resolver()
-	export class ${1:NAME}Resolver {
-	  ${2}
+	export class ${1:Name}Resolver {
+	  ${2: // resolver methods go here}
 	}
 
 snippet injectable "NestJS Injectable"
 	import { Injectable } from '@nestjs/common';
 
 	@Injectable()
-	export class ${1:NAME}Service {
-	  ${2}
+	export class ${1:Name}Service {
+	  ${2: // service methods go here}
 	}
 
 snippet module "NestJS Module"
 	import { Module } from '@nestjs/common';
 
 	@Module({
-	  imports: [${2:IMPORTS}],
+	  imports: [${2:imports}],
 	})
-	export class ${1:NAME}Module {}
+	export class ${1:Name}Module {}

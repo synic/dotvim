@@ -93,8 +93,12 @@ au FocusLost,WinLeave * if getcmdwintype() == '' | checktime | endif
 " switch syntax highlighting on
 syntax enable
 
-" enable clipboard on os x
-set clipboard+=unnamedplus
+" enable system clipboard by default
+if has('unix')
+  set clipboard=unnamedplus
+else
+  set clipboard=unnamed
+endif
 
 " netrw configuration
 let g:netrw_liststyle = 1

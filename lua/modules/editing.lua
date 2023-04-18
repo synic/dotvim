@@ -48,11 +48,26 @@ return function(use)
 		"L3MON4D3/LuaSnip",
 		config = function()
 			require("luasnip.loaders.from_snipmate").lazy_load({
-				paths = { "~/.config/nvim/snippets/vim-snippets/snippets", "~/.config/nvim/snippets/mine" },
+				paths = { "~/.config/nvim/snippets/" },
 			})
 		end,
 	})
 
 	-- openai
-	use({ "madox2/vim-ai", run = "./install.sh" })
+	use({
+		"madox2/vim-ai",
+		run = "./install.sh",
+		config = function()
+			local function ai_prompt()
+				local phrase = vim.fn.input("Prompt for AI: ")
+				vim.cmd(":AI " .. phrase)
+			end
+
+			vim.keymap.set("n", "<space>ac", ":AIChat<cr>")
+			vim.keymap.set("v", "<space>ae", function()
+				return ":AIEdit " .. vim.fn.input("Prompt for AI: ") .. "\n"
+			end, { expr = true })
+			vim.keymap.set("n", "<space>ai", ai_prompt)
+		end,
+	})
 end
