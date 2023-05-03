@@ -65,7 +65,7 @@ return function(use)
 
 			vim.keymap.set("n", "<space>ac", ":AIChat<cr>")
 			vim.keymap.set("v", "<space>ae", function()
-				return ":AIEdit " .. vim.fn.input("Prompt for AI: ") .. "\n"
+				return ":AIEdit " .. vim.fn.input("Prompt for AI: ") .. "<cr>"
 			end, { expr = true })
 			vim.keymap.set("n", "<space>ai", ai_prompt)
 		end,

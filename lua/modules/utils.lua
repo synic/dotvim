@@ -29,4 +29,7 @@ return function(use)
 		end,
 	})
 	use("wakatime/vim-wakatime")
+
+	vim.keymap.set("n", "<space>Pu", ":PackerUpdate<cr>")
+	vim.keymap.set("n", "<space>Ps", ":PackerSync<cr>")
 end
