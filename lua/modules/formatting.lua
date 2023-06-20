@@ -4,18 +4,23 @@ return function(use)
 		requires = { { "nvim-lua/plenary.nvim" } },
 		config = function()
 			local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+			local ns = require('null-ls')
 
-			require("null-ls").setup({
+			ns.setup({
 				debug = true,
 				sources = {
 					-- formatting
-					require("null-ls").builtins.formatting.stylua,
-					require("null-ls").builtins.formatting.trim_whitespace,
-					require("null-ls").builtins.formatting.prettierd,
-					require("null-ls").builtins.formatting.black,
+					ns.builtins.formatting.stylua,
+					ns.builtins.formatting.trim_whitespace,
+					ns.builtins.formatting.prettierd,
+					ns.builtins.formatting.black,
 
 					-- completion
-					require("null-ls").builtins.completion.luasnip,
+					ns.builtins.completion.luasnip,
+
+					-- other
+					ns.builtins.code_actions.gitsigns,
+					ns.builtins.diagnostics.gitlint,
 				},
 
 				on_attach = function(client, bufnr)

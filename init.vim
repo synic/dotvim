@@ -94,11 +94,7 @@ au FocusLost,WinLeave * if getcmdwintype() == '' | checktime | endif
 syntax enable
 
 " enable system clipboard by default
-if has('unix')
-  set clipboard=unnamedplus
-else
-  set clipboard=unnamed
-endif
+set clipboard=unnamed
 
 " netrw configuration
 let g:netrw_liststyle = 1

@@ -1,4 +1,4 @@
-vim.api.nvim_set_option("guifont", "Hack Nerd Font Mono:h10")
+vim.api.nvim_set_option("guifont", "Hack:h10")
 
 -- neovide options
 vim.g.neovide_remember_window_size = false

@@ -94,6 +94,9 @@ return function(use)
 				cmd = { "typescript-language-server", "--stdio" },
 			})
 
+			-- sql
+			lsp.sqlls.setup({})
+
 			-- lua
 			lsp.lua_ls.setup({
 				settings = {
