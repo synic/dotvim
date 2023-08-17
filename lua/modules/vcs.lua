@@ -16,7 +16,7 @@ return function(use)
 	})
 	use("airblade/vim-gitgutter")
 	use({
-		"TimUntersberger/neogit",
+		"NeogitOrg/neogit",
 		config = function()
 			local neogit = require("neogit")
 			neogit.setup({
@@ -25,6 +25,6 @@ return function(use)
 
 			vim.keymap.set("n", "<space>gs", ":Neogit<cr>")
 		end,
-		requires = "nvim-lua/plenary.nvim",
+		requires = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" }
 	})
 end
