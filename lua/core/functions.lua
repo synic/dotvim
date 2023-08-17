@@ -48,6 +48,13 @@ function m.glob_require(package)
 	end
 end
 
+m.table_concat = function(t1, t2)
+	for i = 1, #t2 do
+		t1[#t1 + 1] = t2[i]
+	end
+	return t1
+end
+
 m.ensure_packer = function()
 	local fn = vim.fn
 	local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
@@ -57,6 +64,22 @@ m.ensure_packer = function()
 		return true
 	end
 	return false
+end
+
+m.ensure_package_manager = function()
+	local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+	if not vim.loop.fs_stat(lazypath) then
+		vim.fn.system({
+			"git",
+			"clone",
+			"--filter=blob:none",
+			"https://github.com/folke/lazy.nvim.git",
+			"--branch=stable", -- latest stable release
+			lazypath,
+		})
+	end
+
+	vim.opt.rtp:prepend(lazypath)
 end
 
 return m

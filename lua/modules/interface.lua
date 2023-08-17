@@ -1,8 +1,8 @@
 vim.g.golden_ratio_enabled = 0
 vim.g.golden_ratio_autocmd = 0
 
-return function(use)
-	use({
+return function()
+	return {
 		"bling/vim-airline",
 		config = function()
 			vim.g.airline_powerline_fonts = 1
@@ -14,8 +14,7 @@ return function(use)
 			vim.g["airline#extensions#tabline#show_tab_type"] = 0
 			vim.g["airline#extensions#whitespace#enabled"] = 0
 		end,
-	})
-	use({
+	}, {
 		"roman/golden-ratio",
 		config = function()
 			vim.cmd([[
@@ -41,5 +40,5 @@ return function(use)
 
 			vim.keymap.set("n", "<space>tg", ":call ToggleGoldenRatio()<cr>")
 		end,
-	})
+	}
 end
