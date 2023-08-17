@@ -1,14 +1,15 @@
-return function(use)
+return function()
+	return {
 	-- syntax
-	use("plasticboy/vim-markdown")
-	use("ap/vim-css-color")
-	use("pangloss/vim-javascript")
-	use("leafgarland/typescript-vim")
-	use("dart-lang/dart-vim-plugin")
-	use("jparise/vim-graphql")
+	"plasticboy/vim-markdown",
+	"ap/vim-css-color",
+	"pangloss/vim-javascript",
+	"leafgarland/typescript-vim",
+	"dart-lang/dart-vim-plugin",
+	"jparise/vim-graphql",
 
 	-- treesitter
-	use({
+	{
 		"nvim-treesitter/nvim-treesitter",
 		{ cmd = ":TSUpdate" },
 		config = function()
@@ -73,9 +74,9 @@ return function(use)
 				},
 			})
 		end,
-	})
+	},
 
-	use("nvim-treesitter/nvim-treesitter-textobjects")
+	"nvim-treesitter/nvim-treesitter-textobjects",
 
 	-- python
 	use("jmcantrell/vim-virtualenv")

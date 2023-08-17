@@ -5,28 +5,28 @@ vim.g.neovide_remember_window_size = false
 vim.g.neovide_remember_window_position = false
 
 local f = require("core.functions")
-local packer_bootstrap = f.ensure_packer()
+f.ensure_package_manager()
 
-require("packer").startup({
-	function(use)
-		use("wbthomason/packer.nvim")
+local enabled_modules = {
+	"projects",
+	"language",
+	"formatting",
+	"completion",
+	"filesystem",
+	"vcs",
+	"search",
+	"motion",
+	"themes",
+	"editing",
+	"debugging",
+	"utils",
+	"interface",
+}
 
-		require("modules.projects")(use)
-		require("modules.language")(use)
-		require("modules.formatting")(use)
-		require("modules.completion")(use)
-		require("modules.filesystem")(use)
-		require("modules.vcs")(use)
-		require("modules.search")(use)
-		require("modules.motion")(use)
-		require("modules.themes")(use)
-		require("modules.editing")(use)
-		require("modules.debugging")(use)
-		require("modules.utils")(use)
-		require("modules.interface")(use)
+local plugins = {}
 
-		if packer_bootstrap then
-			require("packer").sync()
-		end
-	end,
-})
+for module in enabled_modules do
+	plugins = f.table_concat(plugins, require("modules." .. module)())
+end
+
+require("lazy").setup(plugins)
