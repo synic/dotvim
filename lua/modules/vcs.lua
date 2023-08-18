@@ -1,21 +1,21 @@
-return function(use)
-	use({
+return {
+	{
 		"akinsho/git-conflict.nvim",
-		tag = "*",
+		version = "*",
 		config = function()
 			require("git-conflict").setup()
 		end,
-	})
-	use("mattn/gist-vim")
-	use({
+	},
+	"mattn/gist-vim",
+	{
 		"tpope/vim-fugitive",
 		config = function()
 			vim.keymap.set("n", "<space>gb", ":Git blame<cr>")
 			vim.keymap.set("n", "<space>ga", ":Git add %<cr>")
 		end,
-	})
-	use("airblade/vim-gitgutter")
-	use({
+	},
+	"airblade/vim-gitgutter",
+	{
 		"NeogitOrg/neogit",
 		config = function()
 			local neogit = require("neogit")
@@ -25,6 +25,6 @@ return function(use)
 
 			vim.keymap.set("n", "<space>gs", ":Neogit<cr>")
 		end,
-		requires = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" }
-	})
-end
+		dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" },
+	},
+}

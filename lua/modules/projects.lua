@@ -1,14 +1,16 @@
-return function(use)
-	use("dbakker/vim-projectroot")
+return {
+	"dbakker/vim-projectroot",
 
-	use({
+	{
 		"nvim-telescope/telescope.nvim",
-		requires = { { "nvim-lua/plenary.nvim" } },
-	})
+		lazy = false,
+		dependencies = { "nvim-lua/plenary.nvim" },
+	},
 
-	use({
+	{
 		"nvim-telescope/telescope-fzf-native.nvim",
-		run = "make",
+		build = "make",
+		lazy = false,
 		config = function()
 			local telescope = require("telescope")
 			local builtin = require("telescope.builtin")
@@ -55,14 +57,14 @@ return function(use)
 							i = {
 								["<C-e>"] = search_for_term,
 							},
-						}
+						},
 					},
 					grep_string = {
 						mappings = {
 							i = {
 								["<C-e>"] = search_for_term,
 							},
-						}
+						},
 					},
 				},
 			})
@@ -98,17 +100,18 @@ return function(use)
 				})
 			end)
 		end,
-	})
+	},
 
-	use({
+	{
 		"airblade/vim-rooter",
 		config = function()
 			vim.g.rooter_silent_chdir = 1
 		end,
-	})
+	},
 
-	use({
+	{
 		"nvim-telescope/telescope-project.nvim",
+		lazy = false,
 		config = function()
 			local ok, telescope = pcall(require, "telescope")
 			if not ok then
@@ -126,10 +129,11 @@ return function(use)
 
 			vim.keymap.set("n", "<space>pp", load_projects)
 		end,
-	})
+	},
 
-	use({
+	{
 		"ahmedkhalf/project.nvim",
+		lazy = false,
 		config = function()
 			require("project_nvim").setup({
 				manual_mode = false,
@@ -173,5 +177,5 @@ return function(use)
 			vim.keymap.set("n", "<space>pr", load_projects)
 			vim.keymap.set("n", "<space>ll", new_tab_with_projects)
 		end,
-	})
-end
+	},
+}
