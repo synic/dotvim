@@ -10,28 +10,26 @@ vim.g.NERDTreeHijackNetrw = 0
 vim.keymap.set("n", "-", f.netrw_current_file)
 vim.keymap.set("n", "_", f.netrw_current_project)
 
-return function()
-	return {
-		{
-			"kevinhwang91/rnvimr",
-			config = function()
-				vim.g.rnvimr_enable_picker = 1
-				vim.g.rnvimr_enable_bw = 1
-				vim.keymap.set("n", "<space>ff", ":RnvimrToggle<cr>")
-			end,
-		},
+return {
+	{
+		"kevinhwang91/rnvimr",
+		config = function()
+			vim.g.rnvimr_enable_picker = 1
+			vim.g.rnvimr_enable_bw = 1
+			vim.keymap.set("n", "<space>ff", ":RnvimrToggle<cr>")
+		end,
+	},
 
-		{
-			"nvim-telescope/telescope-file-browser.nvim",
-			dependencies = { { "nvim-telescope/telescope.nvim" } },
-			config = function()
-				local ok, telescope = pcall(require, "telescope")
-				if not ok then
-					return
-				end
+	{
+		"nvim-telescope/telescope-file-browser.nvim",
+		dependencies = { { "nvim-telescope/telescope.nvim" } },
+		config = function()
+			local ok, telescope = pcall(require, "telescope")
+			if not ok then
+				return
+			end
 
-				telescope.load_extension("file_browser")
-			end,
-		},
-	}
-end
+			telescope.load_extension("file_browser")
+		end,
+	},
+}

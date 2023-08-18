@@ -1,5 +1,4 @@
-return function()
-	return {
+return {
 	-- syntax
 	"plasticboy/vim-markdown",
 	"ap/vim-css-color",
@@ -11,7 +10,7 @@ return function()
 	-- treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
-		{ cmd = ":TSUpdate" },
+		run = ":TSUpdate",
 		config = function()
 			require("nvim-treesitter.configs").setup({
 				rainbow = {
@@ -79,12 +78,12 @@ return function()
 	"nvim-treesitter/nvim-treesitter-textobjects",
 
 	-- python
-	use("jmcantrell/vim-virtualenv")
+	"jmcantrell/vim-virtualenv",
 
 	-- lsp
-	use("onsails/lspkind-nvim")
-	use("LuaLS/lua-language-server")
-	use({
+	"onsails/lspkind-nvim",
+	"LuaLS/lua-language-server",
+	{
 		"neovim/nvim-lspconfig",
 		config = function()
 			local lsp = require("lspconfig")
@@ -127,5 +126,5 @@ return function()
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition)
 			vim.keymap.set("n", "gD", ":vsplit<cr>:lua vim.lsp.buf.definition()<cr>")
 		end,
-	})
-end
+	},
+}

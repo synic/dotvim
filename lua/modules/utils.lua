@@ -13,12 +13,14 @@ vim.cmd([[
 	command! ZoomToggle call s:ZoomToggle()
 ]])
 
+vim.keymap.set("n", "<space>Pu", ":Lazy update<cr>")
+vim.keymap.set("n", "<space>Ps", ":Lazy sync<cr>")
 vim.keymap.set("n", "<space>wM", ":ZoomToggle<cr>")
 
-return function(use)
-	use("vim-scripts/openssl.vim")
-	use("ConradIrwin/vim-bracketed-paste")
-	use({
+return {
+	"vim-scripts/openssl.vim",
+	"ConradIrwin/vim-bracketed-paste",
+	{
 		"s1n7ax/nvim-terminal",
 		config = function()
 			require("nvim-terminal").setup({
@@ -27,9 +29,6 @@ return function(use)
 
 			vim.keymap.set("n", "<space>'", ':lua NTGlobal["terminal"]:toggle()<cr>', { silent = true })
 		end,
-	})
-	use("wakatime/vim-wakatime")
-
-	vim.keymap.set("n", "<space>Pu", ":PackerUpdate<cr>")
-	vim.keymap.set("n", "<space>Ps", ":PackerSync<cr>")
-end
+	},
+	"wakatime/vim-wakatime",
+}
