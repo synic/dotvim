@@ -1,10 +1,10 @@
-return function(use)
-	use({
+return {
+	{
 		"jose-elias-alvarez/null-ls.nvim",
-		requires = { { "nvim-lua/plenary.nvim" } },
+		dependencies = { "nvim-lua/plenary.nvim" },
 		config = function()
 			local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-			local ns = require('null-ls')
+			local ns = require("null-ls")
 
 			ns.setup({
 				debug = true,
@@ -42,5 +42,5 @@ return function(use)
 				end,
 			})
 		end,
-	})
-end
+	},
+}

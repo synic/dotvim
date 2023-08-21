@@ -1,5 +1,5 @@
-return function(use)
-	use({
+return {
+	{
 		"smjonas/inc-rename.nvim",
 		config = function()
 			require("inc_rename").setup()
@@ -8,8 +8,8 @@ return function(use)
 				return ":IncRename " --.. vim.fn.expand("<cword>")
 			end, { expr = true })
 		end,
-	})
-	use({
+	},
+	{
 		"dyng/ctrlsf.vim",
 		config = function()
 			vim.g.better_whitespace_filetypes_blacklist = { "ctrlsf" }
@@ -35,6 +35,6 @@ return function(use)
 
 			vim.keymap.set("n", "<space>sf", ":call SearchInProjectRoot()<cr>")
 		end,
-	})
-	use("haya14busa/incsearch.vim")
-end
+	},
+	"haya14busa/incsearch.vim",
+}

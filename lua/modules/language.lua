@@ -1,16 +1,16 @@
-return function(use)
+return {
 	-- syntax
-	use("plasticboy/vim-markdown")
-	use("ap/vim-css-color")
-	use("pangloss/vim-javascript")
-	use("leafgarland/typescript-vim")
-	use("dart-lang/dart-vim-plugin")
-	use("jparise/vim-graphql")
+	"plasticboy/vim-markdown",
+	"ap/vim-css-color",
+	"pangloss/vim-javascript",
+	"leafgarland/typescript-vim",
+	"dart-lang/dart-vim-plugin",
+	"jparise/vim-graphql",
 
 	-- treesitter
-	use({
+	{
 		"nvim-treesitter/nvim-treesitter",
-		{ cmd = ":TSUpdate" },
+		run = ":TSUpdate",
 		config = function()
 			require("nvim-treesitter.configs").setup({
 				rainbow = {
@@ -73,17 +73,17 @@ return function(use)
 				},
 			})
 		end,
-	})
+	},
 
-	use("nvim-treesitter/nvim-treesitter-textobjects")
+	"nvim-treesitter/nvim-treesitter-textobjects",
 
 	-- python
-	use("jmcantrell/vim-virtualenv")
+	"jmcantrell/vim-virtualenv",
 
 	-- lsp
-	use("onsails/lspkind-nvim")
-	use("LuaLS/lua-language-server")
-	use({
+	"onsails/lspkind-nvim",
+	"LuaLS/lua-language-server",
+	{
 		"neovim/nvim-lspconfig",
 		config = function()
 			local lsp = require("lspconfig")
@@ -126,5 +126,5 @@ return function(use)
 			vim.keymap.set("n", "gd", vim.lsp.buf.definition)
 			vim.keymap.set("n", "gD", ":vsplit<cr>:lua vim.lsp.buf.definition()<cr>")
 		end,
-	})
-end
+	},
+}

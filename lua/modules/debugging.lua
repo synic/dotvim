@@ -1,8 +1,8 @@
-return function(use)
-	use("w0rp/ale")
-	use({
+return {
+	"w0rp/ale",
+	{
 		"folke/trouble.nvim",
-		requires = "kyazdani42/nvim-web-devicons",
+		dependencies = { "kyazdani42/nvim-web-devicons" },
 		config = function()
 			require("trouble").setup({
 				mode = "document_diagnostics",
@@ -13,16 +13,16 @@ return function(use)
 			vim.keymap.set("n", "<space>ed", ":TroubleToggle document_diagnostics<cr>")
 			vim.keymap.set("n", "<space>ew", ":TroubleToggle workspace_diagnostics<cr>")
 		end,
-	})
-	use({
+	},
+	{
 		"WhoIsSethDaniel/toggle-lsp-diagnostics.nvim",
 		config = function()
 			require("toggle_lsp_diagnostics").init()
 
 			vim.keymap.set("n", "<space>ta", ":ToggleDiag<cr>")
 		end,
-	})
-	use({
+	},
+	{
 		"mfussenegger/nvim-dap",
 		config = function()
 			local dap = require("dap")
@@ -70,26 +70,25 @@ return function(use)
 			vim.keymap.set("n", "<space>do", dap.step_out)
 			vim.keymap.set("n", "<space>dc", dap.continue)
 		end,
-	})
-	use({
+	},
+	{
 		"mxsdev/nvim-dap-vscode-js",
-		requires = { "mfussenegger/nvim-dap" },
+		dependencies = { "mfussenegger/nvim-dap" },
 		config = function()
 			require("dap-vscode-js").setup({
 				adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" },
 			})
 		end,
-	})
-	use({
+	},
+	{
 		"microsoft/vscode-js-debug",
-		opt = true,
-		run = "rm -rf out && npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out && git reset --hard",
-	})
+		build = "rm -rf out && npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out && git reset --hard",
+	},
 
 	-- NOTE: dapui is the plugin causing the "setup called twice" message
-	use({
+	{
 		"rcarriga/nvim-dap-ui",
-		requires = { "mfussenegger/nvim-dap" },
+		dependencies = { "mfussenegger/nvim-dap" },
 		config = function()
 			local dap = require("dap")
 			local dapui = require("dapui")
@@ -164,5 +163,5 @@ return function(use)
 				},
 			})
 		end,
-	})
-end
+	},
+}

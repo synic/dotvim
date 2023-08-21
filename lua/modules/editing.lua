@@ -1,7 +1,7 @@
-return function(use)
-	use("editorconfig/editorconfig-vim")
-	use("tpope/vim-surround")
-	use({
+return {
+	"editorconfig/editorconfig-vim",
+	"tpope/vim-surround",
+	{
 		"tpope/vim-commentary",
 		config = function()
 			vim.cmd([[
@@ -18,20 +18,20 @@ return function(use)
 				:vmap <space>cl :call ToggleComment()<cr>
 		]])
 		end,
-	})
-	use({
+	},
+	{
 		"mbbill/undotree",
 		config = function()
 			vim.keymap.set("n", "<space>tu", ":UndotreeToggle<cr>")
 		end,
-	})
+	},
 
-	use({
+	{
 		"p00f/nvim-ts-rainbow",
-		requires = "nvim-treesitter/nvim-treesitter",
-	})
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+	},
 
-	use({
+	{
 		"lukas-reineke/indent-blankline.nvim",
 		config = function()
 			require("indent_blankline").setup({
@@ -41,22 +41,22 @@ return function(use)
 			vim.opt.list = true
 			vim.opt.listchars:append("eol:↴")
 		end,
-	})
+	},
 
 	-- snippets
-	use({
+	{
 		"L3MON4D3/LuaSnip",
 		config = function()
 			require("luasnip.loaders.from_snipmate").lazy_load({
 				paths = { "~/.config/nvim/snippets/" },
 			})
 		end,
-	})
-
+		lazy = false,
+	},
 	-- openai
-	use({
+	{
 		"madox2/vim-ai",
-		run = "./install.sh",
+		build = "./install.sh",
 		config = function()
 			local function ai_prompt()
 				local phrase = vim.fn.input("Prompt for AI: ")
@@ -69,5 +69,5 @@ return function(use)
 			end, { expr = true })
 			vim.keymap.set("n", "<space>ai", ai_prompt)
 		end,
-	})
-end
+	},
+}
