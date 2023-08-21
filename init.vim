@@ -41,6 +41,8 @@ set nowritebackup
 set nobackup
 set noswapfile
 set autoread
+set nocursorbind
+set noscrollbind
 
 " display bufnr:filetype (dos,unix,mac) in status line
 set statusline=%<%n:%f%h%m%r%=\ %{&ff}\ %l,%c%V\ %P
