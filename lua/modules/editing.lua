@@ -21,9 +21,8 @@ return {
 	},
 	{
 		"mbbill/undotree",
-		config = function()
-			vim.keymap.set("n", "<space>tu", ":UndotreeToggle<cr>")
-		end,
+		lazy = true,
+		keys = { "<space>tu", "<cmd>UndotreeToggle<cr>", desc = "Undo tree" },
 	},
 
 	{
@@ -51,7 +50,6 @@ return {
 				paths = { "~/.config/nvim/snippets/" },
 			})
 		end,
-		lazy = false,
 	},
 	-- openai
 	{

@@ -3,16 +3,17 @@ return {
 	{
 		"folke/trouble.nvim",
 		dependencies = { "kyazdani42/nvim-web-devicons" },
-		config = function()
-			require("trouble").setup({
-				mode = "document_diagnostics",
-			})
-			vim.keymap.set("n", "<space>el", ":TroubleToggle<cr>")
-			vim.keymap.set("n", "<space>en", ":lua vim.diagnostic.goto_next()<cr>")
-			vim.keymap.set("n", "<space>ep", ":lua vim.diagnostic.goto_prev()<cr>")
-			vim.keymap.set("n", "<space>ed", ":TroubleToggle document_diagnostics<cr>")
-			vim.keymap.set("n", "<space>ew", ":TroubleToggle workspace_diagnostics<cr>")
-		end,
+		lazy = true,
+		config = {
+			mode = "document_diagnostics",
+		},
+		keys = {
+			{ "<space>el", "<cmd>TroubleToggle<cr>", desc = "Toggle Trouble" },
+			{ "<space>en", "<cmd>lua vim.diagnostic.goto_next()<cr>", desc = "Next error" },
+			{ "<space>ep", "<cmd>lua vim.diagnostic.goto_prev()<cr>", desc = "Next error" },
+			{ "<space>ed", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "Document diagnostics" },
+			{ "<space>ew", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace diagnostics" },
+		},
 	},
 	{
 		"WhoIsSethDaniel/toggle-lsp-diagnostics.nvim",
@@ -24,6 +25,17 @@ return {
 	},
 	{
 		"mfussenegger/nvim-dap",
+		lazy = true,
+		keys = {
+			{ "<space>db", "<cmd>lua require('dap').toggle_breakpoint()<cr>", desc = "Toggle breakpoint" },
+			{ "<space>dc", "<cmd>lua require('dap').continue()<cr>", desc = "Continue" },
+			{ "<space>dd", "<cmd>lua require('dap').run_last()<cr>", desc = "Run last" },
+			{ "<space>dq", "<cmd>lua require('dap').close()<cr>", desc = "Close" },
+			{ "<space>dn", "<cmd>lua require('dap').step_over()<cr>", desc = "Step over" },
+			{ "<space>ds", "<cmd>lua require('dap').step_into()<cr>", desc = "Step into" },
+			{ "<space>do", "<cmd>lua require('dap').step_out()<cr>", desc = "Step out" },
+			{ "<space>dc", "<cmd>lua require('dap').continue()<cr>", desc = "Continue" },
+		},
 		config = function()
 			local dap = require("dap")
 			require("dap.ext.vscode").load_launchjs(nil, { ["pwa-node"] = { "typescript", "javascript" } })
@@ -60,32 +72,19 @@ return {
 					},
 				}
 			end
-
-			vim.keymap.set("n", "<space>db", dap.toggle_breakpoint)
-			vim.keymap.set("n", "<space>dc", dap.continue)
-			vim.keymap.set("n", "<space>dd", dap.run_last)
-			vim.keymap.set("n", "<space>dq", dap.close)
-			vim.keymap.set("n", "<space>dn", dap.step_over)
-			vim.keymap.set("n", "<space>ds", dap.step_into)
-			vim.keymap.set("n", "<space>do", dap.step_out)
-			vim.keymap.set("n", "<space>dc", dap.continue)
 		end,
 	},
 	{
 		"mxsdev/nvim-dap-vscode-js",
 		dependencies = { "mfussenegger/nvim-dap" },
-		config = function()
-			require("dap-vscode-js").setup({
-				adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" },
-			})
-		end,
+		config = {
+			adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" },
+		},
 	},
 	{
 		"microsoft/vscode-js-debug",
 		build = "rm -rf out && npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out && git reset --hard",
 	},
-
-	-- NOTE: dapui is the plugin causing the "setup called twice" message
 	{
 		"rcarriga/nvim-dap-ui",
 		dependencies = { "mfussenegger/nvim-dap" },

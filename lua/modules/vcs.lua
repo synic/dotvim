@@ -2,29 +2,25 @@ return {
 	{
 		"akinsho/git-conflict.nvim",
 		version = "*",
-		config = function()
-			require("git-conflict").setup()
-		end,
+		config = {},
 	},
 	"mattn/gist-vim",
 	{
 		"tpope/vim-fugitive",
-		config = function()
-			vim.keymap.set("n", "<space>gb", ":Git blame<cr>")
-			vim.keymap.set("n", "<space>ga", ":Git add %<cr>")
-		end,
+		keys = {
+			{ "<space>gb", ":Git blame<cr>", desc = "Git blame" },
+			{ "<space>ga", ":Git add %<cr>", desc = "Git add" },
+		},
 	},
 	"airblade/vim-gitgutter",
 	{
 		"NeogitOrg/neogit",
-		config = function()
-			local neogit = require("neogit")
-			neogit.setup({
-				kind = "vsplit",
-			})
-
-			vim.keymap.set("n", "<space>gs", ":Neogit<cr>")
-		end,
+		config = {
+			kind = "vsplit",
+		},
+		keys = {
+			{ "<space>gs", ":Neogit<cr>", desc = "Git status" },
+		},
 		dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" },
 	},
 }
