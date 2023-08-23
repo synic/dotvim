@@ -1,6 +1,6 @@
 return {
 	-- syntax
-	"plasticboy/vim-markdown",
+	{ "plasticboy/vim-markdown", event = "BufEnter *.md" },
 	"ap/vim-css-color",
 	"pangloss/vim-javascript",
 	"leafgarland/typescript-vim",

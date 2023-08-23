@@ -17,11 +17,7 @@ return {
 	},
 	{
 		"WhoIsSethDaniel/toggle-lsp-diagnostics.nvim",
-		config = function()
-			require("toggle_lsp_diagnostics").init()
-
-			vim.keymap.set("n", "<space>ta", ":ToggleDiag<cr>")
-		end,
+		keys = { "<space>ta", "<cmd>ToggleDiag<cr>", desc = "Lsp diagnostics" },
 	},
 	{
 		"mfussenegger/nvim-dap",
@@ -77,6 +73,7 @@ return {
 	{
 		"mxsdev/nvim-dap-vscode-js",
 		dependencies = { "mfussenegger/nvim-dap" },
+		lazy = true,
 		config = {
 			adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" },
 		},
@@ -88,6 +85,7 @@ return {
 	{
 		"rcarriga/nvim-dap-ui",
 		dependencies = { "mfussenegger/nvim-dap" },
+		lazy = true,
 		config = function()
 			local dap = require("dap")
 			local dapui = require("dapui")
