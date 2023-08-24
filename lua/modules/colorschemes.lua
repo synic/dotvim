@@ -8,7 +8,13 @@ return {
 	{ "jnurmine/Zenburn", lazy = true },
 	{ "morhetz/gruvbox", lazy = true },
 	{ "synic/synic.vim", lazy = true },
-	{ "sonph/onehalf", lazy = true },
+	{
+		"sonph/onehalf",
+		lazy = false,
+		config = function(plugin)
+			vim.opt.rtp:append(plugin.dir .. "/vim")
+		end,
+	},
 	{ "lifepillar/vim-solarized8", lazy = true },
 	{
 		"sainnhe/gruvbox-material",
@@ -27,7 +33,7 @@ return {
 	{ "folke/tokyonight.nvim" },
 	{
 		"kyoz/purify",
-		lazy = true,
+		lazy = false,
 		config = function(plugin)
 			vim.opt.rtp:append(plugin.dir .. "/vim")
 		end,
