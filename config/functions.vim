@@ -15,18 +15,6 @@ function! CopyBuffer()
   call setpos('.', cursor_pos)
 endfunction
 
-" open nerdtree at the current project root
-function! NERDTreeCurrentProject()
-  let pathname = ProjectRootGuess()
-  execute ':NERDTree ' . pathname
-endfunction
-
-" open nerdtree in the current file's directory
-function! NERDTreeCurrentFile()
-  let pathname = expand('%:p:h')
-  execute ':NERDTree ' . pathname
-endfunction
-
 " search in the project root
 function! SearchInProjectRoot()
   call inputsave()

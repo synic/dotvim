@@ -19,7 +19,6 @@ if !empty(glob('~/.vim/autoload/plug.vim'))
   Plug 'hynek/vim-python-pep8-indent'    " for auto indenting pep8 style
   " Plug 'python-rope/ropevim'             " refactoring, finding occurrences
   Plug 'python-mode/python-mode', {'branch': 'develop'}
-  Plug 'davidhalter/jedi-vim'            " python autocomplete
 
   " home screen
   Plug 'mhinz/vim-startify'              " pretty start page
@@ -28,15 +27,11 @@ if !empty(glob('~/.vim/autoload/plug.vim'))
   Plug 'ctrlpvim/ctrlp.vim'              " project file fuzzy-matcher
   Plug 'd11wtq/ctrlp_bdelete.vim'
   Plug 'dbakker/vim-projectroot'         " locate project
-  Plug 'scrooloose/nerdtree'             " file tree
 
   " window management
-  Plug 'roman/golden-ratio'
   Plug 'vim-scripts/tinykeymap'
 
   " coding/editing
-  Plug 'SirVer/ultisnips'                " textmate style snippets
-  Plug 'honza/vim-snippets'              " the actual snippest themselves
   Plug 'tpope/vim-surround'              " add, change, delete surround text
   Plug 'w0rp/ale'
   Plug 'jmcantrell/vim-virtualenv'       " virtualenv
@@ -90,10 +85,8 @@ if !empty(glob('~/.vim/autoload/plug.vim'))
   " Plug 'Yggdroot/indentLine'
 
   " misc
-  Plug 'vim-scripts/openssl.vim'
   Plug 'Valloric/ListToggle'
   Plug 'ConradIrwin/vim-bracketed-paste'
-  Plug 'wakatime/vim-wakatime'
 
   call plug#end()
 endif

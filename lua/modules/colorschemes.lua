@@ -11,6 +11,7 @@ return {
 	{
 		"sainnhe/gruvbox-material",
 		lazy = false,
+		priority = 1000,
 		config = function()
 			vim.cmd("colorscheme gruvbox-material")
 		end,
@@ -21,6 +22,7 @@ return {
 	{ "tomasr/molokai", lazy = true },
 	{ "ray-x/aurora", lazy = true },
 	{ "sainnhe/sonokai", lazy = true },
+	{ "folke/tokyonight.nvim" },
 
 	{
 		"vim-airline/vim-airline-themes",
