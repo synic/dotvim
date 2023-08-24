@@ -2,7 +2,7 @@ return {
 	{
 		"akinsho/git-conflict.nvim",
 		version = "*",
-		config = {},
+		opts = {},
 	},
 	"mattn/gist-vim",
 	{
@@ -49,7 +49,7 @@ return {
 	},
 	{
 		"NeogitOrg/neogit",
-		config = {
+		opts = {
 			kind = "vsplit",
 		},
 		keys = {

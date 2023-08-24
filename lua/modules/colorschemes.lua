@@ -23,12 +23,4 @@ return {
 	{ "ray-x/aurora", lazy = true },
 	{ "sainnhe/sonokai", lazy = true },
 	{ "folke/tokyonight.nvim" },
-
-	{
-		"vim-airline/vim-airline-themes",
-		lazy = false,
-		config = function()
-			vim.g.airline_theme = "gruvbox_material"
-		end,
-	},
 }
