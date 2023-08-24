@@ -9,6 +9,7 @@ return {
 	{ "morhetz/gruvbox", lazy = true },
 	{ "synic/synic.vim", lazy = true },
 	{ "sonph/onehalf", lazy = true },
+	{ "lifepillar/vim-solarized8", lazy = true },
 	{
 		"sainnhe/gruvbox-material",
 		lazy = false,
@@ -24,4 +25,11 @@ return {
 	{ "ray-x/aurora", lazy = true },
 	{ "sainnhe/sonokai", lazy = true },
 	{ "folke/tokyonight.nvim" },
+	{
+		"kyoz/purify",
+		lazy = true,
+		config = function(plugin)
+			vim.opt.rtp:append(plugin.dir .. "/vim")
+		end,
+	},
 }
