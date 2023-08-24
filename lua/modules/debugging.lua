@@ -2,9 +2,9 @@ return {
 	"w0rp/ale",
 	{
 		"folke/trouble.nvim",
-		dependencies = { "kyazdani42/nvim-web-devicons" },
+		dependencies = { "nvim-tree/nvim-web-devicons" },
 		lazy = true,
-		config = {
+		opts = {
 			mode = "document_diagnostics",
 		},
 		keys = {
@@ -74,7 +74,7 @@ return {
 		"mxsdev/nvim-dap-vscode-js",
 		dependencies = { "mfussenegger/nvim-dap" },
 		lazy = true,
-		config = {
+		opts = {
 			adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" },
 		},
 	},

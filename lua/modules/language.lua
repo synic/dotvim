@@ -7,13 +7,13 @@ return {
 	{ "dart-lang/dart-vim-plugin", event = "BufEnter *.dart" },
 	{ "jparise/vim-graphql", event = "BufEnter *.graphql,*.gql" },
 
-	{ "williamboman/mason.nvim", config = {} },
+	{ "williamboman/mason.nvim", opts = {} },
 
 	-- treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
 		run = ":TSUpdate",
-		config = {
+		opts = {
 			rainbow = { enable = true },
 			ensure_installed = {
 				"python",
