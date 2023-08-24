@@ -45,6 +45,7 @@
   "papercolor-theme": { "branch": "master", "commit": "9051480ad9129ff4ab4fffb38b44779b9081626f" },
   "plenary.nvim": { "branch": "master", "commit": "0dbe561ae023f02c2fb772b879e905055b939ce3" },
   "project.nvim": { "branch": "main", "commit": "8c6bad7d22eef1b71144b401c9f74ed01526a4fb" },
+  "purify": { "branch": "master", "commit": "70011ccc3225feb2e7bedda36d226adcf221f7ae" },
   "rnvimr": { "branch": "main", "commit": "5f0483d1c107ab1fe7e0af08cdf7900aa0dcb40e" },
   "sonokai": { "branch": "master", "commit": "17308ee6d9c764bfc1e0fa97213e7a99701b4144" },
   "synic.vim": { "branch": "master", "commit": "09fb8434ad233ab158cebb55798ce7e8cece980a" },
