@@ -3,6 +3,7 @@
   "Zenburn": { "branch": "master", "commit": "8df765342b2a33c728ce147d6c8e66359378f9d5" },
   "ale": { "branch": "master", "commit": "115ad17ace047cab20ccc67f79c943aaf3f0f291" },
   "aurora": { "branch": "master", "commit": "7a3ea3e6747ddd1acbe898e0b4193213aba36b86" },
+  "catppuccin": { "branch": "main", "commit": "da8f4875bdc4d73ff039c2e42a3ef931414e50bd" },
   "cmp-buffer": { "branch": "main", "commit": "3022dbc9166796b644a841a02de8dd1cc1d311fa" },
   "cmp-nvim-lsp": { "branch": "main", "commit": "44b16d11215dce86f253ce0c30949813c0a90765" },
   "cmp_luasnip": { "branch": "master", "commit": "18095520391186d634a0045dacaa346291096566" },

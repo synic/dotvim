@@ -3,6 +3,7 @@ vim.g.gruvbox_material_background = "medium"
 vim.g.everforest_background = "hard"
 
 return {
+	{ "catppuccin/nvim", name = "catppuccin", lazy = true },
 	{ "synic/jellybeans.vim", lazy = true },
 	{ "jnurmine/Zenburn", lazy = true },
 	{ "morhetz/gruvbox", lazy = true },
