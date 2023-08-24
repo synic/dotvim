@@ -16,25 +16,6 @@ let g:gundo_width = 35
 let g:gundo_right = 1
 let g:gundo_preview_height = 25
 
-" ### davidhalter/jedi-vim {{{1
-"----------------------------------------------------------------------------"
-let g:jedi#popup_on_dot = 0
-let g:jedi#show_call_signatures = 0
-let g:jedi#smart_auto_mappings = 0
-let g:jedi#goto_definitions_command = 'gd'
-let g:jedi#completions_command = '<C-n>'
-
-" ### SirVer/ultisnips {{{1
-"----------------------------------------------------------------------------"
-let g:UltiSnipsSnippetDirectories = [
-    \ $HOME.'/.vim/bundle/vim-snippets/UltiSnips',
-    \ 'snips'
-    \ ]
-let g:UltiSnipsExpandTrigger = '<tab>'
-let g:UltiSnipsJumpForwardTrigger = '<tab>'
-let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
-let g:UltiSnipsUsePythonVersion = 3
-
 " ### Valloric/ListToggle {{{1
 "----------------------------------------------------------------------------"
 let g:lt_location_list_toggle_map = '<space>el'

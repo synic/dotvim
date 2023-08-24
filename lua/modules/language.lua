@@ -2,10 +2,12 @@ return {
 	-- syntax
 	{ "plasticboy/vim-markdown", event = "BufEnter *.md" },
 	"ap/vim-css-color",
-	"pangloss/vim-javascript",
-	"leafgarland/typescript-vim",
-	"dart-lang/dart-vim-plugin",
-	"jparise/vim-graphql",
+	{ "pangloss/vim-javascript", event = "BufEnter *.js" },
+	{ "leafgarland/typescript-vim", event = "BufEnter *.ts" },
+	{ "dart-lang/dart-vim-plugin", event = "BufEnter *.dart" },
+	{ "jparise/vim-graphql", event = "BufEnter *.graphql,*.gql" },
+
+	{ "williamboman/mason.nvim", config = {} },
 
 	-- treesitter
 	{
@@ -72,6 +74,26 @@ return {
 					},
 				},
 			})
+
+			local ts_parsers = require("nvim-treesitter.parsers")
+
+			vim.api.nvim_create_autocmd("BufEnter", {
+				pattern = { "*" },
+				callback = function()
+					local ft = vim.bo.filetype
+					if not ft then
+						return
+					end
+					local parser = ts_parsers.filetype_to_parsername[ft]
+					if not parser then
+						return
+					end
+					local is_installed = ts_parsers.has_parser(ts_parsers.ft_to_lang(ft))
+					if not is_installed then
+						vim.cmd("TSInstall " .. parser)
+					end
+				end,
+			})
 		end,
 	},
 
@@ -85,6 +107,11 @@ return {
 	"LuaLS/lua-language-server",
 	{
 		"neovim/nvim-lspconfig",
+		keys = {
+			{ "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", desc = "Go to definition" },
+			{ "gD", "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "Go to definition in split" },
+		},
+		lazy = false,
 		config = function()
 			local lsp = require("lspconfig")
 
@@ -122,9 +149,6 @@ return {
 					},
 				},
 			})
-
-			vim.keymap.set("n", "gd", vim.lsp.buf.definition)
-			vim.keymap.set("n", "gD", ":vsplit<cr>:lua vim.lsp.buf.definition()<cr>")
 		end,
 	},
 }

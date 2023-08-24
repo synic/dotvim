@@ -2,14 +2,8 @@ return {
 	"dbakker/vim-projectroot",
 
 	{
-		"nvim-telescope/telescope.nvim",
-		dependencies = { "nvim-lua/plenary.nvim" },
-	},
-
-	{
 		"nvim-telescope/telescope-fzf-native.nvim",
 		build = "make",
-		lazy = false,
 		config = function()
 			local telescope = require("telescope")
 			local builtin = require("telescope.builtin")
