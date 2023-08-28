@@ -1,18 +1,19 @@
 return {
 	-- syntax
-	{ "plasticboy/vim-markdown", event = "BufEnter *.md" },
+	{ "plasticboy/vim-markdown", ft = "markdown" },
 	"ap/vim-css-color",
-	{ "pangloss/vim-javascript", event = "BufEnter *.js" },
-	{ "leafgarland/typescript-vim", event = "BufEnter *.ts" },
-	{ "dart-lang/dart-vim-plugin", event = "BufEnter *.dart" },
-	{ "jparise/vim-graphql", event = "BufEnter *.graphql,*.gql" },
+	{ "pangloss/vim-javascript", ft = "javascript" },
+	{ "leafgarland/typescript-vim", ft = "typescript" },
+	{ "dart-lang/dart-vim-plugin", ft = "dart" },
+	{ "jparise/vim-graphql", ft = "graphql" },
 
-	{ "williamboman/mason.nvim", opts = {} },
+	{ "williamboman/mason.nvim", opts = {}, cmd = "Mason" },
 
 	-- treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
 		run = ":TSUpdate",
+		lazy = false,
 		opts = {
 			rainbow = { enable = true },
 			ensure_installed = {
@@ -92,10 +93,10 @@ return {
 		},
 	},
 
-	"nvim-treesitter/nvim-treesitter-textobjects",
+	{ "nvim-treesitter/nvim-treesitter-textobjects", lazy = false },
 
 	-- python
-	"jmcantrell/vim-virtualenv",
+	{ "jmcantrell/vim-virtualenv", ft = "python" },
 
 	-- lsp
 	"onsails/lspkind-nvim",
@@ -135,11 +136,11 @@ return {
 				settings = {
 					pylsp = {
 						plugins = {
-							flake8 = { enabled = true },
-							pycodestyle = { enabled = false },
-							pyflakes = { enabled = false },
-							pylint = { enabled = false },
-							mccabe = { enabled = false },
+							ruff = {
+								enabled = true,
+								extendSelect = { "I" },
+								lineLength = 120,
+							},
 						},
 					},
 				},

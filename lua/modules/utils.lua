@@ -18,7 +18,6 @@ vim.keymap.set("n", "<space>Ps", ":Lazy sync<cr>")
 vim.keymap.set("n", "<space>wM", ":ZoomToggle<cr>")
 
 return {
-	"vim-scripts/openssl.vim",
 	"ConradIrwin/vim-bracketed-paste",
 	{
 		"s1n7ax/nvim-terminal",

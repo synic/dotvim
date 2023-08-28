@@ -19,4 +19,24 @@ return {
 			vim.g.rnvimr_enable_bw = 1
 		end,
 	},
+	{
+		"nvim-neo-tree/neo-tree.nvim",
+		branch = "v3.x",
+		cmd = "Neotree",
+		keys = {
+			{ "<space>pt", "<cmd>lua require('ao.functions').neotree_project_root()<cr>", desc = "Neotree" },
+		},
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-tree/nvim-web-devicons",
+			"MunifTanjim/nui.nvim",
+		},
+		config = function()
+			require("neo-tree").setup({
+				filesystem = {
+					hijack_netrw_behavior = "disabled",
+				},
+			})
+		end,
+	},
 }

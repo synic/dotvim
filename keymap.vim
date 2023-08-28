@@ -64,3 +64,6 @@ nnoremap <silent> <space>l6 6gt
 nnoremap <silent> <space>l7 7gt
 nnoremap <silent> <space>l8 8gt
 nnoremap <silent> <space>l9 9gt
+
+" help
+nnoremap <silent> <space>hh :help<cr>

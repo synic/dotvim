@@ -14,7 +14,11 @@ return {
 			{ "<space>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent files" },
 			{ "<space>sp", "<cmd>Telescope live_grep<cr>", desc = "Search in project files" },
 			{ "<space>rl", "<cmd>Telescope resume<cr>", desc = "Show last search" },
-			{ "<space>sd", "<cmd>lua require('ao.functions').search_cwd()<cr>", desc = "Search in current directory" },
+			{
+				"<space>sd",
+				"<cmd>lua require('ao.functions').telescope_search_cwd()<cr>",
+				desc = "Search in current directory",
+			},
 			{ "<space>gB", "<cmd>Telescope git_branches<cr>", desc = "Show git branches" },
 			{ "<space>gS", "<cmd>Telescope git_stash<cr>", desc = "Show git stashes" },
 			{ "<space>ml", "<cmd>Telescope marks<cr>", desc = "Show marks" },

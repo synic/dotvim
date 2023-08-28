@@ -21,12 +21,12 @@ return {
 	},
 	{
 		"mbbill/undotree",
-		lazy = true,
 		keys = { "<space>tu", "<cmd>UndotreeToggle<cr>", desc = "Undo tree" },
 	},
 
 	{
 		"p00f/nvim-ts-rainbow",
+		lazy = false,
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
 	},
 
@@ -49,23 +49,6 @@ return {
 			require("luasnip.loaders.from_snipmate").lazy_load({
 				paths = { "~/.config/nvim/snippets/" },
 			})
-		end,
-	},
-	-- openai
-	{
-		"madox2/vim-ai",
-		build = "./install.sh",
-		config = function()
-			local function ai_prompt()
-				local phrase = vim.fn.input("Prompt for AI: ")
-				vim.cmd(":AI " .. phrase)
-			end
-
-			vim.keymap.set("n", "<space>ac", ":AIChat<cr>")
-			vim.keymap.set("v", "<space>ae", function()
-				return ":AIEdit " .. vim.fn.input("Prompt for AI: ") .. "<cr>"
-			end, { expr = true })
-			vim.keymap.set("n", "<space>ai", ai_prompt)
 		end,
 	},
 }
