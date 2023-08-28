@@ -4,7 +4,6 @@ return {
 		version = "*",
 		opts = {},
 	},
-	"mattn/gist-vim",
 	{
 		"tpope/vim-fugitive",
 		keys = {

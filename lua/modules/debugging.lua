@@ -1,5 +1,4 @@
 return {
-	"w0rp/ale",
 	{
 		"folke/trouble.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },

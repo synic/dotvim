@@ -8,9 +8,11 @@ return {
 				return ":IncRename " --.. vim.fn.expand("<cword>")
 			end, { expr = true })
 		end,
+		cmd = "IncRename",
 	},
 	{
 		"dyng/ctrlsf.vim",
+		cmd = { "CtrlSF" },
 		config = function()
 			vim.g.better_whitespace_filetypes_blacklist = { "ctrlsf" }
 			vim.g.ctrlsf_default_view_mode = "normal"
