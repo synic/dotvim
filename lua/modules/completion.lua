@@ -1,14 +1,12 @@
 return {
 	{ "hrsh7th/cmp-nvim-lsp" },
 	{ "hrsh7th/cmp-buffer" },
-	{ "saadparwaiz1/cmp_luasnip" },
 
 	{
 		"hrsh7th/nvim-cmp",
 		lazy = false,
 		config = function()
 			local cmp = require("cmp")
-			local luasnip = require("luasnip")
 
 			local has_words_before = function()
 				local line, col = table.unpack(vim.api.nvim_win_get_cursor(0))
@@ -31,8 +29,6 @@ return {
 					["<Tab>"] = cmp.mapping(function(fallback)
 						if cmp.visible() then
 							cmp.select_next_item()
-						elseif luasnip.expand_or_jumpable() then
-							luasnip.expand_or_jump()
 						elseif has_words_before() then
 							cmp.complete()
 						else
@@ -43,8 +39,6 @@ return {
 					["<S-Tab>"] = cmp.mapping(function(fallback)
 						if cmp.visible() then
 							cmp.select_prev_item()
-						elseif luasnip.jumpable(-1) then
-							luasnip.jump(-1)
 						else
 							fallback()
 						end
@@ -74,11 +68,6 @@ return {
 					end
 					return vim_item
 				end,
-				snippet = {
-					expand = function(args)
-						luasnip.lsp_expand(args.body)
-					end,
-				},
 			})
 
 			vim.cmd([[
