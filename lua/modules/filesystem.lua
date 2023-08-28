@@ -1,4 +1,4 @@
-local f = require("core.functions")
+local f = require("ao.core")
 
 vim.g.netrw_liststyle = 0
 vim.g.netrw_keepdir = 0
@@ -13,23 +13,10 @@ vim.keymap.set("n", "_", f.netrw_current_project)
 return {
 	{
 		"kevinhwang91/rnvimr",
+		keys = { "<space>ff", "<cmd>RnvimrToggle<cr>", desc = "Ranger" },
 		config = function()
 			vim.g.rnvimr_enable_picker = 1
 			vim.g.rnvimr_enable_bw = 1
-			vim.keymap.set("n", "<space>ff", ":RnvimrToggle<cr>")
-		end,
-	},
-
-	{
-		"nvim-telescope/telescope-file-browser.nvim",
-		dependencies = { { "nvim-telescope/telescope.nvim" } },
-		config = function()
-			local ok, telescope = pcall(require, "telescope")
-			if not ok then
-				return
-			end
-
-			telescope.load_extension("file_browser")
 		end,
 	},
 }

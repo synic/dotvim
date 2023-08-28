@@ -1,18 +1,48 @@
 return {
-	"dbakker/vim-projectroot",
+	{ "dbakker/vim-projectroot", lazy = false },
 
 	{
 		"nvim-telescope/telescope-fzf-native.nvim",
 		build = "make",
+		keys = {
+			{
+				"<space>bb",
+				"<cmd>lua require('telescope.builtin').buffers({ sort_mru=true, sort_lastused=true, icnore_current_buffer=true })<cr>",
+				desc = "Show buffers",
+			},
+			{ "<space>ph", "<cmd>Telescope git_files<cr>", desc = "Project files" },
+			{ "<space>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent files" },
+			{ "<space>sp", "<cmd>Telescope live_grep<cr>", desc = "Search in project files" },
+			{ "<space>rl", "<cmd>Telescope resume<cr>", desc = "Show last search" },
+			{ "<space>sd", "<cmd>lua require('ao.functions').search_cwd()<cr>", desc = "Search in current directory" },
+			{ "<space>gB", "<cmd>Telescope git_branches<cr>", desc = "Show git branches" },
+			{ "<space>gS", "<cmd>Telescope git_stash<cr>", desc = "Show git stashes" },
+			{ "<space>ml", "<cmd>Telescope marks<cr>", desc = "Show marks" },
+			{ "<space>rr", "<cmd>Telescope registers<cr>", desc = "Show registers" },
+			{ "<space>ss", "<cmd>Telescope spell_suggest<cr>", desc = "Spelling suggestions" },
+			{
+				"<space>*",
+				"<cmd>lua require('ao.functions').telescope_search_star()<cr>",
+				desc = "Search for term globally",
+			},
+			{
+				"<space>pr",
+				"<cmd>lua require('ao.functions').telescope_load_projects()<cr>",
+				desc = "Recent projects",
+			},
+			{
+				"<space>ll",
+				"<cmd>lua require('ao.functions').telescope_new_tab_with_projects()<cr>",
+				desc = "New layout",
+			},
+		},
 		config = function()
 			local telescope = require("telescope")
-			local builtin = require("telescope.builtin")
+			local functions = require("ao.functions")
 
-			local function search_for_term(prompt_bufnr)
-				local current_picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
-				local prompt = current_picker:_get_prompt()
-				vim.cmd(":CtrlSF " .. prompt)
-			end
+			telescope.load_extension("fzf")
+			telescope.load_extension("projects")
+			telescope.load_extension("file_browser")
 
 			telescope.setup({
 				defaults = {
@@ -48,85 +78,29 @@ return {
 					live_grep = {
 						mappings = {
 							i = {
-								["<C-e>"] = search_for_term,
+								["<C-e>"] = functions.telescope_search_for_term,
 							},
 						},
 					},
 					grep_string = {
 						mappings = {
 							i = {
-								["<C-e>"] = search_for_term,
+								["<C-e>"] = functions.telescope_search_for_term,
 							},
 						},
 					},
 				},
 			})
-
-			telescope.load_extension("fzf")
-
-			local function search_cwd()
-				builtin.live_grep({ cwd = vim.fn.expand("%:p:h") })
-			end
-
-			vim.keymap.set(
-				"n",
-				"<space>bb",
-				":lua require('telescope.builtin').buffers"
-					.. "({ sort_mru=true, sort_lastused=true, ignore_current_buffer=true })<cr>"
-			)
-			vim.keymap.set("n", "<space>ph", ":Telescope git_files<cr>")
-			vim.keymap.set("n", "<space>fr", ":Telescope oldfiles<cr>")
-			vim.keymap.set("n", "<space>sp", ":Telescope live_grep<cr>")
-			vim.keymap.set("n", "<space>rl", ":Telescope resume<cr>")
-			vim.keymap.set("n", "<space>sd", search_cwd)
-			vim.keymap.set("n", "<space>gB", ":Telescope git_branches<cr>")
-			vim.keymap.set("n", "<space>gS", ":Telescope git_stash<cr>")
-			vim.keymap.set("n", "<space>ml", ":Telescope marks<cr>")
-			vim.keymap.set("n", "<space>rr", ":Telescope registers<cr>")
-			vim.keymap.set("n", "<space>ss", ":Telescope spell_suggest<cr>")
-			vim.keymap.set("n", "<space>*", function()
-				local current_word = vim.fn.expand("<cword>")
-				local project_dir = vim.fn.ProjectRootGuess()
-				builtin.grep_string({
-					cwd = project_dir,
-					search = current_word,
-				})
-			end)
 		end,
+
+		dependencies = {
+			"nvim-telescope/telescope.nvim",
+			"nvim-telescope/telescope-file-browser.nvim",
+			"ahmedkhalf/project.nvim",
+		},
 	},
-
-	{
-		"airblade/vim-rooter",
-		config = function()
-			vim.g.rooter_silent_chdir = 1
-		end,
-	},
-
-	{
-		"nvim-telescope/telescope-project.nvim",
-		lazy = false,
-		config = function()
-			local ok, telescope = pcall(require, "telescope")
-			if not ok then
-				return
-			end
-
-			telescope.load_extension("project")
-
-			local function load_projects()
-				require("telescope").extensions.project.project({
-					display_type = "full",
-					layout_config = { width = 0.5, height = 0.5 },
-				})
-			end
-
-			vim.keymap.set("n", "<space>pp", load_projects)
-		end,
-	},
-
 	{
 		"ahmedkhalf/project.nvim",
-		lazy = false,
 		config = function()
 			require("project_nvim").setup({
 				manual_mode = false,
@@ -150,25 +124,13 @@ return {
 				scope_chdir = "global",
 				datapath = vim.fn.stdpath("data"),
 			})
+		end,
+	},
 
-			local ok, telescope = pcall(require, "telescope")
-			if not ok then
-				return
-			end
-
-			telescope.load_extension("projects")
-
-			local function load_projects()
-				require("telescope").extensions.projects.projects({ layout_config = { width = 0.5, height = 0.3 } })
-			end
-
-			local function new_tab_with_projects()
-				vim.cmd(":tabnew<cr>")
-				load_projects()
-			end
-
-			vim.keymap.set("n", "<space>pr", load_projects)
-			vim.keymap.set("n", "<space>ll", new_tab_with_projects)
+	{
+		"airblade/vim-rooter",
+		config = function()
+			vim.g.rooter_silent_chdir = 1
 		end,
 	},
 }
