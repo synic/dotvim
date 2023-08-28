@@ -27,7 +27,12 @@ end
 
 function m.telescope_new_tab_with_projects()
 	vim.cmd(":tabnew<cr>")
-	m.load_projects()
+	m.telescope_load_projects()
+end
+
+function m.neotree_project_root()
+	local project_dir = vim.fn.ProjectRootGuess()
+	vim.cmd(":Neotree " .. project_dir)
 end
 
 return m

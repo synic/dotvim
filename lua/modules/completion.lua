@@ -1,10 +1,11 @@
 return {
-	"hrsh7th/cmp-nvim-lsp",
-	"hrsh7th/cmp-buffer",
-	"saadparwaiz1/cmp_luasnip",
+	{ "hrsh7th/cmp-nvim-lsp" },
+	{ "hrsh7th/cmp-buffer" },
+	{ "saadparwaiz1/cmp_luasnip" },
 
 	{
 		"hrsh7th/nvim-cmp",
+		lazy = false,
 		config = function()
 			local cmp = require("cmp")
 			local luasnip = require("luasnip")
@@ -85,5 +86,6 @@ return {
 				highlight! default link CmpItemKind CmpItemMenuDefault
 			]])
 		end,
+		dependencies = { "L3MON4D3/LuaSnip" },
 	},
 }

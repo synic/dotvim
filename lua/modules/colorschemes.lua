@@ -23,5 +23,5 @@ return {
 	{ "tomasr/molokai", lazy = true },
 	{ "ray-x/aurora", lazy = true },
 	{ "sainnhe/sonokai", lazy = true },
-	{ "folke/tokyonight.nvim" },
+	{ "folke/tokyonight.nvim", lazy = true },
 }

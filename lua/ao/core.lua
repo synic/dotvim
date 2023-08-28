@@ -55,7 +55,8 @@ m.table_concat = function(t1, t2)
 	return t1
 end
 
-m.ensure_package_manager = function()
+m.bootstrap_package_manager = function()
+	local newly_installed = false
 	local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 	if not vim.loop.fs_stat(lazypath) then
 		vim.fn.system({
@@ -66,9 +67,13 @@ m.ensure_package_manager = function()
 			"--branch=stable", -- latest stable release
 			lazypath,
 		})
+
+		newly_installed = true
 	end
 
 	vim.opt.rtp:prepend(lazypath)
+
+	return newly_installed
 end
 
 return m

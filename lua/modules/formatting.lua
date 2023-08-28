@@ -2,6 +2,7 @@ return {
 	{
 		"jose-elias-alvarez/null-ls.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
+		lazy = false,
 		config = function()
 			local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 			local ns = require("null-ls")
@@ -15,12 +16,15 @@ return {
 					ns.builtins.formatting.prettierd,
 					ns.builtins.formatting.black,
 
+					-- diagnostics
+					-- ns.builtins.diagnostics.flake8,
+					ns.builtins.diagnostics.gitlint,
+
 					-- completion
 					ns.builtins.completion.luasnip,
 
 					-- other
 					ns.builtins.code_actions.gitsigns,
-					ns.builtins.diagnostics.gitlint,
 				},
 
 				on_attach = function(client, bufnr)
