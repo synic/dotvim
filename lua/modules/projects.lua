@@ -50,14 +50,15 @@ return {
 					"<cmd>lua require('ao.functions').telescope_new_tab_with_projects()<cr>",
 					desc = "New layout",
 				},
+				{
+					"<leader>a",
+					"<cmd>lua vim.lsp.buf.code_action()<cr>",
+					desc = "Code actions",
+				},
 			},
 			config = function()
 				local telescope = require("telescope")
 				local functions = require("ao.functions")
-
-				telescope.load_extension("fzf")
-				telescope.load_extension("projects")
-				telescope.load_extension("file_browser")
 
 				telescope.setup({
 					defaults = {
@@ -106,6 +107,11 @@ return {
 						},
 					},
 				})
+
+				telescope.load_extension("fzf")
+				telescope.load_extension("projects")
+				telescope.load_extension("file_browser")
+				telescope.load_extension("ui-select")
 			end,
 			dependencies = {
 				"nvim-lua/plenary.nvim",
@@ -114,6 +120,7 @@ return {
 				"ahmedkhalf/project.nvim",
 				"nvim-telescope/telescope-fzf-native.nvim",
 				"benfowler/telescope-luasnip.nvim",
+				"nvim-telescope/telescope-ui-select.nvim",
 			},
 		},
 	},
