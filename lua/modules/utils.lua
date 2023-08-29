@@ -19,7 +19,7 @@ vim.keymap.set("n", "<space>Pu", ":Lazy update<cr>")
 vim.keymap.set("n", "<space>Ps", ":Lazy sync<cr>")
 vim.keymap.set("n", "<space>wM", ":ZoomToggle<cr>")
 
-local function base()
+local function base_plugins()
 	return {
 		"ConradIrwin/vim-bracketed-paste",
 		{
@@ -32,15 +32,18 @@ local function base()
 				vim.keymap.set("n", "<space>'", ':lua NTGlobal["terminal"]:toggle()<cr>', { silent = true })
 			end,
 		},
-		"wakatime/vim-wakatime",
 	}
 end
 
+local wakatime_config = {
+	"wakatime/vim-wakatime",
+}
+
 local wakatime_config_path = core.join_paths(os.getenv("HOME"), ".wakatime.cfg")
-local plugins = base()
+local plugins = base_plugins()
 
 if vim.loop.fs_stat(wakatime_config_path) then
-	plugins = core.table_concat(plugins, { "wakatime/vim-wakatime" })
+	plugins = core.table_concat(plugins, wakatime_config)
 end
 
 return plugins
