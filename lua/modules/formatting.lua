@@ -20,9 +20,6 @@ return {
 					-- ns.builtins.diagnostics.flake8,
 					ns.builtins.diagnostics.gitlint,
 
-					-- completion
-					ns.builtins.completion.luasnip,
-
 					-- other
 					ns.builtins.code_actions.gitsigns,
 				},
