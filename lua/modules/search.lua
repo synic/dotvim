@@ -8,7 +8,6 @@ return {
 				return ":IncRename " --.. vim.fn.expand("<cword>")
 			end, { expr = true })
 		end,
-		cmd = "IncRename",
 	},
 	{
 		"dyng/ctrlsf.vim",
