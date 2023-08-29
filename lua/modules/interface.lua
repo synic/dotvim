@@ -3,6 +3,12 @@ vim.g.golden_ratio_autocmd = 0
 
 return {
 	"nvim-tree/nvim-web-devicons",
+	{
+		"rcarriga/nvim-notify",
+		config = function()
+			vim.notify = require("notify")
+		end,
+	},
 
 	{
 		"nanozuki/tabby.nvim",
