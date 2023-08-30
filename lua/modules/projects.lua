@@ -28,9 +28,16 @@ local function telescope_new_tab_with_projects()
 	telescope_load_projects()
 end
 
-local function neotree_project_root()
-	local project_dir = vim.fn.ProjectRootGuess()
-	vim.cmd(":Neotree " .. project_dir)
+local function telescope_project_files()
+	local utils = require("telescope.utils")
+	local builtin = require("telescope.builtin")
+
+	local _, ret, _ = utils.get_os_command_output({ "git", "rev-parse", "--is-inside-work-tree" })
+	if ret == 0 then
+		builtin.git_files()
+	else
+		builtin.find_files()
+	end
 end
 
 return {
@@ -46,7 +53,7 @@ return {
 					"<cmd>lua require('telescope.builtin').buffers({ sort_mru=true, sort_lastused=true, icnore_current_buffer=true })<cr>",
 					desc = "Show buffers",
 				},
-				{ "<space>ph", "<cmd>Telescope git_files<cr>", desc = "Project files" },
+				{ "<space>ph", telescope_project_files, desc = "Project files" },
 				{ "<space>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent files" },
 				{ "<space>sp", "<cmd>Telescope live_grep<cr>", desc = "Search in project files" },
 				{ "<space>rl", "<cmd>Telescope resume<cr>", desc = "Show last search" },
