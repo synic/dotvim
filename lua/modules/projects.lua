@@ -1,3 +1,38 @@
+local function telescope_search_star()
+	local builtin = require("telescope.builtin")
+	local current_word = vim.fn.expand("<cword>")
+	local project_dir = vim.fn.ProjectRootGuess()
+	builtin.grep_string({
+		cwd = project_dir,
+		search = current_word,
+	})
+end
+
+local function telescope_search_cwd()
+	local builtin = require("telescope.builtin")
+	builtin.live_grep({ cwd = vim.fn.expand("%:p:h") })
+end
+
+local function telescope_search_for_term(prompt_bufnr)
+	local current_picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
+	local prompt = current_picker:_get_prompt()
+	vim.cmd(":CtrlSF " .. prompt)
+end
+
+local function telescope_load_projects()
+	require("telescope").extensions.projects.projects({ layout_config = { width = 0.5, height = 0.3 } })
+end
+
+local function telescope_new_tab_with_projects()
+	vim.cmd(":tabnew<cr>")
+	telescope_load_projects()
+end
+
+local function neotree_project_root()
+	local project_dir = vim.fn.ProjectRootGuess()
+	vim.cmd(":Neotree " .. project_dir)
+end
+
 return {
 	{ "dbakker/vim-projectroot", lazy = false },
 	{
@@ -15,50 +50,21 @@ return {
 				{ "<space>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent files" },
 				{ "<space>sp", "<cmd>Telescope live_grep<cr>", desc = "Search in project files" },
 				{ "<space>rl", "<cmd>Telescope resume<cr>", desc = "Show last search" },
-				{
-					"<space>sd",
-					"<cmd>lua require('ao.functions').telescope_search_cwd()<cr>",
-					desc = "Search in current directory",
-				},
+				{ "<space>sd", telescope_search_cwd, desc = "Search in current directory" },
 				{ "<space>gB", "<cmd>Telescope git_branches<cr>", desc = "Show git branches" },
 				{ "<space>gS", "<cmd>Telescope git_stash<cr>", desc = "Show git stashes" },
 				{ "<space>ml", "<cmd>Telescope marks<cr>", desc = "Show marks" },
 				{ "<space>rr", "<cmd>Telescope registers<cr>", desc = "Show registers" },
 				{ "<space>ss", "<cmd>Telescope spell_suggest<cr>", desc = "Spelling suggestions" },
-				{
-					"<space>*",
-					"<cmd>lua require('ao.functions').telescope_search_star()<cr>",
-					desc = "Search for term globally",
-				},
-				{
-					"<space>pr",
-					"<cmd>lua require('ao.functions').telescope_load_projects()<cr>",
-					desc = "Recent projects",
-				},
-				{
-					"<space>ll",
-					"<cmd>lua require('telescope-tabs').list_tabs()<cr>",
-					desc = "List layouts",
-				},
-				{
-					"<space>ls",
-					"<cmd>lua require('telescope').extensions.luasnip.luasnip()<cr>",
-					desc = "Snippets",
-				},
-				{
-					"<space>ln",
-					"<cmd>lua require('ao.functions').telescope_new_tab_with_projects()<cr>",
-					desc = "New layout",
-				},
-				{
-					"<leader>a",
-					"<cmd>lua vim.lsp.buf.code_action()<cr>",
-					desc = "Code actions",
-				},
+				{ "<space>*", telescope_search_star, desc = "Search for term globally" },
+				{ "<space>pr", telescope_load_projects, desc = "Recent projects" },
+				{ "<space>ll", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "List layouts" },
+				{ "<space>ls", "<cmd>lua require('telescope').extensions.luasnip.luasnip()<cr>", desc = "Snippets" },
+				{ "<space>ln", telescope_new_tab_with_projects, desc = "New layout" },
+				{ "<leader>a", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "Code actions" },
 			},
 			config = function()
 				local telescope = require("telescope")
-				local functions = require("ao.functions")
 
 				telescope.setup({
 					defaults = {
@@ -94,14 +100,14 @@ return {
 						live_grep = {
 							mappings = {
 								i = {
-									["<C-e>"] = functions.telescope_search_for_term,
+									["<C-e>"] = telescope_search_for_term,
 								},
 							},
 						},
 						grep_string = {
 							mappings = {
 								i = {
-									["<C-e>"] = functions.telescope_search_for_term,
+									["<C-e>"] = telescope_search_for_term,
 								},
 							},
 						},

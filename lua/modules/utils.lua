@@ -1,4 +1,4 @@
-local core = require("ao.core")
+local utils = require("ao.utils")
 
 vim.cmd([[
 	function! s:ZoomToggle() abort
@@ -39,11 +39,11 @@ local wakatime_config = {
 	"wakatime/vim-wakatime",
 }
 
-local wakatime_config_path = core.join_paths(os.getenv("HOME"), ".wakatime.cfg")
+local wakatime_config_path = utils.join_paths(os.getenv("HOME"), ".wakatime.cfg")
 local plugins = base_plugins()
 
 if vim.loop.fs_stat(wakatime_config_path) then
-	plugins = core.table_concat(plugins, wakatime_config)
+	plugins = utils.table_concat(plugins, wakatime_config)
 end
 
 return plugins

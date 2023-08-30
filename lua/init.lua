@@ -1,8 +1,8 @@
 vim.api.nvim_set_option("guifont", "Hack:h10")
 
-local core = require("ao.core")
+local plugins = require("ao.plugins")
 
-core.bootstrap_package_manager()
+plugins.install_plugin_manager()
 
 require("lazy").setup("modules", {
 	change_detection = { enabled = true, notify = false },
