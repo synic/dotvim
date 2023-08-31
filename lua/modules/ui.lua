@@ -39,9 +39,11 @@ return {
 		end,
 		opts = {
 			plugins = { spelling = true },
-			defaults = {
-				mode = { "n", "v" },
-				layout = { align = "center" },
+			mode = { "n", "v" },
+			layout = { align = "center" },
+			triggers_blacklist = {
+				i = { "f", "d" },
+				v = { "f", "d" },
 			},
 		},
 	},

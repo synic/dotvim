@@ -13,7 +13,6 @@ module.categories = {
 	["<space>i"] = { name = "+info" },
 	["<space>c"] = { name = "+code" },
 	["<space>d"] = { name = "+debug" },
-	["<space>f"] = { name = "+file/find" },
 	["<space>fe"] = { name = "+misc" },
 	["<space>h"] = { name = "+help" },
 	["<space>p"] = { name = "+project" },
