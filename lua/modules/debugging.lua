@@ -16,20 +16,20 @@ return {
 	},
 	{
 		"WhoIsSethDaniel/toggle-lsp-diagnostics.nvim",
-		keys = { "<space>ta", "<cmd>ToggleDiag<cr>", desc = "lsp diagnostics" },
+		keys = { { "<space>ta", "<cmd>ToggleDiag<cr>", desc = "lsp diagnostics" } },
 	},
 	{
 		"mfussenegger/nvim-dap",
 		lazy = true,
 		keys = {
-			{ "<space>db", "<cmd>lua require('dap').toggle_breakpoint()<cr>", desc = "toggle breakpoint" },
-			{ "<space>dc", "<cmd>lua require('dap').continue()<cr>", desc = "continue" },
-			{ "<space>dd", "<cmd>lua require('dap').run_last()<cr>", desc = "run last" },
-			{ "<space>dq", "<cmd>lua require('dap').close()<cr>", desc = "close" },
-			{ "<space>dn", "<cmd>lua require('dap').step_over()<cr>", desc = "step over" },
-			{ "<space>ds", "<cmd>lua require('dap').step_into()<cr>", desc = "step into" },
-			{ "<space>do", "<cmd>lua require('dap').step_out()<cr>", desc = "step out" },
-			{ "<space>dc", "<cmd>lua require('dap').continue()<cr>", desc = "continue" },
+			{ "<leader>db", "<cmd>lua require('dap').toggle_breakpoint()<cr>", desc = "toggle breakpoint" },
+			{ "<leader>dc", "<cmd>lua require('dap').continue()<cr>", desc = "continue" },
+			{ "<leader>dd", "<cmd>lua require('dap').run_last()<cr>", desc = "run last" },
+			{ "<leader>dq", "<cmd>lua require('dap').close()<cr>", desc = "close" },
+			{ "<leader>dn", "<cmd>lua require('dap').step_over()<cr>", desc = "step over" },
+			{ "<leader>ds", "<cmd>lua require('dap').step_into()<cr>", desc = "step into" },
+			{ "<leader>do", "<cmd>lua require('dap').step_out()<cr>", desc = "step out" },
+			{ "<leader>dc", "<cmd>lua require('dap').continue()<cr>", desc = "continue" },
 		},
 		config = function()
 			local dap = require("dap")

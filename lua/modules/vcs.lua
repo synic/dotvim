@@ -14,6 +14,7 @@ return {
 	{
 		"lewis6991/gitsigns.nvim",
 		event = { "BufReadPre", "BufNewFile" },
+		lazy = false,
 		opts = {
 			signs = {
 				add = { text = "▎" },
@@ -33,15 +34,15 @@ return {
         -- stylua: ignore start
         map("n", "]h", gs.next_hunk, "next hunk")
         map("n", "[h", gs.prev_hunk, "prev hunk")
-        map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "stage hunk")
-        map({ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "reset hunk")
-        map("n", "<leader>ghS", gs.stage_buffer, "stage buffer")
-        map("n", "<leader>ghu", gs.undo_stage_hunk, "undo stage Hunk")
-        map("n", "<leader>ghR", gs.reset_buffer, "reset buffer")
-        map("n", "<leader>ghp", gs.preview_hunk, "preview hunk")
-        map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "blame line")
-        map("n", "<leader>ghd", gs.diffthis, "diff this")
-        map("n", "<leader>ghD", function() gs.diffthis("~") end, "diff this ~")
+        map({ "n", "v" }, "<space>ghs", ":Gitsigns stage_hunk<CR>", "stage hunk")
+        map({ "n", "v" }, "<space>ghr", ":Gitsigns reset_hunk<CR>", "reset hunk")
+        map("n", "<space>ghS", gs.stage_buffer, "stage buffer")
+        map("n", "<space>ghu", gs.undo_stage_hunk, "undo stage Hunk")
+        map("n", "<space>ghR", gs.reset_buffer, "reset buffer")
+        map("n", "<space>ghp", gs.preview_hunk, "preview hunk")
+        map("n", "<space>ghb", function() gs.blame_line({ full = true }) end, "blame line")
+        map("n", "<space>ghd", gs.diffthis, "diff this")
+        map("n", "<space>ghD", function() gs.diffthis("~") end, "diff this ~")
         map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "select hunk")
 			end,
 		},
