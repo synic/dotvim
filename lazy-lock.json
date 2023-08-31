@@ -75,5 +75,6 @@
   "vim-surround": { "branch": "master", "commit": "3d188ed2113431cf8dac77be61b842acb64433d9" },
   "vim-virtualenv": { "branch": "master", "commit": "b81912f090918ec63b98d0f41117fb44c0afe646" },
   "vim-wakatime": { "branch": "master", "commit": "0d2efa2daff34b27b0d227d4c3b136811c93db93" },
-  "vscode-js-debug": { "branch": "main", "commit": "72c0276263be7a59ada0366341d3d3a6be5ceaa3" }
+  "vscode-js-debug": { "branch": "main", "commit": "72c0276263be7a59ada0366341d3d3a6be5ceaa3" },
+  "which-key.nvim": { "branch": "main", "commit": "7ccf476ebe0445a741b64e36c78a682c1c6118b7" }
 }

@@ -20,13 +20,13 @@ vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\
 vim.g.netrw_browse_split = 0
 vim.g.NERDTreeHijackNetrw = 0
 
-vim.keymap.set("n", "-", netrw_current_file)
-vim.keymap.set("n", "_", netrw_current_project)
+vim.api.nvim_set_keymap("n", "-", netrw_current_file, { desc = "browse current directory" })
+vim.api.nvim_set_keymap("n", "_", netrw_current_project, { desc = "browse project directory" })
 
 return {
 	{
 		"kevinhwang91/rnvimr",
-		keys = { "<space>ff", "<cmd>RnvimrToggle<cr>", desc = "Ranger" },
+		keys = { "<space>ff", "<cmd>RnvimrToggle<cr>", desc = "ranger" },
 		config = function()
 			vim.g.rnvimr_enable_picker = 1
 			vim.g.rnvimr_enable_bw = 1
@@ -37,7 +37,7 @@ return {
 		branch = "v3.x",
 		cmd = "Neotree",
 		keys = {
-			{ "<space>pt", neotree_project_root, desc = "Neotree" },
+			{ "<space>pt", neotree_project_root, desc = "neotree" },
 		},
 		dependencies = {
 			"nvim-lua/plenary.nvim",

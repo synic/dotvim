@@ -15,9 +15,9 @@ vim.cmd([[
 	command! ZoomToggle call s:ZoomToggle()
 ]])
 
-vim.keymap.set("n", "<space>Pu", ":Lazy update<cr>")
-vim.keymap.set("n", "<space>Ps", ":Lazy sync<cr>")
-vim.keymap.set("n", "<space>wM", ":ZoomToggle<cr>")
+vim.api.nvim_set_keymap("n", "<space>Pu", ":Lazy update<cr>", { desc = "update plugins" })
+vim.api.nvim_set_keymap("n", "<space>Ps", ":Lazy sync<cr>", { desc = "sync plugins" })
+vim.api.nvim_set_keymap("n", "<space>wM", ":ZoomToggle<cr>", { desc = "zoom window" })
 
 local function base_plugins()
 	return {
@@ -29,7 +29,12 @@ local function base_plugins()
 					disable_default_keymaps = true,
 				})
 
-				vim.keymap.set("n", "<space>'", ':lua NTGlobal["terminal"]:toggle()<cr>', { silent = true })
+				vim.api.nvim_set_keymap(
+					"n",
+					"<space>'",
+					':lua NTGlobal["terminal"]:toggle()<cr>',
+					{ silent = true, desc = "toggle terminal" }
+				)
 			end,
 		},
 	}

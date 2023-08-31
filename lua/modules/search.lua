@@ -34,7 +34,12 @@ return {
 				endfunction
 			]])
 
-			vim.keymap.set("n", "<space>sf", ":call SearchInProjectRoot()<cr>")
+			vim.api.nvim_set_keymap(
+				"n",
+				"<space>sf",
+				":call SearchInProjectRoot()<cr>",
+				{ desc = "search in project root" }
+			)
 		end,
 	},
 	"haya14busa/incsearch.vim",

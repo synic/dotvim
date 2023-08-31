@@ -1,27 +1,23 @@
+local function commentary_toggle()
+	if vim.api.nvim_get_mode().mode == "n" then
+		vim.cmd("normal gcc")
+	else
+		vim.cmd("visual gc")
+	end
+end
+
 return {
 	"editorconfig/editorconfig-vim",
 	"tpope/vim-surround",
 	{
 		"tpope/vim-commentary",
-		config = function()
-			vim.cmd([[
-				function! ToggleComment()
-					if mode() !~# "^[vV\<C-v>]"
-						" not visual mode
-						normal gcc
-  				else
-						visual gc
-					endif
-				endfunction
-
-				:nmap <space>cl :call ToggleComment()<cr>
-				:vmap <space>cl :call ToggleComment()<cr>
-		]])
-		end,
+		keys = {
+			{ "<space>cl", commentary_toggle, desc = "toggle comments" },
+		},
 	},
 	{
 		"mbbill/undotree",
-		keys = { "<space>tu", "<cmd>UndotreeToggle<cr>", desc = "Undo tree" },
+		keys = { "<space>tu", "<cmd>UndotreeToggle<cr>", desc = "undo tree" },
 	},
 
 	{

@@ -43,7 +43,7 @@ return {
 						["af"] = "@function.outer",
 						["if"] = "@function.inner",
 						["ac"] = "@class.outer",
-						["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
+						["ic"] = { query = "@class.inner", desc = "select inner part of a class region" },
 					},
 					selection_modes = {
 						["@parameter.outer"] = "v", -- charwise
@@ -66,7 +66,7 @@ return {
 					set_jumps = true, -- whether to set jumps in the jumplist
 					goto_next_start = {
 						["]m"] = "@function.outer",
-						["]]"] = { query = "@class.outer", desc = "Next class start" },
+						["]]"] = { query = "@class.outer", desc = "next class start" },
 					},
 					goto_next_end = {
 						["]M"] = "@function.outer",
@@ -104,8 +104,8 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		keys = {
-			{ "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", desc = "Go to definition" },
-			{ "gD", "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "Go to definition in split" },
+			{ "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", desc = "go to definition" },
+			{ "gD", "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "go to definition in split" },
 		},
 		lazy = false,
 		config = function()

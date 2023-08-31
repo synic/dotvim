@@ -1,4 +1,4 @@
-vim.keymap.set("n", "<space>tt", ":Telescope colorscheme<cr>")
+vim.api.nvim_set_keymap("n", "<space>tt", "<cmd>Telescope colorscheme<cr>", { desc = "colorschemes" })
 vim.g.gruvbox_material_background = "medium"
 vim.g.everforest_background = "hard"
 
