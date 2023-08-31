@@ -63,15 +63,24 @@ return {
 				{ "<leader>s", "<cmd>Telescope spell_suggest<cr>", desc = "spelling suggestions" },
 				{ "<space>*", telescope_search_star, desc = "search for term globally" },
 				{ "<space>pp", telescope_load_projects, desc = "recent projects" },
-				{ "<space>ll", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "list layouts" },
-				{ "<space>ln", telescope_new_tab_with_projects, desc = "new layout" },
 				{ "<leader>a", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "code actions" },
-				{ "<space>tt", "<cmd>Telescope colorscheme<cr>", desc = "colorschemes" },
 				{ "<leader>is", "<cmd>lua require('telescope').extensions.luasnip.luasnip()<cr>", desc = "snippets" },
+
+				-- layout items
+				{ "<space>ll", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "list layouts" },
+				{ "<space>ln", telescope_new_tab_with_projects, desc = "new layout with project" },
+				{ "<space>lN", "<cmd>tabnew<cr>", desc = "new layout" },
+
 				-- info items
+				{ "<space>it", "<cmd>Telescope colorscheme<cr>", desc = "show installed themes" },
 				{ "<space>if", "<cmd>Telescope oldfiles<cr>", desc = "recent files" },
 				{ "<space>ir", "<cmd>Telescope registers<cr>", desc = "show registers" },
 				{ "<space>im", "<cmd>Telescope marks<cr>", desc = "show marks" },
+				{
+					"<space>in",
+					"<cmd>lua require('telescope').extensions.notify.notify()<cr>",
+					desc = "show past notifications",
+				},
 			},
 			config = function()
 				local telescope = require("telescope")

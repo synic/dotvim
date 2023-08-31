@@ -11,7 +11,6 @@ module.categories = {
 	["<space>l"] = { name = "+layouts" },
 	["<space>b"] = { name = "+buffers" },
 	["<space>i"] = { name = "+info" },
-	["<space>c"] = { name = "+code" },
 	["<space>d"] = { name = "+debug" },
 	["<space>fe"] = { name = "+misc" },
 	["<space>h"] = { name = "+help" },
@@ -46,7 +45,7 @@ local keymap = {
 
 	-- toggles
 	{ "n", "<space>ts", "<cmd>let &hls = !&hls<cr>", { desc = "toggle search highlights", silent = true } },
-	{ "n", "<space>tr", "<cmd>let &nru = !&nru<cr>", { desc = "toggle relative line numbers", silent = true } },
+	{ "n", "<space>tr", "<cmd>let &rnu = !&rnu<cr>", { desc = "toggle relative line numbers", silent = true } },
 	{ "n", "<space>tn", "<cmd>let &nu = !&nu<cr>", { desc = "toggle line number display", silent = true } },
 
 	-- netrw
