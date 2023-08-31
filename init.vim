@@ -15,7 +15,13 @@ if 0 | endif
 " set $VIMHOME so we can load configuration files from the correct place
 let $VIMHOME = expand('<sfile>:p:h')
 
-" VIM Specific settings
+" basic keybindings
+inoremap fd <esc>
+vnoremap fd <esc>
+vnoremap < <gv
+vnoremap > >gv
+map vig ggVG
+
 filetype plugin on
 filetype plugin indent on
 
@@ -121,9 +127,6 @@ end
 
 set background=dark
 colorscheme desert
-
-" require basic keybindings
-source $VIMHOME/keymap.vim
 
 if has('nvim')
   lua require('init')

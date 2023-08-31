@@ -2,6 +2,47 @@ vim.g.golden_ratio_enabled = 0
 vim.g.golden_ratio_autocmd = 0
 
 return {
+	{
+		"folke/which-key.nvim",
+		config = function(_, opts)
+			local wk = require("which-key")
+			wk.setup(opts)
+			wk.register(opts.defaults)
+
+			vim.o.timeout = true
+			vim.o.timeoutlen = 300
+		end,
+		opts = {
+			plugins = { spelling = true },
+			defaults = {
+				mode = { "n", "v" },
+				["g"] = { name = "+goto" },
+				["gz"] = { name = "+surround" },
+				["]"] = { name = "+next" },
+				["["] = { name = "+prev" },
+				["<space>rl"] = { name = "show last search" },
+				["<space>P"] = { name = "manage plugins" },
+				["<space>l"] = { name = "+layouts" },
+				["<space>b"] = { name = "+buffers" },
+				["<space>o"] = { name = "+info" },
+				["<space>c"] = { name = "+code" },
+				["<space>d"] = { name = "+debug" },
+				["<space>f"] = { name = "+file/find" },
+				["<space>fe"] = { name = "+misc" },
+				["<space>h"] = { name = "+help" },
+				["<space>m"] = { name = "+marks" },
+				["<space>p"] = { name = "+project" },
+				["<space>g"] = { name = "+git" },
+				["<space>s"] = { name = "+search" },
+				["<space>ss"] = { name = "+spelling" },
+				["<space>t"] = { name = "+toggles" },
+				["<space>u"] = { name = "+ui" },
+				["<space>w"] = { name = "+windows" },
+				["<space>e"] = { name = "+diagnostis/quickfix" },
+				["<leader>gh"] = { name = "+hunks" },
+			},
+		},
+	},
 	"nvim-tree/nvim-web-devicons",
 	{
 		"rcarriga/nvim-notify",
@@ -61,7 +102,7 @@ return {
 	{
 		"roman/golden-ratio",
 		keys = {
-			{ "<space>tg", "<cmd>call ToggleGoldenRatio()<cr>", desc = "Golden Ratio" },
+			{ "<space>tg", "<cmd>call ToggleGoldenRatio()<cr>", desc = "golden Ratio" },
 		},
 		lazy = true,
 		config = function()
