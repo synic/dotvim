@@ -25,14 +25,6 @@ vim.keymap.set("n", "_", netrw_current_project, { desc = "browse project directo
 
 return {
 	{
-		"kevinhwang91/rnvimr",
-		keys = { "<space>ff", "<cmd>RnvimrToggle<cr>", desc = "ranger" },
-		config = function()
-			vim.g.rnvimr_enable_picker = 1
-			vim.g.rnvimr_enable_bw = 1
-		end,
-	},
-	{
 		"nvim-neo-tree/neo-tree.nvim",
 		branch = "v3.x",
 		cmd = "Neotree",
