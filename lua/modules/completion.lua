@@ -22,6 +22,7 @@ return {
 
 			cmp.setup({
 				preselect = cmp.PreselectMode.None,
+				snippet = { expand = function() end },
 				mapping = cmp.mapping.preset.insert({
 					["<C-n>"] = cmp.mapping.select_next_item(),
 					["<C-p>"] = cmp.mapping.select_prev_item(),

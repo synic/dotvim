@@ -13,7 +13,7 @@ local function telescope_search_cwd()
 	builtin.live_grep({ cwd = vim.fn.expand("%:p:h") })
 end
 
-local function telescope_search_for_term(prompt_bufnr)
+local function ctrlsf_search_for_term(prompt_bufnr)
 	local current_picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
 	local prompt = current_picker:_get_prompt()
 	vim.cmd(":CtrlSF " .. prompt)
@@ -55,34 +55,28 @@ return {
 				},
 				{ "<space>pf", telescope_project_files, desc = "project files" },
 				{ "<space>sp", "<cmd>Telescope live_grep<cr>", desc = "search in project files" },
-				{ "<space>sl", "<cmd>Telescope resume<cr>", desc = "show last search" },
 				{ "<space>sd", telescope_search_cwd, desc = "search in current directory" },
 				{ "<space>gB", "<cmd>Telescope git_branches<cr>", desc = "show git branches" },
 				{ "<space>gS", "<cmd>Telescope git_stash<cr>", desc = "show git stashes" },
-				{ "<space>sm", "<cmd>Telescope marks<cr>", desc = "search marks" },
 				{ "<leader>s", "<cmd>Telescope spell_suggest<cr>", desc = "spelling suggestions" },
 				{ "<space>*", telescope_search_star, desc = "search for term globally" },
-				{ "<space>pp", telescope_load_projects, desc = "recent projects" },
+				{ "<space>pp", telescope_load_projects, desc = "projects" },
 				{ "<leader>a", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "code actions" },
-				{ "<leader>is", "<cmd>lua require('telescope').extensions.luasnip.luasnip()<cr>", desc = "snippets" },
 				-- files
 				{ "<space>ff", "<cmd>Telescope find_files<cr>", desc = "fuzzy find files below cwd" },
 
 				-- layout items
-				{ "<space>ll", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "list layouts" },
-				{ "<space>ln", telescope_new_tab_with_projects, desc = "new layout with project" },
-				{ "<space>lN", "<cmd>tabnew<cr>", desc = "new layout" },
+				{ "<leader>ll", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "list layouts" },
+				{ "<leader>lN", "<cmd>tabnew<cr>", desc = "new layout" },
+				{ "<leader>ln", telescope_new_tab_with_projects, desc = "new layout with project" },
 
-				-- info items
-				{ "<space>it", "<cmd>Telescope colorscheme<cr>", desc = "show installed themes" },
-				{ "<space>if", "<cmd>Telescope oldfiles<cr>", desc = "recent files" },
-				{ "<space>ir", "<cmd>Telescope registers<cr>", desc = "show registers" },
-				{ "<space>im", "<cmd>Telescope marks<cr>", desc = "show marks" },
-				{
-					"<space>in",
-					"<cmd>lua require('telescope').extensions.notify.notify()<cr>",
-					desc = "show past notifications",
-				},
+				-- lists
+				{ "<space>ls", "<cmd>lua require('telescope').extensions.luasnip.luasnip()<cr>", desc = "snippets" },
+				{ "<space>lt", "<cmd>Telescope colorscheme<cr>", desc = "themes" },
+				{ "<space>lf", "<cmd>Telescope oldfiles<cr>", desc = "recent files" },
+				{ "<space>lr", "<cmd>Telescope registers<cr>", desc = "registers" },
+				{ "<space>lm", "<cmd>Telescope marks<cr>", desc = "marks" },
+				{ "<space>ll", "<cmd>Telescope resume<cr>", desc = "last search" },
 			},
 			config = function()
 				local telescope = require("telescope")
@@ -121,14 +115,14 @@ return {
 						live_grep = {
 							mappings = {
 								i = {
-									["<C-e>"] = telescope_search_for_term,
+									["<C-e>"] = ctrlsf_search_for_term,
 								},
 							},
 						},
 						grep_string = {
 							mappings = {
 								i = {
-									["<C-e>"] = telescope_search_for_term,
+									["<C-e>"] = ctrlsf_search_for_term,
 								},
 							},
 						},

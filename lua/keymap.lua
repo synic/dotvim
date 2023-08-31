@@ -9,11 +9,12 @@ module.categories = {
 	["<space>rl"] = { name = "show last search" },
 	["<space>P"] = { name = "manage plugins" },
 	["<space>C"] = { name = "manage configuration" },
-	["<space>l"] = { name = "+layouts" },
+	["<space>l"] = { name = "+list" },
+	["<leader>l"] = { name = "+layouts" },
 	["<space>b"] = { name = "+buffers" },
 	["<space>i"] = { name = "+info" },
-	["<space>d"] = { name = "+debug" },
-	["<space>f"] = { name = "+files" },
+	["<leader>d"] = { name = "+debug" },
+	["<space>n"] = { name = "+notifications" },
 	["<space>h"] = { name = "+help" },
 	["<space>p"] = { name = "+project" },
 	["<space>g"] = { name = "+git" },
@@ -22,7 +23,6 @@ module.categories = {
 	["<space>u"] = { name = "+ui" },
 	["<space>w"] = { name = "+windows" },
 	["<space>e"] = { name = "+diagnostis/quickfix" },
-	["<leader>gh"] = { name = "+hunks" },
 }
 
 local keymap = {
@@ -51,24 +51,24 @@ local keymap = {
 
 	-- netrw/files
 	{ "", "-", "<cmd>execute 'edit ' . expand('%:p%:h')<cr>", { desc = "browse current directory", silent = true } },
-	{ "n", "<space>fn", "<cmd>enew<cr>", { desc = "new blank file" } },
 
 	-- layouts
-	{ "n", "<space>l1", "1gt", { desc = "go to layout #1", silent = true } },
-	{ "n", "<space>l2", "2gt", { desc = "go to layout #2", silent = true } },
-	{ "n", "<space>l3", "3gt", { desc = "go to layout #3", silent = true } },
-	{ "n", "<space>l4", "4gt", { desc = "go to layout #4", silent = true } },
-	{ "n", "<space>l5", "5gt", { desc = "go to layout #5", silent = true } },
-	{ "n", "<space>l6", "6gt", { desc = "go to layout #6", silent = true } },
-	{ "n", "<space>l7", "7gt", { desc = "go to layout #7", silent = true } },
-	{ "n", "<space>l8", "8gt", { desc = "go to layout #8", silent = true } },
-	{ "n", "<space>l9", "9gt", { desc = "go to layout #9", silent = true } },
+	{ "n", "<leader>l1", "1gt", { desc = "go to layout #1", silent = true } },
+	{ "n", "<leader>l2", "2gt", { desc = "go to layout #2", silent = true } },
+	{ "n", "<leader>l3", "3gt", { desc = "go to layout #3", silent = true } },
+	{ "n", "<leader>l4", "4gt", { desc = "go to layout #4", silent = true } },
+	{ "n", "<leader>l5", "5gt", { desc = "go to layout #5", silent = true } },
+	{ "n", "<leader>l6", "6gt", { desc = "go to layout #6", silent = true } },
+	{ "n", "<leader>l7", "7gt", { desc = "go to layout #7", silent = true } },
+	{ "n", "<leader>l8", "8gt", { desc = "go to layout #8", silent = true } },
+	{ "n", "<leader>l9", "9gt", { desc = "go to layout #9", silent = true } },
 
 	-- help
 	{ "n", "<space>hh", "<cmd>help<cr>", { desc = "show help", silent = true } },
 
 	-- misc
-	{ "n", "<space>ib", "1<C-g>:<C-U>echo v:statusmsg<cr>", { desc = "show full buffer path", silent = true } },
+	{ "n", "<space>bi", "1<C-g>:<C-U>echo v:statusmsg<cr>", { desc = "show full buffer path", silent = true } },
+	{ "n", "<space>bn", "<cmd>enew<cr>", { desc = "new buffer", silent = true } },
 	{ "n", "vig", "ggVG", { desc = "select whole buffer", silent = true } },
 }
 
