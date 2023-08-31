@@ -35,7 +35,7 @@ return {
 			wk.register(wk_categories)
 
 			vim.o.timeout = true
-			vim.o.timeoutlen = 300
+			vim.o.timeoutlen = 700
 		end,
 		opts = {
 			plugins = { spelling = true },

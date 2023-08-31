@@ -22,7 +22,7 @@ return {
 	{
 		"tpope/vim-commentary",
 		keys = {
-			{ "<space>cl", commentary_toggle, { desc = "toggle comments", mode = "v" } },
+			{ "<leader>c", commentary_toggle, desc = "toggle comments", { mode = "v" } },
 		},
 	},
 	{
