@@ -12,7 +12,7 @@ return {
 	{
 		"tpope/vim-commentary",
 		keys = {
-			{ "<space>cl", commentary_toggle, desc = "toggle comments" },
+			{ "<space>cl", commentary_toggle, { desc = "toggle comments", mode = "v" } },
 		},
 	},
 	{
