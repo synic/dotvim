@@ -1,2 +1,2 @@
-nnoremap <buffer> gd <C-]>
-nnoremap <buffer> q :q<cr>
+nnoremap <silent><buffer> gd <C-]>
+nnoremap <silent><buffer> q :q<cr>
