@@ -1,4 +1,30 @@
+local module = {}
 table.unpack = table.unpack or unpack
+
+module.categories = {
+	["g"] = { name = "+goto" },
+	["gz"] = { name = "+surround" },
+	["]"] = { name = "+next" },
+	["["] = { name = "+prev" },
+	["<space>rl"] = { name = "show last search" },
+	["<space>P"] = { name = "manage plugins" },
+	["<space>l"] = { name = "+layouts" },
+	["<space>b"] = { name = "+buffers" },
+	["<space>i"] = { name = "+info" },
+	["<space>c"] = { name = "+code" },
+	["<space>d"] = { name = "+debug" },
+	["<space>f"] = { name = "+file/find" },
+	["<space>fe"] = { name = "+misc" },
+	["<space>h"] = { name = "+help" },
+	["<space>p"] = { name = "+project" },
+	["<space>g"] = { name = "+git" },
+	["<space>s"] = { name = "+search" },
+	["<space>t"] = { name = "+toggles" },
+	["<space>u"] = { name = "+ui" },
+	["<space>w"] = { name = "+windows" },
+	["<space>e"] = { name = "+diagnostis/quickfix" },
+	["<leader>gh"] = { name = "+hunks" },
+}
 
 local keymap = {
 	-- window management
@@ -42,10 +68,12 @@ local keymap = {
 	{ "n", "<space>hh", "<cmd>help<cr>", { desc = "show help", silent = true } },
 
 	-- misc
-	{ "n", "<space>ob", "1<C-g>:<C-U>echo v:statusmsg<cr>", { desc = "show full buffer path", silent = true } },
+	{ "n", "<space>ib", "1<C-g>:<C-U>echo v:statusmsg<cr>", { desc = "show full buffer path", silent = true } },
 	{ "n", "vig", "ggVG", { desc = "select whole buffer", silent = true } },
 }
 
 for _, item in pairs(keymap) do
 	vim.api.nvim_set_keymap(table.unpack(item))
 end
+
+return module

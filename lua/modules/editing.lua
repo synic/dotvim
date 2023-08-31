@@ -7,6 +7,16 @@ local function commentary_toggle()
 end
 
 return {
+
+	{
+		"Lokaltog/vim-easymotion",
+		init = function()
+			vim.g.EasyMotion_smartcase = true
+		end,
+		keys = {
+			{ "<space><space>", "<plug>(easymotion-overwin-f)", desc = "jump to location" },
+		},
+	},
 	"editorconfig/editorconfig-vim",
 	"tpope/vim-surround",
 	{

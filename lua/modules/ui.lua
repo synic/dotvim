@@ -1,13 +1,38 @@
-vim.g.golden_ratio_enabled = 0
-vim.g.golden_ratio_autocmd = 0
+local wk_categories = require("keymap").categories
 
 return {
+	{
+		"folke/noice.nvim",
+		lazy = false,
+		opts = {
+			cmdline = { view = "cmdline" },
+			lsp = {
+				override = {
+					["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+					["vim.lsp.util.stylize_markdown"] = true,
+					["cmp.entry.get_documentation"] = true,
+				},
+			},
+			presets = {
+				bottom_search = true,
+				command_palette = true,
+				long_message_to_split = true,
+				inc_rename = false,
+				lsp_doc_border = false,
+			},
+		},
+		dependencies = {
+			"MunifTanjim/nui.nvim",
+			"rcarriga/nvim-notify",
+		},
+	},
+
 	{
 		"folke/which-key.nvim",
 		config = function(_, opts)
 			local wk = require("which-key")
 			wk.setup(opts)
-			wk.register(opts.defaults)
+			wk.register(wk_categories)
 
 			vim.o.timeout = true
 			vim.o.timeoutlen = 300
@@ -16,30 +41,7 @@ return {
 			plugins = { spelling = true },
 			defaults = {
 				mode = { "n", "v" },
-				["g"] = { name = "+goto" },
-				["gz"] = { name = "+surround" },
-				["]"] = { name = "+next" },
-				["["] = { name = "+prev" },
-				["<space>rl"] = { name = "show last search" },
-				["<space>P"] = { name = "manage plugins" },
-				["<space>l"] = { name = "+layouts" },
-				["<space>b"] = { name = "+buffers" },
-				["<space>o"] = { name = "+info" },
-				["<space>c"] = { name = "+code" },
-				["<space>d"] = { name = "+debug" },
-				["<space>f"] = { name = "+file/find" },
-				["<space>fe"] = { name = "+misc" },
-				["<space>h"] = { name = "+help" },
-				["<space>m"] = { name = "+marks" },
-				["<space>p"] = { name = "+project" },
-				["<space>g"] = { name = "+git" },
-				["<space>s"] = { name = "+search" },
-				["<space>ss"] = { name = "+spelling" },
-				["<space>t"] = { name = "+toggles" },
-				["<space>u"] = { name = "+ui" },
-				["<space>w"] = { name = "+windows" },
-				["<space>e"] = { name = "+diagnostis/quickfix" },
-				["<leader>gh"] = { name = "+hunks" },
+				layout = { align = "center" },
 			},
 		},
 	},
@@ -104,6 +106,10 @@ return {
 		keys = {
 			{ "<space>tg", "<cmd>call ToggleGoldenRatio()<cr>", desc = "golden Ratio" },
 		},
+		init = function()
+			vim.g.golden_ratio_enabled = 0
+			vim.g.golden_ratio_autocmd = 0
+		end,
 		lazy = true,
 		config = function()
 			vim.cmd([[
@@ -128,4 +134,36 @@ return {
 			})
 		end,
 	},
+
+	-- colorschemes
+	{ "catppuccin/nvim", name = "catppuccin", lazy = true },
+	{ "synic/jellybeans.vim", lazy = true },
+	{ "jnurmine/Zenburn", lazy = true },
+	{ "morhetz/gruvbox", lazy = true },
+	{ "synic/synic.vim", lazy = true },
+	{ "lifepillar/vim-solarized8", lazy = true },
+	{
+		"sainnhe/gruvbox-material",
+		lazy = false,
+		priority = 1000,
+		init = function()
+			vim.g.gruvbox_material_background = "medium"
+		end,
+		config = function()
+			vim.cmd("colorscheme gruvbox-material")
+		end,
+	},
+	{ "NLKNguyen/papercolor-theme", lazy = true },
+	{
+		"sainnhe/everforest",
+		lazy = true,
+		init = function()
+			vim.g.everforest_background = "hard"
+		end,
+	},
+	{ "gosukiwi/vim-atom-dark", lazy = true },
+	{ "tomasr/molokai", lazy = true },
+	{ "ray-x/aurora", lazy = true },
+	{ "sainnhe/sonokai", lazy = true },
+	{ "folke/tokyonight.nvim", lazy = true },
 }
