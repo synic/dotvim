@@ -17,7 +17,8 @@ return {
 					ns.builtins.formatting.black,
 
 					-- diagnostics
-					-- ns.builtins.diagnostics.flake8,
+					ns.builtins.diagnostics.ruff,
+					ns.builtins.diagnostics.mypy,
 					ns.builtins.diagnostics.gitlint,
 
 					-- other

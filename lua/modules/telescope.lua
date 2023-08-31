@@ -36,7 +36,7 @@ local function telescope_project_files()
 	if ret == 0 then
 		builtin.git_files()
 	else
-		builtin.find_files()
+		telescope_load_projects()
 	end
 end
 
@@ -65,6 +65,8 @@ return {
 				{ "<space>pp", telescope_load_projects, desc = "recent projects" },
 				{ "<leader>a", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "code actions" },
 				{ "<leader>is", "<cmd>lua require('telescope').extensions.luasnip.luasnip()<cr>", desc = "snippets" },
+				-- files
+				{ "<space>ff", "<cmd>Telescope find_files<cr>", desc = "fuzzy find files below cwd" },
 
 				-- layout items
 				{ "<space>ll", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "list layouts" },

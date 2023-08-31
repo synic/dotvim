@@ -8,11 +8,12 @@ module.categories = {
 	["["] = { name = "+prev" },
 	["<space>rl"] = { name = "show last search" },
 	["<space>P"] = { name = "manage plugins" },
+	["<space>C"] = { name = "manage configuration" },
 	["<space>l"] = { name = "+layouts" },
 	["<space>b"] = { name = "+buffers" },
 	["<space>i"] = { name = "+info" },
 	["<space>d"] = { name = "+debug" },
-	["<space>fe"] = { name = "+misc" },
+	["<space>f"] = { name = "+files" },
 	["<space>h"] = { name = "+help" },
 	["<space>p"] = { name = "+project" },
 	["<space>g"] = { name = "+git" },
@@ -41,15 +42,16 @@ local keymap = {
 	{ "n", "<space>bd", "<cmd>q<cr>", { desc = "close current window and quit buffer", silent = true } },
 
 	-- config management
-	{ "n", "<space>fed", "<cmd>e $VIMHOME/<cr>", { desc = "go to config directory", silent = true } },
+	{ "n", "<space>C", "<cmd>e $VIMHOME/<cr>", { desc = "go to config directory", silent = true } },
 
 	-- toggles
 	{ "n", "<space>ts", "<cmd>let &hls = !&hls<cr>", { desc = "toggle search highlights", silent = true } },
 	{ "n", "<space>tr", "<cmd>let &rnu = !&rnu<cr>", { desc = "toggle relative line numbers", silent = true } },
 	{ "n", "<space>tn", "<cmd>let &nu = !&nu<cr>", { desc = "toggle line number display", silent = true } },
 
-	-- netrw
+	-- netrw/files
 	{ "", "-", "<cmd>execute 'edit ' . expand('%:p%:h')<cr>", { desc = "browse current directory", silent = true } },
+	{ "n", "<space>fn", "<cmd>enew<cr>", { desc = "new blank file" } },
 
 	-- layouts
 	{ "n", "<space>l1", "1gt", { desc = "go to layout #1", silent = true } },
