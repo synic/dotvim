@@ -27,7 +27,7 @@ return {
 	},
 	{
 		"mbbill/undotree",
-		keys = { "<space>tu", "<cmd>UndotreeToggle<cr>", desc = "undo tree" },
+		keys = { { "<space>tu", "<cmd>UndotreeToggle<cr>", desc = "undo tree" } },
 	},
 
 	{
