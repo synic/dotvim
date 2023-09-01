@@ -1,16 +1,4 @@
-local function inc_rename()
-	return ":IncRename "
-end
-
 return {
-	{
-		"smjonas/inc-rename.nvim",
-		lazy = false,
-		config = function()
-			require("inc_rename").setup()
-			vim.keymap.set("n", "<leader>r", inc_rename, { desc = "rename symbol", expr = true })
-		end,
-	},
 	{
 		"dyng/ctrlsf.vim",
 		cmd = { "CtrlSF" },

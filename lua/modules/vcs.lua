@@ -1,8 +1,9 @@
 return {
 	{
 		"akinsho/git-conflict.nvim",
+		event = { "BufReadPre", "BufNewFile" },
 		version = "*",
-		opts = {},
+		config = true,
 	},
 	{
 		"tpope/vim-fugitive",

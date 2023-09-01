@@ -38,7 +38,7 @@ local keymap = {
 
 	-- buffer management
 	{ "n", "<space><tab>", "<cmd>b#<cr>", { desc = "previous buffer", silent = true } },
-	{ "n", "<space>bd", "<cmd>q<cr>", { desc = "close current window and quit buffer", silent = true } },
+	{ "n", "<space>bd", "<cmd>bdelete<cr>", { desc = "close current window and quit buffer", silent = true } },
 
 	-- config management
 	{ "n", "<space>C", "<cmd>e $VIMHOME/<cr>", { desc = "go to config directory", silent = true } },
@@ -66,7 +66,7 @@ local keymap = {
 	{ "n", "<space>hh", "<cmd>help<cr>", { desc = "show help", silent = true } },
 
 	-- misc
-	{ "n", "<space>bi", "1<C-g>:<C-U>echo v:statusmsg<cr>", { desc = "show full buffer path", silent = true } },
+	{ "n", "<space>bp", "1<C-g>:<C-U>echo v:statusmsg<cr>", { desc = "show full buffer path", silent = true } },
 	{ "n", "<space>bn", "<cmd>enew<cr>", { desc = "new buffer", silent = true } },
 	{ "n", "vig", "ggVG", { desc = "select whole buffer", silent = true } },
 }

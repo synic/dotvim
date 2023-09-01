@@ -2,10 +2,7 @@ return {
 	{
 		"folke/trouble.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
-		lazy = true,
-		opts = {
-			mode = "document_diagnostics",
-		},
+		opts = { mode = "document_diagnostics" },
 		keys = {
 			{ "<space>el", "<cmd>TroubleToggle<cr>", desc = "toggle trouble" },
 			{ "<space>en", "<cmd>lua vim.diagnostic.goto_next()<cr>", desc = "next error" },
@@ -20,7 +17,20 @@ return {
 	},
 	{
 		"mfussenegger/nvim-dap",
-		lazy = true,
+		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			{
+				"microsoft/vscode-js-debug",
+				build = "rm -rf out && npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out && git reset --hard",
+			},
+			{
+				"mxsdev/nvim-dap-vscode-js",
+				opts = {
+					adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" },
+				},
+			},
+			"rcarriga/nvim-dap-ui",
+		},
 		keys = {
 			{ "<leader>db", "<cmd>lua require('dap').toggle_breakpoint()<cr>", desc = "toggle breakpoint" },
 			{ "<leader>dc", "<cmd>lua require('dap').continue()<cr>", desc = "continue" },
@@ -70,20 +80,7 @@ return {
 		end,
 	},
 	{
-		"mxsdev/nvim-dap-vscode-js",
-		dependencies = { "mfussenegger/nvim-dap" },
-		lazy = true,
-		opts = {
-			adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" },
-		},
-	},
-	{
-		"microsoft/vscode-js-debug",
-		build = "rm -rf out && npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out && git reset --hard",
-	},
-	{
 		"rcarriga/nvim-dap-ui",
-		dependencies = { "mfussenegger/nvim-dap" },
 		lazy = true,
 		config = function()
 			local dap = require("dap")

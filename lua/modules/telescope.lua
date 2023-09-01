@@ -41,12 +41,9 @@ local function telescope_project_files()
 end
 
 return {
-	{ "dbakker/vim-projectroot", lazy = false },
 	{
 		{
 			"nvim-telescope/telescope.nvim",
-			lazy = false,
-
 			keys = {
 				{
 					"<space>bb",
@@ -138,6 +135,7 @@ return {
 				"nvim-lua/plenary.nvim",
 				"nvim-telescope/telescope.nvim",
 				"nvim-telescope/telescope-file-browser.nvim",
+				"dbakker/vim-projectroot",
 				"ahmedkhalf/project.nvim",
 				"nvim-telescope/telescope-fzf-native.nvim",
 				"benfowler/telescope-luasnip.nvim",

@@ -1,40 +1,17 @@
 return {
-	-- syntax
-	{ "plasticboy/vim-markdown", ft = "markdown" },
-	"ap/vim-css-color",
-	{ "pangloss/vim-javascript", ft = "javascript" },
-	{ "leafgarland/typescript-vim", ft = "typescript" },
-	{ "dart-lang/dart-vim-plugin", ft = "dart" },
-	{ "jparise/vim-graphql", ft = "graphql" },
-
-	{ "williamboman/mason.nvim", opts = {}, cmd = "Mason" },
 
 	-- treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
 		run = ":TSUpdate",
-		lazy = false,
+		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter-textobjects",
+			"p00f/nvim-ts-rainbow",
+		},
 		opts = {
 			rainbow = { enable = true },
-			ensure_installed = {
-				"python",
-				"typescript",
-				"json",
-				"javascript",
-				"lua",
-				"yaml",
-				"query",
-				"sql",
-				"vim",
-				"bash",
-				"html",
-				"htmldjango",
-				"markdown",
-				"markdown_inline",
-				"regex",
-				"dart",
-				"go",
-			},
+			ensure_installed = { "query", "vim", "regex" },
 			textobjects = {
 				select = {
 					enable = true,
@@ -93,58 +70,52 @@ return {
 		},
 	},
 
-	{ "nvim-treesitter/nvim-treesitter-textobjects", lazy = false },
-
-	-- python
-	{ "jmcantrell/vim-virtualenv", ft = "python" },
-
 	-- lsp
-	"onsails/lspkind-nvim",
-	"LuaLS/lua-language-server",
 	{
 		"neovim/nvim-lspconfig",
+		dependencies = { "onsails/lspkind-nvim" },
+		event = { "BufReadPre", "BufNewFile" },
 		keys = {
 			{ "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", desc = "go to definition" },
 			{ "gD", "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "go to definition in split" },
+			{ "<leader>r", "<cmd>lua vim.lsp.buf.rename()<cr>", desc = "rename symbol" },
 		},
-		lazy = false,
-		config = function()
-			local lsp = require("lspconfig")
+	},
 
-			-- typescript
-			lsp.tsserver.setup({
-				filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
-				cmd = { "typescript-language-server", "--stdio" },
-			})
+	{
+		"jose-elias-alvarez/null-ls.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		event = { "BufReadPre", "BufNewFile" },
+		opts = function()
+			local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+			local ns = require("null-ls")
 
-			-- sql
-			lsp.sqlls.setup({})
-
-			-- lua
-			lsp.lua_ls.setup({
-				settings = {
-					Lua = {
-						diagnostics = {
-							globals = { "vim", "hs" },
-						},
-					},
+			return {
+				debug = true,
+				sources = {
+					ns.builtins.formatting.trim_whitespace,
+					ns.builtins.diagnostics.gitlint,
+					ns.builtins.code_actions.gitsigns,
 				},
-			})
 
-			-- python
-			lsp.pylsp.setup({
-				settings = {
-					pylsp = {
-						plugins = {
-							ruff = {
-								enabled = true,
-								extendSelect = { "I" },
-								lineLength = 120,
-							},
-						},
-					},
-				},
-			})
+				on_attach = function(client, bufnr)
+					if client.supports_method("textDocument/formatting") then
+						vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+						vim.api.nvim_create_autocmd("BufWritePre", {
+							group = augroup,
+							buffer = bufnr,
+							callback = function()
+								vim.lsp.buf.format({
+									bufnr = bufnr,
+									filter = function(c)
+										return c.name == "null-ls"
+									end,
+								})
+							end,
+						})
+					end
+				end,
+			}
 		end,
 	},
 }
