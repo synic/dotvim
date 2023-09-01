@@ -64,8 +64,10 @@ return {
 
 				-- tab items
 				{ "<space>tl", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "list layouts" },
-				{ "<space>tN", "<cmd>tabnew<cr>", desc = "new layout" },
-				{ "<space>tn", telescope_new_tab_with_projects, desc = "new layout with project" },
+				{ "<space>tT", "<cmd>tabnew<cr>", desc = "new layout" },
+				{ "<space>tt", telescope_new_tab_with_projects, desc = "new layout with project" },
+				{ "<space>tn", "<cmd>tabnext<cr>", desc = "next tab" },
+				{ "<space>tp", "<cmd>tabprev<cr>", desc = "previous tab" },
 
 				-- lists
 				{ "<space>ls", "<cmd>lua require('telescope').extensions.luasnip.luasnip()<cr>", desc = "snippets" },
