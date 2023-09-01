@@ -20,9 +20,6 @@ if !empty(glob('~/.vim/autoload/plug.vim'))
   " Plug 'python-rope/ropevim'             " refactoring, finding occurrences
   Plug 'python-mode/python-mode', {'branch': 'develop'}
 
-  " home screen
-  Plug 'mhinz/vim-startify'              " pretty start page
-
   " project management
   Plug 'ctrlpvim/ctrlp.vim'              " project file fuzzy-matcher
   Plug 'd11wtq/ctrlp_bdelete.vim'
