@@ -8,7 +8,6 @@ return {
 		run = ":TSUpdate",
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
-			"nvim-treesitter/nvim-treesitter-textobjects",
 			"p00f/nvim-ts-rainbow",
 		},
 		opts = {
@@ -69,6 +68,16 @@ return {
 					},
 				},
 			},
+		},
+		config = function(_, opts)
+			require("nvim-treesitter.configs").setup(opts)
+		end,
+	},
+	{
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
 		},
 	},
 
