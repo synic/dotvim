@@ -1,10 +1,7 @@
 return {
-	{ "hrsh7th/cmp-nvim-lsp" },
-	{ "hrsh7th/cmp-buffer" },
-
 	{
 		"hrsh7th/nvim-cmp",
-		lazy = false,
+		event = { "BufReadPre", "BufNewFile" },
 		config = function()
 			local cmp = require("cmp")
 			local luasnip = require("luasnip")
@@ -86,6 +83,6 @@ return {
 				highlight! default link CmpItemKind CmpItemMenuDefault
 			]])
 		end,
-		dependencies = { "L3MON4D3/LuaSnip" },
+		dependencies = { "L3MON4D3/LuaSnip", "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer" },
 	},
 }

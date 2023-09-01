@@ -31,12 +31,6 @@ return {
 	},
 
 	{
-		"p00f/nvim-ts-rainbow",
-		lazy = false,
-		dependencies = { "nvim-treesitter/nvim-treesitter" },
-	},
-
-	{
 		"lukas-reineke/indent-blankline.nvim",
 		config = function()
 			require("indent_blankline").setup({
@@ -51,7 +45,7 @@ return {
 	-- snippets
 	{
 		"L3MON4D3/LuaSnip",
-
+		event = { "BufReadPre", "BufNewFile" },
 		dependencies = { "rafamadriz/friendly-snippets" },
 		config = function()
 			require("luasnip.loaders.from_snipmate").lazy_load({

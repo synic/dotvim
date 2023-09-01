@@ -22,20 +22,15 @@ vim.api.nvim_set_keymap("n", "<space>wM", ":ZoomToggle<cr>", { desc = "zoom wind
 local function base_plugins()
 	return {
 		"ConradIrwin/vim-bracketed-paste",
+
 		{
 			"s1n7ax/nvim-terminal",
-			config = function()
-				require("nvim-terminal").setup({
-					disable_default_keymaps = true,
-				})
-
-				vim.api.nvim_set_keymap(
-					"n",
-					"<space>'",
-					':lua NTGlobal["terminal"]:toggle()<cr>',
-					{ silent = true, desc = "toggle terminal" }
-				)
-			end,
+			keys = {
+				{ "<space>'", "<cmd>lua NTGlobal['terminal']:toggle()<cr>", desc = "toggle terminal" },
+			},
+			opts = {
+				disable_default_keymaps = true,
+			},
 		},
 	}
 end
