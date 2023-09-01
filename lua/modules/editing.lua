@@ -21,9 +21,22 @@ return {
 	"tpope/vim-surround",
 	{
 		"tpope/vim-commentary",
-		keys = {
-			{ "<leader>c", commentary_toggle, desc = "toggle comments", { mode = "v" } },
-		},
+		lazy = false,
+		config = function()
+			vim.cmd([[
+				function! ToggleComment()
+					if mode() !~# "^[vV\<C-v>]"
+						" not visual mode
+						normal gcc
+  				else
+						visual gc
+					endif
+				endfunction
+
+				:nmap <leader>c :call ToggleComment()<cr>
+				:vmap <leader>c :call ToggleComment()<cr>
+		]])
+		end,
 	},
 	{
 		"mbbill/undotree",

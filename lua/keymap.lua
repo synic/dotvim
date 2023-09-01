@@ -8,6 +8,7 @@ module.categories = {
 	["["] = { name = "+prev" },
 	["<space>P"] = { name = "manage plugins" },
 	["<space>C"] = { name = "manage configuration" },
+	["<leader>c"] = { name = "toggle comment" },
 	["<space>l"] = { name = "+list" },
 	["<space>t"] = { name = "+tabs" },
 	["<space>b"] = { name = "+buffers" },
