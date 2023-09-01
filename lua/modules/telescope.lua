@@ -65,10 +65,10 @@ return {
 				-- files
 				{ "<space>ff", "<cmd>Telescope find_files<cr>", desc = "fuzzy find files below cwd" },
 
-				-- layout items
-				{ "<leader>ll", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "list layouts" },
-				{ "<leader>lN", "<cmd>tabnew<cr>", desc = "new layout" },
-				{ "<leader>ln", telescope_new_tab_with_projects, desc = "new layout with project" },
+				-- tab items
+				{ "<space>tl", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "list layouts" },
+				{ "<space>tN", "<cmd>tabnew<cr>", desc = "new layout" },
+				{ "<space>tn", telescope_new_tab_with_projects, desc = "new layout with project" },
 
 				-- lists
 				{ "<space>ls", "<cmd>lua require('telescope').extensions.luasnip.luasnip()<cr>", desc = "snippets" },

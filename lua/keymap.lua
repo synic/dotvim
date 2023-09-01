@@ -6,11 +6,10 @@ module.categories = {
 	["gz"] = { name = "+surround" },
 	["]"] = { name = "+next" },
 	["["] = { name = "+prev" },
-	["<space>rl"] = { name = "show last search" },
 	["<space>P"] = { name = "manage plugins" },
 	["<space>C"] = { name = "manage configuration" },
 	["<space>l"] = { name = "+list" },
-	["<leader>l"] = { name = "+layouts" },
+	["<space>t"] = { name = "+tabs" },
 	["<space>b"] = { name = "+buffers" },
 	["<space>i"] = { name = "+info" },
 	["<leader>d"] = { name = "+debug" },
@@ -19,7 +18,7 @@ module.categories = {
 	["<space>p"] = { name = "+project" },
 	["<space>g"] = { name = "+git" },
 	["<space>s"] = { name = "+search" },
-	["<space>t"] = { name = "+toggles" },
+	["<leader>t"] = { name = "+toggles" },
 	["<space>u"] = { name = "+ui" },
 	["<space>w"] = { name = "+windows" },
 	["<space>e"] = { name = "+diagnostis/quickfix" },
@@ -45,23 +44,23 @@ local keymap = {
 	{ "n", "<space>C", "<cmd>e $VIMHOME/<cr>", { desc = "go to config directory", silent = true } },
 
 	-- toggles
-	{ "n", "<space>ts", "<cmd>let &hls = !&hls<cr>", { desc = "toggle search highlights", silent = true } },
-	{ "n", "<space>tr", "<cmd>let &rnu = !&rnu<cr>", { desc = "toggle relative line numbers", silent = true } },
-	{ "n", "<space>tn", "<cmd>let &nu = !&nu<cr>", { desc = "toggle line number display", silent = true } },
+	{ "n", "<leader>ts", "<cmd>let &hls = !&hls<cr>", { desc = "toggle search highlights", silent = true } },
+	{ "n", "<leader>tr", "<cmd>let &rnu = !&rnu<cr>", { desc = "toggle relative line numbers", silent = true } },
+	{ "n", "<leader>tn", "<cmd>let &nu = !&nu<cr>", { desc = "toggle line number display", silent = true } },
 
 	-- netrw/files
 	{ "", "-", "<cmd>execute 'edit ' . expand('%:p%:h')<cr>", { desc = "browse current directory", silent = true } },
 
 	-- layouts
-	{ "n", "<leader>l1", "1gt", { desc = "go to layout #1", silent = true } },
-	{ "n", "<leader>l2", "2gt", { desc = "go to layout #2", silent = true } },
-	{ "n", "<leader>l3", "3gt", { desc = "go to layout #3", silent = true } },
-	{ "n", "<leader>l4", "4gt", { desc = "go to layout #4", silent = true } },
-	{ "n", "<leader>l5", "5gt", { desc = "go to layout #5", silent = true } },
-	{ "n", "<leader>l6", "6gt", { desc = "go to layout #6", silent = true } },
-	{ "n", "<leader>l7", "7gt", { desc = "go to layout #7", silent = true } },
-	{ "n", "<leader>l8", "8gt", { desc = "go to layout #8", silent = true } },
-	{ "n", "<leader>l9", "9gt", { desc = "go to layout #9", silent = true } },
+	{ "n", "<space>t1", "1gt", { desc = "go to tab #1", silent = true } },
+	{ "n", "<space>t2", "2gt", { desc = "go to tab #2", silent = true } },
+	{ "n", "<space>t3", "3gt", { desc = "go to tab #3", silent = true } },
+	{ "n", "<space>t4", "4gt", { desc = "go to tab #4", silent = true } },
+	{ "n", "<space>t5", "5gt", { desc = "go to tab #5", silent = true } },
+	{ "n", "<space>t6", "6gt", { desc = "go to tab #6", silent = true } },
+	{ "n", "<space>t7", "7gt", { desc = "go to tab #7", silent = true } },
+	{ "n", "<space>t8", "8gt", { desc = "go to tab #8", silent = true } },
+	{ "n", "<space>t9", "9gt", { desc = "go to tab #9", silent = true } },
 
 	-- help
 	{ "n", "<space>hh", "<cmd>help<cr>", { desc = "show help", silent = true } },
