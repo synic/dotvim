@@ -1,5 +1,18 @@
 local wk_categories = require("keymap").categories
 
+local function golden_ratio_toggle()
+	vim.cmd([[:GoldenRatioToggle]])
+	if vim.g.golden_ratio_enabled == 0 then
+		vim.g.golden_ratio_enabled = 1
+		print("Enabled golden ratio")
+	else
+		vim.g.golden_ratio_enabled = 0
+		print("Disabled golden ratio")
+		vim.g.equalalways = true
+		vim.cmd("wincmd =")
+	end
+end
+
 return {
 	{
 		"folke/which-key.nvim",
@@ -69,6 +82,25 @@ return {
 		"nvim-lualine/lualine.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		opts = {},
+	},
+
+	{
+		"roman/golden-ratio",
+		keys = {
+			{ "<space>tg", golden_ratio_toggle, desc = "golden Ratio" },
+		},
+		init = function()
+			vim.g.golden_ratio_enabled = 0
+			vim.g.golden_ratio_autocmd = 0
+		end,
+		config = function()
+			vim.cmd([[:GoldenRatioToggle]])
+			vim.api.nvim_create_autocmd("VimEnter", {
+				callback = function()
+					vim.cmd([[:GoldenRatioToggle]])
+				end,
+			})
+		end,
 	},
 
 	-- colorschemes
