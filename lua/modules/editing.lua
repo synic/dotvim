@@ -7,6 +7,7 @@ return {
 		end,
 		keys = {
 			{ "<space><space>", "<plug>(easymotion-overwin-f)", desc = "jump to location" },
+			{ "<space><space>", "<plug>(easymotion-bd-f)", mode = { "v" }, desc = "jump to location" },
 		},
 	},
 	"editorconfig/editorconfig-vim",
