@@ -14,6 +14,7 @@ local function golden_ratio_toggle()
 end
 
 return {
+	"kshenoy/vim-signature",
 	{
 		"folke/which-key.nvim",
 		config = function(_, opts)
