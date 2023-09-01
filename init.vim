@@ -125,9 +125,6 @@ if has('termguicolors')
   set termguicolors
 end
 
-set background=dark
-colorscheme desert
-
 if has('nvim')
   lua require('init')
   set shada=!,'20,<50,s10,h
