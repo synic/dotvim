@@ -80,8 +80,8 @@ nnoremap <silent> <space>bb :CtrlPBuffer<cr>
 
 " ### TABS/LAYOUT {{{1
 "----------------------------------------------------------------------------"
-nnoremap <silent> <space>ll :$tabnew<cr>:Startify<cr>
-nnoremap <silent> <space>ln :tabnext<cr>
+nnoremap <silent> <space>ll :$tabnew<cr>
+lnoremap <silent> <space>ln :tabnext<cr>
 nnoremap <silent> <space>lp :tabprev<cr>
 nnoremap <silent> <space>lc :tabclose<cr>
 nnoremap <silent> <space>l1 1gt
@@ -99,9 +99,6 @@ nnoremap <silent> <space>l9 9gt
 map <space><space> <plug>(easymotion-bd-f)
 nmap <space><space> <plug>(easymotion-overwin-f)
 
-" ### HOMEPAGE {{{1
-"----------------------------------------------------------------------------"
-nmap <space>bh :Startify<cr>
 
 
 " ### SESSIONS {{{1

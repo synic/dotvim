@@ -15,6 +15,7 @@ vim.cmd([[
 	command! ZoomToggle call s:ZoomToggle()
 ]])
 
+vim.api.nvim_set_keymap("n", "<space>Pl", ":Lazy update<cr>", { desc = "list plugins" })
 vim.api.nvim_set_keymap("n", "<space>Pu", ":Lazy update<cr>", { desc = "update plugins" })
 vim.api.nvim_set_keymap("n", "<space>Ps", ":Lazy sync<cr>", { desc = "sync plugins" })
 vim.api.nvim_set_keymap("n", "<space>wM", ":ZoomToggle<cr>", { desc = "zoom window" })
