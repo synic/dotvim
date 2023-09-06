@@ -87,9 +87,15 @@ return {
 		dependencies = { "onsails/lspkind-nvim" },
 		event = { "BufReadPre", "BufNewFile" },
 		keys = {
-			{ "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", desc = "go to definition" },
+			{ "gi", vim.lsp.buf.implementation, desc = "go to implementation" },
+			{
+				"gI",
+				"<cmd>vsplit<cr><cmd>lua vim.lsp.buf.implementation()<cr>",
+				desc = "go to implementation in split",
+			},
+			{ "gd", vim.lsp.buf.definition, desc = "go to definition" },
 			{ "gD", "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "go to definition in split" },
-			{ "<leader>r", "<cmd>lua vim.lsp.buf.rename()<cr>", desc = "rename symbol" },
+			{ "<leader>r", vim.lsp.buf.rename, desc = "rename symbol" },
 		},
 	},
 
