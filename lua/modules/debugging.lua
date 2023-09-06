@@ -13,7 +13,7 @@ return {
 	},
 	{
 		"WhoIsSethDaniel/toggle-lsp-diagnostics.nvim",
-		keys = { { "<space>ta", "<cmd>ToggleDiag<cr>", desc = "lsp diagnostics" } },
+		keys = { { "<leader>ta", "<cmd>ToggleDiag<cr>", desc = "lsp diagnostics" } },
 	},
 	{
 		"mfussenegger/nvim-dap",

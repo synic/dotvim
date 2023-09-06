@@ -23,12 +23,7 @@ local function telescope_load_projects()
 	require("telescope").extensions.projects.projects({ layout_config = { width = 0.5, height = 0.3 } })
 end
 
-local function telescope_new_tab_with_projects()
-	vim.cmd(":tabnew<cr>")
-	telescope_load_projects()
-end
-
-local function telescope_project_files()
+local function telescope_git_files()
 	local utils = require("telescope.utils")
 	local builtin = require("telescope.builtin")
 
@@ -38,6 +33,25 @@ local function telescope_project_files()
 	else
 		telescope_load_projects()
 	end
+end
+
+local function telescope_find_project_files()
+	local builtin = require("telescope.builtin")
+
+	-- `FindRootDirectory` comes from `airblade/vim-rooter`
+	local project_root = vim.fn.FindRootDirectory()
+
+	if project_root and project_root ~= "" then
+		builtin.find_files({ cwd = project_root })
+	else
+		print("No project root was found, listing projects...")
+		telescope_load_projects()
+	end
+end
+
+local function telescope_new_tab_with_projects()
+	vim.cmd(":tabnew<cr>")
+	telescope_load_projects()
 end
 
 return {
@@ -50,7 +64,7 @@ return {
 					"<cmd>lua require('telescope.builtin').buffers({ sort_mru=true, sort_lastused=true, icnore_current_buffer=true })<cr>",
 					desc = "show buffers",
 				},
-				{ "<space>pf", telescope_project_files, desc = "project files" },
+				{ "<space>pg", telescope_git_files, desc = "find git files" },
 				{ "<space>sp", "<cmd>Telescope live_grep<cr>", desc = "search in project files" },
 				{ "<space>sd", telescope_search_cwd, desc = "search in current directory" },
 				{ "<space>gB", "<cmd>Telescope git_branches<cr>", desc = "show git branches" },
@@ -60,22 +74,20 @@ return {
 				{ "<space>pp", telescope_load_projects, desc = "projects" },
 				{ "<leader>a", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "code actions" },
 				-- files
-				{ "<space>ff", "<cmd>Telescope find_files<cr>", desc = "fuzzy find files below cwd" },
+				{ "<space>ff", "<cmd>Telescope find_files<cr>", desc = "fuzzy find files" },
+				{ "<space>pf", telescope_find_project_files, desc = "find project file" },
 
-				-- tab items
-				{ "<space>tl", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "list layouts" },
-				{ "<space>tT", "<cmd>tabnew<cr>", desc = "new layout" },
-				{ "<space>tt", telescope_new_tab_with_projects, desc = "new layout with project" },
-				{ "<space>tn", "<cmd>tabnext<cr>", desc = "next tab" },
-				{ "<space>tp", "<cmd>tabprev<cr>", desc = "previous tab" },
+				-- layouts
+				{ "<leader>,", telescope_new_tab_with_projects, desc = "new tab with project" },
 
 				-- lists
+				{ "<leader>l", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "list layouts" },
 				{ "<space>ls", "<cmd>lua require('telescope').extensions.luasnip.luasnip()<cr>", desc = "snippets" },
-				{ "<space>lt", "<cmd>Telescope colorscheme<cr>", desc = "themes" },
+				{ "<space>lT", "<cmd>Telescope colorscheme<cr>", desc = "themes" },
 				{ "<space>lf", "<cmd>Telescope oldfiles<cr>", desc = "recent files" },
-				{ "<space>lr", "<cmd>Telescope registers<cr>", desc = "registers" },
+				{ "<space>lR", "<cmd>Telescope registers<cr>", desc = "registers" },
 				{ "<space>lm", "<cmd>Telescope marks<cr>", desc = "marks" },
-				{ "<space>ll", "<cmd>Telescope resume<cr>", desc = "last search" },
+				{ "<space>lr", "<cmd>Telescope resume<cr>", desc = "resume last search" },
 			},
 			config = function()
 				local telescope = require("telescope")
@@ -138,6 +150,7 @@ return {
 				"nvim-telescope/telescope.nvim",
 				"nvim-telescope/telescope-file-browser.nvim",
 				"dbakker/vim-projectroot",
+				"airblade/vim-rooter",
 				"ahmedkhalf/project.nvim",
 				"nvim-telescope/telescope-fzf-native.nvim",
 				"benfowler/telescope-luasnip.nvim",
