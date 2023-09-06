@@ -18,6 +18,13 @@ return {
 		"stevearc/dressing.nvim",
 		opts = {},
 	},
+	{
+		"pocco81/true-zen.nvim",
+		keys = {
+			{ "<space>tz", "<cmd>TZMinimalist<cr>", desc = "toggle zen mode" },
+		},
+	},
+
 	"kshenoy/vim-signature",
 	{
 		"folke/which-key.nvim",
