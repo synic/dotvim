@@ -55,6 +55,7 @@
   "toggle-lsp-diagnostics.nvim": { "branch": "main", "commit": "a896a95851fe5c5adf71a50030d60f8fa488fa7e" },
   "tokyonight.nvim": { "branch": "main", "commit": "9a01eada39558dc3243278e6805d90e8dff45dc0" },
   "trouble.nvim": { "branch": "main", "commit": "3f85d8ed30e97ceeddbbcf80224245d347053711" },
+  "true-zen.nvim": { "branch": "main", "commit": "2b9e210e0d1a735e1fa85ec22190115dffd963aa" },
   "typescript-vim": { "branch": "master", "commit": "31ede5ad905ce4159a5e285073a391daa3bf83fa" },
   "undotree": { "branch": "master", "commit": "0e11ba7325efbbb3f3bebe06213afa3e7ec75131" },
   "vim-atom-dark": { "branch": "master", "commit": "44feadcbeb2a8b2a21e373261a6293679f79da94" },
