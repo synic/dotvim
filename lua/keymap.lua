@@ -36,7 +36,7 @@ local keymap = {
 
 	-- buffer management
 	{ "n", "<space><tab>", "<cmd>b#<cr>", { desc = "previous buffer", silent = true } },
-	{ "n", "<space>bd", "<cmd>bdelete<cr>", { desc = "close current window and quit buffer", silent = true } },
+	{ "n", "<space>bd", "<cmd>bdelete!<cr>", { desc = "close current window and quit buffer", silent = true } },
 
 	-- config management
 	{
