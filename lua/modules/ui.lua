@@ -1,5 +1,7 @@
 local wk_categories = require("keymap").categories
 
+vim.g.neovide_remember_window_size = false
+
 local function golden_ratio_toggle()
 	vim.cmd([[:GoldenRatioToggle]])
 	if vim.g.golden_ratio_enabled == 0 then
