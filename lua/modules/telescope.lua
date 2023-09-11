@@ -78,10 +78,10 @@ return {
 				{ "<space>pf", telescope_find_project_files, desc = "find project file" },
 
 				-- layouts
-				{ "<leader>,", telescope_new_tab_with_projects, desc = "new tab with project" },
+				{ "<tab><tab>", telescope_new_tab_with_projects, desc = "new tab with project" },
 
 				-- lists
-				{ "<leader>l", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "list layouts" },
+				{ "<tab>,", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "list layouts" },
 				{ "<space>ls", "<cmd>lua require('telescope').extensions.luasnip.luasnip()<cr>", desc = "snippets" },
 				{ "<space>lT", "<cmd>Telescope colorscheme<cr>", desc = "themes" },
 				{ "<space>lf", "<cmd>Telescope oldfiles<cr>", desc = "recent files" },

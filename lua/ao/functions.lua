@@ -21,4 +21,10 @@ module.install_plugin_manager = function()
 	return was_installed
 end
 
+module.get_help = function()
+	vim.ui.input({ prompt = "enter search term" }, function(input)
+		vim.cmd("help " .. input)
+	end)
+end
+
 return module
