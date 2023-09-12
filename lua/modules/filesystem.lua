@@ -29,7 +29,7 @@ return {
 		branch = "v3.x",
 		cmd = "Neotree",
 		keys = {
-			{ "<space>pt", neotree_project_root, desc = "neotree" },
+			{ "<leader>pt", neotree_project_root, desc = "neotree" },
 		},
 		dependencies = {
 			"nvim-lua/plenary.nvim",

@@ -23,7 +23,7 @@ return {
 	{
 		"pocco81/true-zen.nvim",
 		keys = {
-			{ "<space>tz", "<cmd>TZMinimalist<cr>", desc = "toggle zen mode" },
+			{ "<leader>tz", "<cmd>TZMinimalist<cr>", desc = "toggle zen mode" },
 		},
 	},
 
@@ -100,7 +100,7 @@ return {
 	{
 		"roman/golden-ratio",
 		keys = {
-			{ "<space>tg", golden_ratio_toggle, desc = "golden Ratio" },
+			{ "<leader>tg", golden_ratio_toggle, desc = "golden Ratio" },
 		},
 		init = function()
 			vim.g.golden_ratio_enabled = 0

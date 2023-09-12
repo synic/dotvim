@@ -4,16 +4,16 @@ return {
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		opts = { mode = "document_diagnostics" },
 		keys = {
-			{ "<space>el", "<cmd>TroubleToggle<cr>", desc = "toggle trouble" },
-			{ "<space>en", "<cmd>lua vim.diagnostic.goto_next()<cr>", desc = "next error" },
-			{ "<space>ep", "<cmd>lua vim.diagnostic.goto_prev()<cr>", desc = "next error" },
-			{ "<space>ed", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "document diagnostics" },
-			{ "<space>ew", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "workspace diagnostics" },
+			{ "<leader>el", "<cmd>TroubleToggle<cr>", desc = "toggle trouble" },
+			{ "<leader>en", "<cmd>lua vim.diagnostic.goto_next()<cr>", desc = "next error" },
+			{ "<leader>ep", "<cmd>lua vim.diagnostic.goto_prev()<cr>", desc = "next error" },
+			{ "<leader>ed", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "document diagnostics" },
+			{ "<leader>ew", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "workspace diagnostics" },
 		},
 	},
 	{
 		"WhoIsSethDaniel/toggle-lsp-diagnostics.nvim",
-		keys = { { "<space>ta", "<cmd>ToggleDiag<cr>", desc = "lsp diagnostics" } },
+		keys = { { "<leader>ta", "<cmd>ToggleDiag<cr>", desc = "lsp diagnostics" } },
 	},
 	{
 		"mfussenegger/nvim-dap",

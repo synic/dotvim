@@ -26,7 +26,7 @@ return {
 
 			vim.api.nvim_set_keymap(
 				"n",
-				"<space>sf",
+				"<leader>sf",
 				":call SearchInProjectRoot()<cr>",
 				{ desc = "search in project root" }
 			)
