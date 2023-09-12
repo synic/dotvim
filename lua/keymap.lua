@@ -19,6 +19,7 @@ module.categories = {
   ["<leader>e"] = { name = "+diagnostis" },
   ["<leader>P"] = { name = "+plugins" },
   ["<leader>c"] = { name = "+code" },
+  [",d"] = { name = "+definitions" },
 }
 
 local keymap = {

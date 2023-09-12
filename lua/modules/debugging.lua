@@ -15,6 +15,7 @@ return {
     "WhoIsSethDaniel/toggle-lsp-diagnostics.nvim",
     keys = { { "<leader>ta", "<cmd>ToggleDiag<cr>", desc = "lsp diagnostics" } },
   },
+
   {
     "mfussenegger/nvim-dap",
     event = { "BufReadPre", "BufNewFile" },
@@ -22,6 +23,11 @@ return {
       {
         "microsoft/vscode-js-debug",
         build = "rm -rf out && npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out && git reset --hard",
+        config = function()
+          require("dap-vscode-js").setup({
+            debugger_path = vim.fn.stdpath("data") .. "/lazy/vscode-js-debug",
+          })
+        end,
       },
       {
         "mxsdev/nvim-dap-vscode-js",
@@ -30,6 +36,21 @@ return {
         },
       },
       "rcarriga/nvim-dap-ui",
+      {
+        "jay-babu/mason-nvim-dap.nvim",
+        dependencies = "mason.nvim",
+        cmd = { "DapInstall", "DapUninstall" },
+        opts = {
+          automatic_installation = true,
+          handlers = {},
+          ensure_installed = {},
+          layouts = {
+            elements = { "console" },
+            size = 0.25, -- 25% of total lines
+            position = "bottom",
+          },
+        },
+      },
     },
     keys = {
       { "<leader>db", "<cmd>lua require('dap').toggle_breakpoint()<cr>", desc = "toggle breakpoint" },

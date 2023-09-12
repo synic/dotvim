@@ -10,7 +10,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      "LuaLS/lua-language-server",
+      "williamboman/mason-lspconfig.nvim",
     },
     opts = function()
       local lsp = require("lspconfig")
