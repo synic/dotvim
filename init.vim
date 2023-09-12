@@ -80,7 +80,7 @@ set noautoindent
 set textwidth=78
 set formatoptions+=t
 set hidden
-set colorcolumn=80
+set colorcolumn=0
 
 " line numbering
 set number
@@ -131,6 +131,7 @@ if has('nvim')
   lua require('init')
   set shada=!,'20,<50,s10,h
 else
+  set colorcolumn=80
   " load plugins
   source $VIMHOME/config/plugins.vim
 
