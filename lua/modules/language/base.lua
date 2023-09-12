@@ -33,10 +33,10 @@ return {
 				-- swap = {
 				-- 	enable = true,
 				-- 	swap_next = {
-				-- 		["<leader>a"] = "@parameter.inner",
+				-- 		[",a"] = "@parameter.inner",
 				-- 	},
 				-- 	swap_previous = {
-				-- 		["<leader>A"] = "@parameter.inner",
+				-- 		[",A"] = "@parameter.inner",
 				-- 	},
 				-- },
 				move = {
@@ -63,8 +63,8 @@ return {
 					enable = true,
 					border = "none",
 					peek_definition_code = {
-						["<leader>df"] = "@function.outer",
-						["<leader>dF"] = "@class.outer",
+						[",df"] = "@function.outer",
+						[",dF"] = "@class.outer",
 					},
 				},
 			},
@@ -95,7 +95,7 @@ return {
 			},
 			{ "gd", vim.lsp.buf.definition, desc = "go to definition" },
 			{ "gD", "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "go to definition in split" },
-			{ "<leader>r", vim.lsp.buf.rename, desc = "rename symbol" },
+			{ ",r", vim.lsp.buf.rename, desc = "rename symbol" },
 		},
 	},
 

@@ -21,11 +21,13 @@ vnoremap fd <esc>
 vnoremap < <gv
 vnoremap > >gv
 map vig ggVG
+map yig ggVGy
 
 filetype plugin on
 filetype plugin indent on
 
-let mapleader=","
+let mapleader="\<space>"
+let maplocalleader=","
 set bs=2                " allow backspacing over everything in insert mode
 set cindent
 set si
@@ -79,7 +81,7 @@ set noautoindent
 set textwidth=78
 set formatoptions+=t
 set hidden
-set colorcolumn=80
+set colorcolumn=0
 
 " line numbering
 set number
@@ -126,9 +128,12 @@ if has('termguicolors')
 end
 
 if has('nvim')
+  colorscheme habamax
   lua require('init')
   set shada=!,'20,<50,s10,h
 else
+  set colorcolumn=80
+  set signcolumn=yes
   " load plugins
   source $VIMHOME/config/plugins.vim
 
