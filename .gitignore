@@ -2,9 +2,9 @@ swap/
 .netrwhist
 
 # vim-plug
-/plugins/
-autoload/plug.vim
-autoload/plug.vim.old
+/vim/plugins
+/autoload/plug.vim
+/autoload/plug.vim.old
 
 # nvim spell
 spell/
