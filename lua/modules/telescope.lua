@@ -24,8 +24,8 @@ end
 functions.telescope_load_projects = function()
   local projects = require("project_nvim").get_recent_projects()
   if #projects == 0 then
-    print("No projects found, loading directory...")
-		vim.cmd(':Explore ' .. os.getenv("HOME") .. "/Projects")
+    print("No projects to open")
+    vim.cmd(":Explore " .. os.getenv("HOME") .. "/Projects")
   else
     require("telescope").extensions.projects.projects({ layout_config = { width = 0.5, height = 0.3 } })
   end
@@ -156,7 +156,6 @@ return {
       dependencies = {
         "nvim-lua/plenary.nvim",
         "nvim-telescope/telescope.nvim",
-        "nvim-telescope/telescope-file-browser.nvim",
         "dbakker/vim-projectroot",
         "airblade/vim-rooter",
         "ahmedkhalf/project.nvim",
