@@ -7,11 +7,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
     event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "p00f/nvim-ts-rainbow",
-    },
     opts = {
-      rainbow = { enable = true },
       ensure_installed = { "query", "vim", "regex" },
       textobjects = {
         select = {
