@@ -121,10 +121,6 @@ return {
                 { "~/Projects", max_depth = 1 },
               },
             },
-            file_browser = {
-              theme = "ivy",
-              hijack_netrw = false,
-            },
           },
           pickers = {
             buffers = {
@@ -150,7 +146,6 @@ return {
 
         telescope.load_extension("fzf")
         telescope.load_extension("projects")
-        telescope.load_extension("file_browser")
         telescope.load_extension("ui-select")
       end,
       dependencies = {
