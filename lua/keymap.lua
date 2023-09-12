@@ -43,7 +43,7 @@ local keymap = {
     "n",
     "<leader>C",
     "<cmd>lua vim.cmd('edit ' .. vim.fn.stdpath('config'))<cr>",
-    { desc = "manage" },
+    { desc = "manage config" },
   },
 
   -- toggles
