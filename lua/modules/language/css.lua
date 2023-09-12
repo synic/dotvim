@@ -1,3 +1,3 @@
 return {
-	{ "ap/vim-css-color", ft = "css" },
+  { "ap/vim-css-color", ft = "css" },
 }

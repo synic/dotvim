@@ -1,98 +1,98 @@
 return {
-	{
-		"Lokaltog/vim-easymotion",
-		init = function()
-			vim.g.EasyMotion_smartcase = true
-			vim.g.EasyMotion_do_mapping = false
-		end,
-		keys = {
-			{ "<leader><leader>", "<plug>(easymotion-overwin-f)", desc = "jump to location", mode = "n" },
-			{ "<leader><leader>", "<plug>(easymotion-bd-f)", desc = "jump to location", mode = "v" },
-		},
-	},
-	{
-		"folke/flash.nvim",
-		opts = {},
-		lazy = false,
-		keys = {
-			{
-				"s",
-				mode = { "n", "o", "x" },
-				function()
-					require("flash").jump()
-				end,
-				desc = "flash",
-			},
-			{
-				"S",
-				mode = { "n", "o", "x" },
-				function()
-					require("flash").treesitter()
-				end,
-				desc = "flash treesitter",
-			},
-			{
-				"r",
-				mode = "o",
-				function()
-					require("flash").remote()
-				end,
-				desc = "remote flash",
-			},
-			{
-				"R",
-				mode = { "o", "x" },
-				function()
-					require("flash").treesitter_search()
-				end,
-				desc = "treesitter search",
-			},
-			{
-				"<c-s>",
-				mode = { "c" },
-				function()
-					require("flash").toggle()
-				end,
-				desc = "toggle flash search",
-			},
-		},
-	},
-	"editorconfig/editorconfig-vim",
-	"tpope/vim-surround",
-	{
-		"tpope/vim-commentary",
-		keys = {
-			{ "<leader>#", "<plug>Commentary", mode = "v", desc = "toggle comment" },
-			{ "<leader>#", "<plug>CommentaryLine", desc = "toggle comment" },
-		},
-	},
-	{
-		"mbbill/undotree",
-		keys = { { "<leader>tu", "<cmd>UndotreeToggle<cr>", desc = "undo tree" } },
-	},
+  {
+    "Lokaltog/vim-easymotion",
+    init = function()
+      vim.g.EasyMotion_smartcase = true
+      vim.g.EasyMotion_do_mapping = false
+    end,
+    keys = {
+      { "<leader><leader>", "<plug>(easymotion-overwin-f)", desc = "jump to location", mode = "n" },
+      { "<leader><leader>", "<plug>(easymotion-bd-f)", desc = "jump to location", mode = "v" },
+    },
+  },
+  {
+    "folke/flash.nvim",
+    opts = {},
+    lazy = false,
+    keys = {
+      {
+        "s",
+        mode = { "n", "o", "x" },
+        function()
+          require("flash").jump()
+        end,
+        desc = "flash",
+      },
+      {
+        "S",
+        mode = { "n", "o", "x" },
+        function()
+          require("flash").treesitter()
+        end,
+        desc = "flash treesitter",
+      },
+      {
+        "r",
+        mode = "o",
+        function()
+          require("flash").remote()
+        end,
+        desc = "remote flash",
+      },
+      {
+        "R",
+        mode = { "o", "x" },
+        function()
+          require("flash").treesitter_search()
+        end,
+        desc = "treesitter search",
+      },
+      {
+        "<c-s>",
+        mode = { "c" },
+        function()
+          require("flash").toggle()
+        end,
+        desc = "toggle flash search",
+      },
+    },
+  },
+  "editorconfig/editorconfig-vim",
+  "tpope/vim-surround",
+  {
+    "tpope/vim-commentary",
+    keys = {
+      { "<leader>#", "<plug>Commentary", mode = "v", desc = "toggle comment" },
+      { "<leader>#", "<plug>CommentaryLine", desc = "toggle comment" },
+    },
+  },
+  {
+    "mbbill/undotree",
+    keys = { { "<leader>tu", "<cmd>UndotreeToggle<cr>", desc = "undo tree" } },
+  },
 
-	{
-		"lukas-reineke/indent-blankline.nvim",
-		config = function()
-			require("indent_blankline").setup({
-				show_end_of_line = true,
-			})
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    config = function()
+      require("indent_blankline").setup({
+        show_end_of_line = true,
+      })
 
-			vim.opt.list = true
-			vim.opt.listchars:append("eol:↴")
-		end,
-	},
+      vim.opt.list = true
+      vim.opt.listchars:append("eol:↴")
+    end,
+  },
 
-	-- snippets
-	{
-		"L3MON4D3/LuaSnip",
-		event = { "BufReadPre", "BufNewFile" },
-		dependencies = { "rafamadriz/friendly-snippets" },
-		config = function()
-			require("luasnip.loaders.from_snipmate").lazy_load({
-				paths = { vim.fn.stdpath("config") .. "/snippets" },
-			})
-			require("luasnip.loaders.from_vscode").lazy_load()
-		end,
-	},
+  -- snippets
+  {
+    "L3MON4D3/LuaSnip",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "rafamadriz/friendly-snippets" },
+    config = function()
+      require("luasnip.loaders.from_snipmate").lazy_load({
+        paths = { vim.fn.stdpath("config") .. "/snippets" },
+      })
+      require("luasnip.loaders.from_vscode").lazy_load()
+    end,
+  },
 }

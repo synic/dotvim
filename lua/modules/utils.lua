@@ -21,30 +21,30 @@ vim.api.nvim_set_keymap("n", "<leader>Ps", ":Lazy sync<cr>", { desc = "sync plug
 vim.api.nvim_set_keymap("n", "<leader>wM", ":ZoomToggle<cr>", { desc = "zoom window" })
 
 local function base_plugins()
-	return {
-		"ConradIrwin/vim-bracketed-paste",
+  return {
+    "ConradIrwin/vim-bracketed-paste",
 
-		{
-			"s1n7ax/nvim-terminal",
-			keys = {
-				{ "<leader>'", "<cmd>lua NTGlobal['terminal']:toggle()<cr>", desc = "toggle terminal" },
-			},
-			opts = {
-				disable_default_keymaps = true,
-			},
-		},
-	}
+    {
+      "s1n7ax/nvim-terminal",
+      keys = {
+        { "<leader>'", "<cmd>lua NTGlobal['terminal']:toggle()<cr>", desc = "toggle terminal" },
+      },
+      opts = {
+        disable_default_keymaps = true,
+      },
+    },
+  }
 end
 
 local wakatime_config = {
-	"wakatime/vim-wakatime",
+  "wakatime/vim-wakatime",
 }
 
 local wakatime_config_path = utils.join_paths(os.getenv("HOME"), ".wakatime.cfg")
 local plugins = base_plugins()
 
 if vim.loop.fs_stat(wakatime_config_path) then
-	plugins = utils.table_concat(plugins, wakatime_config)
+  plugins = utils.table_concat(plugins, wakatime_config)
 end
 
 return plugins
