@@ -7,7 +7,7 @@ local lazy, installed = functions.install_plugin_manager()
 
 lazy.setup("modules", {
   install = {
-    install_missing = not installed,
+    install_missing = false,
   },
   change_detection = {
     enabled = true,
@@ -15,15 +15,13 @@ lazy.setup("modules", {
   },
 })
 
-if installed then
-  lazy.install({ wait = true, show = false })
-	functions.close_all_floating_windows()
-end
+lazy.install({ wait = installed, show = false })
+functions.close_all_floating_windows()
 
 if next(vim.fn.argv()) == nil then
-	vim.api.nvim_create_autocmd("VimEnter", {
-		callback = function()
-			require("modules.telescope").functions.telescope_load_projects()
-		end,
-	})
+  vim.api.nvim_create_autocmd("VimEnter", {
+    callback = function()
+      require("modules.telescope").functions.telescope_load_projects()
+    end,
+  })
 end
