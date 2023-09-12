@@ -25,7 +25,8 @@ map vig ggVG
 filetype plugin on
 filetype plugin indent on
 
-let mapleader=","
+let mapleader="\<space>"
+let maplocalleader=","
 set bs=2                " allow backspacing over everything in insert mode
 set cindent
 set si
@@ -126,6 +127,7 @@ if has('termguicolors')
 end
 
 if has('nvim')
+  colorscheme habamax
   lua require('init')
   set shada=!,'20,<50,s10,h
 else

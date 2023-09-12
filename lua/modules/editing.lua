@@ -1,13 +1,60 @@
 return {
-
 	{
 		"Lokaltog/vim-easymotion",
 		init = function()
 			vim.g.EasyMotion_smartcase = true
+			vim.g.EasyMotion_do_mapping = false
 		end,
 		keys = {
-			{ "<space><space>", "<plug>(easymotion-overwin-f)", desc = "jump to location" },
-			{ "<space><space>", "<plug>(easymotion-bd-f)", mode = { "v" }, desc = "jump to location" },
+			{ "<leader><leader>", "<plug>(easymotion-overwin-f)", desc = "jump to location", mode = "n" },
+			{ "<leader><leader>", "<plug>(easymotion-bd-f)", desc = "jump to location", mode = "v" },
+		},
+	},
+	{
+		"folke/flash.nvim",
+		opts = {},
+		lazy = false,
+		keys = {
+			{
+				"s",
+				mode = { "n", "o", "x" },
+				function()
+					require("flash").jump()
+				end,
+				desc = "flash",
+			},
+			{
+				"S",
+				mode = { "n", "o", "x" },
+				function()
+					require("flash").treesitter()
+				end,
+				desc = "flash treesitter",
+			},
+			{
+				"r",
+				mode = "o",
+				function()
+					require("flash").remote()
+				end,
+				desc = "remote flash",
+			},
+			{
+				"R",
+				mode = { "o", "x" },
+				function()
+					require("flash").treesitter_search()
+				end,
+				desc = "treesitter search",
+			},
+			{
+				"<c-s>",
+				mode = { "c" },
+				function()
+					require("flash").toggle()
+				end,
+				desc = "toggle flash search",
+			},
 		},
 	},
 	"editorconfig/editorconfig-vim",
@@ -15,13 +62,13 @@ return {
 	{
 		"tpope/vim-commentary",
 		keys = {
-			{ "<leader>c", "<plug>Commentary", mode = "v", desc = "toggle comment" },
-			{ "<leader>c", "<plug>CommentaryLine", desc = "toggle comment" },
+			{ "<leader>#", "<plug>Commentary", mode = "v", desc = "toggle comment" },
+			{ "<leader>#", "<plug>CommentaryLine", desc = "toggle comment" },
 		},
 	},
 	{
 		"mbbill/undotree",
-		keys = { { "<space>tu", "<cmd>UndotreeToggle<cr>", desc = "undo tree" } },
+		keys = { { "<leader>tu", "<cmd>UndotreeToggle<cr>", desc = "undo tree" } },
 	},
 
 	{
