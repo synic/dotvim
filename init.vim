@@ -21,6 +21,7 @@ vnoremap fd <esc>
 vnoremap < <gv
 vnoremap > >gv
 map vig ggVG
+map yig ggVGy
 
 filetype plugin on
 filetype plugin indent on
@@ -132,6 +133,7 @@ if has('nvim')
   set shada=!,'20,<50,s10,h
 else
   set colorcolumn=80
+  set signcolumn=yes
   " load plugins
   source $VIMHOME/config/plugins.vim
 

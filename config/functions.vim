@@ -80,20 +80,6 @@ function! NumberToggle()
   endif
 endfunc
 
-" toggle golden ratio functionality
-function! ToggleGoldenRatio()
-  execute ':GoldenRatioToggle'
-  if g:golden_ratio_enabled == 0
-    let g:golden_ratio_enabled = 1
-    echo 'Enabled golden ratio'
-  else
-    let g:golden_ratio_enabled = 0
-    echo 'Disabled golden ratio'
-    set equalalways
-    wincmd =
-  endif
-endfunction
-
 " diffing files
 command! DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
       \ | wincmd p | diffthis
