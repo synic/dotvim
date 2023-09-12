@@ -12,7 +12,13 @@ return {
   },
   {
     "folke/flash.nvim",
-    opts = {},
+    opts = {
+      labels = "asdfghjklqwertyuiopzxcvbnm.,/'-",
+      modes = {
+        search = { enabled = false },
+        char = { enabled = false },
+      },
+    },
     lazy = false,
     keys = {
       {
