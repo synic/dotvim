@@ -43,7 +43,7 @@ return {
         opts = {
           automatic_installation = true,
           handlers = {},
-          ensure_installed = {},
+          ensure_installed = { "node2" },
           layouts = {
             elements = { "console" },
             size = 0.25, -- 25% of total lines
@@ -69,6 +69,16 @@ return {
       for _, language in ipairs({ "typescript", "javascript" }) do
         dap.configurations[language] = {
           {
+            request = "attach",
+            program = "${file}",
+            cwd = vim.fn.getcwd(),
+            sourceMaps = true,
+            protocol = "inspector",
+            type = "node2",
+            name = "Attach Docker Node",
+            port = 9229,
+          },
+          {
             type = "pwa-node",
             request = "launch",
             name = "Launch file",
@@ -85,7 +95,7 @@ return {
           {
             type = "pwa-node",
             request = "attach",
-            name = "Attach Docker",
+            name = "Attach Docker (VSCode)",
             port = 9229,
             restart = true,
             stopOnEntry = false,
