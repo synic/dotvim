@@ -21,6 +21,9 @@ return {
             diagnostics = {
               globals = { "vim", "hs" },
             },
+            completion = {
+              callSnippet = "Replace",
+            },
           },
         },
       })
