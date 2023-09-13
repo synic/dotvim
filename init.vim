@@ -20,8 +20,8 @@ inoremap fd <esc>
 vnoremap fd <esc>
 vnoremap < <gv
 vnoremap > >gv
-map vig ggVG
-map yig ggVGy
+nnoremap vig ggVG
+nnoremap yig ggVGy
 
 filetype plugin on
 filetype plugin indent on

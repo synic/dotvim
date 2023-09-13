@@ -20,21 +20,6 @@ return {
     "mfussenegger/nvim-dap",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-      {
-        "microsoft/vscode-js-debug",
-        build = "rm -rf out && npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out && git reset --hard",
-        config = function()
-          require("dap-vscode-js").setup({
-            debugger_path = vim.fn.stdpath("data") .. "/lazy/vscode-js-debug",
-          })
-        end,
-      },
-      {
-        "mxsdev/nvim-dap-vscode-js",
-        opts = {
-          adapters = { "pwa-node", "pwa-chrome", "pwa-msedge", "node-terminal", "pwa-extensionHost" },
-        },
-      },
       "rcarriga/nvim-dap-ui",
       {
         "jay-babu/mason-nvim-dap.nvim",
@@ -64,18 +49,26 @@ return {
     },
     config = function()
       local dap = require("dap")
-      require("dap.ext.vscode").load_launchjs(nil, { ["pwa-node"] = { "typescript", "javascript" } })
 
       for _, language in ipairs({ "typescript", "javascript" }) do
         dap.configurations[language] = {
           {
             request = "attach",
-            program = "${file}",
-            cwd = vim.fn.getcwd(),
             sourceMaps = true,
+            skipFiles = {
+              "node_modules/**/*.js",
+            },
+            outFiles = {
+              "${workspaceRoot}/dist/**/*.js",
+            },
             protocol = "inspector",
+            restart = true,
             type = "node2",
             name = "Attach Docker Node",
+            localRoot = "${workspaceFolder}",
+            cwd = "${workspaceFolder}",
+            remoteRoot = "/app",
+            trae = true,
             port = 9229,
           },
           {
