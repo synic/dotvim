@@ -39,4 +39,42 @@ module.close_all_floating_windows = function()
   end
 end
 
+module.ensure_project_list = function()
+  local status, history = pcall(require, "project_nvim.utils.history")
+
+  if not status then
+    return
+  end
+
+  local project_file_path = vim.fn.stdpath("data") .. "/project_nvim/project_history"
+  if not vim.loop.fs_stat(project_file_path) then
+    local handle = io.open(project_file_path, "w")
+
+    if not handle then
+      print("Could not open project history file for writing")
+      return
+    end
+
+    local path = os.getenv("HOME") .. "/Projects"
+    local pfile = io.popen("ls -d1 " .. path .. "/*")
+
+    if pfile == nil then
+      return
+    end
+
+    for filename in pfile:lines() do
+      if vim.loop.fs_stat(filename .. "/.git") then
+        handle:write(filename .. "\n")
+        table.insert(history.session_projects, filename)
+      end
+    end
+
+    if handle then
+      handle:close()
+      history.read_projects_from_history()
+      print(vim.inspect(history.session_projects))
+    end
+  end
+end
+
 return module

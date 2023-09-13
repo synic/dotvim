@@ -19,9 +19,11 @@ lazy.install({ wait = installed, show = false })
 functions.close_all_floating_windows()
 
 if next(vim.fn.argv()) == nil then
-  vim.api.nvim_create_autocmd("VimEnter", {
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "VeryLazy",
     callback = function()
-      require("modules.telescope").functions.telescope_load_projects()
+      functions.ensure_project_list()
+      vim.cmd("doautocmd User LoadProjectList")
     end,
   })
 end
