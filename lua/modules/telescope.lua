@@ -1,6 +1,4 @@
-local functions = {}
-
-functions.telescope_search_star = function()
+local function telescope_search_star()
   local builtin = require("telescope.builtin")
   local current_word = vim.fn.expand("<cword>")
   local project_dir = vim.fn.ProjectRootGuess()
@@ -10,28 +8,30 @@ functions.telescope_search_star = function()
   })
 end
 
-functions.telescope_search_cwd = function()
+local function telescope_search_cwd()
   local builtin = require("telescope.builtin")
   builtin.live_grep({ cwd = vim.fn.expand("%:p:h") })
 end
 
-functions.ctrlsf_search_for_term = function(prompt_bufnr)
+local function ctrlsf_search_for_term(prompt_bufnr)
   local current_picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
   local prompt = current_picker:_get_prompt()
   vim.cmd(":CtrlSF " .. prompt)
 end
 
-functions.telescope_load_projects = function()
-  local projects = require("project_nvim").get_recent_projects()
-  if #projects == 0 then
-    print("No projects to open")
-    vim.cmd(":Explore " .. os.getenv("HOME") .. "/Projects")
-  else
-    require("telescope").extensions.projects.projects({ layout_config = { width = 0.5, height = 0.3 } })
+local function telescope_load_projects()
+  local status, projects = pcall(require, "project_nvim")
+  if status then
+    if not #projects.get_recent_projects() then
+      print("No projects found")
+      return
+    end
   end
+
+  require("telescope").extensions.projects.projects({ layout_config = { width = 0.5, height = 0.3 } })
 end
 
-functions.telescope_git_files = function()
+local function telescope_git_files()
   local utils = require("telescope.utils")
   local builtin = require("telescope.builtin")
 
@@ -39,11 +39,11 @@ functions.telescope_git_files = function()
   if ret == 0 then
     builtin.git_files()
   else
-    functions.telescope_load_projects()
+    telescope_load_projects()
   end
 end
 
-functions.telescope_find_project_files = function()
+local function telescope_find_project_files()
   local builtin = require("telescope.builtin")
 
   -- `FindRootDirectory` comes from `airblade/vim-rooter`
@@ -53,13 +53,13 @@ functions.telescope_find_project_files = function()
     builtin.find_files({ cwd = project_root })
   else
     print("No project root was found, listing projects...")
-    functions.telescope_load_projects()
+    telescope_load_projects()
   end
 end
 
-functions.telescope_new_tab_with_projects = function()
+local function telescope_new_tab_with_projects()
   vim.cmd(":tabnew<cr>")
-  functions.telescope_load_projects()
+  telescope_load_projects()
 end
 
 return {
@@ -72,21 +72,21 @@ return {
           "<cmd>lua require('telescope.builtin').buffers({ sort_mru=true, sort_lastused=true, icnore_current_buffer=true })<cr>",
           desc = "show buffers",
         },
-        { "<leader>pg", functions.telescope_git_files, desc = "find git files" },
+        { "<leader>pg", telescope_git_files, desc = "find git files" },
         { "<leader>sp", "<cmd>Telescope live_grep<cr>", desc = "search in project files" },
-        { "<leader>sd", functions.telescope_search_cwd, desc = "search in current directory" },
+        { "<leader>sd", telescope_search_cwd, desc = "search in current directory" },
         { "<leader>gB", "<cmd>Telescope git_branches<cr>", desc = "show git branches" },
         { "<leader>gS", "<cmd>Telescope git_stash<cr>", desc = "show git stashes" },
         { "<leader>lS", "<cmd>Telescope spell_suggest<cr>", desc = "spelling suggestions" },
-        { "<leader>*", functions.telescope_search_star, desc = "search for term globally" },
-        { "<leader>pp", functions.telescope_load_projects, desc = "projects" },
+        { "<leader>*", telescope_search_star, desc = "search for term globally" },
+        { "<leader>pp", telescope_load_projects, desc = "projects" },
         { "<localleader>a", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "code actions" },
         -- files
         { "<leader>lf", "<cmd>Telescope find_files<cr>", desc = "fuzzy find files" },
-        { "<leader>pf", functions.telescope_find_project_files, desc = "find project file" },
+        { "<leader>pf", telescope_find_project_files, desc = "find project file" },
 
         -- layouts
-        { "<leader>wt", functions.telescope_new_tab_with_projects, desc = "new tab with project" },
+        { "<leader>wt", telescope_new_tab_with_projects, desc = "new tab with project" },
 
         -- lists
         { "<leader>w<tab>", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "list layouts" },
@@ -130,14 +130,14 @@ return {
             live_grep = {
               mappings = {
                 i = {
-                  ["<C-e>"] = functions.ctrlsf_search_for_term,
+                  ["<C-e>"] = ctrlsf_search_for_term,
                 },
               },
             },
             grep_string = {
               mappings = {
                 i = {
-                  ["<C-e>"] = functions.ctrlsf_search_for_term,
+                  ["<C-e>"] = ctrlsf_search_for_term,
                 },
               },
             },
@@ -147,6 +147,11 @@ return {
         telescope.load_extension("fzf")
         telescope.load_extension("projects")
         telescope.load_extension("ui-select")
+
+        vim.api.nvim_create_autocmd("User", {
+          pattern = "LoadProjectList",
+          callback = telescope_load_projects,
+        })
       end,
       dependencies = {
         "nvim-lua/plenary.nvim",
@@ -207,5 +212,4 @@ return {
       vim.g.rooter_silent_chdir = 1
     end,
   },
-  functions = functions,
 }

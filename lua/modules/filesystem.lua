@@ -69,6 +69,7 @@ return {
           ["<return>"] = actions.edit,
           ["<C-s>"] = actions.split,
           ["<C-v>"] = actions.vsplit,
+          ["S"] = actions.split,
           ["<C-t>"] = actions.tabedit,
 
           ["h"] = actions.up,
