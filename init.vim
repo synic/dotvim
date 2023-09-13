@@ -129,7 +129,7 @@ end
 
 if has('nvim')
   colorscheme habamax
-  lua require('init')
+  lua require('ao')
   set shada=!,'20,<50,s10,h
 else
   set colorcolumn=80

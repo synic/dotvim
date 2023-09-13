@@ -1,4 +1,4 @@
-local utils = require("ao.utils")
+local utils = require("ao.core.utils")
 
 vim.cmd([[
 	function! s:ZoomToggle() abort
