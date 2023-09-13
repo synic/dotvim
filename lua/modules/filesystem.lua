@@ -102,6 +102,8 @@ return {
         hide_cursor = true,
       })
 
+      vim.api.nvim_set_hl(0, "LirDir", { link = "netrwDir" })
+
       vim.api.nvim_create_autocmd({ "FileType" }, {
         pattern = { "lir" },
         callback = function()
