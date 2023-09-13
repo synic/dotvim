@@ -39,7 +39,7 @@ module.close_all_floating_windows = function()
   end
 end
 
-module.ensure_project_list = function()
+module.boostrap_project_list = function(path)
   local status, history = pcall(require, "project_nvim.utils.history")
 
   if not status then
@@ -55,7 +55,6 @@ module.ensure_project_list = function()
       return
     end
 
-    local path = os.getenv("HOME") .. "/Projects"
     local pfile = io.popen("ls -d1 " .. path .. "/*")
 
     if pfile == nil then
