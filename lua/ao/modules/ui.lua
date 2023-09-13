@@ -1,4 +1,4 @@
-local wk_categories = require("keymap").categories
+local wk_categories = require("ao.keymap").categories
 
 vim.g.neovide_remember_window_size = false
 

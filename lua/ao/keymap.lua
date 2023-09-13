@@ -19,6 +19,7 @@ module.categories = {
   ["<leader>e"] = { name = "+diagnostis" },
   ["<leader>P"] = { name = "+plugins" },
   ["<leader>c"] = { name = "+code" },
+  ["<leader>q"] = { name = "+quit" },
   [",d"] = { name = "+definitions" },
 }
 
@@ -70,13 +71,20 @@ local keymap = {
   { "", "-", "<cmd>execute 'edit ' . expand('%:p%:h')<cr>", { desc = "browse current directory", silent = true } },
 
   -- help
-  { "n", "<leader>hh", "<cmd>lua require('ao.functions').get_help()<cr>", { desc = "show help", silent = true } },
+  { "n", "<leader>hh", "<cmd>lua require('ao.core.functions').get_help()<cr>", { desc = "show help", silent = true } },
 
   -- misc
   { "n", "<leader>bp", "1<C-g>:<C-U>echo v:statusmsg<cr>", { desc = "show full buffer path", silent = true } },
   { "n", "<leader>bn", "<cmd>enew<cr>", { desc = "new buffer", silent = true } },
   { "n", "vig", "ggVG", { desc = "select whole buffer", silent = true } },
   { "n", "<leader><localleader>", "<localleader>", { desc = "local buffer options", silent = true } },
+  {
+    "n",
+    "<leader>X",
+    "<cmd>lua require('ao.core.functions').close_all_floating_windows()<cr>",
+    { desc = "close floating windows" },
+  },
+  { "n", "<leader>qq", "<cmd>qa!<cr>", { desc = "quit" } },
 }
 
 for _, item in pairs(keymap) do
