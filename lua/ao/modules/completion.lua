@@ -1,15 +1,18 @@
 return {
   {
     "hrsh7th/nvim-cmp",
-    event = { "BufReadPre", "BufNewFile" },
-    config = function()
+    event = { "InsertEnter" },
+    version = false,
+    opts = function()
       local cmp = require("cmp")
+      local lspkind = require("lspkind")
 
-      cmp.setup({
-        preselect = cmp.PreselectMode.None,
-        snippet = { expand = function() end },
-        completion = {
-          completeopt = "menu,menuone,noinsert",
+      return {
+        completion = { completeopt = "menu,menuone,noinsert" },
+        snippet = {
+          expand = function(args)
+            require("luasnip").lsp_expand(args.body)
+          end,
         },
         mapping = cmp.mapping.preset.insert({
           ["<C-n>"] = cmp.mapping.select_next_item(),
@@ -26,39 +29,50 @@ return {
             behavior = cmp.ConfirmBehavior.Replace,
             select = true,
           }),
-          ["<Tab>"] = cmp.mapping.confirm({ select = true }),
-          ["<S-Tab>"] = cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
-          }),
+          ["<Tab>"] = cmp.mapping(function(fallback)
+            local col = vim.fn.col(".") - 1
+
+            if cmp.visible() then
+              cmp.select_next_item()
+            elseif col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
+              fallback()
+            else
+              cmp.complete()
+            end
+          end, { "i", "s" }),
+          ["<S-Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
         }),
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
-          { name = "buffer" },
+          { name = "nvim_lua" },
           { name = "path" },
           { name = "buffer" },
         }),
-        format = function(entry, vim_item)
-          if entry.completion_item.detail ~= nil and entry.completion_item.detail ~= "" then
-            vim_item.menu = entry.completion_item.detail
-          else
-            vim_item.menu = ({
-              nvim_lsp = "[LSP]",
-              luasnip = "[Snippet]",
-              buffer = "[Buffer]",
-              path = "[Path]",
-            })[entry.source.name]
-            vim_item.kind = require("lspkind").presets.codicons[vim_item.kind] .. "  " .. vim_item.kind
-          end
-          return vim_item
-        end,
-      })
-
-      vim.cmd([[
-				set completeopt=menuone,noinsert,noselect
-				highlight! default link CmpItemKind CmpItemMenuDefault
-			]])
+        formatting = {
+          format = lspkind.cmp_format({
+            mode = "symbol",
+            maxwidth = 50,
+            ellipsis_char = "...",
+            before = function(_, vim_item)
+              return vim_item
+            end,
+          }),
+        },
+      }
     end,
-    dependencies = { "L3MON4D3/LuaSnip", "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer" },
+    dependencies = {
+      "onsails/lspkind-nvim",
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-nvim-lua",
+      "hrsh7th/cmp-path",
+      "L3MON4D3/LuaSnip",
+    },
   },
 }

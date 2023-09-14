@@ -71,8 +71,8 @@ return {
   -- lsp
   {
     "neovim/nvim-lspconfig",
-    dependencies = { "onsails/lspkind-nvim" },
     event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "hrsh7th/nvim-cmp" },
     keys = {
       { "gi", vim.lsp.buf.implementation, desc = "go to implementation" },
       {
@@ -84,6 +84,12 @@ return {
       { "gD", "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "go to definition in split" },
       { ",r", vim.lsp.buf.rename, desc = "rename symbol" },
     },
+    config = function()
+      local lspconfig = require("lspconfig")
+      local lsp_defaults = lspconfig.util.default_config
+      lsp_defaults.capabilities =
+        vim.tbl_deep_extend("force", lsp_defaults.capabilities, require("cmp_nvim_lsp").default_capabilities())
+    end,
   },
 
   {

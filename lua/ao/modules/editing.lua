@@ -92,8 +92,8 @@ return {
   -- snippets
   {
     "L3MON4D3/LuaSnip",
-    event = { "BufReadPre", "BufNewFile" },
     dependencies = { "rafamadriz/friendly-snippets" },
+    lazy = true,
     config = function()
       require("luasnip.loaders.from_snipmate").lazy_load({
         paths = { vim.fn.stdpath("config") .. "/snippets" },
