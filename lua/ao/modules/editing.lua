@@ -64,13 +64,16 @@ return {
     },
   },
   "editorconfig/editorconfig-vim",
-  "tpope/vim-surround",
   {
-    "tpope/vim-commentary",
-    keys = {
-      { "<leader>#", "<plug>Commentary", mode = "v", desc = "toggle comment" },
-      { "<leader>#", "<plug>CommentaryLine", desc = "toggle comment" },
-    },
+    "kylechui/nvim-surround",
+    version = "*",
+    event = "VeryLazy",
+    opts = {},
+  },
+  {
+    "numToStr/Comment.nvim",
+    opts = {},
+    lazy = false,
   },
   {
     "mbbill/undotree",

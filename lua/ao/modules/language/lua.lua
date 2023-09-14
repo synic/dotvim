@@ -8,6 +8,12 @@ return {
     end,
   },
   {
+    "tpope/vim-scriptease",
+    keys = {
+      { "<leader>sm", "<cmd>Messages<cr>", desc = "messages" },
+    },
+  },
+  {
     "neovim/nvim-lspconfig",
     dependencies = {
       "williamboman/mason-lspconfig.nvim",

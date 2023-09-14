@@ -1,6 +1,6 @@
 extends javascript
 
-snippet resolver "NestJS GraphQL Resolver"
+snippet nestresolver "NestJS GraphQL Resolver"
 	import { Resolver } from '@nestjs/graphql';
 
 	@Resolver()
@@ -8,7 +8,7 @@ snippet resolver "NestJS GraphQL Resolver"
 	  ${2: // resolver methods go here}
 	}
 
-snippet injectable "NestJS Injectable"
+snippet nestinjectable "NestJS Injectable"
 	import { Injectable } from '@nestjs/common';
 
 	@Injectable()
@@ -16,7 +16,7 @@ snippet injectable "NestJS Injectable"
 	  ${2: // service methods go here}
 	}
 
-snippet module "NestJS Module"
+snippet nestmodule "NestJS Module"
 	import { Module } from '@nestjs/common';
 
 	@Module({
@@ -24,7 +24,7 @@ snippet module "NestJS Module"
 	})
 	export class ${1:Name}Module {}
 
-snippet command "NestJS Management Command"
+snippet nestcommand "NestJS Management Command"
 	import { Command, CommandArguments, _cli } from '@squareboat/nest-console';
 
 	import { sleep } from '@defiq/common';
@@ -40,3 +40,12 @@ snippet command "NestJS Management Command"
 			await sleep(2);
 		}
 	}
+
+snippet nestenumgql "NestJS GraphQL Enum"
+	import { registerEnumType } from '@nestjs/graphql';
+
+	export enum ${1:Name} {
+		${2:FieldName} = '${3:FieldValue}',
+	}
+
+	registerEnumType(${1:Name}, { name: '${1:Name}' });

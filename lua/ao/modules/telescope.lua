@@ -72,30 +72,40 @@ return {
           "<cmd>lua require('telescope.builtin').buffers({ sort_mru=true, sort_lastused=true, icnore_current_buffer=true })<cr>",
           desc = "show buffers",
         },
-        { "<leader>pg", telescope_git_files, desc = "find git files" },
-        { "<leader>sp", "<cmd>Telescope live_grep<cr>", desc = "search in project files" },
-        { "<leader>sd", telescope_search_cwd, desc = "search in current directory" },
-        { "<leader>gB", "<cmd>Telescope git_branches<cr>", desc = "show git branches" },
-        { "<leader>gS", "<cmd>Telescope git_stash<cr>", desc = "show git stashes" },
-        { "<leader>lS", "<cmd>Telescope spell_suggest<cr>", desc = "spelling suggestions" },
-        { "<leader>*", telescope_search_star, desc = "search for term globally" },
-        { "<leader>pp", telescope_load_projects, desc = "projects" },
+
+        -- code actions
         { "<localleader>a", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "code actions" },
-        -- files
-        { "<leader>lf", "<cmd>Telescope find_files<cr>", desc = "fuzzy find files" },
-        { "<leader>pf", telescope_find_project_files, desc = "find project file" },
 
-        -- layouts
+        -- layouts/windows
         { "<leader>wt", telescope_new_tab_with_projects, desc = "new tab with project" },
-
-        -- lists
         { "<leader>w<tab>", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "list layouts" },
-        { "<leader>ls", "<cmd>lua require('telescope').extensions.luasnip.luasnip()<cr>", desc = "snippets" },
-        { "<leader>lT", "<cmd>Telescope colorscheme<cr>", desc = "themes" },
-        { "<leader>lf", "<cmd>Telescope oldfiles<cr>", desc = "recent files" },
-        { "<leader>lR", "<cmd>Telescope registers<cr>", desc = "registers" },
-        { "<leader>lm", "<cmd>Telescope marks<cr>", desc = "marks" },
-        { "<leader>lr", "<cmd>Telescope resume<cr>", desc = "resume last search" },
+
+        -- search
+        { "<leader>*", telescope_search_star, desc = "search for term globally" },
+        { "<leader>sP", telescope_find_project_files, desc = "find project file" },
+        { "<localleader><localleader>", telescope_find_project_files, desc = "find project file" },
+        { "<leader>sd", telescope_search_cwd, desc = "search in current directory" },
+        { "<leader>sp", "<cmd>Telescope live_grep<cr>", desc = "search in project files" },
+        { "<leader>sg", telescope_git_files, desc = "find git files" },
+        { "<leader>ss", "<cmd>lua require('telescope').extensions.luasnip.luasnip()<cr>", desc = "snippets" },
+        { "<leader>sS", "<cmd>Telescope spell_suggest<cr>", desc = "spelling suggestions" },
+        { "<leader>sf", "<cmd>Telescope find_files<cr>", desc = "fuzzy find files" },
+        { "<leader>.", telescope_load_projects, desc = "projects" },
+        { "<leader>sT", "<cmd>Telescope colorscheme<cr>", desc = "themes" },
+        { "<leader>so", "<cmd>Telescope oldfiles<cr>", desc = "recent files" },
+        { "<leader>sR", "<cmd>Telescope registers<cr>", desc = "registers" },
+        { "<leader>sl", "<cmd>Telescope marks<cr>", desc = "marks" },
+        { "<leader>sr", "<cmd>Telescope resume<cr>", desc = "resume last search" },
+        {
+          "<leader>s-",
+          "<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>",
+          desc = "document symbols",
+        },
+        {
+          "<leader>s_",
+          "<cmd>lua require('telescope.builtin').lsp_workspace_symbols()<cr>",
+          desc = "workspace symbols",
+        },
       },
       config = function()
         local telescope = require("telescope")
