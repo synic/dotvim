@@ -55,7 +55,7 @@ return {
   },
   {
     "NeogitOrg/neogit",
-    opts = { kind = "split" },
+    opts = { kind = "vsplit" },
     keys = {
       { "<leader>gs", neogit_open, desc = "git status" },
     },
