@@ -1,3 +1,9 @@
+-- Open NeoGit
+--
+-- This function goes through all the buffers and closes any that are
+-- the neogit status buffer, and _then_ opens NeoGit. This is because if you
+-- open neogit on one tab, and leave it open, and then try to open neogit again on
+-- another tab, nothing will happen. NeoGit is already open, even if you can't see it.
 local function neogit_open()
   for _, buf in pairs(vim.api.nvim_list_bufs()) do
     if vim.api.nvim_buf_get_option(buf, "filetype") == "NeogitStatus" then
