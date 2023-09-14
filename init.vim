@@ -51,6 +51,7 @@ set noswapfile
 set autoread
 set nocursorbind
 set noscrollbind
+set completeopt=menu,menuone,noselect
 
 " display bufnr:filetype (dos,unix,mac) in status line
 set statusline=%<%n:%f%h%m%r%=\ %{&ff}\ %l,%c%V\ %P
