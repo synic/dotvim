@@ -74,8 +74,8 @@ return {
         { "<leader>bb", telescope_search_buffers, desc = "show buffers" },
 
         -- layouts/windows
-        { "<leader>wt", telescope_new_tab_with_projects, desc = "new tab with project" },
-        { "<leader>w<tab>", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "list layouts" },
+        { "<leader>l<tab>", telescope_new_tab_with_projects, desc = "new layout with project" },
+        { "<leader>ll", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "list layouts" },
 
         -- search
         { "<leader>*", telescope_search_star, desc = "search for term in project" },
