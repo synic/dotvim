@@ -78,31 +78,22 @@ return {
         { "<leader>w<tab>", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "list layouts" },
 
         -- search
-        { "<leader>*", telescope_search_star, desc = "search for term globally" },
-        { "<leader>sP", telescope_find_project_files, desc = "find project file" },
-        { "<localleader><localleader>", telescope_find_project_files, desc = "find project file" },
+        { "<leader>*", telescope_search_star, desc = "search for term in project" },
         { "<leader>sd", telescope_search_cwd, desc = "search in current directory" },
-        { "<leader>sp", "<cmd>Telescope live_grep<cr>", desc = "search in project files" },
-        { "<leader>sg", telescope_git_files, desc = "find git files" },
         { "<leader>ss", "<cmd>lua require('telescope').extensions.luasnip.luasnip()<cr>", desc = "snippets" },
         { "<leader>sS", "<cmd>Telescope spell_suggest<cr>", desc = "spelling suggestions" },
-        { "<leader>sf", "<cmd>Telescope find_files<cr>", desc = "fuzzy find files" },
-        { "<leader>.", telescope_load_projects, desc = "projects" },
         { "<leader>sT", "<cmd>Telescope colorscheme<cr>", desc = "themes" },
         { "<leader>so", "<cmd>Telescope oldfiles<cr>", desc = "recent files" },
         { "<leader>sR", "<cmd>Telescope registers<cr>", desc = "registers" },
         { "<leader>sl", "<cmd>Telescope marks<cr>", desc = "marks" },
         { "<leader>sr", "<cmd>Telescope resume<cr>", desc = "resume last search" },
-        {
-          "<leader>s-",
-          "<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>",
-          desc = "document symbols",
-        },
-        {
-          "<leader>s_",
-          "<cmd>lua require('telescope.builtin').lsp_workspace_symbols()<cr>",
-          desc = "workspace symbols",
-        },
+
+        -- projects
+        { "<leader>pP", telescope_find_project_files, desc = "find project file (inclusive)" },
+        { "<leader>pf", telescope_find_project_files, desc = "find project file" },
+        { "<leader>pg", telescope_git_files, desc = "find git files" },
+        { "<leader>ps", "<cmd>Telescope live_grep<cr>", desc = "search project for text" },
+        { "<leader>pp", telescope_load_projects, desc = "projects" },
       },
       config = function()
         local telescope = require("telescope")

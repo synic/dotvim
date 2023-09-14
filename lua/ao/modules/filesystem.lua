@@ -15,7 +15,9 @@ vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\
 vim.g.netrw_browse_split = 0
 
 vim.keymap.set("n", "-", netrw_current_file, { desc = "browse current directory" })
+vim.keymap.set("n", "<leader>-", netrw_current_file, { desc = "browse current directory" })
 vim.keymap.set("n", "_", netrw_current_project, { desc = "browse project directory" })
+vim.keymap.set("n", "<leader>_", netrw_current_project, { desc = "browse project directory" })
 
 return {
   {

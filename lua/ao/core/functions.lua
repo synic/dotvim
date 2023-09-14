@@ -61,8 +61,6 @@ module.boostrap_project_list = function(path)
       return
     end
 
-    handle:write(vim.fn.stdpath("config") .. "\n")
-    table.insert(history.session_projects, vim.fn.stdpath("config"))
     for filename in pfile:lines() do
       if vim.loop.fs_stat(filename .. "/.git") then
         handle:write(filename .. "\n")

@@ -12,13 +12,14 @@ module.categories = {
   ["<leader>h"] = { name = "+help" },
   ["<leader>g"] = { name = "+git" },
   ["<leader>s"] = { name = "+search" },
+  ["<leader>p"] = { name = "+project" },
   ["<leader>t"] = { name = "+toggles" },
   ["<leader>u"] = { name = "+ui" },
   ["<leader>e"] = { name = "+diagnostis" },
   ["<leader>P"] = { name = "+plugins" },
   ["<leader>c"] = { name = "+code" },
   ["<leader>q"] = { name = "+quit" },
-  [",d"] = { name = "+definitions" },
+  ["<localleader>d"] = { name = "+definitions" },
 }
 
 local keymap = {
