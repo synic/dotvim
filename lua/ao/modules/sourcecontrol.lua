@@ -1,3 +1,8 @@
+local function neogit_open()
+  vim.cmd('tabdo windo if &filetype == "NeogitStatus" | q | endif')
+  require("neogit").open()
+end
+
 return {
   {
     "akinsho/git-conflict.nvim",
@@ -50,9 +55,9 @@ return {
   },
   {
     "NeogitOrg/neogit",
-    opts = { kind = "vsplit" },
+    opts = { kind = "split" },
     keys = {
-      { "<leader>gs", ":Neogit<cr>", desc = "git status" },
+      { "<leader>gs", neogit_open, desc = "git status" },
     },
     dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" },
   },
