@@ -25,6 +25,7 @@ return {
     opts = function(_, opts)
       vim.list_extend(opts.sources, {
         require("null-ls.builtins.formatting.prettierd"),
+        require("null-ls.builtins.diagnostics.eslint"),
       })
     end,
   },
