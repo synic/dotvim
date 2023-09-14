@@ -70,6 +70,7 @@ local keymap = {
 
   -- help
   { "n", "<leader>hh", "<cmd>lua require('ao.core.functions').get_help()<cr>", { desc = "show help", silent = true } },
+  { "n", "<leader>hw", "<cmd>help expand('<cword>')<cr>", { desc = "show help for word under cursor" } },
 
   -- misc
   { "n", "<leader>bp", "1<C-g>:<C-U>echo v:statusmsg<cr>", { desc = "show full buffer path", silent = true } },
