@@ -65,7 +65,7 @@ local keymap = {
   { "n", "<leader>l7", "7gt", { desc = "go to layout #7", silent = true } },
   { "n", "<leader>l8", "8gt", { desc = "go to layout #8", silent = true } },
   { "n", "<leader>l9", "9gt", { desc = "go to layout #9", silent = true } },
-  { "n", "<leader>lC", "<cmd>tabclose<cr>", { desc = "close layout", silent = true } },
+  { "n", "<leader>lc", "<cmd>tabclose<cr>", { desc = "close layout", silent = true } },
   { "n", "<leader>ln", "<cmd>tabnext<cr>", { desc = "next layout", silent = true } },
   { "n", "<leader>lp", "<cmd>tabprev<cr>", { desc = "previous layout", silent = true } },
 

@@ -1,6 +1,10 @@
 local function neogit_open()
-  vim.cmd('tabdo windo if &filetype == "NeogitStatus" | q | endif')
-  require("neogit").open()
+  for _, buf in pairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_get_option(buf, "filetype") == "NeogitStatus" then
+      vim.api.nvim_buf_delete(buf, { force = true })
+    end
+  end
+  require("neogit").open({ cwd = "%:p:h" })
 end
 
 return {
