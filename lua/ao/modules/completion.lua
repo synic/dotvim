@@ -6,6 +6,7 @@ return {
     opts = function()
       local cmp = require("cmp")
       local lspkind = require("lspkind")
+      local luasnip = require("luasnip")
 
       return {
         completion = { completeopt = "menu,menuone,noinsert" },
@@ -34,6 +35,8 @@ return {
 
             if cmp.visible() then
               cmp.select_next_item()
+            elseif luasnip.expand_or_locally_jumpable() then
+              luasnip.expand_or_jump()
             elseif col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
               fallback()
             else
@@ -43,16 +46,19 @@ return {
           ["<S-Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_prev_item()
+            elseif luasnip.locally_jumpable(-1) then
+              luasnip.jump(-1)
             else
               fallback()
             end
           end, { "i", "s" }),
         }),
         sources = cmp.config.sources({
-          { name = "nvim_lsp" },
-          { name = "nvim_lua" },
-          { name = "path" },
-          { name = "buffer" },
+          { name = "nvim_lsp" }, -- lsp completion
+          { name = "nvim_lua" }, -- lua completion for the nvim api
+          { name = "path" }, -- paths (filesystem)
+          { name = "luasnip" }, -- snippets
+          { name = "buffer" }, -- other buffers
         }),
         formatting = {
           format = lspkind.cmp_format({
@@ -60,6 +66,7 @@ return {
             maxwidth = 50,
             ellipsis_char = "...",
             before = function(_, vim_item)
+              print(vim.inspect(vim_item))
               return vim_item
             end,
           }),
@@ -70,6 +77,7 @@ return {
       "onsails/lspkind-nvim",
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
+      "saadparwaiz1/cmp_luasnip",
       "hrsh7th/cmp-nvim-lua",
       "hrsh7th/cmp-path",
       "L3MON4D3/LuaSnip",
