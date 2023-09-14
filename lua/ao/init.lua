@@ -6,9 +6,7 @@ vim.api.nvim_set_option("guifont", "Hack:h10")
 local lazy, installed = functions.install_plugin_manager()
 
 lazy.setup("ao.modules", {
-  install = {
-    install_missing = false,
-  },
+  install = { install_missing = false },
   change_detection = {
     enabled = true,
     notify = false,

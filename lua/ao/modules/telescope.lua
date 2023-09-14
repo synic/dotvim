@@ -62,19 +62,16 @@ local function telescope_new_tab_with_projects()
   telescope_load_projects()
 end
 
+local function telescope_search_buffers()
+  require("telescope.builtin").buffers({ sort_mru = true, sort_lastused = true, icnore_current_buffer = true })
+end
+
 return {
   {
     {
       "nvim-telescope/telescope.nvim",
       keys = {
-        {
-          "<leader>bb",
-          "<cmd>lua require('telescope.builtin').buffers({ sort_mru=true, sort_lastused=true, icnore_current_buffer=true })<cr>",
-          desc = "show buffers",
-        },
-
-        -- code actions
-        { "<localleader>a", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "code actions" },
+        { "<leader>bb", telescope_search_buffers, desc = "show buffers" },
 
         -- layouts/windows
         { "<leader>wt", telescope_new_tab_with_projects, desc = "new tab with project" },

@@ -65,10 +65,6 @@ return {
             mode = "symbol",
             maxwidth = 50,
             ellipsis_char = "...",
-            before = function(_, vim_item)
-              print(vim.inspect(vim_item))
-              return vim_item
-            end,
           }),
         },
       }

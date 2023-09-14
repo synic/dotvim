@@ -24,11 +24,9 @@ return {
       {
         "jay-babu/mason-nvim-dap.nvim",
         dependencies = "mason.nvim",
-        cmd = { "DapInstall", "DapUninstall" },
         opts = {
           automatic_installation = true,
           handlers = {},
-          ensure_installed = { "node2" },
           layouts = {
             elements = { "console" },
             size = 0.25, -- 25% of total lines
@@ -143,10 +141,7 @@ return {
             position = "left",
           },
           {
-            elements = {
-              "repl",
-              "console",
-            },
+            elements = { "repl", "console" },
             size = 0.25,
             position = "bottom",
           },
