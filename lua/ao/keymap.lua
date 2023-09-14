@@ -25,16 +25,22 @@ module.categories = {
 
 local keymap = {
   -- window management
-  { "n", "<leader>wk", "<cmd>wincmd k<cr>", { desc = "move cursor up one window", silent = true } },
-  { "n", "<leader>wj", "<cmd>wincmd j<cr>", { desc = "move cursor down one window", silent = true } },
-  { "n", "<leader>wh", "<cmd>wincmd h<cr>", { desc = "move cursor left one window", silent = true } },
-  { "n", "<leader>wl", "<cmd>wincmd l<cr>", { desc = "move cursor right one window", silent = true } },
-  { "n", "<leader>w/", "<cmd>vs<cr>", { desc = "split window vertically", silent = true } },
-  { "n", "<leader>w-", "<cmd>sp<cr>", { desc = "split window horizontally", silent = true } },
-  { "n", "<leader>wc", "<cmd>close<cr>", { desc = "close current window", silent = true } },
-  { "n", "<leader>wd", "<cmd>q<cr>", { desc = "close current window and quit buffer", silent = true } },
+  { "n", "<leader>wk", "<cmd>wincmd k<cr>", { desc = "move up", silent = true } },
+  { "n", "<leader>wj", "<cmd>wincmd j<cr>", { desc = "move down", silent = true } },
+  { "n", "<leader>wh", "<cmd>wincmd h<cr>", { desc = "move left", silent = true } },
+  { "n", "<leader>wl", "<cmd>wincmd l<cr>", { desc = "move right", silent = true } },
+  { "n", "<leader>w/", "<cmd>vs<cr>", { desc = "split vertically", silent = true } },
+  { "n", "<leader>w-", "<cmd>sp<cr>", { desc = "split horizontally", silent = true } },
+  { "n", "<leader>wc", "<cmd>close<cr>", { desc = "close window", silent = true } },
+  { "n", "<leader>wd", "<cmd>q<cr>", { desc = "quit window", silent = true } },
   { "n", "<leader>w=", "<C-w>=", { desc = "equalize windows", silent = true } },
   { "n", "<leader>wm", "<C-w>|", { desc = "maximize window", silent = true } },
+  { "n", "<leader>wH", "<cmd>wincmd H<cr>", { desc = "move window left", silent = true } },
+  { "n", "<leader>wJ", "<cmd>wincmd J<cr>", { desc = "move window down", silent = true } },
+  { "n", "<leader>wK", "<cmd>wincmd K<cr>", { desc = "move window up", silent = true } },
+  { "n", "<leader>wL", "<cmd>wincmd L<cr>", { desc = "move window right", silent = true } },
+  { "n", "<leader>wR", "<cmd>wincmd R<cr>", { desc = "rotate windows", silent = true } },
+  { "n", "<leader>wT", "<cmd>wincmd T<cr>", { desc = "move to new layout", silent = true } },
 
   -- buffer management
   { "n", "<leader><tab>", "<cmd>b#<cr>", { desc = "previous buffer", silent = true } },
