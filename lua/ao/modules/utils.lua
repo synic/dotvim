@@ -1,4 +1,5 @@
-local utils = require("ao.core.utils")
+local keymap = require("ao.keymap")
+local utils = require("ao.utils")
 
 vim.cmd([[
 	function! s:ZoomToggle() abort
@@ -15,10 +16,9 @@ vim.cmd([[
 	command! ZoomToggle call s:ZoomToggle()
 ]])
 
-vim.api.nvim_set_keymap("n", "<leader>Pl", ":Lazy<cr>", { desc = "list plugins" })
-vim.api.nvim_set_keymap("n", "<leader>Pu", ":Lazy update<cr>", { desc = "update plugins" })
-vim.api.nvim_set_keymap("n", "<leader>Ps", ":Lazy sync<cr>", { desc = "sync plugins" })
-vim.api.nvim_set_keymap("n", "<leader>wM", ":ZoomToggle<cr>", { desc = "zoom window" })
+-- set up keys
+keymap.lazy()
+keymap.zoom_toggle()
 
 local plugins = {
   "ConradIrwin/vim-bracketed-paste",
