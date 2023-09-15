@@ -40,14 +40,14 @@ module.close_all_floating_windows = function()
 end
 
 module.boostrap_project_list = function(path)
-  local status, history = pcall(require, "project_nvim.utils.history")
-
-  if not status then
-    return
-  end
-
   local project_file_path = vim.fn.stdpath("data") .. "/project_nvim/project_history"
   if not vim.loop.fs_stat(project_file_path) then
+    local status, history = pcall(require, "project_nvim.utils.history")
+
+    if not status then
+      return
+    end
+
     local handle = io.open(project_file_path, "w")
 
     if not handle then

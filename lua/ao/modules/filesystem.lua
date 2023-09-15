@@ -8,7 +8,15 @@ module.netrw_current_file = function()
 end
 
 module.netrw_current_project = function()
-  local pathname = vim.fn.ProjectRootGuess()
+  local status, project = pcall(require, "project_nvim.project")
+
+  if not status then
+    print("Unable to determine project root")
+    return
+  end
+
+  local pathname, _ = project.get_project_root()
+
   vim.fn.execute("edit " .. pathname)
 end
 
