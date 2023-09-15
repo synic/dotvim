@@ -53,6 +53,7 @@ set nocursorbind
 set noscrollbind
 set hidden
 set completeopt=menu,menuone,noselect
+set shortmess+=I
 
 " display bufnr:filetype (dos,unix,mac) in status line
 set statusline=%<%n:%f%h%m%r%=\ %{&ff}\ %l,%c%V\ %P

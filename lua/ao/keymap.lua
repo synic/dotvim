@@ -112,7 +112,7 @@ module.telescope = {
 
   -- layouts/windows
   {
-    "<leader>l<tab>",
+    "<leader>lt",
     function()
       require("ao.modules.telescope").new_tab_with_projects()
     end,
@@ -187,7 +187,7 @@ module.nvim_dap = {
   { "<leader>db", "<cmd>lua require('dap').toggle_breakpoint()<cr>", desc = "toggle breakpoint" },
   { "<leader>dc", "<cmd>lua require('dap').continue()<cr>", desc = "continue" },
   { "<leader>dd", "<cmd>lua require('dap').run_last()<cr>", desc = "run last" },
-  { "<leader>dq", "<cmd>lua require('dap').close()<cr>", desc = "close" },
+  { "<leader>dq", "<cmd>lua require('dap').close()<cr><cmd>lua require('dapui').close()<cr>", desc = "close" },
   { "<leader>dn", "<cmd>lua require('dap').step_over()<cr>", desc = "step over" },
   { "<leader>ds", "<cmd>lua require('dap').step_into()<cr>", desc = "step into" },
   { "<leader>do", "<cmd>lua require('dap').step_out()<cr>", desc = "step out" },
@@ -341,13 +341,13 @@ module.gitsigns_on_attach = function(bufnr)
 
   utils.map_keys({
 		-- stylua: ignore start
-		{  "]h", gs.next_hunk, desc = "next hunk", buffer = bufnr },
-		{  "[h", gs.prev_hunk, desc = "prev hunk", buffer = bufnr },
+		{ "]h", gs.next_hunk, desc = "next hunk", buffer = bufnr },
+		{ "[h", gs.prev_hunk, desc = "prev hunk", buffer = bufnr },
 		{ modes={ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", desc = "stage hunk", buffer = bufnr },
 		{ modes={ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", desc = "reset hunk", buffer = bufnr },
-		{  "<leader>ghS", gs.stage_buffer, desc = "stage buffer", buffer = bufnr },
-		{  "<leader>ghu", gs.undo_stage_hunk, desc = "undo stage Hunk", buffer = bufnr },
-		{  "<leader>ghR", gs.reset_buffer, desc = "reset buffer", buffer = bufnr },
+		{ "<leader>ghS", gs.stage_buffer, desc = "stage buffer", buffer = bufnr },
+		{ "<leader>ghu", gs.undo_stage_hunk, desc = "undo stage Hunk", buffer = bufnr },
+		{ "<leader>ghR", gs.reset_buffer, desc = "reset buffer", buffer = bufnr },
 		{ "<leader>ghp", gs.preview_hunk, desc = "preview hunk", buffer = bufnr },
 		{ "<leader>ghb", function() gs.blame_line({ full = true }) end, desc = "blame line", buffer = bufnr },
 		{ "<leader>ghd", gs.diffthis, desc = "diff this", buffer = bufnr },

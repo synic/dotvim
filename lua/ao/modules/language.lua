@@ -4,7 +4,6 @@ return {
   {
     "williamboman/mason-lspconfig.nvim",
     dependencies = { "williamboman/mason.nvim", "hrsh7th/cmp-nvim-lsp" },
-    lazy = false,
     opts = {
       ensure_installed = {
         "lua_ls",
@@ -14,6 +13,7 @@ return {
         "clangd",
       },
     },
+    lazy = true,
     config = function(_, opts)
       local m = require("mason-lspconfig")
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -48,7 +48,7 @@ return {
     dependencies = {
       "hrsh7th/nvim-cmp",
       "williamboman/mason-lspconfig.nvim",
-      { "williamboman/mason.nvim", config = true },
+      { "williamboman/mason.nvim", config = true, lazy = false },
     },
     keys = keymap.lspconfig,
     config = function()

@@ -30,7 +30,7 @@ return {
   },
   {
     "tpope/vim-commentary",
-    lazy = false,
+    event = "InsertEnter",
   },
   {
     "mbbill/undotree",
@@ -52,8 +52,6 @@ return {
   -- snippets
   {
     "L3MON4D3/LuaSnip",
-    dependencies = { "rafamadriz/friendly-snippets" },
-    lazy = true,
     config = function()
       require("luasnip.loaders.from_snipmate").lazy_load({
         paths = { vim.fn.stdpath("config") .. "/snippets" },

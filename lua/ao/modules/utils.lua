@@ -24,7 +24,7 @@ local plugins = {
   "ConradIrwin/vim-bracketed-paste",
 }
 
-local wakatime_config = { "wakatime/vim-wakatime" }
+local wakatime_config = { "wakatime/vim-wakatime", event = { "BufReadPre", "BufNewFile" } }
 
 local wakatime_config_path = utils.join_paths(os.getenv("HOME"), ".wakatime.cfg")
 
