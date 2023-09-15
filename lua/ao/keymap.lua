@@ -166,6 +166,9 @@ module.telescope = {
     desc = "find git files",
   },
   { "<leader>sp", "<cmd>Telescope live_grep<cr>", desc = "search project for text" },
+}
+
+module.project = {
   {
     "<leader>pp",
     function()

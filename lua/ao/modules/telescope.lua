@@ -4,11 +4,19 @@ local keymap = require("ao.keymap")
 local module = {}
 
 module.search_star = function()
+  local status, project = pcall(require, "project_nvim.project")
+
+  if not status then
+    print("Unable to determine project root")
+    return
+  end
+
   local builtin = require("telescope.builtin")
   local current_word = vim.fn.expand("<cword>")
-  local project_dir = vim.fn.ProjectRootGuess()
+  local project_root, _ = project.get_project_root()
+
   builtin.grep_string({
-    cwd = project_dir,
+    cwd = project_root,
     search = current_word,
   })
 end
@@ -33,7 +41,9 @@ module.load_projects = function()
     end
   end
 
-  require("telescope").extensions.projects.projects({ layout_config = { width = 0.5, height = 0.3 } })
+  vim.schedule(function()
+    require("telescope").extensions.projects.projects({ layout_config = { width = 0.5, height = 0.3 } })
+  end)
 end
 
 module.git_files = function()
@@ -51,8 +61,14 @@ end
 module.find_project_files = function()
   local builtin = require("telescope.builtin")
 
-  -- `FindRootDirectory` comes from `airblade/vim-rooter`
-  local project_root = vim.fn.FindRootDirectory()
+  local status, project = pcall(require, "project_nvim.project")
+
+  if not status then
+    print("Unable to determine project root")
+    return
+  end
+
+  local project_root, _ = project.get_project_root()
 
   if project_root and project_root ~= "" then
     builtin.find_files({ cwd = project_root })
@@ -68,7 +84,11 @@ module.new_tab_with_projects = function()
 end
 
 module.search_buffers = function()
-  require("telescope.builtin").buffers({ sort_mru = true, sort_lastused = true, icnore_current_buffer = true })
+  require("telescope.builtin").buffers({
+    sort_mru = true,
+    sort_lastused = true,
+    icnore_current_buffer = true,
+  })
 end
 
 return utils.table_concat(module, {
@@ -122,33 +142,33 @@ return utils.table_concat(module, {
         },
       })
 
-      telescope.load_extension("fzf")
+      -- load this lazy instead of with the projects plugin, because it does not depend on telescope, and we don't
+      -- want to force telescope to load until it's needed
       telescope.load_extension("projects")
-      telescope.load_extension("ui-select")
-
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "LoadProjectList",
-        callback = module.load_projects,
-      })
     end,
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-      "dbakker/vim-projectroot",
-      "airblade/vim-rooter",
-      "ahmedkhalf/project.nvim",
       "LukasPietzschmann/telescope-tabs",
       {
         "nvim-telescope/telescope-fzf-native.nvim",
         build = "make",
+        config = function()
+          require("telescope").load_extension("fzf")
+        end,
       },
       "benfowler/telescope-luasnip.nvim",
-      "nvim-telescope/telescope-ui-select.nvim",
+      {
+        "nvim-telescope/telescope-ui-select.nvim",
+        config = function()
+          require("telescope").load_extension("ui-select")
+        end,
+      },
     },
   },
 
   {
     "ahmedkhalf/project.nvim",
+    keys = keymap.project,
     lazy = false,
     config = function()
       require("project_nvim").setup({
@@ -173,13 +193,6 @@ return utils.table_concat(module, {
         scope_chdir = "global",
         datapath = vim.fn.stdpath("data"),
       })
-    end,
-  },
-
-  {
-    "airblade/vim-rooter",
-    config = function()
-      vim.g.rooter_silent_chdir = 1
     end,
   },
 })

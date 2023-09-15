@@ -4,7 +4,19 @@ return {
   {
     "folke/trouble.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = { mode = "document_diagnostics" },
+    event = { "LspAttach" },
+    opts = {
+      mode = "document_diagnostics",
+      signs = {
+        error = "",
+        warning = "",
+        hint = "",
+        information = "",
+        other = "",
+      },
+      icons = false,
+      use_diagnostic_signs = true,
+    },
     keys = keymap.trouble,
   },
   {
