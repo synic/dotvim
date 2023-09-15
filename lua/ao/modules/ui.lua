@@ -54,38 +54,50 @@ return {
     event = "TabEnter",
     config = function()
       local theme = {
-        fill = "TabLineFill",
-        head = "TabLine",
+        fill = "StatusLine",
         current_tab = "TabLineSel",
-        tab = "TabLine",
-        win = "TabLine",
-        tail = "TabLine",
+        tab = "TabLineFill",
       }
+
       require("tabby.tabline").set(function(line)
+        local i = 0
+        local current_index = 0
+        local tab_count = 0
+
+        line.tabs().foreach(function(tab)
+          i = i + 1
+          if tab.is_current() then
+            current_index = i
+          end
+        end)
+
+        tab_count = i
+        i = 0
+
         return {
-          {
-            { "  ", hl = theme.head },
-            line.sep("", theme.head, theme.fill),
-          },
           line.tabs().foreach(function(tab)
             local hl = tab.is_current() and theme.current_tab or theme.tab
+            i = i + 1
+
+            local last_item = tab.is_current() and line.sep("", hl, theme.fill)
+              or line.sep("", theme.current_tab, hl)
+
+            if i == current_index - 1 or (i == tab_count and not tab.is_current()) then
+              last_item = line.sep("", hl, theme.fill)
+            end
+
             return {
-              line.sep("", hl, theme.fill),
+              i == 1 and "" or line.sep("", theme.fill, hl),
               tab.is_current() and "" or "󰆣",
               tab.number(),
               tab.name(),
               tab.close_btn(""),
-              line.sep("", hl, theme.fill),
+              last_item,
               hl = hl,
               margin = " ",
             }
           end),
-          line.spacer(),
-          {
-            line.sep("", theme.tail, theme.fill),
-            { "  ", hl = theme.tail },
-          },
-          hl = theme.fill,
+          hl = theme.win,
         }
       end)
     end,
