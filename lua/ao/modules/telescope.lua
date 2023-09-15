@@ -137,26 +137,19 @@ return utils.table_concat(module, {
       "dbakker/vim-projectroot",
       "airblade/vim-rooter",
       "ahmedkhalf/project.nvim",
-      "nvim-telescope/telescope-fzf-native.nvim",
+      "LukasPietzschmann/telescope-tabs",
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = "make",
+      },
       "benfowler/telescope-luasnip.nvim",
       "nvim-telescope/telescope-ui-select.nvim",
     },
   },
 
   {
-    "nvim-telescope/telescope-fzf-native.nvim",
-    build = "make",
-  },
-  {
-    "benfowler/telescope-luasnip.nvim",
-  },
-  {
-    "LukasPietzschmann/telescope-tabs",
-    dependencies = { "nvim-telescope/telescope.nvim" },
-    opts = {},
-  },
-  {
     "ahmedkhalf/project.nvim",
+    lazy = false,
     config = function()
       require("project_nvim").setup({
         manual_mode = false,

@@ -14,15 +14,6 @@ lazy.setup("ao.modules", {
 })
 
 lazy.install({ wait = installed, show = false })
+functions.boostrap_project_list(os.getenv("HOME") .. "/Projects")
 functions.install_keymap(keymap.general_keys)
 functions.close_all_floating_windows()
-
-if next(vim.fn.argv()) == nil then
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "VeryLazy",
-    callback = function()
-      functions.boostrap_project_list(os.getenv("HOME") .. "/Projects")
-      vim.cmd("doautocmd User LoadProjectList")
-    end,
-  })
-end
