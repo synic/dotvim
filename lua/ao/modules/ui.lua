@@ -1,8 +1,10 @@
-local wk_categories = require("ao.keymap").categories
+local keymap = require("ao.keymap")
+local utils = require("ao.utils")
+local module = {}
 
 vim.g.neovide_remember_window_size = false
 
-local function golden_ratio_toggle()
+module.golden_ratio_toggle = function()
   vim.cmd([[:GoldenRatioToggle]])
   if vim.g.golden_ratio_enabled == 0 then
     vim.g.golden_ratio_enabled = 1
@@ -15,16 +17,14 @@ local function golden_ratio_toggle()
   end
 end
 
-return {
+return utils.table_concat(module, {
   {
     "stevearc/dressing.nvim",
     opts = {},
   },
   {
     "pocco81/true-zen.nvim",
-    keys = {
-      { "<leader>tz", "<cmd>TZMinimalist<cr>", desc = "toggle zen mode" },
-    },
+    keys = keymap.true_zen,
   },
 
   "kshenoy/vim-signature",
@@ -33,7 +33,6 @@ return {
     config = function(_, opts)
       local wk = require("which-key")
       wk.setup(opts)
-      wk.register(wk_categories)
 
       vim.o.timeout = true
       vim.o.timeoutlen = 700
@@ -99,9 +98,7 @@ return {
 
   {
     "roman/golden-ratio",
-    keys = {
-      { "<leader>tg", golden_ratio_toggle, desc = "golden Ratio" },
-    },
+    keys = keymap.golden_ratio,
     init = function()
       vim.g.golden_ratio_enabled = 0
       vim.g.golden_ratio_autocmd = 0
@@ -115,4 +112,4 @@ return {
       })
     end,
   },
-}
+})

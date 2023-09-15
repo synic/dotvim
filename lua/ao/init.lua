@@ -1,5 +1,5 @@
-require("ao.keymap")
-local functions = require("ao.core.functions")
+local keymap = require("ao.keymap")
+local functions = require("ao.utils")
 
 vim.api.nvim_set_option("guifont", "Hack:h10")
 
@@ -14,6 +14,7 @@ lazy.setup("ao.modules", {
 })
 
 lazy.install({ wait = installed, show = false })
+functions.install_keymap(keymap.general_keys)
 functions.close_all_floating_windows()
 
 if next(vim.fn.argv()) == nil then

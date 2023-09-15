@@ -1,23 +1,4 @@
-local function on_attach(_, bufnr)
-  local nmap = function(keys, func, desc)
-    vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
-  end
-
-  nmap("<localleader>r", vim.lsp.buf.rename, "rename symbol")
-  nmap("<localleader>a", vim.lsp.buf.code_action, "code actions")
-
-  nmap("gd", vim.lsp.buf.definition, "goto definition")
-  nmap("gD", vim.lsp.buf.declaration, "goto declaration")
-  nmap("gr", require("telescope.builtin").lsp_references, "goto reference")
-  nmap("gI", require("telescope.builtin").lsp_implementations, "goto implementation")
-  nmap("<localleader>d", vim.lsp.buf.type_definition, "type definition")
-  nmap("<localleader>-", require("telescope.builtin").lsp_document_symbols, "document symbols")
-  nmap("<localleader>_", require("telescope.builtin").lsp_dynamic_workspace_symbols, "workspace symbols")
-
-  -- See `:help K` for why this keymap
-  nmap("K", vim.lsp.buf.hover, "Hover Documentation")
-  nmap("<C-k>", vim.lsp.buf.signature_help, "Signature Documentation")
-end
+local keymap = require("ao.keymap")
 
 return {
   {
@@ -47,7 +28,7 @@ return {
         ["lua_ls"] = function()
           require("lspconfig").lua_ls.setup({
             capabilities = capabilities,
-            on_attach = on_attach,
+            on_attach = keymap.lsp_on_attach,
             settings = {
               Lua = {
                 diagnostics = { globals = { "vim", "hs" } },
@@ -69,17 +50,7 @@ return {
       "williamboman/mason-lspconfig.nvim",
       { "williamboman/mason.nvim", config = true },
     },
-    keys = {
-      { "gi", vim.lsp.buf.implementation, desc = "go to implementation" },
-      {
-        "gI",
-        "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.implementation()<cr>",
-        desc = "go to implementation in split",
-      },
-      { "gd", vim.lsp.buf.definition, desc = "go to definition" },
-      { "gD", "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "go to definition in split" },
-      { ",r", vim.lsp.buf.rename, desc = "rename symbol" },
-    },
+    keys = keymap.lspconfig,
     config = function()
       local lsp = require("lspconfig")
       local defaults = lsp.util.default_config
@@ -214,12 +185,7 @@ return {
     end,
   },
 
-  {
-    "j-hui/fidget.nvim",
-    tag = "legacy",
-    event = "LspAttach",
-    opts = {},
-  },
+  { "j-hui/fidget.nvim", tag = "legacy", event = "LspAttach", opts = {} },
 
   -- css
   { "ap/vim-css-color", ft = "css" },
@@ -234,10 +200,5 @@ return {
   { "jmcantrell/vim-virtualenv", ft = "python" },
 
   -- vim
-  {
-    "tpope/vim-scriptease",
-    keys = {
-      { "<leader>sm", "<cmd>Messages<cr>", desc = "messages" },
-    },
-  },
+  { "tpope/vim-scriptease", keys = keymap.scriptease },
 }
