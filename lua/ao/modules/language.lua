@@ -73,6 +73,7 @@ return {
       ensure_installed = {
         "query",
         "vim",
+        "vimdoc",
         "regex",
         "lua",
         "python",
