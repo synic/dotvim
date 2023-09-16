@@ -157,4 +157,17 @@ module.scandir = function(directory)
   return t
 end
 
+module.lazy_load_theme = function(theme)
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "VeryLazy",
+    callback = function()
+      local status, loader = pcall(require, "lazy.core.loader")
+      if status then
+        loader.colorscheme(theme)
+      end
+      vim.cmd.colorscheme(theme)
+    end,
+  })
+end
+
 return module
