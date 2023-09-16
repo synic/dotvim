@@ -7,9 +7,15 @@ return {
     init = function()
       vim.g.gruvbox_material_background = "medium"
     end,
+
     config = function()
-      vim.cmd("colorscheme gruvbox-material")
+      vim.cmd.colorscheme("gruvbox-material")
     end,
   },
   { "folke/tokyonight.nvim", lazy = true },
+  {
+    "rose-pine/neovim",
+    name = "rose-pine",
+    lazy = true,
+  },
 }
