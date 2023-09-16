@@ -36,11 +36,6 @@ return {
           automatic_installation = true,
           ensure_installed = { "node2" },
           handlers = {},
-          layouts = {
-            elements = { "console" },
-            size = 0.25, -- 25% of total lines
-            position = "bottom",
-          },
         },
       },
     },
@@ -104,7 +99,8 @@ return {
   {
     "rcarriga/nvim-dap-ui",
     lazy = true,
-    config = function()
+    opts = {},
+    config = function(opts)
       local dap = require("dap")
       local dapui = require("dapui")
 
@@ -118,62 +114,27 @@ return {
         dapui.close()
       end
 
-      dapui.setup({
-        icons = { expanded = "▾", collapsed = "▸", current_frame = "▸" },
-        mappings = {
-          expand = { "<CR>", "<2-LeftMouse>" },
-          open = "o",
-          remove = "d",
-          edit = "e",
-          repl = "r",
-          toggle = "t",
-        },
-        expand_lines = vim.fn.has("nvim-0.7") == 1,
-        layouts = {
-          {
-            elements = {
-              { id = "scopes", size = 0.25 },
-              "breakpoints",
-              "stacks",
-              "watches",
-            },
-            size = 40,
-            position = "left",
-          },
-          {
-            elements = { "repl", "console" },
-            size = 0.25,
-            position = "bottom",
-          },
-        },
-        controls = {
-          enabled = true,
-          element = "repl",
-          icons = {
-            pause = "",
-            play = "",
-            step_into = "",
-            step_over = "",
-            step_out = "",
-            step_back = "",
-            run_last = "↻",
-            terminate = "□",
-          },
-        },
-        floating = {
-          max_height = nil,
-          max_width = nil,
-          border = "single",
-          mappings = {
-            close = { "q", "<Esc>" },
-          },
-        },
-        windows = { indent = 1 },
-        render = {
-          max_type_length = nil,
-          max_value_lines = 100,
-        },
-      })
+      vim.api.nvim_set_hl(0, "DapBreakpoint", { ctermbg = 0, fg = "#993939", bg = "#31353f" })
+      vim.api.nvim_set_hl(0, "DapLogPoint", { ctermbg = 0, fg = "#61afef", bg = "#31353f" })
+      vim.api.nvim_set_hl(0, "DapStoppedLine", { ctermbg = 0, fg = "#98c379", bg = "#31353f" })
+
+      local icons = {
+        Stopped = { "󰁕 ", "DiagnosticWarn", "DapStoppedLine" },
+        Breakpoint = " ",
+        BreakpointCondition = " ",
+        BreakpointRejected = { " ", "DiagnosticError" },
+        LogPoint = ".>",
+      }
+
+      for name, sign in pairs(icons) do
+        sign = type(sign) == "table" and sign or { sign }
+        vim.fn.sign_define(
+          "Dap" .. name,
+          { text = sign[1], texthl = sign[2] or "DapBreakpoint", linehl = sign[3], numhl = sign[3] }
+        )
+      end
+
+      dapui.setup(opts)
     end,
   },
 }
