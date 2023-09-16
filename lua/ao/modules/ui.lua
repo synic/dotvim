@@ -112,4 +112,14 @@ return utils.table_concat(module, {
       })
     end,
   },
+  {
+    "m00qek/baleia.nvim",
+    version = "v1.3.0",
+    opts = {},
+    init = function()
+      vim.api.nvim_create_user_command("BaleiaColorize", function()
+        require("baleia").setup().once(vim.api.nvim_get_current_buf())
+      end, {})
+    end,
+  },
 })

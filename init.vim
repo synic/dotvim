@@ -90,6 +90,7 @@ set colorcolumn=0
 
 " line numbering
 set number
+set relativenumber
 
 " attempt to create swap directory if it doesn't exist
 silent !mkdir $VIMHOME/swap > /dev/null 2>&1
