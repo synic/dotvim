@@ -27,6 +27,7 @@ local function lsp_on_attach(_, bufnr)
     { "K", vim.lsp.buf.hover, desc = "hover documentation", buffer = bufnr },
     { "<C-k>", vim.lsp.buf.signature_help, desc = "signature documentation", buffer = bufnr },
   })
+  vim.lsp.buf.inlay_hint(bufnr, true)
 end
 
 return {
@@ -37,7 +38,6 @@ return {
     opts = {
       ensure_installed = {
         "lua_ls",
-        "tsserver",
         "cssls",
         "ruff_lsp",
         "clangd",
@@ -52,7 +52,7 @@ return {
       m.setup(opts)
       m.setup_handlers({
         function(server_name)
-          require("lspconfig")[server_name].setup({ capabilities = capabilities })
+          require("lspconfig")[server_name].setup({ capabilities = capabilities, on_attach = lsp_on_attach })
         end,
 
         ["lua_ls"] = function()
@@ -185,10 +185,26 @@ return {
     },
   },
 
+  -- typescript
+  {
+    "jose-elias-alvarez/typescript.nvim",
+    ft = { "typescript", "javascript" },
+    opts = {
+      server = {
+        on_attach = lsp_on_attach,
+      },
+    },
+  },
+  {
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    opts = {},
+  },
+
   -- diagnostics and formatting
   {
     "jose-elias-alvarez/null-ls.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    dependencies = { "nvim-lua/plenary.nvim", "jose-elias-alvarez/typescript.nvim" },
     event = { "BufReadPre", "BufNewFile" },
     opts = function()
       local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -211,6 +227,7 @@ return {
 
           -- actions
           ns.builtins.code_actions.gitsigns,
+          require("typescript.extensions.null-ls.code-actions"),
         },
 
         on_attach = function(client, bufnr)
