@@ -36,19 +36,24 @@ local function neogit_open()
 end
 
 return {
+  -- display conflicts
   {
     "akinsho/git-conflict.nvim",
     event = { "BufReadPre", "BufNewFile" },
     version = "*",
     config = true,
   },
+
+  -- git utilities
   {
     "tpope/vim-fugitive",
     keys = {
-      { "<leader>gb", ":Git blame<cr>", desc = "git blame" },
-      { "<leader>ga", ":Git add %<cr>", desc = "git add" },
+      { "<leader>gb", "<cmd>Git blame<cr>", desc = "git blame" },
+      { "<leader>ga", "<cmd>Git add %<cr>", desc = "git add" },
     },
   },
+
+  -- show git status in gutter, allow staging of hunks
   {
     "lewis6991/gitsigns.nvim",
     event = { "BufReadPre", "BufNewFile" },
@@ -65,6 +70,8 @@ return {
       on_attach = gitsigns_on_attach,
     },
   },
+
+  -- git client
   {
     "NeogitOrg/neogit",
     opts = { kind = "vsplit" },

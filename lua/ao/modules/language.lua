@@ -30,6 +30,7 @@ local function lsp_on_attach(_, bufnr)
 end
 
 return {
+  -- configure mason packages with LSP
   {
     "williamboman/mason-lspconfig.nvim",
     dependencies = { "williamboman/mason.nvim", "hrsh7th/cmp-nvim-lsp" },
@@ -174,6 +175,8 @@ return {
       require("nvim-treesitter.configs").setup(opts)
     end,
   },
+
+  -- treesitter associated text objects
   {
     "nvim-treesitter/nvim-treesitter-textobjects",
     event = { "BufReadPre", "BufNewFile" },
@@ -182,6 +185,7 @@ return {
     },
   },
 
+  -- diagnostics and formatting
   {
     "jose-elias-alvarez/null-ls.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
@@ -230,6 +234,7 @@ return {
     end,
   },
 
+  -- dressing.nvim shows lsp and null-ls status at the bottom right of the screen
   { "j-hui/fidget.nvim", tag = "legacy", event = "LspAttach", opts = {} },
 
   -- css
@@ -244,7 +249,7 @@ return {
   -- python
   { "jmcantrell/vim-virtualenv", ft = "python" },
 
-  -- vim
+  -- vim scripting utilities
   {
     "tpope/vim-scriptease",
     keys = {

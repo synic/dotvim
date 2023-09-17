@@ -25,7 +25,44 @@ utils.map_keys({
 })
 
 local plugins = {
+  -- automatically enter paste mode
   { "ConradIrwin/vim-bracketed-paste", lazy = false },
+
+  -- loads shared editor config for projects
+  "editorconfig/editorconfig-vim",
+
+  -- surround plugin
+  {
+    "kylechui/nvim-surround",
+    version = "*",
+    event = "VeryLazy",
+    opts = {},
+  },
+
+  -- toggle comments
+  {
+    "tpope/vim-commentary",
+    event = "InsertEnter",
+  },
+
+  -- display undoo list
+  {
+    "mbbill/undotree",
+    keys = {
+      { "<leader>tu", "<cmd>UndotreeToggle<cr>", desc = "undo tree" },
+    },
+  },
+
+  -- snippets
+  {
+    "L3MON4D3/LuaSnip",
+    config = function()
+      require("luasnip.loaders.from_snipmate").lazy_load({
+        paths = { vim.fn.stdpath("config") .. "/snippets" },
+      })
+      require("luasnip.loaders.from_vscode").lazy_load()
+    end,
+  },
 }
 
 local wakatime_config = { "wakatime/vim-wakatime", event = { "BufReadPre", "BufNewFile" } }

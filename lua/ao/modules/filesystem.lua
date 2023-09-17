@@ -32,6 +32,7 @@ vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\
 vim.g.netrw_browse_split = 0
 
 return {
+  -- fancy replacement for netrw, with devicons
   {
     "tamago324/lir.nvim",
     dependencies = {
