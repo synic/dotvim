@@ -7,7 +7,22 @@ return {
     end,
   },
   { "folke/tokyonight.nvim", lazy = true },
-  { "rose-pine/neovim", name = "rose-pine", lazy = false },
+  {
+    "rose-pine/neovim",
+    name = "rose-pine",
+    lazy = false,
+    priority = 1000,
+    init = function()
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        pattern = "*",
+        callback = function(opts)
+          if opts.match:find("^rose%-pine") ~= nil then
+            vim.api.nvim_set_hl(0, "NonText", { fg = "#444444" })
+          end
+        end,
+      })
+    end,
+  },
   { "catppuccin/nvim", name = "catppuccin", lazy = true },
   { "joshdick/onedark.vim", lazy = true },
   { "rebelot/kanagawa.nvim", lazy = true },
