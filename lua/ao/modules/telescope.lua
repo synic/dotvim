@@ -87,6 +87,7 @@ local function telescope_search_buffers()
 end
 
 return {
+  -- fuzzy finder and list manager
   {
     "nvim-telescope/telescope.nvim",
     keys = {
@@ -188,6 +189,7 @@ return {
     },
   },
 
+  -- telescop project support
   {
     "ahmedkhalf/project.nvim",
     keys = {

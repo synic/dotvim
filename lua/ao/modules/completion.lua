@@ -1,4 +1,5 @@
 return {
+  -- main completion engine
   {
     "hrsh7th/nvim-cmp",
     event = { "InsertEnter" },

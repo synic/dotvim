@@ -1,4 +1,5 @@
 return {
+  -- show diagnostics in gutter and quick fix list
   {
     "folke/trouble.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -23,11 +24,14 @@ return {
       { "<leader>ew", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "workspace diagnostics" },
     },
   },
+
+  -- ability to toggle diagnostics
   {
     "WhoIsSethDaniel/toggle-lsp-diagnostics.nvim",
     keys = { { "<leader>ta", "<cmd>ToggleDiag<cr>", desc = "lsp diagnostics" } },
   },
 
+  -- Debug Adapter Protocol plugin
   {
     "mfussenegger/nvim-dap",
     event = { "BufReadPre", "BufNewFile" },
@@ -109,6 +113,8 @@ return {
       end
     end,
   },
+
+  -- UI for DAP
   {
     "rcarriga/nvim-dap-ui",
     lazy = true,

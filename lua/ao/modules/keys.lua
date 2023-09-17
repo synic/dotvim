@@ -84,6 +84,7 @@ utils.map_keys({
 })
 
 return {
+  -- key hints
   {
     "folke/which-key.nvim",
     init = function()
