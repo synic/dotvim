@@ -113,6 +113,9 @@ return {
     "rcarriga/nvim-dap-ui",
     lazy = true,
     opts = {},
+    dependencies = {
+      "m00qek/baleia.nvim",
+    },
     config = function(opts)
       local dap = require("dap")
       local dapui = require("dapui")
