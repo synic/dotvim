@@ -1,18 +1,17 @@
-local utils = require("ao.utils")
-local keymap = require("ao.keymap")
-local module = {}
-
-module.search_in_project_root = function()
+local function search_in_project_root()
   vim.ui.input({ prompt = "term: " }, function(input)
     vim.cmd('CtrlSF "' .. input .. '"')
   end)
 end
 
-return utils.table_concat(module, {
+return {
   {
     "dyng/ctrlsf.vim",
     cmd = { "CtrlSF" },
-    keys = keymap.ctrlsf,
+    keys = {
+
+      { "<leader>sf", search_in_project_root, desc = "search in project root" },
+    },
     init = function()
       vim.g.better_whitespace_filetypes_blacklist = { "ctrlsf" }
       vim.g.ctrlsf_default_view_mode = "normal"
@@ -27,4 +26,4 @@ return utils.table_concat(module, {
     end,
   },
   "haya14busa/incsearch.vim",
-})
+}

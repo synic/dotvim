@@ -1,5 +1,3 @@
-local keymap = require("ao.keymap")
-
 return {
   {
     "folke/trouble.nvim",
@@ -17,7 +15,13 @@ return {
       icons = false,
       use_diagnostic_signs = true,
     },
-    keys = keymap.trouble,
+    keys = {
+      { "<leader>el", "<cmd>TroubleToggle<cr>", desc = "toggle trouble" },
+      { "<leader>en", "<cmd>lua vim.diagnostic.goto_next()<cr>", desc = "next error" },
+      { "<leader>ep", "<cmd>lua vim.diagnostic.goto_prev()<cr>", desc = "next error" },
+      { "<leader>ed", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "document diagnostics" },
+      { "<leader>ew", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "workspace diagnostics" },
+    },
   },
   {
     "WhoIsSethDaniel/toggle-lsp-diagnostics.nvim",
@@ -39,7 +43,16 @@ return {
         },
       },
     },
-    keys = keymap.nvim_dap,
+    keys = {
+      { "<leader>db", "<cmd>lua require('dap').toggle_breakpoint()<cr>", desc = "toggle breakpoint" },
+      { "<leader>dc", "<cmd>lua require('dap').continue()<cr>", desc = "continue" },
+      { "<leader>dd", "<cmd>lua require('dap').run_last()<cr>", desc = "run last" },
+      { "<leader>dq", "<cmd>lua require('dap').close()<cr><cmd>lua require('dapui').close()<cr>", desc = "close" },
+      { "<leader>dn", "<cmd>lua require('dap').step_over()<cr>", desc = "step over" },
+      { "<leader>ds", "<cmd>lua require('dap').step_into()<cr>", desc = "step into" },
+      { "<leader>do", "<cmd>lua require('dap').step_out()<cr>", desc = "step out" },
+      { "<leader>dc", "<cmd>lua require('dap').continue()<cr>", desc = "continue" },
+    },
     config = function()
       local dap = require("dap")
 

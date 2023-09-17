@@ -1,5 +1,3 @@
-local keymap = require("ao.keymap")
-
 return {
   {
     "Lokaltog/vim-easymotion",
@@ -7,7 +5,10 @@ return {
       vim.g.EasyMotion_smartcase = true
       vim.g.EasyMotion_do_mapping = false
     end,
-    keys = keymap.easymotion,
+    keys = {
+      { "<leader><leader>", "<plug>(easymotion-overwin-f)", desc = "jump to location", mode = "n" },
+      { "<leader><leader>", "<plug>(easymotion-bd-f)", desc = "jump to location", mode = "v" },
+    },
   },
   {
     "folke/flash.nvim",
@@ -19,7 +20,48 @@ return {
       },
     },
     lazy = false,
-    keys = keymap.flash,
+    keys = {
+      {
+        "s",
+        mode = { "n", "o", "x" },
+        function()
+          require("flash").jump()
+        end,
+        desc = "flash",
+      },
+      {
+        "S",
+        mode = { "n", "o", "x" },
+        function()
+          require("flash").treesitter()
+        end,
+        desc = "flash treesitter",
+      },
+      {
+        "r",
+        mode = "o",
+        function()
+          require("flash").remote()
+        end,
+        desc = "remote flash",
+      },
+      {
+        "R",
+        mode = { "o", "x" },
+        function()
+          require("flash").treesitter_search()
+        end,
+        desc = "treesitter search",
+      },
+      {
+        "<c-s>",
+        mode = { "c" },
+        function()
+          require("flash").toggle()
+        end,
+        desc = "toggle flash search",
+      },
+    },
   },
   "editorconfig/editorconfig-vim",
   {
@@ -34,7 +76,9 @@ return {
   },
   {
     "mbbill/undotree",
-    keys = keymap.undotree,
+    keys = {
+      { "<leader>tu", "<cmd>UndotreeToggle<cr>", desc = "undo tree" },
+    },
   },
 
   {

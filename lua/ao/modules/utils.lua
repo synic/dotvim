@@ -1,4 +1,3 @@
-local keymap = require("ao.keymap")
 local utils = require("ao.utils")
 
 vim.cmd([[
@@ -17,11 +16,16 @@ vim.cmd([[
 ]])
 
 -- set up keys
-keymap.lazy()
-keymap.zoom_toggle()
+utils.map_keys({
+  { "<leader>Pl", "<cmd>Lazy<cr>", desc = "plugins" },
+  { "<leader>Pu", "<cmd>Lazy update<cr>", desc = "update plugins" },
+  { "<leader>Ps", "<cmd>Lazy sync<cr>", desc = "sync plugins" },
+  { "<leader>wM", "<cmd>ZoomToggle<cr>", desc = "zoom window" },
+  { "<leader>wM", ":ZoomToggle<cr>", desc = "zoom window" },
+})
 
 local plugins = {
-  "ConradIrwin/vim-bracketed-paste",
+  { "ConradIrwin/vim-bracketed-paste", lazy = false },
 }
 
 local wakatime_config = { "wakatime/vim-wakatime", event = { "BufReadPre", "BufNewFile" } }

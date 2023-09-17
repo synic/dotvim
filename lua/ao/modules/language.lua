@@ -1,4 +1,33 @@
-local keymap = require("ao.keymap")
+local utils = require("ao.utils")
+
+local function lsp_on_attach(_, bufnr)
+  utils.map_keys({
+    { "<localleader>r", vim.lsp.buf.rename, desc = "rename symbol", buffer = bufnr },
+    { "<localleader>a", vim.lsp.buf.code_action, desc = "code actions", buffer = bufnr },
+
+    { "gd", vim.lsp.buf.definition, desc = "goto definition", buffer = bufnr },
+    { "gD", vim.lsp.buf.declaration, desc = "goto declaration", buffer = bufnr },
+    { "gr", require("telescope.builtin").lsp_references, desc = "goto reference", buffer = bufnr },
+    { "gI", require("telescope.builtin").lsp_implementations, desc = "goto implementation", buffer = bufnr },
+    { "<localleader>d", vim.lsp.buf.type_definition, desc = "type definition", buffer = bufnr },
+    {
+      "<localleader>-",
+      require("telescope.builtin").lsp_document_symbols,
+      desc = "document symbols",
+      buffer = bufnr,
+    },
+    {
+      "<localleader>_",
+      require("telescope.builtin").lsp_dynamic_workspace_symbols,
+      desc = "workspace symbols",
+      buffer = bufnr,
+    },
+
+    -- See `:help K` for why this keymap
+    { "K", vim.lsp.buf.hover, desc = "hover documentation", buffer = bufnr },
+    { "<C-k>", vim.lsp.buf.signature_help, desc = "signature documentation", buffer = bufnr },
+  })
+end
 
 return {
   {
@@ -28,7 +57,7 @@ return {
         ["lua_ls"] = function()
           require("lspconfig").lua_ls.setup({
             capabilities = capabilities,
-            on_attach = keymap.lsp_on_attach,
+            on_attach = lsp_on_attach,
             settings = {
               Lua = {
                 diagnostics = { globals = { "vim", "hs" } },
@@ -50,7 +79,17 @@ return {
       "williamboman/mason-lspconfig.nvim",
       { "williamboman/mason.nvim", config = true, lazy = false },
     },
-    keys = keymap.lspconfig,
+    keys = {
+      { "gi", vim.lsp.buf.implementation, desc = "go to implementation" },
+      {
+        "gI",
+        "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.implementation()<cr>",
+        desc = "go to implementation in split",
+      },
+      { "gd", vim.lsp.buf.definition, desc = "go to definition" },
+      { "gD", "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "go to definition in split" },
+      { "<localleader>r", vim.lsp.buf.rename, desc = "rename symbol" },
+    },
     config = function()
       local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
       for type, icon in pairs(signs) do
@@ -206,5 +245,10 @@ return {
   { "jmcantrell/vim-virtualenv", ft = "python" },
 
   -- vim
-  { "tpope/vim-scriptease", keys = keymap.scriptease },
+  {
+    "tpope/vim-scriptease",
+    keys = {
+      { "<leader>sm", "<cmd>Messages<cr>", desc = "messages" },
+    },
+  },
 }
