@@ -251,7 +251,7 @@ return {
     end,
   },
 
-  -- dressing.nvim shows lsp and null-ls status at the bottom right of the screen
+  -- fidget.nvim shows lsp and null-ls status at the bottom right of the screen
   { "j-hui/fidget.nvim", tag = "legacy", event = "LspAttach", opts = {} },
 
   -- css
