@@ -159,4 +159,24 @@ return {
       dapui.setup(opts)
     end,
   },
+
+  {
+    -- testing{
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-neotest/neotest-jest",
+      "antoinemadec/FixCursorHold.nvim",
+    },
+    config = function()
+      require("neotest").setup({
+        adapters = {
+          require("neotest-jest")({
+            jestCommand = "yarn test",
+          }),
+        },
+      })
+    end,
+  },
 }

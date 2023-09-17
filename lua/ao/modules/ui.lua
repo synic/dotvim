@@ -212,41 +212,6 @@ return {
   -- show search/replace results as they are being typed
   "haya14busa/incsearch.vim",
 
-  -- startup screen
-  {
-    "goolord/alpha-nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function()
-      local alpha = require("alpha")
-      local d = require("alpha.themes.startify")
-
-      d.section.bottom_buttons.val = {
-        d.button("e", "  New file", ":ene <BAR> startinsert <CR>"),
-        d.button("SPC p p", "  Project list"),
-        d.button("SPC s o", "󱋡 Recently opened files"),
-        d.button("SPC C", "  Configuration"),
-        d.button("q", "󰅚  Quit NVIM", ":qa<CR>"),
-      }
-
-      local handle = io.popen("fortune")
-
-      if handle then
-        local fortune = handle:read("*a")
-        handle:close()
-        d.section.footer.val = {
-          { type = "padding", val = 1 },
-          { type = "text", val = fortune },
-        }
-      end
-
-      -- d.config.opts.noautocmd = true
-
-      -- vim.cmd([[autocmd User AlphaReady echo 'ready']])
-
-      alpha.setup(d.config)
-    end,
-  },
-
   -- show indent guide
   {
     "lukas-reineke/indent-blankline.nvim",
