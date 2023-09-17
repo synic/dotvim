@@ -57,40 +57,7 @@ module.boostrap_project_list = function(path)
   end
 end
 
-module.install_keymap = function(keymap)
-  local wk_data = {}
-
-  for key, data in pairs(keymap) do
-    local keys = data.keys or {}
-    if key ~= "misc" then
-      data.keys = nil
-      wk_data[key] = data
-    end
-
-    local modes = data.modes or { "n" }
-
-    for _, mode in pairs(modes) do
-      for _, key_data in pairs(keys) do
-        local left = key_data[1]
-        local right = key_data[2]
-
-        key_data.modes = nil
-        key_data[1] = nil
-        key_data[2] = nil
-        vim.keymap.set(mode, left, right, key_data)
-      end
-    end
-
-    local status, wk = pcall(require, "which-key")
-    if status then
-      wk.register(wk_data)
-    end
-  end
-end
-
 module.setup = function(config)
-  local keymap = require("ao.keymap")
-
   if config.guifont then
     vim.api.nvim_set_option("guifont", config.guifont)
   end
@@ -108,20 +75,21 @@ module.setup = function(config)
     module.boostrap_project_list(config.projects_directory)
   end
 
-  module.install_keymap(keymap.general_keys)
   utils.close_all_floating_windows()
 
-  if config.theme then
-    utils.lazy_load_theme(config.theme)
-  end
-
   vim.api.nvim_create_autocmd("ColorScheme", {
+    pattern = "*",
     callback = module.setup_alternate_colors,
   })
+
+  if config.theme then
+    vim.cmd.colorscheme(config.theme)
+  end
 end
 
 module.setup_alternate_colors = function()
   vim.api.nvim_set_hl(0, "IndentBlanklineChar", { fg = "#444444" })
+  vim.api.nvim_set_hl(0, "EasyMotionTarget", { link = "Search" })
 end
 
 return module

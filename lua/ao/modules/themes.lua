@@ -7,7 +7,7 @@ return {
     end,
   },
   { "folke/tokyonight.nvim", lazy = true },
-  { "rose-pine/neovim", name = "rose-pine", lazy = true },
+  { "rose-pine/neovim", name = "rose-pine", lazy = false },
   { "catppuccin/nvim", name = "catppuccin", lazy = true },
   { "joshdick/onedark.vim", lazy = true },
   { "rebelot/kanagawa.nvim", lazy = true },

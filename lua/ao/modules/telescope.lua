@@ -1,9 +1,4 @@
-local utils = require("ao.utils")
-local keymap = require("ao.keymap")
-
-local module = {}
-
-module.search_star = function()
+local function telescope_grep_project_for_term()
   local status, project = pcall(require, "project_nvim.project")
 
   if not status then
@@ -21,18 +16,18 @@ module.search_star = function()
   })
 end
 
-module.search_cwd = function()
+local function telescope_grep_working_directory()
   local builtin = require("telescope.builtin")
   builtin.live_grep({ cwd = vim.fn.expand("%:p:h") })
 end
 
-module.search_for_term = function(prompt_bufnr)
+local function ctrlsf_search_for_term(prompt_bufnr)
   local current_picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
   local prompt = current_picker:_get_prompt()
-  vim.cmd(":CtrlSF " .. prompt)
+  vim.cmd("CtrlSF " .. prompt)
 end
 
-module.load_projects = function()
+local function telescope_load_projects()
   local status, projects = pcall(require, "project_nvim")
   if status then
     if not #projects.get_recent_projects() then
@@ -46,7 +41,7 @@ module.load_projects = function()
   end)
 end
 
-module.git_files = function()
+local function telescope_git_files()
   local util = require("telescope.utils")
   local builtin = require("telescope.builtin")
 
@@ -54,11 +49,11 @@ module.git_files = function()
   if ret == 0 then
     builtin.git_files()
   else
-    module.load_projects()
+    telescope_load_projects()
   end
 end
 
-module.find_project_files = function()
+local function telescope_find_project_files()
   local builtin = require("telescope.builtin")
 
   local status, project = pcall(require, "project_nvim.project")
@@ -74,16 +69,16 @@ module.find_project_files = function()
     builtin.find_files({ cwd = project_root })
   else
     print("No project root was found, listing projects...")
-    module.load_projects()
+    telescope_load_projects()
   end
 end
 
-module.new_tab_with_projects = function()
-  vim.cmd(":tabnew<cr>")
-  module.load_projects()
+local function telescope_new_tab_with_projects()
+  vim.cmd.tabnew()
+  telescope_load_projects()
 end
 
-module.search_buffers = function()
+local function telescope_search_buffers()
   require("telescope.builtin").buffers({
     sort_mru = true,
     sort_lastused = true,
@@ -91,10 +86,37 @@ module.search_buffers = function()
   })
 end
 
-return utils.table_concat(module, {
+return {
   {
     "nvim-telescope/telescope.nvim",
-    keys = keymap.telescope,
+    keys = {
+      { "<leader>bb", telescope_search_buffers, desc = "show buffers" },
+
+      -- layouts/windows
+      {
+        "<leader>lt",
+        telescope_new_tab_with_projects,
+        desc = "new layout with project",
+      },
+      { "<leader>ll", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "list layouts" },
+
+      -- search
+      { "<leader>*", telescope_grep_project_for_term, desc = "search for term in project" },
+      { "<leader>sd", telescope_grep_working_directory, desc = "search in current directory" },
+      { "<leader>ss", "<cmd>lua require('telescope').extensions.luasnip.luasnip()<cr>", desc = "snippets" },
+      { "<leader>sS", "<cmd>Telescope spell_suggest<cr>", desc = "spelling suggestions" },
+      { "<leader>sT", "<cmd>Telescope colorscheme<cr>", desc = "themes" },
+      { "<leader>so", "<cmd>Telescope oldfiles<cr>", desc = "recent files" },
+      { "<leader>sR", "<cmd>Telescope registers<cr>", desc = "registers" },
+      { "<leader>sl", "<cmd>Telescope marks<cr>", desc = "marks" },
+      { "<leader>.", "<cmd>Telescope resume<cr>", desc = "resume last search" },
+
+      -- projects
+      { "<leader>pf", telescope_find_project_files, desc = "find project file" },
+      { "<leader>pg", telescope_git_files, desc = "find git files" },
+      { "<leader>sp", "<cmd>Telescope live_grep<cr>", desc = "search project for text" },
+    },
+
     config = function()
       local telescope = require("telescope")
 
@@ -128,14 +150,14 @@ return utils.table_concat(module, {
           live_grep = {
             mappings = {
               i = {
-                ["<C-e>"] = module.search_for_term,
+                ["<C-e>"] = ctrlsf_search_for_term,
               },
             },
           },
           grep_string = {
             mappings = {
               i = {
-                ["<C-e>"] = module.search_for_term,
+                ["<C-e>"] = ctrlsf_search_for_term,
               },
             },
           },
@@ -168,7 +190,9 @@ return utils.table_concat(module, {
 
   {
     "ahmedkhalf/project.nvim",
-    keys = keymap.project,
+    keys = {
+      { "<leader>pp", telescope_load_projects, desc = "projects" },
+    },
     lazy = false,
     config = function()
       require("project_nvim").setup({
@@ -191,4 +215,4 @@ return utils.table_concat(module, {
       })
     end,
   },
-})
+}

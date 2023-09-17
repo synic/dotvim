@@ -1,13 +1,11 @@
-local keymap = require("ao.keymap")
 local utils = require("ao.utils")
-local module = {}
 
-module.netrw_current_file = function()
+local function browse_at_current_directory()
   local pathname = vim.fn.expand("%:p:h")
   vim.fn.execute("edit " .. pathname)
 end
 
-module.netrw_current_project = function()
+local function browse_at_project_directory()
   local status, project = pcall(require, "project_nvim.project")
 
   if not status then
@@ -20,7 +18,12 @@ module.netrw_current_project = function()
   vim.fn.execute("edit " .. pathname)
 end
 
-keymap.netrw()
+utils.map_keys({
+  { "-", browse_at_current_directory, desc = "browse current directory" },
+  { "<leader>-", browse_at_current_directory, desc = "browse current directory" },
+  { "_", browse_at_project_directory, desc = "browse current project" },
+  { "<leader>_", browse_at_project_directory, desc = "browse current project" },
+})
 
 vim.g.netrw_liststyle = 0
 vim.g.netrw_keepdir = 0
@@ -28,7 +31,7 @@ vim.g.netrw_banner = 0
 vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\.\S\+]]
 vim.g.netrw_browse_split = 0
 
-return utils.table_concat(module, {
+return {
   {
     "tamago324/lir.nvim",
     dependencies = {
@@ -36,6 +39,10 @@ return utils.table_concat(module, {
       "nvim-tree/nvim-web-devicons",
     },
     config = function()
+      local actions = require("lir.actions")
+      local mark_actions = require("lir.mark.actions")
+      local clipboard_actions = require("lir.clipboard.actions")
+
       require("lir").setup({
         show_hidden_files = false,
         ignore = {}, -- { ".DS_Store", "node_modules" } etc.
@@ -43,7 +50,35 @@ return utils.table_concat(module, {
           enable = true,
           highlight_dirname = true,
         },
-        mappings = keymap.lir(),
+        mappings = {
+
+          ["l"] = actions.edit,
+          ["<return>"] = actions.edit,
+          ["<C-s>"] = actions.split,
+          ["<C-v>"] = actions.vsplit,
+          ["S"] = actions.split,
+          ["<C-t>"] = actions.tabedit,
+
+          ["h"] = actions.up,
+          ["q"] = actions.quit,
+          ["<esc>"] = actions.quit,
+
+          ["K"] = actions.mkdir,
+          ["N"] = actions.newfile,
+          ["R"] = actions.rename,
+          ["@"] = actions.cd,
+          ["Y"] = actions.yank_path,
+          ["."] = actions.toggle_show_hidden,
+          ["D"] = actions.delete,
+
+          ["J"] = function()
+            mark_actions.toggle_mark()
+            vim.cmd("normal! j")
+          end,
+          ["C"] = clipboard_actions.copy,
+          ["X"] = clipboard_actions.cut,
+          ["P"] = clipboard_actions.paste,
+        },
         float = {
           winblend = 0,
           curdir_window = {
@@ -79,4 +114,4 @@ return utils.table_concat(module, {
   -- also includes functions, lazy.nvim complains that `find` is called on a nil value. Not sure why this works, but
   -- there you have it.
   {},
-})
+}
