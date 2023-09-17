@@ -2,7 +2,12 @@ local utils = require("ao.utils")
 
 local function lsp_on_attach(_, bufnr)
   utils.map_keys({
-    { "<localleader>r", vim.lsp.buf.rename, desc = "rename symbol", buffer = bufnr },
+    {
+      "<localleader>r",
+      vim.lsp.buf.rename,
+      desc = "rename symbol",
+      buffer = bufnr,
+    },
     { "<localleader>a", vim.lsp.buf.code_action, desc = "code actions", buffer = bufnr },
 
     { "gd", vim.lsp.buf.definition, desc = "goto definition", buffer = bufnr },
@@ -38,8 +43,9 @@ return {
     opts = {
       ensure_installed = {
         "lua_ls",
-        "cssls",
         "ruff_lsp",
+        "cssls",
+        "tsserver",
         "clangd",
       },
     },
@@ -89,7 +95,6 @@ return {
       },
       { "gd", vim.lsp.buf.definition, desc = "go to definition" },
       { "gD", "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "go to definition in split" },
-      { "<localleader>r", vim.lsp.buf.rename, desc = "rename symbol" },
     },
     config = function()
       local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
@@ -194,11 +199,6 @@ return {
         on_attach = lsp_on_attach,
       },
     },
-  },
-  {
-    "pmizio/typescript-tools.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-    opts = {},
   },
 
   -- diagnostics and formatting
