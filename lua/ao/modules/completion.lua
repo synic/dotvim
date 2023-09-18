@@ -59,7 +59,19 @@ return {
           { name = "nvim_lua" }, -- lua completion for the nvim api
           { name = "path" }, -- paths (filesystem)
           { name = "luasnip" }, -- snippets
-          { name = "buffer" }, -- other buffers
+          {
+            name = "buffer", -- completion from open buffers
+            option = {
+              get_bufnrs = function()
+                -- return visible buffers only
+                local bufs = {}
+                for _, win in ipairs(vim.api.nvim_list_wins()) do
+                  bufs[vim.api.nvim_win_get_buf(win)] = true
+                end
+                return vim.tbl_keys(bufs)
+              end,
+            },
+          },
         }),
         formatting = {
           format = lspkind.cmp_format({

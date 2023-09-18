@@ -1,21 +1,26 @@
 local utils = require("ao.utils")
 
 local categories = {
-  ["<leader>b"] = { name = "+buffers" },
-  ["<leader>w"] = { name = "+windows" },
-  ["<leader>l"] = { name = "+layouts/tabs" },
-  ["<leader>d"] = { name = "+debug" },
-  ["<leader>h"] = { name = "+help" },
-  ["<leader>g"] = { name = "+git" },
-  ["<leader>s"] = { name = "+search" },
-  ["<leader>p"] = { name = "+project" },
-  ["<leader>t"] = { name = "+toggles" },
-  ["<leader>u"] = { name = "+ui" },
-  ["<leader>e"] = { name = "+diagnostis" },
-  ["<leader>P"] = { name = "+plugins" },
-  ["<leader>c"] = { name = "+code" },
-  ["<leader>q"] = { name = "+quit" },
-  ["<localleader>d"] = { name = "+definitions" },
+  ["<leader>"] = {
+    b = { name = "+buffers" },
+    w = { name = "+windows" },
+    l = { name = "+layouts/tabs" },
+    d = { name = "+debug" },
+    h = { name = "+help" },
+    g = { name = "+git" },
+    s = { name = "+search" },
+    p = { name = "+project" },
+    t = { name = "+toggles" },
+    u = { name = "+ui" },
+    e = { name = "+diagnostis" },
+    P = { name = "+plugins" },
+    c = { name = "+code" },
+    q = { name = "+quit" },
+  },
+  ["<localleader>"] = {
+    g = { name = "+git" },
+    gh = { name = "+hunks" },
+  },
 }
 
 utils.map_keys({
@@ -53,7 +58,7 @@ utils.map_keys({
   { "<leader>lp", "<cmd>tabprev<cr>", desc = "previous layout", silent = true },
 
   -- toggles
-  { "<leader>ts", "<cmd>let &hls = !&hls<cr>", desc = "toggle search highlights", silent = true },
+  { "<leader>th", "<cmd>let &hls = !&hls<cr>", desc = "toggle search highlights", silent = true },
   { "<leader>tr", "<cmd>let &rnu = !&rnu<cr>", desc = "toggle relative line numbers", silent = true },
   { "<leader>tn", "<cmd>let &nu = !&nu<cr>", desc = "toggle line number display", silent = true },
   { "<leader>tt", "<cmd>let &stal = !&stal<cr>", desc = "toggle tab display", silent = true },

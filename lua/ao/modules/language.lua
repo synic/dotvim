@@ -12,6 +12,8 @@ local function lsp_on_attach(_, bufnr)
 
     { "gd", vim.lsp.buf.definition, desc = "goto definition", buffer = bufnr },
     { "gD", vim.lsp.buf.declaration, desc = "goto declaration", buffer = bufnr },
+    { "g/", "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "goto def in vsplit", buffer = bufnr },
+    { "g-", "<cmd>split<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "goto def in hsplit", buffer = bufnr },
     { "gr", require("telescope.builtin").lsp_references, desc = "goto reference", buffer = bufnr },
     { "gI", require("telescope.builtin").lsp_implementations, desc = "goto implementation", buffer = bufnr },
     { "<localleader>d", vim.lsp.buf.type_definition, desc = "type definition", buffer = bufnr },
