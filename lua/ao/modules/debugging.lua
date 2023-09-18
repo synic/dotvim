@@ -81,34 +81,34 @@ return {
             trae = true,
             port = 9229,
           },
-          {
-            type = "pwa-node",
-            request = "launch",
-            name = "Launch file",
-            program = "${file}",
-            cwd = "${workspaceFolder}",
-          },
-          {
-            type = "pwa-node",
-            request = "attach",
-            name = "Attach",
-            processId = require("dap.utils").pick_process,
-            cwd = "${workspaceFolder}",
-          },
-          {
-            type = "pwa-node",
-            request = "attach",
-            name = "Attach Docker (VSCode)",
-            port = 9229,
-            restart = true,
-            stopOnEntry = false,
-            protocol = "inspector",
-            trace = true,
-            sourceMaps = true,
-            localRoot = "${workspaceFolder}",
-            cwd = "${workspaceFolder}",
-            remoteRoot = "/app",
-          },
+          -- {
+          --   type = "pwa-node",
+          --   request = "launch",
+          --   name = "Launch file",
+          --   program = "${file}",
+          --   cwd = "${workspaceFolder}",
+          -- },
+          -- {
+          --   type = "pwa-node",
+          --   request = "attach",
+          --   name = "Attach",
+          --   processId = require("dap.utils").pick_process,
+          --   cwd = "${workspaceFolder}",
+          -- },
+          -- {
+          --   type = "pwa-node",
+          --   request = "attach",
+          --   name = "Attach Docker (VSCode)",
+          --   port = 9229,
+          --   restart = true,
+          --   stopOnEntry = false,
+          --   protocol = "inspector",
+          --   trace = true,
+          --   sourceMaps = true,
+          --   localRoot = "${workspaceFolder}",
+          --   cwd = "${workspaceFolder}",
+          --   remoteRoot = "/app",
+          -- },
         }
       end
     end,
@@ -157,26 +157,6 @@ return {
       end
 
       dapui.setup(opts)
-    end,
-  },
-
-  {
-    -- testing{
-    "nvim-neotest/neotest",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-neotest/neotest-jest",
-      "antoinemadec/FixCursorHold.nvim",
-    },
-    config = function()
-      require("neotest").setup({
-        adapters = {
-          require("neotest-jest")({
-            jestCommand = "yarn test",
-          }),
-        },
-      })
     end,
   },
 }

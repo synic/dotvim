@@ -102,7 +102,7 @@ return {
       { "<leader>ll", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "list layouts" },
 
       -- search
-      { "<leader>*", telescope_grep_project_for_term, desc = "search for term in project" },
+      { "<leader>*", telescope_grep_project_for_term, desc = "search for term in project", mode = { "n", "v" } },
       { "<leader>sd", telescope_grep_working_directory, desc = "search in current directory" },
       { "<leader>ss", "<cmd>lua require('telescope').extensions.luasnip.luasnip()<cr>", desc = "snippets" },
       { "<leader>sS", "<cmd>Telescope spell_suggest<cr>", desc = "spelling suggestions" },
@@ -120,6 +120,7 @@ return {
 
     config = function()
       local telescope = require("telescope")
+      local actions = require("telescope.actions")
 
       telescope.setup({
         defaults = {
@@ -127,6 +128,8 @@ return {
             i = {
               ["<C-j>"] = "move_selection_next",
               ["<C-k>"] = "move_selection_previous",
+              ["<C-/>"] = actions.file_vsplit,
+              ["<C-->"] = actions.file_split,
             },
           },
         },
@@ -199,6 +202,7 @@ return {
     config = function()
       require("project_nvim").setup({
         manual_mode = false,
+        silent_chdir = false,
         detection_methods = { "pattern", "lsp" },
         patterns = {
           ".git",
