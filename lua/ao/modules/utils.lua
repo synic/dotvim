@@ -39,10 +39,12 @@ local plugins = {
     opts = {},
   },
 
-  -- toggle comments
   {
-    "tpope/vim-commentary",
-    event = "InsertEnter",
+    "terrortylor/nvim-comment",
+    opts = {},
+    config = function(opts)
+      require("nvim_comment").setup(opts)
+    end,
   },
 
   -- display undoo list

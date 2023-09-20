@@ -90,7 +90,9 @@ return {
         hide_cursor = true,
       })
 
-      vim.api.nvim_set_hl(0, "LirDir", { link = "netrwDir" })
+      if vim.g.colors_name ~= nil and vim.g.colors_name.find("^gruvbox") ~= nil then
+        vim.api.nvim_set_hl(0, "LirDir", { link = "netrwDir" })
+      end
 
       vim.api.nvim_create_autocmd({ "FileType" }, {
         pattern = { "lir" },
