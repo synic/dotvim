@@ -26,7 +26,16 @@ return {
   { "catppuccin/nvim", name = "catppuccin", lazy = true },
   { "joshdick/onedark.vim", lazy = true },
   { "rebelot/kanagawa.nvim", lazy = true },
-  { "neanias/everforest-nvim", lazy = true },
+  {
+    "neanias/everforest-nvim",
+    lazy = false,
+    opts = {
+      background = "hard",
+    },
+    config = function(opts)
+      require("everforest").setup(opts)
+    end,
+  },
   { "bluz71/vim-nightfly-colors", lazy = true },
   { "NLKNguyen/papercolor-theme", lazy = true },
   { "Mofiqul/dracula.nvim", lazy = true },
