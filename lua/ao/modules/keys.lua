@@ -67,6 +67,7 @@ utils.map_keys({
   { "<leader><tab>", "<cmd>b#<cr>", desc = "previous buffer", silent = true },
   { "<leader>bd", "<cmd>bdelete!<cr>", desc = "close current window and quit buffer", silent = true },
   { "<leader>bp", "1<C-g>:<C-U>echo v:statusmsg<cr>", desc = "show full buffer path", silent = true },
+  { "<leader>bn", "<cmd>enew<cr>", desc = "new buffer", silent = true },
 
   -- help
   { "<leader>hh", "<cmd>lua require('ao.utils').get_help()<cr>", desc = "show help", silent = true },
