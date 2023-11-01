@@ -82,7 +82,7 @@ local function telescope_search_buffers()
   require("telescope.builtin").buffers({
     sort_mru = true,
     sort_lastused = true,
-    icnore_current_buffer = true,
+    ignore_current_buffer = true,
   })
 end
 

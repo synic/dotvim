@@ -216,6 +216,7 @@ return {
   {
     "lukas-reineke/indent-blankline.nvim",
     event = { "BufReadPre", "BufNewFile" },
+    version = "2",
     config = function()
       require("indent_blankline").setup({
         show_end_of_line = true,
@@ -225,5 +226,11 @@ return {
       vim.opt.listchars:append("eol:↴")
       vim.api.nvim_set_hl(0, "IndentBlanklineChar", { fg = "#444444" })
     end,
+  },
+
+  -- multiple cursors
+  {
+    "mg979/vim-visual-multi",
+    config = function() end,
   },
 }

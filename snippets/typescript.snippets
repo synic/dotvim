@@ -8,7 +8,7 @@ snippet nestresolver "NestJS GraphQL Resolver"
 	  ${2: // resolver methods go here}
 	}
 
-snippet nestinjectable "NestJS Injectable"
+snippet nestservice "NestJS Injectable"
 	import { Injectable } from '@nestjs/common';
 
 	@Injectable()
@@ -49,3 +49,10 @@ snippet nestenumgql "NestJS GraphQL Enum"
 	}
 
 	registerEnumType(${1:Name}, { name: '${1:Name}' });
+
+snippet nestconfig "NestJS Configuration File"
+	import { registerAs } from '@nestjs/config';
+
+	export default registerAs('${1:Name}', () => ({
+		${2:Content}
+	}));

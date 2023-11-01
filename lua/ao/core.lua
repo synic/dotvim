@@ -90,6 +90,7 @@ end
 module.setup_alternate_colors = function()
   vim.api.nvim_set_hl(0, "IndentBlanklineChar", { fg = "#444444" })
   vim.api.nvim_set_hl(0, "EasyMotionTarget", { link = "Search" })
+  vim.api.nvim_set_hl(0, "LirDir", { link = "netrwDir" })
 end
 
 return module
