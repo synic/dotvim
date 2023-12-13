@@ -14,12 +14,12 @@ local categories = {
     u = { name = "+ui" },
     e = { name = "+diagnostis" },
     P = { name = "+plugins" },
-    c = { name = "+code" },
+    c = { name = "+configuration", p = { name = "+plugins" } },
     q = { name = "+quit" },
+    x = { name = "+misc" },
   },
   ["<localleader>"] = {
-    g = { name = "+git" },
-    gh = { name = "+hunks" },
+    g = { name = "+git", h = { name = "+hunks" } },
   },
 }
 
@@ -74,7 +74,7 @@ utils.map_keys({
 
   -- misc
   {
-    "<leader>C",
+    "<leader>cm",
     "<cmd>lua vim.cmd('edit ' .. vim.fn.stdpath('config'))<cr>",
     desc = "manage config",
   },
@@ -82,7 +82,7 @@ utils.map_keys({
   { "vig", "ggVG", desc = "select whole buffer", silent = true },
   { "<leader><localleader>", "<localleader>", desc = "local buffer options", silent = true },
   {
-    "<leader>X",
+    "<leader>xx",
     "<cmd>lua require('ao.utils').close_all_floating_windows()<cr>",
     desc = "close floating windows",
   },
