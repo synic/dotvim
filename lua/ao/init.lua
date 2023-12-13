@@ -2,6 +2,6 @@ local core = require("ao.core")
 
 core.setup({
   guifont = "Hack:h10",
-  theme = "everforest",
+  theme = "gruvbox-material",
   projects_directory = os.getenv("HOME") .. "/Projects",
 })
