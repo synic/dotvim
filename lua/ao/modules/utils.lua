@@ -17,9 +17,9 @@ vim.cmd([[
 
 -- set up keys
 utils.map_keys({
-  { "<leader>cpl", "<cmd>Lazy<cr>", desc = "plugins" },
-  { "<leader>cpu", "<cmd>Lazy update<cr>", desc = "update plugins" },
-  { "<leader>cps", "<cmd>Lazy sync<cr>", desc = "sync plugins" },
+  { "<leader>cp", "<cmd>Lazy<cr>", desc = "plugin manager" },
+  { "<leader>cPu", "<cmd>Lazy update<cr>", desc = "update plugins" },
+  { "<leader>cPs", "<cmd>Lazy sync<cr>", desc = "sync plugins" },
   { "<leader>wM", "<cmd>ZoomToggle<cr>", desc = "zoom window" },
 })
 
