@@ -14,7 +14,7 @@ local categories = {
     u = { name = "+ui" },
     e = { name = "+diagnostis" },
     P = { name = "+plugins" },
-    c = { name = "+configuration", p = { name = "+plugins" } },
+    c = { name = "+configuration", P = { name = "+plugins" } },
     q = { name = "+quit" },
     x = { name = "+misc" },
   },
