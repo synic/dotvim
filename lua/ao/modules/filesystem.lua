@@ -31,6 +31,38 @@ vim.g.netrw_banner = 0
 vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\.\S\+]]
 vim.g.netrw_browse_split = 0
 
+local function delete()
+  local lvim = require("lir.vim")
+  local actions = require("lir.actions")
+  local path = require("plenary.path")
+  local ctx = lvim.get_context()
+
+  local items = ctx:get_marked_items()
+  local count = #items
+
+  if #items == 0 then
+    actions.delete()
+  else
+    if vim.fn.confirm("Delete " .. count .. " items?", "&Yes\n&No", 1) ~= 1 then
+      return
+    end
+
+    for _, item in pairs(items) do
+      local p = path:new(item.fullpath)
+      if p:is_dir() then
+        p:rm({ recursive = true })
+      else
+        if not vim.loop.fs_unlink(p:absolute()) then
+          utils.error("Delete file failed")
+          return
+        end
+      end
+    end
+
+    actions.reload()
+  end
+end
+
 return {
   -- fancy replacement for netrw, with devicons
   {
@@ -65,12 +97,14 @@ return {
           ["<esc>"] = actions.quit,
 
           ["+"] = actions.mkdir,
+          ["K"] = actions.mkdir,
           ["N"] = actions.newfile,
           ["r"] = actions.rename,
+          ["gr"] = actions.reload,
           ["@"] = actions.cd,
           ["y"] = actions.yank_path,
           ["."] = actions.toggle_show_hidden,
-          ["d"] = actions.delete,
+          ["d"] = delete,
           ["D"] = actions.wipeout,
 
           ["m"] = function()
@@ -98,7 +132,7 @@ return {
           vim.api.nvim_buf_set_keymap(
             0,
             "x",
-            "J",
+            "m",
             ':<C-u>lua require"lir.mark.actions".toggle_mark("v")<CR>',
             { noremap = true, silent = true }
           )
