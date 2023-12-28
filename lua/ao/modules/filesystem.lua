@@ -108,9 +108,4 @@ return {
       })
     end,
   },
-
-  -- not sure why, but need to add an empty table at the end here. If there's only one plugin in the module, and it
-  -- also includes functions, lazy.nvim complains that `find` is called on a nil value. Not sure why this works, but
-  -- there you have it.
-  {},
 }
