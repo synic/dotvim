@@ -57,28 +57,29 @@ return {
           ["<return>"] = actions.edit,
           ["<C-s>"] = actions.split,
           ["<C-v>"] = actions.vsplit,
-          ["S"] = actions.split,
+          ["s"] = actions.split,
           ["<C-t>"] = actions.tabedit,
 
           ["h"] = actions.up,
           ["q"] = actions.quit,
           ["<esc>"] = actions.quit,
 
-          ["K"] = actions.mkdir,
+          ["+"] = actions.mkdir,
           ["N"] = actions.newfile,
-          ["R"] = actions.rename,
+          ["r"] = actions.rename,
           ["@"] = actions.cd,
-          ["Y"] = actions.yank_path,
+          ["y"] = actions.yank_path,
           ["."] = actions.toggle_show_hidden,
-          ["D"] = actions.delete,
+          ["d"] = actions.delete,
+          ["D"] = actions.wipeout,
 
-          ["J"] = function()
+          ["m"] = function()
             mark_actions.toggle_mark()
             vim.cmd("normal! j")
           end,
-          ["C"] = clipboard_actions.copy,
-          ["X"] = clipboard_actions.cut,
-          ["P"] = clipboard_actions.paste,
+          ["c"] = clipboard_actions.copy,
+          ["x"] = clipboard_actions.cut,
+          ["p"] = clipboard_actions.paste,
         },
         float = {
           winblend = 0,
