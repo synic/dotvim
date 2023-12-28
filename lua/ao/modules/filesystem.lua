@@ -32,85 +32,108 @@ vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\
 vim.g.netrw_browse_split = 0
 
 return {
-  -- fancy replacement for netrw, with devicons
   {
-    "tamago324/lir.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-tree/nvim-web-devicons",
-    },
-    config = function()
-      local actions = require("lir.actions")
-      local mark_actions = require("lir.mark.actions")
-      local clipboard_actions = require("lir.clipboard.actions")
-
-      require("lir").setup({
-        show_hidden_files = false,
-        ignore = {}, -- { ".DS_Store", "node_modules" } etc.
-        devicons = {
-          enable = true,
-          highlight_dirname = true,
-        },
-        mappings = {
-
-          ["l"] = actions.edit,
-          ["<return>"] = actions.edit,
-          ["<C-s>"] = actions.split,
-          ["<C-v>"] = actions.vsplit,
-          ["S"] = actions.split,
-          ["<C-t>"] = actions.tabedit,
-
-          ["h"] = actions.up,
-          ["q"] = actions.quit,
-          ["<esc>"] = actions.quit,
-
-          ["K"] = actions.mkdir,
-          ["N"] = actions.newfile,
-          ["R"] = actions.rename,
-          ["@"] = actions.cd,
-          ["Y"] = actions.yank_path,
-          ["."] = actions.toggle_show_hidden,
-          ["D"] = actions.delete,
-
-          ["J"] = function()
-            mark_actions.toggle_mark()
-            vim.cmd("normal! j")
+    "stevearc/oil.nvim",
+    lazy = false,
+    opts = {
+      columns = {
+        "permissions",
+        "size",
+        "mtime",
+        "icon",
+      },
+      skip_confirm_for_simple_edits = true,
+      lsp_rename_autosave = true,
+      keymaps = {
+        ["<CR>"] = {
+          desc = "select",
+          callback = function()
+            require("oil.actions").select.callback(nil, function()
+              local d = require("oil").get_current_dir()
+              if d then
+                vim.cmd.cd(d)
+              end
+            end)
           end,
-          ["C"] = clipboard_actions.copy,
-          ["X"] = clipboard_actions.cut,
-          ["P"] = clipboard_actions.paste,
         },
-        float = {
-          winblend = 0,
-          curdir_window = {
-            enable = false,
-            highlight_dirname = false,
-          },
+        ["<C-s>"] = {
+          desc = "open in vertical split",
+          callback = function()
+            require("oil").select({ vertical = true }, function()
+              local d = require("oil").get_current_dir()
+              if d then
+                vim.cmd.cd(d)
+              end
+            end)
+          end,
         },
-        hide_cursor = true,
-      })
-
-      vim.api.nvim_create_autocmd({ "FileType" }, {
-        pattern = { "lir" },
+        ["<C-h>"] = {
+          desc = "open in horizontal split",
+          callback = function()
+            require("oil").select({ horizontal = true }, function()
+              local d = require("oil").get_current_dir()
+              if d then
+                vim.cmd.cd(d)
+              end
+            end)
+          end,
+        },
+        ["<C-t>"] = {
+          desc = "open in new tab",
+          callback = function()
+            require("oil").select({ tab = true }, function()
+              local d = require("oil").get_current_dir()
+              if d then
+                vim.cmd.cd(d)
+              end
+            end)
+          end,
+        },
+        ["<C-p>"] = "actions.preview",
+        ["<C-c>"] = "actions.close",
+        ["<C-l>"] = "actions.refresh",
+        ["h"] = {
+          desc = "parent",
+          callback = function()
+            require("oil.actions").parent.callback(nil, function()
+              local d = require("oil").get_current_dir()
+              if d then
+                vim.cmd.cd(d)
+              end
+            end)
+          end,
+        },
+        ["l"] = {
+          desc = "select",
+          callback = function()
+            require("oil.actions").select.callback(nil, function()
+              local d = require("oil").get_current_dir()
+              if d then
+                vim.cmd.cd(d)
+              end
+            end)
+          end,
+        },
+      },
+      use_default_keymaps = true,
+    },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    init = function()
+      vim.api.nvim_create_autocmd("BufEnter", {
+        pattern = "oil",
         callback = function()
-          -- use visual mode
-          vim.api.nvim_buf_set_keymap(
-            0,
-            "x",
-            "J",
-            ':<C-u>lua require"lir.mark.actions".toggle_mark("v")<CR>',
-            { noremap = true, silent = true }
-          )
-
-          -- echo cwd
-          vim.api.nvim_echo({ { vim.fn.expand("%:p"), "Normal" } }, false, {})
+          local d = require("oil").get_current_dir()
+          if d then
+            vim.cmd.cd(d)
+          end
         end,
       })
     end,
+    keys = {
+      { "<localleader>s", "<cmd>lua require'oil.actions'.change_sort.callback()<cr>", desc = "change sort" },
+      { "<localleader>x", "<cmd>lua require'oil.actions'.open_external.callback()<cr>", desc = "open external" },
+      { "<localleader>t", "<cmd>lua require'oil.actions'.toggle_trash.callback()<cr>", desc = "toggle trash" },
+      { "<localleader>.", "<cmd>lua require'oil.actions'.toggle_hidden.callback()<cr>", desc = "toggle hidden" },
+    },
   },
-
-  -- not sure why, but need to add an empty table at the end here. If there's only one plugin in the module, and it
-  -- also includes functions, lazy.nvim complains that `find` is called on a nil value. Not sure why this works, but
-  -- there you have it.
-  {},
 }

@@ -1,1 +1,2 @@
 setlocal nonumber
+setlocal norelativenumber
