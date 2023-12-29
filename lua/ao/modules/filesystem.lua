@@ -6,9 +6,8 @@ local function browse_at_current_directory()
 end
 
 local function browse_at_project_directory()
-  local status, project = pcall(require, "project_nvim.project")
-
-  if not status then
+  local project_status, project = pcall(require, "project_nvim.project")
+  if not project_status then
     print("Unable to determine project root")
     return
   end
@@ -31,109 +30,98 @@ vim.g.netrw_banner = 0
 vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\.\S\+]]
 vim.g.netrw_browse_split = 0
 
+local function change_to_project_root()
+  local project_status, project = pcall(require, "project_nvim.project")
+  local oildir = require("oil").get_current_dir()
+
+  if oildir then
+    vim.cmd.cd(oildir)
+  end
+
+  if not project_status then
+    return
+  end
+
+  local project_root, _ = project.get_project_root()
+  print(project)
+
+  print("oildir: " .. oildir .. " " .. (project_root or "undefined"))
+  if project_root then
+    vim.cmd.cd(project_root)
+  end
+end
+
 return {
   {
     "stevearc/oil.nvim",
-    lazy = false,
-    opts = {
-      columns = {
-        "permissions",
-        "size",
-        "mtime",
-        "icon",
-      },
-      skip_confirm_for_simple_edits = true,
-      lsp_rename_autosave = true,
-      keymaps = {
-        ["<CR>"] = {
-          desc = "select",
-          callback = function()
-            require("oil.actions").select.callback(nil, function()
-              local d = require("oil").get_current_dir()
-              if d then
-                vim.cmd.cd(d)
-              end
-            end)
-          end,
+    opts = function()
+      local oil = require("oil")
+      local actions = require("oil.actions")
+
+      return {
+        columns = {
+          "permissions",
+          "size",
+          "mtime",
+          "icon",
         },
-        ["<C-s>"] = {
-          desc = "open in vertical split",
-          callback = function()
-            require("oil").select({ vertical = true }, function()
-              local d = require("oil").get_current_dir()
-              if d then
-                vim.cmd.cd(d)
-              end
-            end)
-          end,
+        skip_confirm_for_simple_edits = true,
+        lsp_rename_autosave = true,
+        keymaps = {
+          ["<CR>"] = {
+            desc = "select",
+            callback = function()
+              actions.select.callback(nil, change_to_project_root)
+            end,
+          },
+          ["<C-s>"] = {
+            desc = "open in vertical split",
+            callback = function()
+              oil.select({ vertical = true }, change_to_project_root)
+            end,
+          },
+          ["<C-h>"] = {
+            desc = "open in horizontal split",
+            callback = function()
+              oil.select({ horizontal = true }, change_to_project_root)
+            end,
+          },
+          ["<C-t>"] = {
+            desc = "open in new tab",
+            callback = function()
+              oil.select({ tab = true }, change_to_project_root)
+            end,
+          },
+          ["<C-p>"] = "actions.preview",
+          ["<C-c>"] = "actions.close",
+          ["<C-l>"] = "actions.refresh",
+          ["gs"] = "actions.change_sort",
+          ["gx"] = "actions.open_external",
+          ["g\\"] = "actions.toggle_trash",
+          ["g."] = "actions.toggle_hidden",
+          ["h"] = {
+            desc = "parent",
+            callback = function()
+              require("oil.actions").parent.callback()
+              change_to_project_root()
+            end,
+          },
+          ["l"] = {
+            desc = "select",
+            callback = function()
+              require("oil.actions").select.callback(nil, change_to_project_root)
+            end,
+          },
         },
-        ["<C-h>"] = {
-          desc = "open in horizontal split",
-          callback = function()
-            require("oil").select({ horizontal = true }, function()
-              local d = require("oil").get_current_dir()
-              if d then
-                vim.cmd.cd(d)
-              end
-            end)
-          end,
-        },
-        ["<C-t>"] = {
-          desc = "open in new tab",
-          callback = function()
-            require("oil").select({ tab = true }, function()
-              local d = require("oil").get_current_dir()
-              if d then
-                vim.cmd.cd(d)
-              end
-            end)
-          end,
-        },
-        ["<C-p>"] = "actions.preview",
-        ["<C-c>"] = "actions.close",
-        ["<C-l>"] = "actions.refresh",
-        ["h"] = {
-          desc = "parent",
-          callback = function()
-            require("oil.actions").parent.callback(nil, function()
-              local d = require("oil").get_current_dir()
-              if d then
-                vim.cmd.cd(d)
-              end
-            end)
-          end,
-        },
-        ["l"] = {
-          desc = "select",
-          callback = function()
-            require("oil.actions").select.callback(nil, function()
-              local d = require("oil").get_current_dir()
-              if d then
-                vim.cmd.cd(d)
-              end
-            end)
-          end,
-        },
-      },
-      use_default_keymaps = true,
-    },
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    init = function()
-      vim.api.nvim_create_autocmd("BufEnter", {
-        pattern = "oil",
-        callback = function()
-          local d = require("oil").get_current_dir()
-          if d then
-            vim.cmd.cd(d)
-          end
-        end,
-      })
+        use_default_keymaps = true,
+      }
     end,
-    keys = {
-      { "<localleader>s", "<cmd>lua require'oil.actions'.change_sort.callback()<cr>", desc = "change sort" },
-      { "<localleader>x", "<cmd>lua require'oil.actions'.open_external.callback()<cr>", desc = "open external" },
-      { "<localleader>t", "<cmd>lua require'oil.actions'.toggle_trash.callback()<cr>", desc = "toggle trash" },
-      { "<localleader>.", "<cmd>lua require'oil.actions'.toggle_hidden.callback()<cr>", desc = "toggle hidden" },
-    },
+    dependencies = { "nvim-tree/nvim-web-devicons", "ahmedkhalf/project.nvim" },
+    -- init = function()
+    --   vim.api.nvim_create_autocmd("FileType", {
+    --     pattern = "oil",
+    --     callback = change_to_project_root,
+    --   })
+    -- end,
   },
 }
