@@ -49,7 +49,9 @@ return {
         "cssls",
         "tsserver",
         "clangd",
+        "svelte",
       },
+      automatic_installation = true,
     },
     lazy = true,
     config = function(_, opts)
@@ -117,19 +119,7 @@ return {
     run = ":TSUpdate",
     event = { "BufReadPre", "BufNewFile" },
     opts = {
-      ensure_installed = {
-        "query",
-        "vim",
-        "vimdoc",
-        "regex",
-        "lua",
-        "python",
-        "graphql",
-        "css",
-        "html",
-        "markdown",
-        "markdown_inline",
-      },
+      highlight = { enable = true },
       auto_install = true,
       textobjects = {
         select = {
@@ -219,7 +209,9 @@ return {
           ns.builtins.formatting.trim_whitespace,
           ns.builtins.formatting.stylua,
           ns.builtins.formatting.black,
-          ns.builtins.formatting.prettierd,
+          ns.builtins.formatting.prettier.with({
+            extra_filetypes = { "svelte" },
+          }),
 
           -- diagnostics
           ns.builtins.diagnostics.gitlint,
