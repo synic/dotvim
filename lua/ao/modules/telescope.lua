@@ -1,17 +1,18 @@
-local function telescope_grep_project_for_term()
-  local status, project = pcall(require, "project_nvim.project")
+local utils = require("ao.utils")
 
-  if not status then
+local function telescope_grep_project_for_term()
+  local root = utils.find_project_root()
+
+  if not root then
     print("Unable to determine project root")
     return
   end
 
   local builtin = require("telescope.builtin")
   local current_word = vim.fn.expand("<cword>")
-  local project_root, _ = project.get_project_root()
 
   builtin.grep_string({
-    cwd = project_root,
+    cwd = root,
     search = current_word,
   })
 end
@@ -55,15 +56,12 @@ end
 
 local function telescope_find_project_files()
   local builtin = require("telescope.builtin")
+  local project_root = utils.find_project_root()
 
-  local status, project = pcall(require, "project_nvim.project")
-
-  if not status then
+  if not project_root then
     print("Unable to determine project root")
     return
   end
-
-  local project_root, _ = project.get_project_root()
 
   if project_root and project_root ~= "" then
     builtin.find_files({ cwd = project_root })

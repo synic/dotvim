@@ -6,13 +6,11 @@ local function browse_at_current_directory()
 end
 
 local function browse_at_project_directory()
-  local project_status, project = pcall(require, "project_nvim.project")
-  if not project_status then
+  local pathname = utils.find_project_root()
+  if not pathname then
     print("Unable to determine project root")
     return
   end
-
-  local pathname, _ = project.get_project_root()
 
   vim.fn.execute("edit " .. pathname)
 end
@@ -31,23 +29,10 @@ vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\
 vim.g.netrw_browse_split = 0
 
 local function change_to_project_root()
-  local project_status, project = pcall(require, "project_nvim.project")
-  local oildir = require("oil").get_current_dir()
-
-  if oildir then
-    vim.cmd.cd(oildir)
-  end
-
-  if not project_status then
-    return
-  end
-
-  local project_root, _ = project.get_project_root()
-  print(project)
-
-  print("oildir: " .. oildir .. " " .. (project_root or "undefined"))
-  if project_root then
-    vim.cmd.cd(project_root)
+  local r = utils.find_project_root()
+  print(r)
+  if r then
+    vim.cmd.cd(r)
   end
 end
 
@@ -117,11 +102,11 @@ return {
       }
     end,
     dependencies = { "nvim-tree/nvim-web-devicons", "ahmedkhalf/project.nvim" },
-    -- init = function()
-    --   vim.api.nvim_create_autocmd("FileType", {
-    --     pattern = "oil",
-    --     callback = change_to_project_root,
-    --   })
-    -- end,
+    init = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "oil",
+        callback = change_to_project_root,
+      })
+    end,
   },
 }
