@@ -30,7 +30,6 @@ vim.g.netrw_browse_split = 0
 
 local function change_to_project_root()
   local r = utils.find_project_root()
-  print(r)
   if r then
     vim.cmd.cd(r)
   end

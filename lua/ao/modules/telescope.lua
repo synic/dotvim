@@ -58,11 +58,6 @@ local function telescope_find_project_files()
   local builtin = require("telescope.builtin")
   local project_root = utils.find_project_root()
 
-  if not project_root then
-    print("Unable to determine project root")
-    return
-  end
-
   if project_root and project_root ~= "" then
     builtin.find_files({ cwd = project_root })
   else

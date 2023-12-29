@@ -95,7 +95,9 @@ module.find_project_root = function()
 
   local project_root, _ = project.get_project_root()
 
-  vim.fn.expand = oldexpand
+  if oildir then
+    vim.fn.expand = oldexpand
+  end
 
   return project_root
 end
