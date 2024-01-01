@@ -1,3 +1,5 @@
+local utils = require("ao.utils")
+
 local function telescope_grep_project_for_term()
   local status, project = pcall(require, "project_nvim.project")
 
@@ -167,32 +169,37 @@ return {
           },
         },
       })
-
-      -- load this lazy instead of with the projects plugin, because it does not depend on telescope, and we don't
-      -- want to force telescope to load until it's needed
-      telescope.load_extension("projects")
     end,
     dependencies = {
       "nvim-lua/plenary.nvim",
       "LukasPietzschmann/telescope-tabs",
-      {
-        "nvim-telescope/telescope-fzf-native.nvim",
-        build = "make",
-        config = function()
-          require("telescope").load_extension("fzf")
-        end,
-      },
       "benfowler/telescope-luasnip.nvim",
       {
         "nvim-telescope/telescope-ui-select.nvim",
+
         config = function()
-          require("telescope").load_extension("ui-select")
+          utils.on_load("telescope.nvim", function()
+            require("telescope").load_extension("ui-select")
+          end)
         end,
+      },
+      dependencies = {
+        {
+          "nvim-telescope/telescope-fzf-native.nvim",
+          build = "make",
+          enabled = vim.fn.executable("make") == 1,
+          config = function()
+            utils.on_load("telescope.nvim", function()
+              require("telescope").load_extension("fzf")
+            end)
+          end,
+        },
       },
     },
   },
 
-  -- telescop project support
+  -- telescope project support
+  -- can load and run separately from telescope, so it is not listed as a dependency.
   {
     "ahmedkhalf/project.nvim",
     keys = {
@@ -219,6 +226,10 @@ return {
         show_hidden = false,
         datapath = vim.fn.stdpath("data"),
       })
+
+      utils.on_load("telescope.nvim", function()
+        require("telescope").load_extension("projects")
+      end)
     end,
   },
 }
