@@ -143,4 +143,20 @@ return {
       })
     end,
   },
+  {
+    "nvim-tree/nvim-tree.lua",
+    version = "*",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    keys = {
+      { "<leader>pt", "<cmd>NvimTreeToggle<cr>", desc = "tree" },
+    },
+    opts = {
+      hijack_netrw = false,
+      sync_root_with_cwd = true,
+      reload_on_bufenter = true,
+      filters = {
+        dotfiles = true,
+      },
+    },
+  },
 }
