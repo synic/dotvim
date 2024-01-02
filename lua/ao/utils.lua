@@ -50,6 +50,15 @@ module.table_concat = function(table1, table2)
   return table1
 end
 
+module.table_contains = function(tbl, value)
+  for i = 1, #tbl do
+    if tbl[i] == value then
+      return true
+    end
+  end
+  return false
+end
+
 module.scandir = function(directory)
   local i, t, popen = 0, {}, io.popen
   local pfile = popen('ls -a "' .. directory .. '"')

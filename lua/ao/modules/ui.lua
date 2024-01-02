@@ -1,5 +1,14 @@
 vim.g.neovide_remember_window_size = false
 
+local function indent_blankline_toggle()
+  local ibl = require("ibl")
+  local conf = require("ibl.config")
+
+  local enabled = not conf.get_config(-1).enabled
+  ibl.update({ enabled = enabled })
+  vim.opt.list = enabled
+end
+
 local function search_in_project_root()
   vim.ui.input({ prompt = "term: " }, function(input)
     vim.cmd('CtrlSF "' .. input .. '"')
@@ -215,22 +224,45 @@ return {
   -- show indent guide
   {
     "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
     event = { "BufReadPre", "BufNewFile" },
-    version = "2",
+    lazy = false,
+    keys = {
+      { "<leader>ti", indent_blankline_toggle, desc = "toggle indent guide" },
+    },
     config = function()
-      require("indent_blankline").setup({
-        show_end_of_line = true,
+      local exclude = {
+        "help",
+        "startify",
+        "dashboard",
+        "packer",
+        "NeoGitStatus",
+        "markdown",
+        "lazy",
+        "mazon",
+        "NvimTree",
+        "Trouble",
+      }
+
+      local hooks = require("ibl.hooks")
+      local color = "#444444"
+      hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+        vim.api.nvim_set_hl(0, "IblIndent", { fg = color })
+        vim.api.nvim_set_hl(0, "IblWhitespace", { fg = color })
+        vim.api.nvim_set_hl(0, "IblScope", { fg = color })
+        vim.api.nvim_set_hl(0, "NonText", { fg = color })
+        vim.api.nvim_set_hl(0, "Whitespace", { fg = color })
+        vim.api.nvim_set_hl(0, "SpecialKey", { fg = color })
+      end)
+
+      require("ibl").setup({
+        whitespace = { remove_blankline_trail = false },
+        scope = { enabled = false },
+        exclude = { filetypes = exclude },
       })
 
       vim.opt.list = true
       vim.opt.listchars:append("eol:↴")
-      vim.api.nvim_set_hl(0, "IndentBlanklineChar", { fg = "#444444" })
     end,
-  },
-
-  -- multiple cursors
-  {
-    "mg979/vim-visual-multi",
-    config = function() end,
   },
 }

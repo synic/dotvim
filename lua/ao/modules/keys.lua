@@ -72,12 +72,14 @@ utils.map_keys({
   -- help
   { "<leader>hh", "<cmd>lua require('ao.utils').get_help()<cr>", desc = "show help", silent = true },
 
-  -- misc
+  -- configuration
   {
     "<leader>cm",
     "<cmd>lua vim.cmd('edit ' .. vim.fn.stdpath('config'))<cr>",
     desc = "manage config",
   },
+
+  -- misc
 
   { "vig", "ggVG", desc = "select whole buffer", silent = true },
   { "<leader><localleader>", "<localleader>", desc = "local buffer options", silent = true },

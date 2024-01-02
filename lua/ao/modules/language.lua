@@ -40,6 +40,14 @@ end
 return {
   -- configure mason packages with LSP
   {
+    "williamboman/mason.nvim",
+    config = true,
+    lazy = false, -- mason does not like to be lazy loaded
+    keys = {
+      { "<leader>cM", "<cmd>Mason<cr>", desc = "mason" },
+    },
+  },
+  {
     "williamboman/mason-lspconfig.nvim",
     dependencies = { "williamboman/mason.nvim", "hrsh7th/cmp-nvim-lsp" },
     opts = {
@@ -47,7 +55,6 @@ return {
         "lua_ls",
         "ruff_lsp",
         "cssls",
-        -- "tsserver",
         "clangd",
         "svelte",
         "eslint",
@@ -62,10 +69,6 @@ return {
 
       m.setup(opts)
       m.setup_handlers({
-        function(server_name)
-          require("lspconfig")[server_name].setup({ capabilities = capabilities, on_attach = lsp_on_attach })
-        end,
-
         ["lua_ls"] = function()
           require("lspconfig").lua_ls.setup({
             capabilities = capabilities,
@@ -78,6 +81,11 @@ return {
             },
           })
         end,
+
+        -- generic setup function for servers without explicit configuration
+        function(server_name)
+          require("lspconfig")[server_name].setup({ capabilities = capabilities, on_attach = lsp_on_attach })
+        end,
       })
     end,
   },
@@ -89,7 +97,7 @@ return {
     dependencies = {
       "hrsh7th/nvim-cmp",
       "williamboman/mason-lspconfig.nvim",
-      { "williamboman/mason.nvim", config = true, lazy = false },
+      "williamboman/mason.nvim",
     },
     keys = {
       { "gi", vim.lsp.buf.implementation, desc = "go to implementation" },
@@ -249,7 +257,6 @@ return {
           ns.builtins.diagnostics.gitlint,
           ns.builtins.diagnostics.ruff,
           ns.builtins.diagnostics.mypy,
-          -- ns.builtins.diagnostics.eslint_d,
 
           -- actions
           ns.builtins.code_actions.gitsigns,
