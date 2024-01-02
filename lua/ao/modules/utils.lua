@@ -27,9 +27,6 @@ local plugins = {
   -- automatically enter paste mode
   { "ConradIrwin/vim-bracketed-paste", lazy = false },
 
-  -- loads shared editor config for projects
-  "editorconfig/editorconfig-vim",
-
   -- surround plugin
   {
     "kylechui/nvim-surround",
@@ -64,6 +61,7 @@ local plugins = {
       require("luasnip.loaders.from_vscode").lazy_load()
     end,
   },
+  "christoomey/vim-tmux-navigator",
 }
 
 local wakatime_config = { "wakatime/vim-wakatime", event = { "BufReadPre", "BufNewFile" } }
