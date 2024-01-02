@@ -251,14 +251,13 @@ return {
         "text",
       }
 
-      local color = "#444444"
       hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-        vim.api.nvim_set_hl(0, "IblIndent", { fg = color })
-        vim.api.nvim_set_hl(0, "IblWhitespace", { fg = color })
-        vim.api.nvim_set_hl(0, "IblScope", { fg = color })
-        vim.api.nvim_set_hl(0, "NonText", { fg = color })
-        vim.api.nvim_set_hl(0, "Whitespace", { fg = color })
-        vim.api.nvim_set_hl(0, "SpecialKey", { fg = color })
+        vim.api.nvim_set_hl(0, "IblIndent", { fg = "#333333" })
+        vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#444444" })
+        vim.api.nvim_set_hl(0, "IblScope", { fg = "#444444" })
+        vim.api.nvim_set_hl(0, "NonText", { fg = "#444444" })
+        vim.api.nvim_set_hl(0, "Whitespace", { fg = "#444444" })
+        vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#444444" })
       end)
 
       ibl.setup({
