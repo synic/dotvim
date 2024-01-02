@@ -1,3 +1,5 @@
+local utils = require("ao.utils")
+
 vim.g.neovide_remember_window_size = false
 
 local function indent_blankline_toggle()
@@ -231,6 +233,10 @@ return {
       { "<leader>ti", indent_blankline_toggle, desc = "toggle indent guide" },
     },
     config = function()
+      local ibl = require("ibl")
+      local hooks = require("ibl.hooks")
+      local conf = require("ibl.config")
+
       local exclude = {
         "help",
         "startify",
@@ -245,7 +251,6 @@ return {
         "text",
       }
 
-      local hooks = require("ibl.hooks")
       local color = "#444444"
       hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
         vim.api.nvim_set_hl(0, "IblIndent", { fg = color })
@@ -256,13 +261,19 @@ return {
         vim.api.nvim_set_hl(0, "SpecialKey", { fg = color })
       end)
 
-      require("ibl").setup({
+      ibl.setup({
         whitespace = { remove_blankline_trail = false },
         scope = { enabled = false },
         exclude = { filetypes = exclude },
       })
 
-      vim.opt.list = true
+      vim.api.nvim_create_autocmd("BufEnter", {
+        pattern = "*",
+        callback = function()
+          vim.opt.list = not utils.table_contains(exclude, vim.bo.filetype) and conf.get_config(-1).enabled
+        end,
+      })
+
       vim.opt.listchars:append("eol:↴")
     end,
   },
