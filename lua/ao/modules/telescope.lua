@@ -113,6 +113,7 @@ return {
       { "<leader>sR", "<cmd>Telescope registers<cr>", desc = "registers" },
       { "<leader>sl", "<cmd>Telescope marks<cr>", desc = "marks" },
       { "<leader>.", "<cmd>Telescope resume<cr>", desc = "resume last search" },
+      { "<leader>sb", "<cmd>Telescope builtin<cr>", desc = "list pickers" },
 
       -- projects
       { "<leader>pf", telescope_find_project_files, desc = "find project file" },
