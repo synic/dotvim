@@ -47,9 +47,10 @@ return {
         "lua_ls",
         "ruff_lsp",
         "cssls",
-        "tsserver",
+        -- "tsserver",
         "clangd",
         "svelte",
+        "eslint",
       },
       automatic_installation = true,
     },
@@ -248,7 +249,7 @@ return {
           ns.builtins.diagnostics.gitlint,
           ns.builtins.diagnostics.ruff,
           ns.builtins.diagnostics.mypy,
-          ns.builtins.diagnostics.eslint_d,
+          -- ns.builtins.diagnostics.eslint_d,
 
           -- actions
           ns.builtins.code_actions.gitsigns,
