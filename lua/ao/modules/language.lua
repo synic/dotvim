@@ -240,13 +240,15 @@ return {
           ns.builtins.formatting.trim_whitespace,
           ns.builtins.formatting.stylua,
           ns.builtins.formatting.black,
-          ns.builtins.formatting.prettierd,
+          ns.builtins.formatting.prettier.with({
+            extra_filetypes = { "svelte" },
+          }),
 
           -- diagnostics
           ns.builtins.diagnostics.gitlint,
           ns.builtins.diagnostics.ruff,
           ns.builtins.diagnostics.mypy,
-          ns.builtins.diagnostics.eslint,
+          ns.builtins.diagnostics.eslint_d,
 
           -- actions
           ns.builtins.code_actions.gitsigns,
