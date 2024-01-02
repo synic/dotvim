@@ -240,9 +240,7 @@ return {
           ns.builtins.formatting.trim_whitespace,
           ns.builtins.formatting.stylua,
           ns.builtins.formatting.black,
-          ns.builtins.formatting.prettier.with({
-            extra_filetypes = { "svelte" },
-          }),
+          ns.builtins.formatting.prettierd,
 
           -- diagnostics
           ns.builtins.diagnostics.gitlint,
