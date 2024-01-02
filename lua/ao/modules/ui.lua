@@ -242,6 +242,7 @@ return {
         "mazon",
         "NvimTree",
         "Trouble",
+        "text",
       }
 
       local hooks = require("ibl.hooks")

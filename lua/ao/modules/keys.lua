@@ -1,5 +1,17 @@
 local utils = require("ao.utils")
 
+local function buffer_show_name(full_path)
+  local pattern = "%p"
+
+  if full_path then
+    pattern = "%:p"
+  end
+
+  local path = vim.fn.expand(pattern)
+  vim.fn.setreg("+", path)
+  print(path)
+end
+
 local categories = {
   ["<leader>"] = {
     b = { name = "+buffers" },
@@ -66,7 +78,15 @@ utils.map_keys({
   -- buffers
   { "<leader><tab>", "<cmd>b#<cr>", desc = "previous buffer", silent = true },
   { "<leader>bd", "<cmd>bdelete!<cr>", desc = "close current window and quit buffer", silent = true },
-  { "<leader>bp", "1<C-g>:<C-U>echo v:statusmsg<cr>", desc = "show full buffer path", silent = true },
+  { "<leader>bp", buffer_show_name, desc = "show buffer path", silent = true },
+  {
+    "<leader>bP",
+    function()
+      buffer_show_name(true)
+    end,
+    desc = "show full buffer path",
+    silent = true,
+  },
   { "<leader>bn", "<cmd>enew<cr>", desc = "new buffer", silent = true },
 
   -- help
