@@ -57,6 +57,7 @@ set shortmess+=I
 set encoding=utf-8
 set scrolloff=15
 set iskeyword-=_
+set cursorline
 
 " display bufnr:filetype (dos,unix,mac) in status line
 set statusline=%<%n:%f%h%m%r%=\ %{&ff}\ %l,%c%V\ %P

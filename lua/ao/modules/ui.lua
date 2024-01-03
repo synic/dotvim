@@ -2,6 +2,12 @@ local utils = require("ao.utils")
 
 vim.g.neovide_remember_window_size = false
 
+local function ts_wrap(fn)
+  return function()
+    return load("require('flash')." .. fn .. "()")
+  end
+end
+
 local function indent_blankline_toggle()
   local ibl = require("ibl")
   local conf = require("ibl.config")
@@ -41,7 +47,7 @@ return {
   {
     "pocco81/true-zen.nvim",
     keys = {
-      { "<leader>tz", "<cmd>TZMinimalist<cr>", desc = "toggle zen mode" },
+      { "<leader>tz", "<cmd>TZMinimalist<cr>", desc = "Toggle zen mode" },
     },
   },
 
@@ -95,14 +101,24 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = {},
+    opts = {
+      sections = {
+        lualine_c = {
+          {
+            "filename",
+            file_status = true, -- displays file status (readonly status, modified status)
+            path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
+          },
+        },
+      },
+    },
   },
 
   -- toggle golden ratio
   {
     "roman/golden-ratio",
     keys = {
-      { "<leader>tg", golden_ratio_toggle, desc = "golden Ratio" },
+      { "<leader>tg", golden_ratio_toggle, desc = "Golden Ratio" },
     },
     init = function()
       vim.g.golden_ratio_enabled = 0
@@ -138,8 +154,8 @@ return {
       vim.g.EasyMotion_do_mapping = false
     end,
     keys = {
-      { "<leader><leader>", "<plug>(easymotion-overwin-f)", desc = "jump to location", mode = "n" },
-      { "<leader><leader>", "<plug>(easymotion-bd-f)", desc = "jump to location", mode = "v" },
+      { "<leader><leader>", "<plug>(easymotion-overwin-f)", desc = "Jump to location", mode = "n" },
+      { "<leader><leader>", "<plug>(easymotion-bd-f)", desc = "Jump to location", mode = "v" },
     },
   },
 
@@ -161,7 +177,7 @@ return {
         function()
           require("flash").jump()
         end,
-        desc = "flash",
+        desc = "Flash",
       },
       {
         "S",
@@ -169,7 +185,7 @@ return {
         function()
           require("flash").treesitter()
         end,
-        desc = "flash treesitter",
+        desc = "Flash treesitter",
       },
       {
         "r",
@@ -177,7 +193,7 @@ return {
         function()
           require("flash").remote()
         end,
-        desc = "remote flash",
+        desc = "Remote flash",
       },
       {
         "R",
@@ -185,7 +201,7 @@ return {
         function()
           require("flash").treesitter_search()
         end,
-        desc = "treesitter search",
+        desc = "Treesitter search",
       },
       {
         "<c-s>",
@@ -193,7 +209,7 @@ return {
         function()
           require("flash").toggle()
         end,
-        desc = "toggle flash search",
+        desc = "Toggle flash search",
       },
     },
   },
@@ -204,7 +220,7 @@ return {
     cmd = { "CtrlSF" },
     keys = {
 
-      { "<leader>sf", search_in_project_root, desc = "search in project root" },
+      { "<leader>sf", search_in_project_root, desc = "Search in project root" },
     },
     init = function()
       vim.g.better_whitespace_filetypes_blacklist = { "ctrlsf" }
@@ -230,7 +246,7 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     lazy = false,
     keys = {
-      { "<leader>ti", indent_blankline_toggle, desc = "toggle indent guide" },
+      { "<leader>ti", indent_blankline_toggle, desc = "Toggle indent guide" },
     },
     config = function()
       local ibl = require("ibl")
@@ -276,4 +292,6 @@ return {
       vim.opt.listchars:append("eol:↴")
     end,
   },
+
+  "nvim-treesitter/nvim-treesitter-context",
 }

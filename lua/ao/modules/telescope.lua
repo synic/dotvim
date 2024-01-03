@@ -93,32 +93,32 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     keys = {
-      { "<leader>bb", telescope_search_buffers, desc = "show buffers" },
+      { "<leader>bb", telescope_search_buffers, desc = "Show buffers" },
 
       -- layouts/windows
       {
         "<leader>lt",
         telescope_new_tab_with_projects,
-        desc = "new layout with project",
+        desc = "New layout with project",
       },
-      { "<leader>ll", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "list layouts" },
+      { "<leader>ll", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "List layouts" },
 
       -- search
-      { "<leader>*", telescope_grep_project_for_term, desc = "search for term in project", mode = { "n", "v" } },
-      { "<leader>sd", telescope_grep_working_directory, desc = "search in current directory" },
-      { "<leader>ss", "<cmd>lua require('telescope').extensions.luasnip.luasnip()<cr>", desc = "snippets" },
-      { "<leader>sS", "<cmd>Telescope spell_suggest<cr>", desc = "spelling suggestions" },
-      { "<leader>sT", "<cmd>Telescope colorscheme<cr>", desc = "themes" },
-      { "<leader>so", "<cmd>Telescope oldfiles<cr>", desc = "recent files" },
-      { "<leader>sR", "<cmd>Telescope registers<cr>", desc = "registers" },
-      { "<leader>sl", "<cmd>Telescope marks<cr>", desc = "marks" },
-      { "<leader>.", "<cmd>Telescope resume<cr>", desc = "resume last search" },
-      { "<leader>sb", "<cmd>Telescope builtin<cr>", desc = "list pickers" },
+      { "<leader>*", telescope_grep_project_for_term, desc = "Search for term in project", mode = { "n", "v" } },
+      { "<leader>sd", telescope_grep_working_directory, desc = "Search in current directory" },
+      { "<leader>ss", "<cmd>lua require('telescope').extensions.luasnip.luasnip()<cr>", desc = "Snippets" },
+      { "<leader>sS", "<cmd>Telescope spell_suggest<cr>", desc = "Spelling suggestions" },
+      { "<leader>sT", "<cmd>Telescope colorscheme<cr>", desc = "Themes" },
+      { "<leader>so", "<cmd>Telescope oldfiles<cr>", desc = "Recent files" },
+      { "<leader>sR", "<cmd>Telescope registers<cr>", desc = "Registers" },
+      { "<leader>sl", "<cmd>Telescope marks<cr>", desc = "Marks" },
+      { "<leader>.", "<cmd>Telescope resume<cr>", desc = "Resume last search" },
+      { "<leader>sb", "<cmd>Telescope builtin<cr>", desc = "List pickers" },
 
       -- projects
-      { "<leader>pf", telescope_find_project_files, desc = "find project file" },
-      { "<leader>pg", telescope_git_files, desc = "find git files" },
-      { "<leader>sp", "<cmd>Telescope live_grep<cr>", desc = "search project for text" },
+      { "<leader>pf", telescope_find_project_files, desc = "Find project file" },
+      { "<leader>pg", telescope_git_files, desc = "Find git files" },
+      { "<leader>sp", "<cmd>Telescope live_grep<cr>", desc = "Search project for text" },
     },
 
     config = function()
@@ -204,7 +204,7 @@ return {
   {
     "ahmedkhalf/project.nvim",
     keys = {
-      { "<leader>pp", telescope_load_projects, desc = "projects" },
+      { "<leader>pp", telescope_load_projects, desc = "Projects" },
     },
     lazy = false,
     config = function()

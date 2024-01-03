@@ -5,18 +5,18 @@ local function gitsigns_on_attach(bufnr)
 
   utils.map_keys({
     -- stylua: ignore start
-    { "]h", gs.next_hunk, desc = "next hunk", buffer = bufnr },
-    { "[h", gs.prev_hunk, desc = "prev hunk", buffer = bufnr },
-    { "<localleader>ghs", "<cmd>Gitsigns stage_hunk<CR>", desc = "stage hunk", buffer = bufnr, modes = {"n", "v"} },
-    { "<localleader>ghr", "<cmd>Gitsigns reset_hunk<CR>", desc = "reset hunk", buffer = bufnr, modes = {"n", "v"} },
-    { "<localleader>ghS", gs.stage_buffer, desc = "stage buffer", buffer = bufnr },
-    { "<localleader>ghu", gs.undo_stage_hunk, desc = "undo stage Hunk", buffer = bufnr },
-    { "<localleader>ghR", gs.reset_buffer, desc = "reset buffer", buffer = bufnr },
-    { "<localleader>ghp", gs.preview_hunk, desc = "preview hunk", buffer = bufnr },
-    { "<localleader>ghb", function() gs.blame_line({ full = true }) end, desc = "blame line", buffer = bufnr },
-    { "<localleader>ghd", gs.diffthis, desc = "diff this", buffer = bufnr },
-    { "<localleader>ghD", function() gs.diffthis("~") end, desc = "diff this ~", buffer = bufnr },
-    { "ih", "<cmd><C-U>Gitsigns select_hunk<cr>", desc = "select hunk", buffer = bufnr, modes = {"o", "x"} },
+    { "]h", gs.next_hunk, desc = "Next hunk", buffer = bufnr },
+    { "[h", gs.prev_hunk, desc = "Prev hunk", buffer = bufnr },
+    { "<localleader>ghs", "<cmd>Gitsigns stage_hunk<CR>", desc = "Stage hunk", buffer = bufnr, modes = {"n", "v"} },
+    { "<localleader>ghr", "<cmd>Gitsigns reset_hunk<CR>", desc = "Reset hunk", buffer = bufnr, modes = {"n", "v"} },
+    { "<localleader>ghS", gs.stage_buffer, desc = "Stage buffer", buffer = bufnr },
+    { "<localleader>ghu", gs.undo_stage_hunk, desc = "Undo stage Hunk", buffer = bufnr },
+    { "<localleader>ghR", gs.reset_buffer, desc = "Reset buffer", buffer = bufnr },
+    { "<localleader>ghp", gs.preview_hunk, desc = "Preview hunk", buffer = bufnr },
+    { "<localleader>ghb", function() gs.blame_line({ full = true }) end, desc = "Blame line", buffer = bufnr },
+    { "<localleader>ghd", gs.diffthis, desc = "Diff this", buffer = bufnr },
+    { "<localleader>ghD", function() gs.diffthis("~") end, desc = "Diff this ~", buffer = bufnr },
+    { "ih", "<cmd><C-U>Gitsigns select_hunk<cr>", desc = "Select hunk", buffer = bufnr, modes = {"o", "x"} },
   })
 end
 
@@ -56,8 +56,8 @@ return {
   {
     "tpope/vim-fugitive",
     keys = {
-      { "<leader>gb", "<cmd>Git blame<cr>", desc = "git blame" },
-      { "<leader>ga", "<cmd>Git add %<cr>", desc = "git add" },
+      { "<leader>gb", "<cmd>Git blame<cr>", desc = "Git blame" },
+      { "<leader>ga", "<cmd>Git add %<cr>", desc = "Git add" },
     },
   },
 
@@ -84,7 +84,7 @@ return {
     "NeogitOrg/neogit",
     opts = { kind = "vsplit" },
     keys = {
-      { "<leader>gs", neogit_open, desc = "git status" },
+      { "<leader>gs", neogit_open, desc = "Git status" },
     },
     dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" },
   },
