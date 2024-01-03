@@ -19,10 +19,10 @@ local function browse_at_project_directory()
 end
 
 utils.map_keys({
-  { "-", browse_at_current_directory, desc = "browse current directory" },
-  { "<leader>-", browse_at_current_directory, desc = "browse current directory" },
-  { "_", browse_at_project_directory, desc = "browse current project" },
-  { "<leader>_", browse_at_project_directory, desc = "browse current project" },
+  { "-", browse_at_current_directory, desc = "Browse current directory" },
+  { "<leader>-", browse_at_current_directory, desc = "Browse current directory" },
+  { "_", browse_at_project_directory, desc = "Browse current project" },
+  { "<leader>_", browse_at_project_directory, desc = "Browse current project" },
 })
 
 vim.g.netrw_liststyle = 0
@@ -78,7 +78,6 @@ return {
 
       require("lir").setup({
         show_hidden_files = false,
-        ignore = {}, -- { ".DS_Store", "node_modules" } etc.
         devicons = {
           enable = true,
           highlight_dirname = true,
@@ -148,7 +147,7 @@ return {
     version = "*",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     keys = {
-      { "<leader>pt", "<cmd>NvimTreeToggle<cr>", desc = "tree" },
+      { "<leader>pt", "<cmd>NvimTreeToggle<cr>", desc = "File tree" },
     },
     opts = {
       hijack_netrw = false,

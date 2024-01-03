@@ -5,34 +5,34 @@ local function lsp_on_attach(_, bufnr)
     {
       "<localleader>r",
       vim.lsp.buf.rename,
-      desc = "rename symbol",
+      desc = "Rename symbol",
       buffer = bufnr,
     },
-    { "<localleader>a", vim.lsp.buf.code_action, desc = "code actions", buffer = bufnr },
+    { "<localleader>a", vim.lsp.buf.code_action, desc = "Code actions", buffer = bufnr },
 
-    { "gd", vim.lsp.buf.definition, desc = "goto definition", buffer = bufnr },
-    { "gD", vim.lsp.buf.declaration, desc = "goto declaration", buffer = bufnr },
-    { "g/", "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "goto def in vsplit", buffer = bufnr },
-    { "g-", "<cmd>split<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "goto def in hsplit", buffer = bufnr },
-    { "gr", require("telescope.builtin").lsp_references, desc = "goto reference", buffer = bufnr },
-    { "gI", require("telescope.builtin").lsp_implementations, desc = "goto implementation", buffer = bufnr },
-    { "<localleader>d", vim.lsp.buf.type_definition, desc = "type definition", buffer = bufnr },
+    { "gd", vim.lsp.buf.definition, desc = "Goto definition", buffer = bufnr },
+    { "gD", vim.lsp.buf.declaration, desc = "Goto declaration", buffer = bufnr },
+    { "g/", "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "Goto def in vsplit", buffer = bufnr },
+    { "g-", "<cmd>split<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "Goto def in hsplit", buffer = bufnr },
+    { "gr", require("telescope.builtin").lsp_references, desc = "Goto reference", buffer = bufnr },
+    { "gI", require("telescope.builtin").lsp_implementations, desc = "Goto implementation", buffer = bufnr },
+    { "<localleader>d", vim.lsp.buf.type_definition, desc = "Type definition", buffer = bufnr },
     {
       "<localleader>-",
       require("telescope.builtin").lsp_document_symbols,
-      desc = "document symbols",
+      desc = "Document symbols",
       buffer = bufnr,
     },
     {
       "<localleader>_",
       require("telescope.builtin").lsp_dynamic_workspace_symbols,
-      desc = "workspace symbols",
+      desc = "Workspace symbols",
       buffer = bufnr,
     },
 
     -- See `:help K` for why this keymap
-    { "K", vim.lsp.buf.hover, desc = "hover documentation", buffer = bufnr },
-    { "<C-k>", vim.lsp.buf.signature_help, desc = "signature documentation", buffer = bufnr },
+    { "K", vim.lsp.buf.hover, desc = "Hover documentation", buffer = bufnr },
+    { "<C-k>", vim.lsp.buf.signature_help, desc = "Signature documentation", buffer = bufnr },
   })
   vim.lsp.buf.inlay_hint(bufnr, true)
 end
@@ -44,7 +44,7 @@ return {
     config = true,
     lazy = false, -- mason does not like to be lazy loaded
     keys = {
-      { "<leader>cM", "<cmd>Mason<cr>", desc = "mason" },
+      { "<leader>cM", "<cmd>Mason<cr>", desc = "Mason" },
     },
   },
   {
@@ -100,14 +100,14 @@ return {
       "williamboman/mason.nvim",
     },
     keys = {
-      { "gi", vim.lsp.buf.implementation, desc = "go to implementation" },
+      { "gi", vim.lsp.buf.implementation, desc = "Go to implementation" },
       {
         "gI",
         "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.implementation()<cr>",
-        desc = "go to implementation in split",
+        desc = "Go to implementation in split",
       },
-      { "gd", vim.lsp.buf.definition, desc = "go to definition" },
-      { "gD", "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "go to definition in split" },
+      { "gd", vim.lsp.buf.definition, desc = "Go to definition" },
+      { "gD", "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "Go to definition in split" },
     },
     opts = {
       diagnostics = {
@@ -157,10 +157,27 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
+    dependencies = {
+      {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        event = { "BufReadPre", "BufNewFile" },
+      },
+    },
     event = { "BufReadPre", "BufNewFile" },
+    cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
     opts = {
       highlight = { enable = true },
+      indent = { enable = true },
       auto_install = true,
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = "<C-space>",
+          node_incremental = "<C-space>",
+          scope_incremental = false,
+          node_decremental = "<bs>",
+        },
+      },
       textobjects = {
         select = {
           enable = true,
@@ -169,21 +186,22 @@ return {
             ["af"] = "@function.outer",
             ["if"] = "@function.inner",
             ["ac"] = "@class.outer",
-            ["ic"] = { query = "@class.inner", desc = "select inner part of a class region" },
+            ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
           },
           selection_modes = {
             ["@parameter.outer"] = "v", -- charwise
             ["@function.outer"] = "V", -- linewise
-            ["@class.outer"] = "<c-v>", -- blockwise
+            ["@class.outer"] = "V", -- blockwise
           },
-          include_surrounding_whitespace = true,
+          include_surrounding_whitespace = false,
         },
+
         move = {
           enable = true,
           set_jumps = true, -- whether to set jumps in the jumplist
           goto_next_start = {
             ["]m"] = "@function.outer",
-            ["]]"] = { query = "@class.outer", desc = "next class start" },
+            ["]]"] = { query = "@class.outer", desc = "Next class start" },
           },
           goto_next_end = {
             ["]M"] = "@function.outer",
@@ -213,30 +231,28 @@ return {
     end,
   },
 
-  -- treesitter associated text objects
+  -- automatically close tags in jsx, tsx
   {
-    "nvim-treesitter/nvim-treesitter-textobjects",
+    "windwp/nvim-ts-autotag",
     event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-    },
-  },
-
-  -- typescript
-  {
-    "jose-elias-alvarez/typescript.nvim",
-    ft = { "typescript", "javascript" },
-    opts = {
-      server = {
-        on_attach = lsp_on_attach,
-      },
-    },
+    opts = {},
   },
 
   -- diagnostics and formatting
   {
     "nvimtools/none-ls.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", "jose-elias-alvarez/typescript.nvim" },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      {
+        "jose-elias-alvarez/typescript.nvim",
+        ft = { "typescript", "javascript" },
+        opts = {
+          server = {
+            on_attach = lsp_on_attach,
+          },
+        },
+      },
+    },
     event = { "BufReadPre", "BufNewFile" },
     opts = function()
       local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -303,7 +319,7 @@ return {
   {
     "tpope/vim-scriptease",
     keys = {
-      { "<leader>sm", "<cmd>Messages<cr>", desc = "messages" },
+      { "<leader>sm", "<cmd>Messages<cr>", desc = "Messages" },
     },
   },
 }

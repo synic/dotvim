@@ -17,18 +17,18 @@ return {
       use_diagnostic_signs = true,
     },
     keys = {
-      { "<leader>el", "<cmd>TroubleToggle<cr>", desc = "toggle trouble" },
-      { "<leader>en", "<cmd>lua vim.diagnostic.goto_next()<cr>", desc = "next error" },
-      { "<leader>ep", "<cmd>lua vim.diagnostic.goto_prev()<cr>", desc = "next error" },
-      { "<leader>ed", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "document diagnostics" },
-      { "<leader>ew", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "workspace diagnostics" },
+      { "<leader>el", "<cmd>TroubleToggle<cr>", desc = "Toggle trouble" },
+      { "<leader>en", "<cmd>lua vim.diagnostic.goto_next()<cr>", desc = "Next error" },
+      { "<leader>ep", "<cmd>lua vim.diagnostic.goto_prev()<cr>", desc = "Next error" },
+      { "<leader>ed", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "Document diagnostics" },
+      { "<leader>ew", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace diagnostics" },
     },
   },
 
   -- ability to toggle diagnostics
   {
     "WhoIsSethDaniel/toggle-lsp-diagnostics.nvim",
-    keys = { { "<leader>ta", "<cmd>ToggleDiag<cr>", desc = "lsp diagnostics" } },
+    keys = { { "<leader>ta", "<cmd>ToggleDiag<cr>", desc = "Lsp diagnostics" } },
   },
 
   -- Debug Adapter Protocol plugin
@@ -48,14 +48,14 @@ return {
       },
     },
     keys = {
-      { "<leader>db", "<cmd>lua require('dap').toggle_breakpoint()<cr>", desc = "toggle breakpoint" },
-      { "<leader>dc", "<cmd>lua require('dap').continue()<cr>", desc = "continue" },
-      { "<leader>dd", "<cmd>lua require('dap').run_last()<cr>", desc = "run last" },
-      { "<leader>dq", "<cmd>lua require('dap').close()<cr><cmd>lua require('dapui').close()<cr>", desc = "close" },
-      { "<leader>dn", "<cmd>lua require('dap').step_over()<cr>", desc = "step over" },
-      { "<leader>ds", "<cmd>lua require('dap').step_into()<cr>", desc = "step into" },
-      { "<leader>do", "<cmd>lua require('dap').step_out()<cr>", desc = "step out" },
-      { "<leader>dc", "<cmd>lua require('dap').continue()<cr>", desc = "continue" },
+      { "<leader>db", "<cmd>lua require('dap').toggle_breakpoint()<cr>", desc = "Toggle breakpoint" },
+      { "<leader>dc", "<cmd>lua require('dap').continue()<cr>", desc = "Continue" },
+      { "<leader>dd", "<cmd>lua require('dap').run_last()<cr>", desc = "Run last" },
+      { "<leader>dq", "<cmd>lua require('dap').close()<cr><cmd>lua require('dapui').close()<cr>", desc = "Close" },
+      { "<leader>dn", "<cmd>lua require('dap').step_over()<cr>", desc = "Step over" },
+      { "<leader>ds", "<cmd>lua require('dap').step_into()<cr>", desc = "Step into" },
+      { "<leader>do", "<cmd>lua require('dap').step_out()<cr>", desc = "Step out" },
+      { "<leader>dc", "<cmd>lua require('dap').continue()<cr>", desc = "Continue" },
     },
     config = function()
       local dap = require("dap")

@@ -17,10 +17,10 @@ vim.cmd([[
 
 -- set up keys
 utils.map_keys({
-  { "<leader>cp", "<cmd>Lazy<cr>", desc = "plugin manager" },
-  { "<leader>cPu", "<cmd>Lazy update<cr>", desc = "update plugins" },
-  { "<leader>cPs", "<cmd>Lazy sync<cr>", desc = "sync plugins" },
-  { "<leader>wM", "<cmd>ZoomToggle<cr>", desc = "zoom window" },
+  { "<leader>cp", "<cmd>Lazy<cr>", desc = "Plugin manager" },
+  { "<leader>cPu", "<cmd>Lazy update<cr>", desc = "Update plugins" },
+  { "<leader>cPs", "<cmd>Lazy sync<cr>", desc = "Sync plugins" },
+  { "<leader>wM", "<cmd>ZoomToggle<cr>", desc = "Zoom window" },
 })
 
 local plugins = {
@@ -47,7 +47,7 @@ local plugins = {
   {
     "mbbill/undotree",
     keys = {
-      { "<leader>tu", "<cmd>UndotreeToggle<cr>", desc = "undo tree" },
+      { "<leader>tu", "<cmd>UndotreeToggle<cr>", desc = "Undo tree" },
     },
   },
 
