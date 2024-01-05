@@ -10,7 +10,7 @@ if has('nvim')
       0,
       'n',
       '<localleader>O',
-      '<cmd>lua vim.lsp.buf.execute_command({ command = "_typescript.organizeImports", arguments={vim.fn.expand("%:p") }})<cr>',
+      '<cmd>lua vim.lsp.buf.execute_command({ command = "_typescript.organizeImports", arguments={vim.fn.expand("%:p") }})<cr><cmd>lua vim.lsp.buf.format()<cr>',
       --'<cmd>TSToolsOrganizeImports<cr>',
       { desc = 'organize imports' }
     )
