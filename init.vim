@@ -99,6 +99,9 @@ silent !mkdir $VIMHOME/swap > /dev/null 2>&1
 set dir=$VIMHOME/swap
 set nobackup nowritebackup
 
+" enable putting without yanking (ie, if you put over another line)
+xnoremap <expr> p 'pgv"'.v:register.'y`>'
+
 " enable project specific vim settings
 set exrc
 set secure
