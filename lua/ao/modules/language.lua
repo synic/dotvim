@@ -1,5 +1,11 @@
 local utils = require("ao.utils")
 
+local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+local flags = {
+  allow_incremental_sync = true,
+  debounce_text_changes = 200,
+}
+
 local function lsp_on_attach(_, bufnr)
   utils.map_keys({
     {
@@ -29,12 +35,7 @@ local function lsp_on_attach(_, bufnr)
       desc = "Workspace symbols",
       buffer = bufnr,
     },
-
-    -- See `:help K` for why this keymap
-    { "K", vim.lsp.buf.hover, desc = "Hover documentation", buffer = bufnr },
-    { "<C-k>", vim.lsp.buf.signature_help, desc = "Signature documentation", buffer = bufnr },
   })
-  vim.lsp.buf.inlay_hint(bufnr, true)
 end
 
 return {
@@ -53,16 +54,18 @@ return {
     opts = {
       ensure_installed = {
         "lua_ls",
-        "ruff_lsp",
+        "pyright",
         "cssls",
         "clangd",
         "svelte",
         "eslint",
+				"gopls",
       },
       automatic_installation = true,
     },
     lazy = true,
     config = function(_, opts)
+      local lsp = require("lspconfig")
       local m = require("mason-lspconfig")
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
@@ -70,21 +73,67 @@ return {
       m.setup(opts)
       m.setup_handlers({
         ["lua_ls"] = function()
-          require("lspconfig").lua_ls.setup({
+          lsp.lua_ls.setup({
             capabilities = capabilities,
             on_attach = lsp_on_attach,
+            flags = flags,
             settings = {
               Lua = {
                 diagnostics = { globals = { "vim", "hs" } },
-                completion = { callSnippet = "Replace" },
+                completion = { callSnippet = "Replace", autoRequire = true, displayContext = 7 },
               },
             },
           })
         end,
 
+        ["rust_analyzer"] = function()
+          lsp.rust_analyzer.setup({
+            flags = flags,
+            capabilities = capabilities,
+            on_attach = lsp_on_attach,
+            settings = {
+              ["rust-analyzer"] = {
+                cargo = {
+                  allFeatures = true,
+                },
+                checkOnSave = {
+                  allFeatures = true,
+                  command = "clippy",
+                },
+                procMacro = {
+                  ignored = {
+                    ["async-trait"] = { "async_trait" },
+                    ["napi-derive"] = { "napi" },
+                    ["async-recursion"] = { "async_recursion" },
+                  },
+                },
+              },
+            },
+          })
+        end,
+
+				["gopls"] = function()
+					lsp.gopls.setup({
+						flags = flags,
+						capabilities = capabilities,
+						settings = {
+							gpls = {
+								completeUnimported = true,
+								analysis = {
+									unusedparams = true,
+								},
+							},
+						},
+					})
+				end,
+
         -- generic setup function for servers without explicit configuration
         function(server_name)
-          require("lspconfig")[server_name].setup({ capabilities = capabilities, on_attach = lsp_on_attach })
+          require("lspconfig")[server_name].setup({
+            capabilities = capabilities,
+            on_attach = lsp_on_attach,
+            flags = flags,
+          })
         end,
       })
     end,
@@ -113,6 +162,7 @@ return {
       diagnostics = {
         underline = true,
         update_in_insert = false,
+        inlay_hints = true,
         virtual_text = {
           spacing = 4,
           source = "if_many",
@@ -167,7 +217,7 @@ return {
     cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
     opts = {
       highlight = { enable = true },
-      indent = { enable = true },
+      -- indent = { enable = true },
       auto_install = true,
       incremental_selection = {
         enable = true,
@@ -220,8 +270,10 @@ return {
           enable = true,
           border = "none",
           peek_definition_code = {
-            [",df"] = "@function.outer",
-            [",dF"] = "@class.outer",
+            ["<localleader>df"] = "@function.outer",
+            ["<localleader>dF"] = "@class.outer",
+            -- see :help K for why it's this keymap
+            ["K"] = "@function.outer",
           },
         },
       },
@@ -246,28 +298,26 @@ return {
       {
         "jose-elias-alvarez/typescript.nvim",
         ft = { "typescript", "javascript" },
-        opts = {
-          server = {
-            on_attach = lsp_on_attach,
-          },
-        },
+        opts = { server = { on_attach = lsp_on_attach } },
       },
     },
     event = { "BufReadPre", "BufNewFile" },
     opts = function()
-      local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
       local ns = require("null-ls")
 
       return {
         debug = true,
         sources = {
           -- formatting
-          ns.builtins.formatting.trim_whitespace,
-          ns.builtins.formatting.stylua,
-          ns.builtins.formatting.black,
-          ns.builtins.formatting.prettier.with({
-            extra_filetypes = { "svelte" },
-          }),
+          ns.builtins.formatting.trim_whitespace, -- general
+          ns.builtins.formatting.stylua, -- lua
+          ns.builtins.formatting.black, -- python
+          ns.builtins.formatting.prettierd.with({ filetypes = { "typescript", "javascript" } }),
+          ns.builtins.formatting.prettier.with({ filetypes = { "svelte" } }),
+          ns.builtins.formatting.rustfmt,
+          ns.builtins.formatting.gofmt,
+          ns.builtins.formatting.goimports_reviser,
+          ns.builtins.formatting.golines,
 
           -- diagnostics
           ns.builtins.diagnostics.gitlint,
