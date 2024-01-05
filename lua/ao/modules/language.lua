@@ -59,7 +59,7 @@ return {
         "clangd",
         "svelte",
         "eslint",
-				"gopls",
+        "gopls",
       },
       automatic_installation = true,
     },
@@ -112,20 +112,20 @@ return {
           })
         end,
 
-				["gopls"] = function()
-					lsp.gopls.setup({
-						flags = flags,
-						capabilities = capabilities,
-						settings = {
-							gpls = {
-								completeUnimported = true,
-								analysis = {
-									unusedparams = true,
-								},
-							},
-						},
-					})
-				end,
+        ["gopls"] = function()
+          lsp.gopls.setup({
+            flags = flags,
+            capabilities = capabilities,
+            settings = {
+              gpls = {
+                completeUnimported = true,
+                analysis = {
+                  unusedparams = true,
+                },
+              },
+            },
+          })
+        end,
 
         -- generic setup function for servers without explicit configuration
         function(server_name)
@@ -323,6 +323,9 @@ return {
           ns.builtins.diagnostics.gitlint,
           ns.builtins.diagnostics.ruff,
           ns.builtins.diagnostics.mypy,
+          ns.builtins.diagnostics.yamllint,
+          ns.builtins.diagnostics.hadolint, -- Dockerfile
+          ns.builtins.diagnostics.markdownlint_cli2,
 
           -- actions
           ns.builtins.code_actions.gitsigns,
