@@ -237,14 +237,17 @@ return {
   },
 
   -- show search/replace results as they are being typed
-  "haya14busa/incsearch.vim",
+	{
+		"haya14busa/incsearch.vim",
+		event = { "BufReadPre", "BufNewFile" },
+	},
 
   -- show indent guide
   {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
     event = { "BufReadPre", "BufNewFile" },
-    lazy = false,
+    lazy = true,
     keys = {
       { "<leader>ti", indent_blankline_toggle, desc = "Toggle indent guide" },
     },
@@ -267,14 +270,27 @@ return {
         "text",
       }
 
-      hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-        vim.api.nvim_set_hl(0, "IblIndent", { fg = "#333333" })
-        vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#444444" })
-        vim.api.nvim_set_hl(0, "IblScope", { fg = "#444444" })
-        vim.api.nvim_set_hl(0, "NonText", { fg = "#444444" })
-        vim.api.nvim_set_hl(0, "Whitespace", { fg = "#444444" })
-        vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#444444" })
-      end)
+      if vim.g.colors_name == "gruvbox-material" then
+        hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+          vim.api.nvim_set_hl(0, "IblIndent", { fg = "#333333" })
+          vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#444444" })
+          vim.api.nvim_set_hl(0, "IblScope", { fg = "#444444" })
+          vim.api.nvim_set_hl(0, "NonText", { fg = "#444444" })
+          vim.api.nvim_set_hl(0, "Whitespace", { fg = "#444444" })
+          vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#444444" })
+        end)
+      end
+
+      if vim.g.colors_name == "everforest" then
+        hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+          vim.api.nvim_set_hl(0, "IblIndent", { fg = "#444444" })
+          vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#555555" })
+          vim.api.nvim_set_hl(0, "IblScope", { fg = "#555555" })
+          vim.api.nvim_set_hl(0, "NonText", { fg = "#555555" })
+          vim.api.nvim_set_hl(0, "Whitespace", { fg = "#555555" })
+          vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#555555" })
+        end)
+      end
 
       ibl.setup({
         whitespace = { remove_blankline_trail = false },
@@ -293,5 +309,5 @@ return {
     end,
   },
 
-  "nvim-treesitter/nvim-treesitter-context",
+  { "nvim-treesitter/nvim-treesitter-context", event = { "BufReadPre", "BufNewFile" } },
 }

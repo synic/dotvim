@@ -25,7 +25,7 @@ utils.map_keys({
 
 local plugins = {
   -- automatically enter paste mode
-  { "ConradIrwin/vim-bracketed-paste", lazy = false },
+  { "ConradIrwin/vim-bracketed-paste", event = "VeryLazy"},
 
   -- surround plugin
   {
@@ -37,6 +37,7 @@ local plugins = {
 
   {
     "terrortylor/nvim-comment",
+    event = { "BufReadPre", "BufNewFile" },
     opts = {},
     config = function(opts)
       require("nvim_comment").setup(opts)
@@ -54,6 +55,7 @@ local plugins = {
   -- snippets
   {
     "L3MON4D3/LuaSnip",
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
       require("luasnip.loaders.from_snipmate").lazy_load({
         paths = { vim.fn.stdpath("config") .. "/snippets" },
@@ -64,8 +66,9 @@ local plugins = {
   "christoomey/vim-tmux-navigator",
 }
 
-local wakatime_config = { "wakatime/vim-wakatime", event = { "BufReadPre", "BufNewFile" } }
-
+-- if wakatime is installed/enabled but the configuration file doesn't exist, 
+-- it becomes very annoying. Only try to enable it if the config file is already present.
+local wakatime_config = { "wakatime/vim-wakatime", event = { "BufReadPre", "BufNewFile" }, lazy = true }
 local wakatime_config_path = utils.join_paths(os.getenv("HOME"), ".wakatime.cfg")
 
 if vim.loop.fs_stat(wakatime_config_path) then
