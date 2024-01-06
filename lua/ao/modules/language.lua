@@ -235,14 +235,25 @@ return {
           enable = true,
           lookahead = true,
           keymaps = {
-            ["af"] = "@function.outer",
-            ["if"] = "@function.inner",
-            ["ac"] = "@class.outer",
-            ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
+            ["ak"] = { query = "@block.outer", desc = "Around block" },
+            ["ik"] = { query = "@block.inner", desc = "Inside block" },
+            ["ac"] = { query = "@class.outer", desc = "Around class" },
+            ["ic"] = { query = "@class.inner", desc = "Inside class" },
+            ["a?"] = { query = "@conditional.outer", desc = "Around conditional" },
+            ["i?"] = { query = "@conditional.inner", desc = "Inside conditional" },
+            ["af"] = { query = "@function.outer", desc = "Around function" },
+            ["if"] = { query = "@function.inner", desc = "Inside function" },
+            ["al"] = { query = "@loop.outer", desc = "Around loop" },
+            ["il"] = { query = "@loop.inner", desc = "Inside loop" },
+            ["aa"] = { query = "@parameter.outer", desc = "Around argument" },
+            ["ia"] = { query = "@parameter.inner", desc = "Inside argument" },
           },
           selection_modes = {
             ["@parameter.outer"] = "v", -- charwise
             ["@function.outer"] = "V", -- linewise
+						["@block.outer"] = "V",
+						["@conditional.outer"] = "V",
+						["@loop.outer"] = "V",
             ["@class.outer"] = "V", -- blockwise
           },
           include_surrounding_whitespace = false,
