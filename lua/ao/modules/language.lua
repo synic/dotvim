@@ -1,10 +1,7 @@
 local utils = require("ao.utils")
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-local flags = {
-  allow_incremental_sync = true,
-  debounce_text_changes = 200,
-}
+local flags = { allow_incremental_sync = true, debounce_text_changes = 200 }
 
 local function lsp_on_attach(_, bufnr)
   utils.map_keys({
@@ -14,15 +11,55 @@ local function lsp_on_attach(_, bufnr)
       desc = "Rename symbol",
       buffer = bufnr,
     },
-    { "<localleader>a", vim.lsp.buf.code_action, desc = "Code actions", buffer = bufnr },
+    {
+      "<localleader>a",
+      vim.lsp.buf.code_action,
+      desc = "Code actions",
+      buffer = bufnr,
+    },
 
-    { "gd", vim.lsp.buf.definition, desc = "Goto definition", buffer = bufnr },
-    { "gD", vim.lsp.buf.declaration, desc = "Goto declaration", buffer = bufnr },
-    { "g/", "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "Goto def in vsplit", buffer = bufnr },
-    { "g-", "<cmd>split<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "Goto def in hsplit", buffer = bufnr },
-    { "gr", require("telescope.builtin").lsp_references, desc = "Goto reference", buffer = bufnr },
-    { "gI", require("telescope.builtin").lsp_implementations, desc = "Goto implementation", buffer = bufnr },
-    { "<localleader>d", vim.lsp.buf.type_definition, desc = "Type definition", buffer = bufnr },
+    {
+      "gd",
+      vim.lsp.buf.definition,
+      desc = "Goto definition",
+      buffer = bufnr,
+    },
+    {
+      "gD",
+      vim.lsp.buf.declaration,
+      desc = "Goto declaration",
+      buffer = bufnr,
+    },
+    {
+      "g/",
+      "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>",
+      desc = "Goto def in vsplit",
+      buffer = bufnr,
+    },
+    {
+      "g-",
+      "<cmd>split<cr><cmd>lua vim.lsp.buf.definition()<cr>",
+      desc = "Goto def in hsplit",
+      buffer = bufnr,
+    },
+    {
+      "gr",
+      require("telescope.builtin").lsp_references,
+      desc = "Goto reference",
+      buffer = bufnr,
+    },
+    {
+      "gI",
+      require("telescope.builtin").lsp_implementations,
+      desc = "Goto implementation",
+      buffer = bufnr,
+    },
+    {
+      "<localleader>d",
+      vim.lsp.buf.type_definition,
+      desc = "Type definition",
+      buffer = bufnr,
+    },
     {
       "<localleader>-",
       require("telescope.builtin").lsp_document_symbols,
@@ -34,6 +71,12 @@ local function lsp_on_attach(_, bufnr)
       require("telescope.builtin").lsp_dynamic_workspace_symbols,
       desc = "Workspace symbols",
       buffer = bufnr,
+    },
+    {
+      -- see :help K for why it's this keymap
+      "K",
+      "<cmd>lua vim.lsp.buf.hover()<cr>",
+      desc = "Show definition",
     },
   })
 end
@@ -272,8 +315,6 @@ return {
           peek_definition_code = {
             ["<localleader>df"] = "@function.outer",
             ["<localleader>dF"] = "@class.outer",
-            -- see :help K for why it's this keymap
-            ["K"] = "@function.outer",
           },
         },
       },
@@ -300,6 +341,7 @@ return {
         ft = { "typescript", "javascript" },
         opts = { server = { on_attach = lsp_on_attach } },
       },
+      "davidmh/cspell.nvim",
     },
     event = { "BufReadPre", "BufNewFile" },
     opts = function()
@@ -347,6 +389,8 @@ return {
                 })
               end,
             })
+          else
+            print("client did not support formatting")
           end
         end,
       }
@@ -361,9 +405,6 @@ return {
 
   -- dart
   { "dart-lang/dart-vim-plugin", ft = "dart" },
-
-  -- graphql
-  { "jparise/vim-graphql", ft = "graphql" },
 
   -- python
   { "jmcantrell/vim-virtualenv", ft = "python" },

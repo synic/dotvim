@@ -1,7 +1,7 @@
 return {
   {
     "sainnhe/gruvbox-material",
-    lazy = false,
+    lazy = true,
     priority = 1000,
     init = function()
       vim.g.gruvbox_material_background = "medium"
@@ -11,7 +11,7 @@ return {
   {
     "rose-pine/neovim",
     name = "rose-pine",
-    lazy = false,
+    lazy = true,
     init = function()
       vim.api.nvim_create_autocmd("ColorScheme", {
         pattern = "*",
