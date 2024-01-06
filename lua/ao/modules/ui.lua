@@ -2,12 +2,6 @@ local utils = require("ao.utils")
 
 vim.g.neovide_remember_window_size = false
 
-local function ts_wrap(fn)
-  return function()
-    return load("require('flash')." .. fn .. "()")
-  end
-end
-
 local function indent_blankline_toggle()
   local ibl = require("ibl")
   local conf = require("ibl.config")
@@ -237,10 +231,10 @@ return {
   },
 
   -- show search/replace results as they are being typed
-	{
-		"haya14busa/incsearch.vim",
-		event = { "BufReadPre", "BufNewFile" },
-	},
+  {
+    "haya14busa/incsearch.vim",
+    event = { "BufReadPre", "BufNewFile" },
+  },
 
   -- show indent guide
   {
