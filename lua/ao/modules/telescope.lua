@@ -109,7 +109,7 @@ return {
       { "<leader>ss", "<cmd>lua require('telescope').extensions.luasnip.luasnip()<cr>", desc = "Snippets" },
       { "<leader>sS", "<cmd>Telescope spell_suggest<cr>", desc = "Spelling suggestions" },
       { "<leader>sT", "<cmd>Telescope colorscheme<cr>", desc = "Themes" },
-      { "<leader>so", "<cmd>Telescope oldfiles<cr>", desc = "Recent files" },
+      { "<leader>,", "<cmd>Telescope oldfiles<cr>", desc = "Recent files" },
       { "<leader>sR", "<cmd>Telescope registers<cr>", desc = "Registers" },
       { "<leader>sl", "<cmd>Telescope marks<cr>", desc = "Marks" },
       { "<leader>.", "<cmd>Telescope resume<cr>", desc = "Resume last search" },

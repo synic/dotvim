@@ -5,31 +5,10 @@ local flags = { allow_incremental_sync = true, debounce_text_changes = 200 }
 
 local function lsp_on_attach(_, bufnr)
   utils.map_keys({
-    {
-      "<localleader>r",
-      vim.lsp.buf.rename,
-      desc = "Rename symbol",
-      buffer = bufnr,
-    },
-    {
-      "<localleader>a",
-      vim.lsp.buf.code_action,
-      desc = "Code actions",
-      buffer = bufnr,
-    },
-
-    {
-      "gd",
-      vim.lsp.buf.definition,
-      desc = "Goto definition",
-      buffer = bufnr,
-    },
-    {
-      "gD",
-      vim.lsp.buf.declaration,
-      desc = "Goto declaration",
-      buffer = bufnr,
-    },
+    { "<localleader>r", vim.lsp.buf.rename, desc = "Rename symbol", buffer = bufnr },
+    { "<localleader>a", vim.lsp.buf.code_action, desc = "Code actions", buffer = bufnr },
+    { "gd", vim.lsp.buf.definition, desc = "Goto definition", buffer = bufnr },
+    { "gD", vim.lsp.buf.declaration, desc = "Goto declaration", buffer = bufnr },
     {
       "g/",
       "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>",
@@ -42,30 +21,10 @@ local function lsp_on_attach(_, bufnr)
       desc = "Goto def in hsplit",
       buffer = bufnr,
     },
-    {
-      "gr",
-      require("telescope.builtin").lsp_references,
-      desc = "Goto reference",
-      buffer = bufnr,
-    },
-    {
-      "gI",
-      require("telescope.builtin").lsp_implementations,
-      desc = "Goto implementation",
-      buffer = bufnr,
-    },
-    {
-      "<localleader>d",
-      vim.lsp.buf.type_definition,
-      desc = "Type definition",
-      buffer = bufnr,
-    },
-    {
-      "<localleader>-",
-      require("telescope.builtin").lsp_document_symbols,
-      desc = "Document symbols",
-      buffer = bufnr,
-    },
+    { "gr", require("telescope.builtin").lsp_references, desc = "Goto reference", buffer = bufnr },
+    { "gI", require("telescope.builtin").lsp_implementations, desc = "Goto implementation", buffer = bufnr },
+    { "<localleader>d", vim.lsp.buf.type_definition, desc = "Type definition", buffer = bufnr },
+    { "<localleader>-", require("telescope.builtin").lsp_document_symbols, desc = "Document symbols", buffer = bufnr },
     {
       "<localleader>_",
       require("telescope.builtin").lsp_dynamic_workspace_symbols,
