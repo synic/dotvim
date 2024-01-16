@@ -36,6 +36,7 @@ local function lsp_on_attach(_, bufnr)
       "K",
       "<cmd>lua vim.lsp.buf.hover()<cr>",
       desc = "Show definition",
+			buffer = bufnr,
     },
   })
 end
@@ -158,7 +159,7 @@ return {
         desc = "Go to implementation in split",
       },
       { "gd", vim.lsp.buf.definition, desc = "Go to definition" },
-      { "gD", "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "Go to definition in split" },
+      { "g/", "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "Go to definition in split" },
     },
     opts = {
       diagnostics = {
@@ -251,9 +252,9 @@ return {
           selection_modes = {
             ["@parameter.outer"] = "v", -- charwise
             ["@function.outer"] = "V", -- linewise
-						["@block.outer"] = "V",
-						["@conditional.outer"] = "V",
-						["@loop.outer"] = "V",
+            ["@block.outer"] = "V",
+            ["@conditional.outer"] = "V",
+            ["@loop.outer"] = "V",
             ["@class.outer"] = "V", -- blockwise
           },
           include_surrounding_whitespace = false,
