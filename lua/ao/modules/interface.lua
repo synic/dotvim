@@ -264,7 +264,7 @@ return {
         "text",
       }
 
-      if vim.g.colors_name == "gruvbox-material" then
+      if vim.g.colors_name == "gruvbox-material" or vim.g.colors_name:find("^rose-pine") ~= nil then
         hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
           vim.api.nvim_set_hl(0, "IblIndent", { fg = "#333333" })
           vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#444444" })
@@ -290,6 +290,7 @@ return {
         whitespace = { remove_blankline_trail = false },
         scope = { enabled = false },
         exclude = { filetypes = exclude },
+        indent = { char = "|" },
       })
 
       vim.api.nvim_create_autocmd("BufEnter", {

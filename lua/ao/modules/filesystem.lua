@@ -97,7 +97,7 @@ return {
 
           ["+"] = actions.mkdir,
           ["K"] = actions.mkdir,
-          ["N"] = actions.newfile,
+          ["N"] = actions.touch,
           ["r"] = actions.rename,
           ["gr"] = actions.reload,
           ["@"] = actions.cd,
