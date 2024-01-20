@@ -25,7 +25,7 @@ utils.map_keys({
 
 local plugins = {
   -- automatically enter paste mode
-  { "ConradIrwin/vim-bracketed-paste", event = "VeryLazy"},
+  { "ConradIrwin/vim-bracketed-paste", event = "VeryLazy" },
 
   -- surround plugin
   {
@@ -64,9 +64,36 @@ local plugins = {
     end,
   },
   "christoomey/vim-tmux-navigator",
+
+  {
+    "ellisonleao/carbon-now.nvim",
+    lazy = true,
+    cmd = "CarbonNow",
+    keys = {
+      { mode = "v", "<leader>xc", "<cmd>CarbonNow<cr>", desc = "Create carbonnow snippet" },
+    },
+    opts = {
+      open_cmd = "open",
+      options = {
+        bg = "#204678",
+        drop_shadow_blur = "68px",
+        drop_shadow = false,
+        drop_shadow_offset_y = "20px",
+        font_family = "Hack",
+        font_size = "15px",
+        line_height = "133%",
+        line_numbers = true,
+        theme = "verminal",
+        titlebar = "",
+        watermark = false,
+        width = "680",
+        window_theme = "verminal",
+      },
+    },
+  },
 }
 
--- if wakatime is installed/enabled but the configuration file doesn't exist, 
+-- if wakatime is installed/enabled but the configuration file doesn't exist,
 -- it becomes very annoying. Only try to enable it if the config file is already present.
 local wakatime_config = { "wakatime/vim-wakatime", event = { "BufReadPre", "BufNewFile" }, lazy = true }
 local wakatime_config_path = utils.join_paths(os.getenv("HOME"), ".wakatime.cfg")
