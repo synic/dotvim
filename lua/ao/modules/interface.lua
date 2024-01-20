@@ -305,4 +305,9 @@ return {
   },
 
   { "nvim-treesitter/nvim-treesitter-context", event = { "BufReadPre", "BufNewFile" } },
+  {
+    "chrisgrieser/nvim-early-retirement",
+    config = true,
+    event = { "BufReadPre", "BufNewFile" },
+  },
 }
