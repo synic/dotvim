@@ -83,36 +83,35 @@ return {
           highlight_dirname = true,
         },
         mappings = {
-
           ["l"] = actions.edit,
           ["<return>"] = actions.edit,
           ["<C-s>"] = actions.split,
           ["<C-v>"] = actions.vsplit,
-          ["s"] = actions.split,
+          ["g/"] = actions.vsplit,
+          ["g-"] = actions.split,
           ["<C-t>"] = actions.tabedit,
 
           ["h"] = actions.up,
           ["q"] = actions.quit,
           ["<esc>"] = actions.quit,
 
-          ["+"] = actions.mkdir,
-          ["K"] = actions.mkdir,
-          ["N"] = actions.touch,
-          ["r"] = actions.rename,
-          ["gr"] = actions.reload,
-          ["@"] = actions.cd,
-          ["y"] = actions.yank_path,
-          ["."] = actions.toggle_show_hidden,
-          ["d"] = delete,
-          ["D"] = actions.wipeout,
+          ["g+"] = actions.mkdir,
+          ["gk"] = actions.mkdir,
+          ["gn"] = actions.touch,
+          ["gr"] = actions.rename,
+          ["gR"] = actions.reload,
+          ["gy"] = actions.yank_path,
+          ["g."] = actions.toggle_show_hidden,
+          ["gd"] = delete,
+          ["gD"] = actions.wipeout,
 
           ["m"] = function()
             mark_actions.toggle_mark()
             vim.cmd("normal! j")
           end,
-          ["c"] = clipboard_actions.copy,
-          ["x"] = clipboard_actions.cut,
-          ["p"] = clipboard_actions.paste,
+          ["gc"] = clipboard_actions.copy,
+          ["gx"] = clipboard_actions.cut,
+          ["gp"] = clipboard_actions.paste,
         },
         float = {
           winblend = 0,
