@@ -21,10 +21,30 @@ local function lsp_on_attach(_, bufnr)
       desc = "Goto def in hsplit",
       buffer = bufnr,
     },
-    { "gr", require("telescope.builtin").lsp_references, desc = "Goto reference", buffer = bufnr },
-    { "gI", require("telescope.builtin").lsp_implementations, desc = "Goto implementation", buffer = bufnr },
-    { "<localleader>d", vim.lsp.buf.type_definition, desc = "Type definition", buffer = bufnr },
-    { "<localleader>-", require("telescope.builtin").lsp_document_symbols, desc = "Document symbols", buffer = bufnr },
+    {
+      "gr",
+      require("telescope.builtin").lsp_references,
+      desc = "Goto reference",
+      buffer = bufnr,
+    },
+    {
+      "gI",
+      require("telescope.builtin").lsp_implementations,
+      desc = "Goto implementation",
+      buffer = bufnr,
+    },
+    {
+      "<localleader>d",
+      vim.lsp.buf.type_definition,
+      desc = "Type definition",
+      buffer = bufnr,
+    },
+    {
+      "<localleader>-",
+      require("telescope.builtin").lsp_document_symbols,
+      desc = "Document symbols",
+      buffer = bufnr,
+    },
     {
       "<localleader>_",
       require("telescope.builtin").lsp_dynamic_workspace_symbols,
@@ -36,7 +56,7 @@ local function lsp_on_attach(_, bufnr)
       "K",
       "<cmd>lua vim.lsp.buf.hover()<cr>",
       desc = "Show definition",
-			buffer = bufnr,
+      buffer = bufnr,
     },
   })
 end
@@ -58,11 +78,14 @@ return {
       ensure_installed = {
         "lua_ls",
         "pyright",
-        "cssls",
         "clangd",
         "svelte",
         "eslint",
         "gopls",
+        "templ",
+        "cmake",
+        "htmx",
+        "tailwindcss",
       },
       automatic_installation = true,
     },
@@ -72,6 +95,8 @@ return {
       local m = require("mason-lspconfig")
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+
+      vim.filetype.add({ extension = { templ = "templ" } })
 
       m.setup(opts)
       m.setup_handlers({
@@ -86,6 +111,23 @@ return {
                 completion = { callSnippet = "Replace", autoRequire = true, displayContext = 7 },
               },
             },
+          })
+        end,
+
+        ["htmx"] = function()
+          lsp.htmx.setup({
+            capabilities = capabilities,
+            on_attach = lsp_on_attach,
+            filetypes = { "html", "templ" },
+          })
+        end,
+
+        ["tailwindcss"] = function()
+          lsp.tailwindcss.setup({
+            on_attach = lsp_on_attach,
+            capabilities = capabilities,
+            filetypes = { "templ", "astro", "javascript", "typescript", "react" },
+            init_options = { userLanguages = { templ = "html" } },
           })
         end,
 
@@ -170,9 +212,6 @@ return {
           spacing = 4,
           source = "if_many",
           prefix = "●",
-          -- this will set set the prefix to a function that returns the diagnostics icon based on the severity
-          -- this only works on a recent 0.10.0 build. Will be set to "●" when not supported
-          -- prefix = "icons",
         },
         severity_sort = true,
       },
@@ -331,6 +370,7 @@ return {
           ns.builtins.formatting.gofmt,
           ns.builtins.formatting.goimports_reviser,
           ns.builtins.formatting.golines,
+          ns.builtins.formatting.templ,
 
           -- diagnostics
           ns.builtins.diagnostics.gitlint,
