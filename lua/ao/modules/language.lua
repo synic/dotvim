@@ -161,6 +161,7 @@ return {
           lsp.gopls.setup({
             flags = flags,
             capabilities = capabilities,
+            on_attach = lsp_on_attach,
             settings = {
               gpls = {
                 completeUnimported = true,
