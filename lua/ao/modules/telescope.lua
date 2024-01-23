@@ -224,6 +224,7 @@ return {
           "setup.py",
           "pyproject.toml",
         },
+        exclude_dirs = { "node_modules" },
         show_hidden = false,
         datapath = vim.fn.stdpath("data"),
       })
