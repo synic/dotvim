@@ -63,6 +63,50 @@ local function delete()
   end
 end
 
+local function touch()
+  local actions = require("lir.actions")
+  local path = require("plenary.path")
+  local lvim = require("lir.vim")
+
+  vim.ui.input({ prompt = "Create file (or directory): " }, function(name)
+    if name == nil then
+      return
+    end
+
+    if name == "." or name == ".." then
+      utils.error("Invalid file name: " .. name)
+      return
+    end
+
+    local ctx = lvim.get_context()
+    local p = path:new(ctx.dir .. name)
+    if p:exists() then
+      utils.error("File already exists")
+      -- cursor jump
+      local lnum = ctx:indexof(name)
+      if lnum then
+        vim.cmd(tostring(lnum))
+      end
+      return
+    end
+
+    if string.find(p.filename, ".*/$") ~= nil then
+      p:mkdir()
+    else
+      p:touch()
+    end
+
+    actions.reload()
+
+    vim.schedule(function()
+      local lnum = lvim.get_context():indexof(name)
+      if lnum then
+        vim.cmd(tostring(lnum))
+      end
+    end)
+  end)
+end
+
 return {
   -- fancy replacement for netrw, with devicons
   {
@@ -95,9 +139,8 @@ return {
           ["q"] = actions.quit,
           ["<esc>"] = actions.quit,
 
-          ["g+"] = actions.mkdir,
           ["gk"] = actions.mkdir,
-          ["gn"] = actions.touch,
+          ["gn"] = touch,
           ["gr"] = actions.rename,
           ["gR"] = actions.reload,
           ["gy"] = actions.yank_path,
@@ -105,7 +148,7 @@ return {
           ["gd"] = delete,
           ["gD"] = actions.wipeout,
 
-          ["m"] = function()
+          ["gm"] = function()
             mark_actions.toggle_mark()
             vim.cmd("normal! j")
           end,
