@@ -31,6 +31,7 @@ return {
     lazy = false,
     opts = {
       background = "hard",
+      ui_contrast = "high",
     },
     config = function(opts)
       require("everforest").setup(opts)

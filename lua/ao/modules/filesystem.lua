@@ -126,6 +126,7 @@ return {
           enable = true,
           highlight_dirname = true,
         },
+        ignore = { "node_modules", "*_templ.go", ".DS_Store" },
         mappings = {
           ["l"] = actions.edit,
           ["<return>"] = actions.edit,
