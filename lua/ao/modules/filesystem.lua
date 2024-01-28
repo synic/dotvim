@@ -51,6 +51,7 @@ return {
         },
         skip_confirm_for_simple_edits = true,
         lsp_rename_autosave = true,
+				add_padding = false,
         keymaps = {
           ["<CR>"] = {
             desc = "select",
