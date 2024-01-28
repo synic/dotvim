@@ -2,7 +2,6 @@ return {
   {
     "sainnhe/gruvbox-material",
     lazy = true,
-    priority = 1000,
     init = function()
       vim.g.gruvbox_material_background = "medium"
     end,
@@ -23,7 +22,7 @@ return {
       })
     end,
   },
-  { "catppuccin/nvim", name = "catppuccin", lazy = true },
+  { "catppuccin/nvim", name = "catppuccin", lazy = false, priority = 1000 },
   { "joshdick/onedark.vim", lazy = true },
   { "rebelot/kanagawa.nvim", lazy = true },
   {
