@@ -126,7 +126,7 @@ return {
           lsp.tailwindcss.setup({
             on_attach = lsp_on_attach,
             capabilities = capabilities,
-            filetypes = { "templ", "astro", "javascript", "typescript", "react" },
+            filetypes = { "templ", "astro", "javascript", "typescript", "react", "css" },
             init_options = { userLanguages = { templ = "html" } },
           })
         end,
@@ -164,6 +164,7 @@ return {
             on_attach = lsp_on_attach,
             settings = {
               gpls = {
+                buildFlags = { "-tags=debug" },
                 completeUnimported = true,
                 analysis = {
                   unusedparams = true,
