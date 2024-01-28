@@ -121,12 +121,9 @@ return {
       local clipboard_actions = require("lir.clipboard.actions")
 
       require("lir").setup({
-        show_hidden_files = false,
-        devicons = {
-          enable = true,
-          highlight_dirname = true,
-        },
-        ignore = { "node_modules", "*_templ.go", ".DS_Store" },
+        show_hidden_files = true,
+        devicons = { enable = true, highlight_dirname = true },
+        ignore = { ".mypy_cache", ".git", ".tmp", "node_modules", "*_templ.go", ".DS_Store" },
         mappings = {
           ["l"] = actions.edit,
           ["<return>"] = actions.edit,
