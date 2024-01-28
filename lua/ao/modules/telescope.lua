@@ -192,7 +192,6 @@ return {
         config = function()
           utils.on_load("telescope.nvim", function()
             require("telescope").load_extension("fzf")
-            print("fzf is loaded!")
           end)
         end,
       },
