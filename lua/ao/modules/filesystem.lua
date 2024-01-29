@@ -96,7 +96,7 @@ return {
       },
       use_default_keymaps = true,
     },
-    dependencies = { "nvim-tree/nvim-web-devicons", "ahmedkhalf/project.nvim" },
+    dependencies = { "nvim-tree/nvim-web-devicons", "synic/project.nvim" },
     init = function()
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "oil",

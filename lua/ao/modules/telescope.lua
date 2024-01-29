@@ -206,7 +206,7 @@ return {
   -- telescope project support
   -- can load and run separately from telescope, so it is not listed as a dependency.
   {
-    "ahmedkhalf/project.nvim",
+    "synic/project.nvim",
     keys = {
       { "<leader>pp", telescope_load_projects, desc = "Projects" },
     },
@@ -229,6 +229,19 @@ return {
           "pyproject.toml",
         },
         exclude_dirs = { "node_modules" },
+        pattern_get_current_dir_fn = function()
+          local status, oil = pcall(require, "oil")
+
+          if status then
+            local dir = oil.get_current_dir()
+
+            if dir ~= nil then
+              return dir
+            end
+
+            return vim.fn.expand("%:p:h", true)
+          end
+        end,
         show_hidden = false,
         datapath = vim.fn.stdpath("data"),
       })
