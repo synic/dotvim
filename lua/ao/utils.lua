@@ -104,4 +104,36 @@ module.branch_name = function()
   end
 end
 
+module.find_project_root = function()
+  local project_status, project = pcall(require, "project_nvim.project")
+  local oil_status, oil = pcall(require, "oil")
+
+  if not project_status or not oil_status then
+    return
+  end
+
+  local oildir = oil.get_current_dir()
+
+  -- this is suuuuuuuuuper hacky, but we have to monkeypatch `vim.fn.expand` because
+  -- that's what `project.get_project_root` calls, and in an oil buffer, that returns
+  -- a path that starts with `oil://`. project.nvim does not like this. instead, just
+  -- return the current path of the oil buffer
+  local oldexpand = vim.fn.expand
+
+  if oildir then
+    ---@diagnostic disable-next-line: duplicate-set-field
+    vim.fn.expand = function(_, _)
+      return oildir
+    end
+  end
+
+  local project_root, _ = project.get_project_root()
+
+  if oildir then
+    vim.fn.expand = oldexpand
+  end
+
+  return project_root
+end
+
 return module
