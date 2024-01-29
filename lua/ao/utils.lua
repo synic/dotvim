@@ -104,15 +104,4 @@ module.branch_name = function()
   end
 end
 
-module.find_project_root = function()
-  local project_status, project = pcall(require, "project_nvim.project")
-
-  if not project_status then
-    return
-  end
-
-  local project_root, _ = project.get_project_root()
-  return project_root
-end
-
 return module
