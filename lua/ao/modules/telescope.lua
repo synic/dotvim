@@ -58,26 +58,7 @@ end
 local function telescope_find_project_files()
   local builtin = require("telescope.builtin")
 
-  local project_status, project = pcall(require, "project_nvim.project")
-
-  if not project_status then
-    print("Unable to determine project root")
-    return
-  end
-
-  local oil_status, oil = pcall(require, "oil")
-
-  if oil_status then
-    local dir = oil.get_current_dir()
-
-    if dir then
-      vim.cmd.cd(dir)
-      builtin.find_files()
-    end
-  end
-
-  local project_root, _ = project.get_project_root()
-
+  local project_root = utils.find_project_root()
   if project_root and project_root ~= "" then
     builtin.find_files({ cwd = project_root })
   else
