@@ -264,7 +264,11 @@ return {
         "text",
       }
 
-      if vim.g.colors_name == "gruvbox-material" or vim.g.colors_name:find("^rose-pine") ~= nil then
+      if
+        vim.g.colors_name == "gruvbox-material"
+        or vim.g.colors_name:find("^catppuccin") ~= nil
+        or vim.g.colors_name:find("^rose-pine") ~= nil
+      then
         hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
           vim.api.nvim_set_hl(0, "IblIndent", { fg = "#333333" })
           vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#444444" })

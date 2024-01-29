@@ -69,7 +69,11 @@ local function telescope_find_project_files()
 
   if oil_status then
     local dir = oil.get_current_dir()
-    builtin.find_files({ cwd = dir })
+
+    if dir then
+      vim.cmd.cd(dir)
+      builtin.find_files()
+    end
   end
 
   local project_root, _ = project.get_project_root()
