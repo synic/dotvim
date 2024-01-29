@@ -58,11 +58,18 @@ end
 local function telescope_find_project_files()
   local builtin = require("telescope.builtin")
 
-  local status, project = pcall(require, "project_nvim.project")
+  local project_status, project = pcall(require, "project_nvim.project")
 
-  if not status then
+  if not project_status then
     print("Unable to determine project root")
     return
+  end
+
+  local oil_status, oil = pcall(require, "oil")
+
+  if oil_status then
+    local dir = oil.get_current_dir()
+    builtin.find_files({ cwd = dir })
   end
 
   local project_root, _ = project.get_project_root()
@@ -104,8 +111,17 @@ return {
       { "<leader>ll", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "List layouts" },
 
       -- search
-      { "<leader>*", telescope_grep_project_for_term, desc = "Search for term in project", mode = { "n", "v" } },
-      { "<leader>sd", telescope_grep_working_directory, desc = "Search in current directory" },
+      {
+        "<leader>*",
+        telescope_grep_project_for_term,
+        desc = "Search for term in project",
+        mode = { "n", "v" },
+      },
+      {
+        "<leader>sd",
+        telescope_grep_working_directory,
+        desc = "Search in current directory",
+      },
       { "<leader>ss", "<cmd>lua require('telescope').extensions.luasnip.luasnip()<cr>", desc = "Snippets" },
       { "<leader>sS", "<cmd>Telescope spell_suggest<cr>", desc = "Spelling suggestions" },
       { "<leader>sT", "<cmd>Telescope colorscheme<cr>", desc = "Themes" },
@@ -118,7 +134,11 @@ return {
       -- projects
       { "<leader>pf", telescope_find_project_files, desc = "Find project file" },
       { "<leader>pg", telescope_git_files, desc = "Find git files" },
-      { "<leader>sp", "<cmd>Telescope live_grep<cr>", desc = "Search project for text" },
+      {
+        "<leader>sp",
+        "<cmd>Telescope live_grep<cr>",
+        desc = "Search project for text",
+      },
     },
 
     config = function()
