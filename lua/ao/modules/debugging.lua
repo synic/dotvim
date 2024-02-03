@@ -13,6 +13,7 @@ return {
         information = "",
         other = "",
       },
+      auto_close = true,
       icons = false,
       use_diagnostic_signs = true,
     },
@@ -120,7 +121,10 @@ return {
     lazy = true,
     opts = {},
     dependencies = {
-      "m00qek/baleia.nvim",
+			{
+				"m00qek/baleia.nvim",
+				submodules = false,
+			},
     },
     config = function(opts)
       local dap = require("dap")

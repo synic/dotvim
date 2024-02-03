@@ -238,9 +238,8 @@ return {
             if dir ~= nil then
               return dir
             end
-
-            return vim.fn.expand("%:p:h", true)
           end
+  				return vim.fn.expand("%:p:h", true)
         end,
         show_hidden = false,
         datapath = vim.fn.stdpath("data"),

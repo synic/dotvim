@@ -1,6 +1,6 @@
 local utils = require("ao.utils")
 
-vim.g.neovide_remember_window_size = false
+vim.g.neovide_remember_window_size = true
 
 local function indent_blankline_toggle()
   local ibl = require("ibl")
@@ -43,6 +43,13 @@ return {
     keys = {
       { "<leader>tz", "<cmd>TZMinimalist<cr>", desc = "Toggle zen mode" },
     },
+  },
+
+  {
+    "norcalli/nvim-colorizer.lua",
+    config = function()
+      require("colorizer").setup()
+    end,
   },
 
   -- show marks in gutter
@@ -90,12 +97,15 @@ return {
       end)
     end,
   },
-
   -- statusline
   {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {
+      options = {
+        component_separators = "|",
+        section_separators = { left = "", right = "" },
+      },
       sections = {
         lualine_c = {
           {
@@ -150,61 +160,6 @@ return {
     keys = {
       { "<leader><leader>", "<plug>(easymotion-overwin-f)", desc = "Jump to location", mode = "n" },
       { "<leader><leader>", "<plug>(easymotion-bd-f)", desc = "Jump to location", mode = "v" },
-    },
-  },
-
-  -- jump to search results, etc
-  {
-    "folke/flash.nvim",
-    opts = {
-      labels = "asdfghjklqwertyuiopzxcvbnm.,/'-",
-      modes = {
-        search = { enabled = false },
-        char = { enabled = false },
-      },
-    },
-    lazy = false,
-    keys = {
-      {
-        "s",
-        mode = { "n", "o", "x" },
-        function()
-          require("flash").jump()
-        end,
-        desc = "Flash",
-      },
-      {
-        "S",
-        mode = { "n", "o", "x" },
-        function()
-          require("flash").treesitter()
-        end,
-        desc = "Flash treesitter",
-      },
-      {
-        "r",
-        mode = "o",
-        function()
-          require("flash").remote()
-        end,
-        desc = "Remote flash",
-      },
-      {
-        "R",
-        mode = { "o", "x" },
-        function()
-          require("flash").treesitter_search()
-        end,
-        desc = "Treesitter search",
-      },
-      {
-        "<c-s>",
-        mode = { "c" },
-        function()
-          require("flash").toggle()
-        end,
-        desc = "Toggle flash search",
-      },
     },
   },
 

@@ -20,7 +20,11 @@ end
 
 utils.map_keys({
   { "-", browse_at_current_directory, desc = "Browse current directory" },
-  { "<leader>-", browse_at_current_directory, desc = "Browse current directory" },
+  {
+    "<leader>-",
+    browse_at_current_directory,
+    desc = "Browse current directory",
+  },
   { "_", browse_at_project_directory, desc = "Browse current project" },
   { "<leader>_", browse_at_project_directory, desc = "Browse current project" },
 })
@@ -31,7 +35,7 @@ vim.g.netrw_banner = 0
 vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\.\S\+]]
 vim.g.netrw_browse_split = 0
 
-local function touch()
+local function oil_touch()
   local oil = require("oil")
   local path = require("plenary.path")
 
@@ -73,28 +77,36 @@ return {
       },
       skip_confirm_for_simple_edits = true,
       lsp_rename_autosave = true,
+      cleanup_delay_ms = 30 * 1000,
+      view_options = {
+        is_always_hidden = function(name, _)
+          return name == "." or name == ".."
+        end,
+      },
       keymaps = {
         ["<CR>"] = "actions.select",
         ["g/"] = "actions.select_vsplit",
         ["g-"] = "actions.select_split",
+        ["h"] = "actions.select",
+        ["l"] = "actions.parent",
         ["gt"] = "actions.select_tab",
         ["<C-p>"] = "actions.preview",
         ["<C-c>"] = "actions.close",
         ["<C-l>"] = "actions.refresh",
+        ["<C-h>"] = "actions.select_split",
+        ["<C-v>"] = "actions.select_vsplit",
         ["gs"] = "actions.change_sort",
         ["gx"] = "actions.open_external",
-        ["gn"] = {
-          desc = "Create new file",
-          callback = function()
-            touch()
-          end,
-        },
+        ["gr"] = "actions.refresh",
+        ["gn"] = { desc = "Create new file", callback = oil_touch },
         ["g\\"] = "actions.toggle_trash",
         ["g."] = "actions.toggle_hidden",
-        ["h"] = "actions.parent",
-        ["l"] = "actions.select",
+        ["`"] = "actions.cd",
+        ["~"] = "actions.tcd",
+        ["-"] = "actions.parent",
       },
-      use_default_keymaps = true,
+      use_default_keymaps = false,
+      constrain_cursor = "editable",
     },
     dependencies = { "nvim-tree/nvim-web-devicons", "synic/project.nvim" },
     init = function()
@@ -105,77 +117,10 @@ return {
           local dir = oil.get_current_dir()
 
           if dir then
-            vim.cmd.cd(dir)
+            vim.cmd.tcd(dir)
           end
         end,
       })
     end,
-  },
-
-  {
-    "nvim-tree/nvim-tree.lua",
-    version = "*",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    keys = {
-      { "<leader>pt", "<cmd>NvimTreeToggle<cr>", desc = "File tree" },
-    },
-    opts = {
-      hijack_netrw = false,
-      sync_root_with_cwd = true,
-      reload_on_bufenter = true,
-      hijack_cursor = true,
-      filters = {
-        dotfiles = true,
-      },
-      git = {
-        enable = false,
-        ignore = true,
-      },
-      filesystem_watchers = {
-        enable = true,
-      },
-      renderer = {
-        root_folder_label = false,
-        highlight_git = false,
-        highlight_opened_files = "none",
-
-        indent_markers = {
-          enable = false,
-        },
-
-        icons = {
-          show = {
-            file = true,
-            folder = true,
-            folder_arrow = true,
-            git = false,
-          },
-
-          glyphs = {
-            default = "󰈚",
-            symlink = "",
-            folder = {
-              default = "",
-              empty = "",
-              empty_open = "",
-              open = "",
-              symlink = "",
-              symlink_open = "",
-              arrow_open = "",
-              arrow_closed = "",
-            },
-            git = {
-              unstaged = "✗",
-              staged = "✓",
-              unmerged = "",
-              renamed = "➜",
-              untracked = "★",
-              deleted = "",
-              ignored = "◌",
-            },
-          },
-        },
-      },
-    },
   },
 }
