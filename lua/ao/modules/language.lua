@@ -52,6 +52,12 @@ local function lsp_on_attach(_, bufnr)
       buffer = bufnr,
     },
     {
+      "g=",
+      "<cmd>lua vim.lsp.buf.format()<cr>",
+      desc = "Format document",
+      buffer = bufnr,
+    },
+    {
       -- see :help K for why it's this keymap
       "K",
       "<cmd>lua vim.lsp.buf.hover()<cr>",
@@ -250,7 +256,7 @@ return {
   -- treesitter
   {
     "nvim-treesitter/nvim-treesitter",
-    run = ":TSUpdate",
+    build = ":TSUpdate",
     dependencies = {
       {
         "nvim-treesitter/nvim-treesitter-textobjects",
@@ -260,9 +266,26 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
     opts = {
-      highlight = { enable = true },
-      -- indent = { enable = true },
+      highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = false,
+      },
       auto_install = true,
+      ensure_installed = {
+        "typescript",
+        "javascript",
+        "lua",
+        "vimdoc",
+        "vim",
+        "python",
+        "go",
+        "rust",
+        "markdown",
+        "markdown_inline",
+        "html",
+        "htmldjango",
+        "css",
+      },
       incremental_selection = {
         enable = true,
         keymaps = {
@@ -343,16 +366,22 @@ return {
     opts = {},
   },
 
+  {
+    "jose-elias-alvarez/typescript.nvim",
+    ft = { "typescript", "javascript" },
+    opts = {
+      server = {
+        on_attach = lsp_on_attach,
+      },
+    },
+  },
+
   -- diagnostics and formatting
   {
     "nvimtools/none-ls.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
-      {
-        "jose-elias-alvarez/typescript.nvim",
-        ft = { "typescript", "javascript" },
-        opts = { server = { on_attach = lsp_on_attach } },
-      },
+      "jose-elias-alvarez/typescript.nvim",
       "davidmh/cspell.nvim",
     },
     event = { "BufReadPre", "BufNewFile" },
@@ -360,7 +389,6 @@ return {
       local ns = require("null-ls")
 
       return {
-        debug = true,
         sources = {
           -- formatting
           ns.builtins.formatting.trim_whitespace, -- general
@@ -382,7 +410,7 @@ return {
           ns.builtins.diagnostics.hadolint, -- Dockerfile
           ns.builtins.diagnostics.markdownlint_cli2,
 
-          -- actions
+          -- -- actions
           ns.builtins.code_actions.gitsigns,
           require("typescript.extensions.null-ls.code-actions"),
         },
@@ -402,8 +430,6 @@ return {
                 })
               end,
             })
-          else
-            print("client did not support formatting")
           end
         end,
       }
@@ -412,9 +438,6 @@ return {
 
   -- fidget.nvim shows lsp and null-ls status at the bottom right of the screen
   { "j-hui/fidget.nvim", tag = "legacy", event = "LspAttach", opts = {} },
-
-  -- css
-  { "ap/vim-css-color", ft = "css" },
 
   -- dart
   { "dart-lang/dart-vim-plugin", ft = "dart" },

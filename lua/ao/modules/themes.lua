@@ -6,7 +6,6 @@ return {
       vim.g.gruvbox_material_background = "medium"
     end,
   },
-  { "folke/tokyonight.nvim", lazy = true },
   {
     "rose-pine/neovim",
     name = "rose-pine",
@@ -22,9 +21,23 @@ return {
       })
     end,
   },
-  { "catppuccin/nvim", name = "catppuccin", lazy = false, priority = 1000 },
-  { "joshdick/onedark.vim", lazy = true },
-  { "rebelot/kanagawa.nvim", lazy = true },
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    lazy = false,
+    priority = 1000,
+    init = function()
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        pattern = "*",
+        callback = function(opts)
+          if opts.match:find("^catppuccin") ~= nil then
+            vim.api.nvim_set_hl(0, "SignatureMarkText", { fg = "#f38ba8" })
+            vim.api.nvim_set_hl(0, "TabLineSel", { fg = "#b4befe", bg = "#45475a" })
+          end
+        end,
+      })
+    end,
+  },
   {
     "neanias/everforest-nvim",
     lazy = false,
@@ -36,8 +49,4 @@ return {
       require("everforest").setup(opts)
     end,
   },
-  { "bluz71/vim-nightfly-colors", lazy = true },
-  { "NLKNguyen/papercolor-theme", lazy = true },
-  { "Mofiqul/dracula.nvim", lazy = true },
-  { "romainl/Apprentice", lazy = true },
 }
