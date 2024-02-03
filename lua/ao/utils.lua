@@ -91,7 +91,7 @@ module.on_load = function(name, fn)
   })
 end
 
-module.branch_name = function()
+module.get_current_git_branch = function()
   local branch = io.popen("git rev-parse --abbrev-ref HEAD 2> /dev/null")
   if branch then
     local name = branch:read("*l")

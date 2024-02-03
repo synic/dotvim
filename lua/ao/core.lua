@@ -66,7 +66,14 @@ module.setup = function(config)
 
   lazy.setup("ao.modules", {
     install = { install_missing = false },
-    change_detection = { enabled = true, notify = false },
+    change_detection = {
+      -- with change detection enabled, lazy.nvim does something when you save
+      -- lua files that are modules. whatever it does, it wipes out the none-ls
+      -- autocmd that is set up to format on save. It also causes other events to
+      -- attach more than once (gitsigns). better to just leave it off.
+      enabled = false,
+      notify = false,
+    },
   })
 
   lazy.install({ wait = installed, show = false })
@@ -88,7 +95,6 @@ module.setup = function(config)
 end
 
 module.setup_alternate_colors = function()
-  vim.api.nvim_set_hl(0, "IndentBlanklineChar", { fg = "#444444" })
   vim.api.nvim_set_hl(0, "EasyMotionTarget", { link = "Search" })
   vim.api.nvim_set_hl(0, "LirDir", { link = "netrwDir" })
 end

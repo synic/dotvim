@@ -4,3 +4,4 @@ setlocal nolist
 setlocal listchars=tab:\|\ ,eol:↵
 setlocal noexpandtab
 setlocal shiftwidth=0
+setlocal textwidth=0

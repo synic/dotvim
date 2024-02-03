@@ -12,10 +12,8 @@
 " skip init for vim-tiny or vim-small
 if 0 | endif
 
-" set $VIMHOME so we can load configuration files from the correct place
 let $VIMHOME = expand('<sfile>:p:h')
 
-" basic keybindings
 inoremap fd <esc>
 vnoremap fd <esc>
 vnoremap < <gv
@@ -28,9 +26,10 @@ filetype plugin indent on
 
 let mapleader="\<space>"
 let maplocalleader=","
-set bs=2                " allow backspacing over everything in insert mode
+set backspace=2         " allow backspacing over everything in insert mode
 set cindent
-set si
+set smartindent
+set noautoindent
 set nobackup            " don't keep a backup file
 set viminfo='20,\"50    " read/write a .viminfo file
 set history=50          " keep 50 lines of command line history
@@ -83,12 +82,10 @@ set shiftwidth=4
 set softtabstop=4
 set shiftround
 set expandtab
-set noautoindent
 
 " setup auto wrapping
 set textwidth=78
 set formatoptions+=t
-set hidden
 set colorcolumn=0
 
 " line numbering
