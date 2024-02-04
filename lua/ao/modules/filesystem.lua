@@ -35,9 +35,42 @@ vim.g.netrw_banner = 0
 vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\.\S\+]]
 vim.g.netrw_browse_split = 0
 
-local function oil_touch()
-  local oil = require("oil")
+local function delete()
+  local lvim = require("lir.vim")
+  local actions = require("lir.actions")
   local path = require("plenary.path")
+  local ctx = lvim.get_context()
+
+  local items = ctx:get_marked_items()
+  local count = #items
+
+  if #items == 0 then
+    actions.delete()
+  else
+    if vim.fn.confirm("Delete " .. count .. " items?", "&Yes\n&No", 1) ~= 1 then
+      return
+    end
+
+    for _, item in pairs(items) do
+      local p = path:new(item.fullpath)
+      if p:is_dir() then
+        p:rm({ recursive = true })
+      else
+        if not vim.loop.fs_unlink(p:absolute()) then
+          utils.error("Delete file failed")
+          return
+        end
+      end
+    end
+
+    actions.reload()
+  end
+end
+
+local function touch()
+  local actions = require("lir.actions")
+  local path = require("plenary.path")
+  local lvim = require("lir.vim")
 
   vim.ui.input({ prompt = "Create file (or directory): " }, function(name)
     if name == nil then
@@ -45,80 +78,110 @@ local function oil_touch()
     end
 
     if name == "." or name == ".." then
-      print("Invalid file name: " .. name)
+      utils.error("Invalid file name: " .. name)
       return
     end
 
-    local dir = oil.get_current_dir()
-    if not dir then
-      return
-    end
-
-    local p = path:new(dir .. name)
+    local ctx = lvim.get_context()
+    local p = path:new(ctx.dir .. name)
     if p:exists() then
-      print("File already exists: ", path.filename)
+      utils.error("File already exists")
+      -- cursor jump
+      local lnum = ctx:indexof(name)
+      if lnum then
+        vim.cmd(tostring(lnum))
+      end
       return
     end
 
-    vim.cmd.normal("O" .. name)
-    vim.cmd.write({ mods = { silent = true } })
+    if string.find(p.filename, ".*/$") ~= nil then
+      p:mkdir()
+    else
+      p:touch()
+    end
+
+    actions.reload()
+
+    vim.schedule(function()
+      local lnum = lvim.get_context():indexof(name)
+      if lnum then
+        vim.cmd(tostring(lnum))
+      end
+    end)
   end)
 end
 
 return {
+  -- fancy replacement for netrw, with devicons
   {
-    "stevearc/oil.nvim",
-    opts = {
-      columns = {
-        "permissions",
-        "size",
-        "mtime",
-        { "icon", add_padding = false },
-      },
-      skip_confirm_for_simple_edits = true,
-      lsp_rename_autosave = true,
-      cleanup_delay_ms = 30 * 1000,
-      view_options = {
-        is_always_hidden = function(name, _)
-          return name == "." or name == ".."
-        end,
-      },
-      keymaps = {
-        ["<CR>"] = "actions.select",
-        ["gl"] = "actions.select",
-        ["gh"] = "actions.parent",
-        ["g/"] = "actions.select_vsplit",
-        ["g-"] = "actions.select_split",
-        ["gt"] = "actions.select_tab",
-        ["<C-p>"] = "actions.preview",
-        ["<C-c>"] = "actions.close",
-        ["<C-l>"] = "actions.refresh",
-        ["<C-h>"] = "actions.select_split",
-        ["<C-v>"] = "actions.select_vsplit",
-        ["gs"] = "actions.change_sort",
-        ["gx"] = "actions.open_external",
-        ["gr"] = "actions.refresh",
-        ["gn"] = { desc = "Create new file", callback = oil_touch },
-        ["g\\"] = "actions.toggle_trash",
-        ["g."] = "actions.toggle_hidden",
-        ["`"] = "actions.cd",
-        ["~"] = "actions.tcd",
-        ["-"] = "actions.parent",
-      },
-      use_default_keymaps = false,
-      constrain_cursor = false,
+    "synic/lir.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
     },
-    dependencies = { "nvim-tree/nvim-web-devicons", "synic/project.nvim" },
-    init = function()
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "oil",
-        callback = function()
-          local oil = require("oil")
-          local dir = oil.get_current_dir()
+    config = function()
+      local actions = require("lir.actions")
+      local mark_actions = require("lir.mark.actions")
+      local clipboard_actions = require("lir.clipboard.actions")
 
-          if dir then
-            vim.cmd.tcd(dir)
-          end
+      require("lir").setup({
+        show_hidden_files = true,
+        devicons = { enable = true },
+        ignore = { ".mypy_cache", ".git", ".tmp", "node_modules", "*_templ.go", ".DS_Store" },
+        mappings = {
+          ["l"] = actions.edit,
+          ["<return>"] = actions.edit,
+          ["<C-s>"] = actions.split,
+          ["<C-v>"] = actions.vsplit,
+          ["g/"] = actions.vsplit,
+          ["g-"] = actions.split,
+          ["<C-t>"] = actions.tabedit,
+
+          ["h"] = actions.up,
+          ["q"] = actions.quit,
+          ["<esc>"] = actions.quit,
+
+          ["gk"] = actions.mkdir,
+          ["gn"] = touch,
+          ["gr"] = actions.rename,
+          ["gR"] = actions.reload,
+          ["gy"] = actions.yank_path,
+          ["g."] = actions.toggle_show_hidden,
+          ["gd"] = delete,
+          ["gD"] = actions.wipeout,
+
+          ["gm"] = function()
+            mark_actions.toggle_mark()
+            vim.cmd("normal! j")
+          end,
+          ["gc"] = clipboard_actions.copy,
+          ["gx"] = clipboard_actions.cut,
+          ["gp"] = clipboard_actions.paste,
+        },
+        float = {
+          winblend = 0,
+          curdir_window = {
+            enable = false,
+            highlight_dirname = false,
+          },
+        },
+        hide_cursor = true,
+      })
+
+      vim.api.nvim_create_autocmd({ "FileType" }, {
+        pattern = { "lir" },
+        callback = function()
+          -- use visual mode
+          vim.api.nvim_buf_set_keymap(
+            0,
+            "x",
+            "m",
+            ':<C-u>lua require"lir.mark.actions".toggle_mark("v")<CR>',
+            { noremap = true, silent = true }
+          )
+
+          -- echo cwd
+          vim.api.nvim_echo({ { vim.fn.expand("%:p"), "Normal" } }, false, {})
         end,
       })
     end,
