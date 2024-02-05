@@ -24,6 +24,7 @@ local function telescope_grep_working_directory()
 end
 
 local function ctrlsf_search_for_term(prompt_bufnr)
+  print("this was called")
   local current_picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
   local prompt = current_picker:_get_prompt()
   vim.cmd("CtrlSF " .. prompt)
@@ -216,18 +217,7 @@ return {
         manual_mode = false,
         silent_chdir = true,
         detection_methods = { "pattern", "lsp" },
-        patterns = {
-          ".git",
-          "_darcs",
-          ".hg",
-          ".bzr",
-          ".svn",
-          "Makefile",
-          "package.json",
-          "setup.cfg",
-          "setup.py",
-          "pyproject.toml",
-        },
+        patterns = { ".git", ".svn" },
         exclude_dirs = { "node_modules" },
         pattern_get_current_dir_fn = function()
           local status, oil = pcall(require, "oil")
@@ -239,7 +229,7 @@ return {
               return dir
             end
           end
-  				return vim.fn.expand("%:p:h", true)
+          return vim.fn.expand("%:p:h", true)
         end,
         show_hidden = false,
         datapath = vim.fn.stdpath("data"),
