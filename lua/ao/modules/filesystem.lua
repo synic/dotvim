@@ -79,6 +79,7 @@ return {
       lsp_rename_autosave = true,
       cleanup_delay_ms = 30 * 1000,
       view_options = {
+        show_hidden = true,
         is_always_hidden = function(name, _)
           return name == "." or name == ".."
         end,
@@ -87,8 +88,8 @@ return {
         ["<CR>"] = "actions.select",
         ["g/"] = "actions.select_vsplit",
         ["g-"] = "actions.select_split",
-        ["h"] = "actions.select",
-        ["l"] = "actions.parent",
+        ["l"] = "actions.select",
+        ["h"] = "actions.parent",
         ["gt"] = "actions.select_tab",
         ["<C-p>"] = "actions.preview",
         ["<C-c>"] = "actions.close",
