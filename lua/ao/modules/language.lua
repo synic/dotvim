@@ -34,19 +34,13 @@ local function lsp_on_attach(_, bufnr)
       buffer = bufnr,
     },
     {
-      "<localleader>d",
-      vim.lsp.buf.type_definition,
-      desc = "Type definition",
-      buffer = bufnr,
-    },
-    {
-      "<localleader>-",
+      "gs",
       require("telescope.builtin").lsp_document_symbols,
       desc = "Document symbols",
       buffer = bufnr,
     },
     {
-      "<localleader>_",
+      "gW",
       require("telescope.builtin").lsp_dynamic_workspace_symbols,
       desc = "Workspace symbols",
       buffer = bufnr,
@@ -201,16 +195,6 @@ return {
       "williamboman/mason-lspconfig.nvim",
       "williamboman/mason.nvim",
     },
-    keys = {
-      { "gi", vim.lsp.buf.implementation, desc = "Go to implementation" },
-      {
-        "gI",
-        "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.implementation()<cr>",
-        desc = "Go to implementation in split",
-      },
-      { "gd", vim.lsp.buf.definition, desc = "Go to definition" },
-      { "g/", "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>", desc = "Go to definition in split" },
-    },
     opts = {
       diagnostics = {
         underline = true,
@@ -348,8 +332,8 @@ return {
           enable = true,
           border = "none",
           peek_definition_code = {
-            ["<localleader>df"] = "@function.outer",
-            ["<localleader>dF"] = "@class.outer",
+            ["gF"] = "@function.outer",
+            ["gC"] = "@class.outer",
           },
         },
       },

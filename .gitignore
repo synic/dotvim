@@ -18,3 +18,5 @@ sessions/
 
 # packer
 plugin/packer_compiled.lua
+
+.mypy_cache

@@ -5,6 +5,51 @@ local function browse_at_current_directory()
   vim.fn.execute("edit " .. pathname)
 end
 
+local function oil_rename()
+  local oil = require("oil")
+  local entry = oil.get_cursor_entry()
+
+  if entry ~= nil then
+    vim.ui.input({ prompt = "Rename file: ", default = entry.name }, function(name)
+      if name == nil then
+        return
+      end
+
+      vim.cmd.normal("C" .. name)
+      vim.cmd.write({ mods = { silent = true } })
+    end)
+  end
+end
+
+local function oil_setup_navigation_keys(echo)
+  if vim.b.ao_oil_navigation_keys_enabled then
+    vim.keymap.set(
+      "n",
+      "h",
+      "<cmd>lua require'oil.actions'.parent.callback()<cr>",
+      { desc = "Go up one directory", buffer = true }
+    )
+    vim.keymap.set(
+      "n",
+      "l",
+      "<cmd>lua require'oil.actions'.select.callback()<cr>",
+      { desc = "Go up one directory", buffer = true }
+    )
+    if echo then
+      vim.notify("oil navigation keys enabled")
+    end
+  else
+    pcall(vim.keymap.del, "n", "h", { buffer = true })
+    pcall(vim.keymap.del, "n", "l", { buffer = true })
+    vim.notify("oil navigation keys disabled")
+  end
+end
+
+local function oil_toggle_navigation_keys()
+  vim.b.ao_oil_navigation_keys_enabled = not vim.b.ao_oil_navigation_keys_enabled
+  oil_setup_navigation_keys(true)
+end
+
 local function browse_at_project_directory()
   local status, project = pcall(require, "project_nvim.project")
 
@@ -88,8 +133,6 @@ return {
         ["<CR>"] = "actions.select",
         ["g/"] = "actions.select_vsplit",
         ["g-"] = "actions.select_split",
-        ["l"] = "actions.select",
-        ["h"] = "actions.parent",
         ["gt"] = "actions.select_tab",
         ["<C-p>"] = "actions.preview",
         ["<C-c>"] = "actions.close",
@@ -98,7 +141,9 @@ return {
         ["<C-v>"] = "actions.select_vsplit",
         ["gs"] = "actions.change_sort",
         ["gx"] = "actions.open_external",
-        ["gr"] = "actions.refresh",
+        ["gk"] = { desc = "Toggle navigation keys", callback = oil_toggle_navigation_keys },
+        ["gR"] = "actions.refresh",
+        ["gr"] = { desc = "Rename", callback = oil_rename },
         ["gn"] = { desc = "Create new file", callback = oil_touch },
         ["g\\"] = "actions.toggle_trash",
         ["g."] = "actions.toggle_hidden",
@@ -107,10 +152,11 @@ return {
         ["-"] = "actions.parent",
       },
       use_default_keymaps = false,
-      constrain_cursor = "editable",
+      constrain_cursor = "name",
     },
     dependencies = { "nvim-tree/nvim-web-devicons", "synic/project.nvim" },
     init = function()
+      vim.g.ao_oil_navigation_keys_enabled = true
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "oil",
         callback = function()
@@ -120,6 +166,9 @@ return {
           if dir then
             vim.cmd.tcd(dir)
           end
+
+          vim.b.ao_oil_navigation_keys_enabled = true
+          oil_setup_navigation_keys(false)
         end,
       })
     end,
