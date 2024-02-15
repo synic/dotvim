@@ -1,9 +1,30 @@
 local utils = require("ao.utils")
 
-local function browse_at_current_directory()
-  local pathname = vim.fn.expand("%:p:h")
+vim.g.netrw_liststyle = 0
+vim.g.netrw_keepdir = 0
+vim.g.netrw_banner = 0
+vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\.\S\+]]
+vim.g.netrw_browse_split = 0
+
+local function browse_at_project_directory()
+  local status, project = pcall(require, "project_nvim.project")
+
+  if not status then
+    print("Unable to determine project root")
+    return
+  end
+
+  local pathname, _ = project.get_project_root()
+
   vim.fn.execute("edit " .. pathname)
 end
+
+utils.map_keys({
+  { "-", vim.cmd.Oil, desc = "Browse current directory" },
+  { "<leader>-", vim.cmd.Oil, desc = "Browse current directory" },
+  { "_", browse_at_project_directory, desc = "Browse current project" },
+  { "<leader>_", browse_at_project_directory, desc = "Browse current project" },
+})
 
 local function oil_rename()
   local oil = require("oil")
@@ -19,6 +40,18 @@ local function oil_rename()
       vim.cmd.write({ mods = { silent = true } })
     end)
   end
+end
+
+local function oil_delete()
+  local mode = vim.fn.mode()
+
+  if mode == "v" then
+    vim.cmd.visual("d")
+  else
+    vim.cmd.normal("dd")
+  end
+
+  vim.cmd.write({ mods = { silent = true } })
 end
 
 local function oil_setup_navigation_keys(echo)
@@ -49,36 +82,6 @@ local function oil_toggle_navigation_keys()
   vim.b.ao_oil_navigation_keys_enabled = not vim.b.ao_oil_navigation_keys_enabled
   oil_setup_navigation_keys(true)
 end
-
-local function browse_at_project_directory()
-  local status, project = pcall(require, "project_nvim.project")
-
-  if not status then
-    print("Unable to determine project root")
-    return
-  end
-
-  local pathname, _ = project.get_project_root()
-
-  vim.fn.execute("edit " .. pathname)
-end
-
-utils.map_keys({
-  { "-", browse_at_current_directory, desc = "Browse current directory" },
-  {
-    "<leader>-",
-    browse_at_current_directory,
-    desc = "Browse current directory",
-  },
-  { "_", browse_at_project_directory, desc = "Browse current project" },
-  { "<leader>_", browse_at_project_directory, desc = "Browse current project" },
-})
-
-vim.g.netrw_liststyle = 0
-vim.g.netrw_keepdir = 0
-vim.g.netrw_banner = 0
-vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\.\S\+]]
-vim.g.netrw_browse_split = 0
 
 local function oil_touch()
   local oil = require("oil")
@@ -145,6 +148,7 @@ return {
         ["gR"] = "actions.refresh",
         ["gr"] = { desc = "Rename", callback = oil_rename },
         ["gn"] = { desc = "Create new file", callback = oil_touch },
+        ["gd"] = { desc = "Delete", callback = oil_delete },
         ["g\\"] = "actions.toggle_trash",
         ["g."] = "actions.toggle_hidden",
         ["`"] = "actions.cd",
@@ -158,8 +162,12 @@ return {
     init = function()
       vim.g.ao_oil_navigation_keys_enabled = true
       vim.api.nvim_create_autocmd("FileType", {
-        pattern = "oil",
+        pattern = "*",
         callback = function()
+          if vim.bo.filetype ~= "oil" then
+            return
+          end
+
           local oil = require("oil")
           local dir = oil.get_current_dir()
 

@@ -11,6 +11,18 @@ local function indent_blankline_toggle()
   vim.opt.list = enabled
 end
 
+local function lualine_trunc(trunc_width, trunc_len, hide_width, no_ellipsis)
+  return function(str)
+    local win_width = vim.fn.winwidth(0)
+    if hide_width and win_width < hide_width then
+      return ""
+    elseif trunc_width and trunc_len and win_width < trunc_width and #str > trunc_len then
+      return str:sub(1, trunc_len) .. (no_ellipsis and "" or "...")
+    end
+    return str
+  end
+end
+
 local function search_in_project_root()
   vim.ui.input({ prompt = "term: " }, function(input)
     vim.cmd('CtrlSF "' .. input .. '"')
@@ -107,6 +119,22 @@ return {
         section_separators = { left = "", right = "" },
       },
       sections = {
+        lualine_b = {
+          {
+            "branch",
+            fmt = lualine_trunc(200, 30, 100),
+          },
+          { "diff" },
+          { "diagnostics" },
+        },
+        lualine_x = {
+          { "encoding", fmt = lualine_trunc(0, 0, 120) },
+          { "fileformat", fmt = lualine_trunc(0, 0, 120) },
+          { "filetype", fmt = lualine_trunc(0, 0, 120) },
+        },
+        lualine_y = {
+          { "progress", fmt = lualine_trunc(0, 0, 100) },
+        },
         lualine_c = {
           {
             "filename",
@@ -168,7 +196,6 @@ return {
     "dyng/ctrlsf.vim",
     cmd = { "CtrlSF" },
     keys = {
-
       { "<leader>sf", search_in_project_root, desc = "Search in project root" },
     },
     init = function()
@@ -263,7 +290,9 @@ return {
     end,
   },
 
-  { "nvim-treesitter/nvim-treesitter-context", event = { "BufReadPre", "BufNewFile" } },
+  -- fidget.nvim shows lsp and null-ls status at the bottom right of the screen
+  { "j-hui/fidget.nvim", tag = "legacy", event = "LspAttach", opts = {} },
+
   {
     "chrisgrieser/nvim-early-retirement",
     config = true,

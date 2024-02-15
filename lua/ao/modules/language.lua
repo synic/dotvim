@@ -339,6 +339,15 @@ return {
       },
     },
     config = function(_, opts)
+      local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+      parser_config.gotmpl = {
+        install_info = {
+          url = "https://github.com/ngalaiko/tree-sitter-go-template",
+          files = { "src/parser.c" },
+        },
+        filetype = "gotmpl",
+        used_by = { "gohtmltmpl", "gotexttmpl", "gotmpl" },
+      }
       require("nvim-treesitter.configs").setup(opts)
     end,
   },
@@ -420,8 +429,8 @@ return {
     end,
   },
 
-  -- fidget.nvim shows lsp and null-ls status at the bottom right of the screen
-  { "j-hui/fidget.nvim", tag = "legacy", event = "LspAttach", opts = {} },
+  -- vim specific lua development plugin
+  { "folke/neodev.nvim", ft = "lua" },
 
   -- dart
   { "dart-lang/dart-vim-plugin", ft = "dart" },
