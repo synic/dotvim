@@ -17,7 +17,7 @@ if has('nvim')
     vim.api.nvim_buf_set_keymap(
       0,
       'n',
-      'gF',
+      '<localleader>f',
       '<cmd>TypescriptRenameFile<cr>',
       { desc = 'rename file' }
     )
