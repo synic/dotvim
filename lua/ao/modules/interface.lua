@@ -57,12 +57,24 @@ return {
     },
   },
 
+  -- show indent scope
+  { "echasnovski/mini.indentscope", version = false, lazy = false, opts = {} },
+
   -- highlight css and other colors
   {
     "norcalli/nvim-colorizer.lua",
-    config = function()
-      require("colorizer").setup()
-    end,
+    name = "colorizer",
+    event = { "BufReadPre", "BufNewFile" },
+    opts = {
+      "javascript",
+      "css",
+      "html",
+      "templ",
+      "sass",
+      "scss",
+      "typescript",
+      "json",
+    },
   },
 
   -- show marks in gutter
@@ -79,6 +91,70 @@ return {
         desc = "Dropbar picker",
       },
     },
+    opts = function()
+      local dutils = require("dropbar.utils")
+      local preview = false
+      return {
+        menu = {
+          preview = preview,
+          keymaps = {
+            ["q"] = "<C-w>q",
+            ["h"] = "<C-w>q",
+            ["<LeftMouse>"] = function()
+              local menu = dutils.menu.get_current()
+              if not menu then
+                return
+              end
+              local mouse = vim.fn.getmousepos()
+              local clicked_menu = dutils.menu.get({ win = mouse.winid })
+              -- If clicked on a menu, invoke the corresponding click action,
+              -- else close all menus and set the cursor to the clicked window
+              if clicked_menu then
+                clicked_menu:click_at({
+                  mouse.line,
+                  mouse.column - 1,
+                }, nil, 1, "l")
+                return
+              end
+              dutils.menu.exec("close")
+              dutils.bar.exec("update_current_context_hl")
+              if vim.api.nvim_win_is_valid(mouse.winid) then
+                vim.api.nvim_set_current_win(mouse.winid)
+              end
+            end,
+            ["l"] = function()
+              local menu = dutils.menu.get_current()
+              if not menu then
+                return
+              end
+              local cursor = vim.api.nvim_win_get_cursor(menu.win)
+              local component = menu.entries[cursor[1]]:first_clickable(cursor[2])
+              if component then
+                menu:click_on(component, nil, 1, "l")
+              end
+            end,
+            ["<MouseMove>"] = function()
+              local menu = dutils.menu.get_current()
+              if not menu then
+                return
+              end
+              local mouse = vim.fn.getmousepos()
+              dutils.menu.update_hover_hl(mouse)
+              if preview then
+                dutils.menu.update_preview(mouse)
+              end
+            end,
+            ["i"] = function()
+              local menu = dutils.menu.get_current()
+              if not menu then
+                return
+              end
+              menu:fuzzy_find_open()
+            end,
+          },
+        },
+      }
+    end,
     dependencies = {
       "nvim-telescope/telescope-fzf-native.nvim",
     },

@@ -115,4 +115,9 @@ module.find_project_root = function()
   return project_root
 end
 
+module.goto_config_directory = function()
+  vim.cmd.tcd(vim.fn.stdpath("config"))
+  vim.cmd.edit(".")
+end
+
 return module

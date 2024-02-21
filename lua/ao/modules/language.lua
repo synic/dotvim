@@ -163,11 +163,12 @@ return {
             capabilities = capabilities,
             on_attach = lsp_on_attach,
             settings = {
-              gpls = {
+              gopls = {
                 buildFlags = { "-tags=debug" },
                 completeUnimported = true,
-                analysis = {
+                analyses = {
                   unusedparams = true,
+                  fieldalignment = true,
                 },
               },
             },
@@ -353,11 +354,7 @@ return {
   {
     "jose-elias-alvarez/typescript.nvim",
     ft = { "typescript", "javascript" },
-    opts = {
-      server = {
-        on_attach = lsp_on_attach,
-      },
-    },
+    opts = { server = { on_attach = lsp_on_attach } },
   },
 
   -- diagnostics and formatting
