@@ -46,7 +46,6 @@ utils.map_keys({
   { "<leader>wc", "<cmd>close<cr>", desc = "Close window", silent = true },
   { "<leader>wd", "<cmd>q<cr>", desc = "Quit window", silent = true },
   { "<leader>w=", "<C-w>=", desc = "Equalize windows", silent = true },
-  { "<leader>wm", "<C-w>|", desc = "Maximize window", silent = true },
   { "<leader>wH", "<cmd>wincmd h<cr><cmd>close<cr>", desc = "Close window to the left" },
   { "<leader>wJ", "<cmd>wincmd j<cr><cmd>close<cr>", desc = "Close window below" },
   { "<leader>wK", "<cmd>wincmd k<cr><cmd>close<cr>", desc = "Close window above" },

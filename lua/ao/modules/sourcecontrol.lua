@@ -82,7 +82,7 @@ return {
   -- git client
   {
     "NeogitOrg/neogit",
-    opts = { kind = "vsplit" },
+    opts = { kind = "auto" },
     keys = {
       { "<leader>gs", neogit_open, desc = "Git status" },
     },

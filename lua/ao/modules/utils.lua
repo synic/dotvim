@@ -1,26 +1,23 @@
 local utils = require("ao.utils")
 
-vim.cmd([[
-	function! s:ZoomToggle() abort
-		if exists('t:zoomed') && t:zoomed
-			execute t:zoom_winrestcmd
-			let t:zoomed = 0
-		else
-			let t:zoom_winrestcmd = winrestcmd()
-			resize
-			vertical resize
-			let t:zoomed = 1
-		endif
-	endfunction
-	command! ZoomToggle call s:ZoomToggle()
-]])
+local function zoom_toggle()
+  if vim.t.zoomed then
+    vim.fn.execute(vim.t.zoom_winrestcmd)
+    vim.t.zoomed = false
+  else
+    vim.t.zoom_winrestcmd = vim.fn.winrestcmd()
+    vim.t.zoomed = true
+    vim.cmd("resize")
+    vim.cmd("vertical resize")
+  end
+end
 
 -- set up keys
 utils.map_keys({
   { "<leader>cp", "<cmd>Lazy<cr>", desc = "Plugin manager" },
   { "<leader>cPu", "<cmd>Lazy update<cr>", desc = "Update plugins" },
   { "<leader>cPs", "<cmd>Lazy sync<cr>", desc = "Sync plugins" },
-  { "<leader>wM", "<cmd>ZoomToggle<cr>", desc = "Zoom window" },
+  { "<leader>wM", zoom_toggle, desc = "Zoom window" },
 })
 
 local plugins = {
@@ -44,14 +41,6 @@ local plugins = {
     end,
   },
 
-  -- display undoo list
-  {
-    "mbbill/undotree",
-    keys = {
-      { "<leader>tu", "<cmd>UndotreeToggle<cr>", desc = "Undo tree" },
-    },
-  },
-
   -- snippets
   {
     "L3MON4D3/LuaSnip",
@@ -65,6 +54,7 @@ local plugins = {
   },
   "christoomey/vim-tmux-navigator",
 
+  -- create an image of your code snippet (to post on Twitter, etc)
   {
     "ellisonleao/carbon-now.nvim",
     lazy = true,

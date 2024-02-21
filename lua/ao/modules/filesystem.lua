@@ -37,21 +37,15 @@ local function oil_rename()
       end
 
       vim.cmd.normal("C" .. name)
-      vim.cmd.write({ mods = { silent = true } })
+      vim.cmd.write()
     end)
   end
 end
 
 local function oil_delete()
   local mode = vim.fn.mode()
-
-  if mode == "v" then
-    vim.cmd.visual("d")
-  else
-    vim.cmd.normal("dd")
-  end
-
-  vim.cmd.write({ mods = { silent = true } })
+  vim.cmd.visual(mode == "v" and "d" or "dd")
+  vim.cmd.write()
 end
 
 local function oil_setup_navigation_keys(echo)
@@ -109,11 +103,12 @@ local function oil_touch()
     end
 
     vim.cmd.normal("O" .. name)
-    vim.cmd.write({ mods = { silent = true } })
+    vim.cmd.write()
   end)
 end
 
 return {
+  -- dired like filemanager
   {
     "stevearc/oil.nvim",
     opts = {
@@ -166,13 +161,6 @@ return {
         callback = function()
           if vim.bo.filetype ~= "oil" then
             return
-          end
-
-          local oil = require("oil")
-          local dir = oil.get_current_dir()
-
-          if dir then
-            vim.cmd.tcd(dir)
           end
 
           vim.b.ao_oil_navigation_keys_enabled = true
