@@ -117,6 +117,9 @@ return {
       { "<leader>.", "<cmd>Telescope resume<cr>", desc = "Resume last search" },
       { "<leader>sb", "<cmd>Telescope builtin<cr>", desc = "List pickers" },
 
+      -- undo
+      { "<leader>tu", "<cmd>Telescope undo<cr>", desc = "Undo tree" },
+
       -- projects
       { "<leader>pf", telescope_find_project_files, desc = "Find project file" },
       { "<leader>pg", telescope_git_files, desc = "Find git files" },
@@ -182,6 +185,15 @@ return {
       "LukasPietzschmann/telescope-tabs",
       "benfowler/telescope-luasnip.nvim",
       {
+        "debugloop/telescope-undo.nvim",
+
+        config = function()
+          utils.on_load("telescope.nvim", function()
+            require("telescope").load_extension("undo")
+          end)
+        end,
+      },
+      {
         "nvim-telescope/telescope-ui-select.nvim",
 
         config = function()
@@ -190,7 +202,6 @@ return {
           end)
         end,
       },
-
       {
         "nvim-telescope/telescope-fzf-native.nvim",
         build = "make",

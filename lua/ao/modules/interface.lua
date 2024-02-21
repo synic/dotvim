@@ -49,7 +49,7 @@ return {
     opts = {},
   },
 
-  -- zen mode
+  -- zen mode (maximize windows, etc)
   {
     "pocco81/true-zen.nvim",
     keys = {
@@ -57,6 +57,7 @@ return {
     },
   },
 
+  -- highlight css and other colors
   {
     "norcalli/nvim-colorizer.lua",
     config = function()
@@ -66,6 +67,22 @@ return {
 
   -- show marks in gutter
   "kshenoy/vim-signature",
+
+  -- breadcrumbs
+  {
+    "Bekaboo/dropbar.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    keys = {
+      {
+        "<localleader>,",
+        "<cmd>lua require('dropbar.api').pick()<cr>",
+        desc = "Dropbar picker",
+      },
+    },
+    dependencies = {
+      "nvim-telescope/telescope-fzf-native.nvim",
+    },
+  },
 
   -- fancy up those tabs
   {
@@ -109,6 +126,7 @@ return {
       end)
     end,
   },
+
   -- statusline
   {
     "nvim-lualine/lualine.nvim",
@@ -293,6 +311,7 @@ return {
   -- fidget.nvim shows lsp and null-ls status at the bottom right of the screen
   { "j-hui/fidget.nvim", tag = "legacy", event = "LspAttach", opts = {} },
 
+  -- automatically close inactive buffers
   {
     "chrisgrieser/nvim-early-retirement",
     config = true,
