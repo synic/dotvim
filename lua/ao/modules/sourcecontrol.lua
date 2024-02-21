@@ -82,7 +82,43 @@ return {
   -- git client
   {
     "NeogitOrg/neogit",
-    opts = { kind = "auto" },
+    opts = {
+      kind = "auto",
+      commit_editor = {
+        kind = "auto",
+      },
+      commit_select_view = {
+        kind = "auto",
+      },
+      commit_view = {
+        kind = "vsplit",
+        verify_commit = vim.fn.executable("gpg") == 1,
+      },
+      log_view = {
+        kind = "auto",
+      },
+      rebase_editor = {
+        kind = "auto",
+      },
+      reflog_view = {
+        kind = "auto",
+      },
+      merge_editor = {
+        kind = "auto",
+      },
+      description_editor = {
+        kind = "auto",
+      },
+      tag_editor = {
+        kind = "auto",
+      },
+      preview_buffer = {
+        kind = "split",
+      },
+      popup = {
+        kind = "split",
+      },
+    },
     keys = {
       { "<leader>gs", neogit_open, desc = "Git status" },
     },

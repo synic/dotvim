@@ -96,21 +96,13 @@ utils.map_keys({
   { "<leader>hh", "<cmd>lua require('ao.utils').get_help()<cr>", desc = "Show help", silent = true },
 
   -- configuration
-  {
-    "<leader>cm",
-    "<cmd>lua vim.cmd('edit ' .. vim.fn.stdpath('config'))<cr>",
-    desc = "Manage config",
-  },
+  { "<leader>cm", utils.goto_config_directory, desc = "Manage config" },
 
   -- misc
 
   { "vig", "ggVG", desc = "Select whole buffer", silent = true },
   { "<leader><localleader>", "<localleader>", desc = "Local buffer options", silent = true },
-  {
-    "<leader>xx",
-    "<cmd>lua require('ao.utils').close_all_floating_windows()<cr>",
-    desc = "Close floating windows",
-  },
+  { "<leader>xx", "<cmd>lua require('ao.utils').close_all_floating_windows()<cr>", desc = "Close floating windows" },
   { "<leader>qq", "<cmd>qa!<cr>", desc = "Quit Vim" },
 })
 

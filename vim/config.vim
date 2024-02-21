@@ -45,6 +45,8 @@ nnoremap <silent><leader>wh <cmd>wincmd h<cr>
 nnoremap <silent><leader>wj <cmd>wincmd j<cr>
 nnoremap <silent><leader>wk <cmd>wincmd k<cr>
 nnoremap <silent><leader>wl <cmd>wincmd l<cr>
+nnoremap <silent><leader>wd <cmd>q<cr>
+nnoremap <silent><leader>wc <cmd>close<cr>
 vnoremap <leader><leader> <plug>(easymotion-bd-f)
 nnoremap <leader><leader> <plug>(easymotion-overwin-f)
 nnoremap <silent><leader>tn <cmd>set number!<cr>

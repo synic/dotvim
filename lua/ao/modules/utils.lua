@@ -21,6 +21,9 @@ utils.map_keys({
 })
 
 local plugins = {
+  -- automatically set tabstop settings, etc
+  { "tpope/vim-sleuth", event = { "BufReadPre", "BufNewFile" } },
+
   -- automatically enter paste mode
   { "ConradIrwin/vim-bracketed-paste", event = "VeryLazy" },
 
@@ -32,6 +35,7 @@ local plugins = {
     opts = {},
   },
 
+  -- commenting blocks
   {
     "terrortylor/nvim-comment",
     event = { "BufReadPre", "BufNewFile" },
@@ -51,15 +55,23 @@ local plugins = {
       require("luasnip.loaders.from_vscode").lazy_load()
     end,
   },
-  "christoomey/vim-tmux-navigator",
+
+  -- tmux navigation integration
+  { "christoomey/vim-tmux-navigator" },
 
   -- create an image of your code snippet (to post on Twitter, etc)
   {
     "ellisonleao/carbon-now.nvim",
-    lazy = true,
     cmd = "CarbonNow",
     keys = {
-      { mode = "v", "<leader>xc", "<cmd>CarbonNow<cr>", desc = "Create carbonnow snippet" },
+      {
+        mode = "v",
+        "<leader>xc",
+        -- purposely not using <cmd> here, for some reason it
+        -- doesn't seem to work with visual mode
+        ":CarbonNow<cr>",
+        desc = "Create carbonnow snippet",
+      },
     },
     opts = {
       open_cmd = "open",

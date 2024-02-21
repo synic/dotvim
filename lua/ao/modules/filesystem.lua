@@ -16,7 +16,11 @@ local function browse_at_project_directory()
 
   local pathname, _ = project.get_project_root()
 
-  vim.fn.execute("edit " .. pathname)
+  if pathname then
+    vim.fn.execute("edit " .. pathname)
+  else
+    vim.fn.execute("edit .")
+  end
 end
 
 utils.map_keys({
@@ -146,8 +150,8 @@ return {
         ["gd"] = { desc = "Delete", callback = oil_delete },
         ["g\\"] = "actions.toggle_trash",
         ["g."] = "actions.toggle_hidden",
-        ["`"] = "actions.cd",
-        ["~"] = "actions.tcd",
+        ["`"] = "actions.tcd",
+        ["~"] = "actions.refresh",
         ["-"] = "actions.parent",
       },
       use_default_keymaps = false,
