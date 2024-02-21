@@ -49,4 +49,7 @@ return {
       require("everforest").setup(opts)
     end,
   },
+  {
+    "folke/tokyonight.nvim",
+  },
 }

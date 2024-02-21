@@ -35,8 +35,7 @@ local plugins = {
   {
     "terrortylor/nvim-comment",
     event = { "BufReadPre", "BufNewFile" },
-    opts = {},
-    config = function(opts)
+    config = function(_, opts)
       require("nvim_comment").setup(opts)
     end,
   },
