@@ -375,13 +375,20 @@ return {
           ns.builtins.formatting.trim_whitespace, -- general
           ns.builtins.formatting.stylua, -- lua
           ns.builtins.formatting.black, -- python
-          ns.builtins.formatting.prettierd.with({ filetypes = { "typescript", "javascript" } }),
-          ns.builtins.formatting.prettier.with({ filetypes = { "svelte" } }),
+          ns.builtins.formatting.prettierd.with({
+            filetypes = { "typescript", "javascript" },
+          }),
+          ns.builtins.formatting.prettier.with({
+            filetypes = { "svelte" },
+          }),
           ns.builtins.formatting.rustfmt,
           ns.builtins.formatting.gofmt,
           ns.builtins.formatting.goimports_reviser,
           ns.builtins.formatting.golines,
           ns.builtins.formatting.templ,
+          ns.builtins.formatting.rustywind.with({
+            filetypes = { "typescript", "javascript", "css", "templ", "html" },
+          }),
 
           -- diagnostics
           ns.builtins.diagnostics.gitlint,
@@ -392,7 +399,6 @@ return {
           ns.builtins.diagnostics.markdownlint_cli2,
 
           -- -- actions
-          ns.builtins.code_actions.gitsigns,
           require("typescript.extensions.null-ls.code-actions"),
         },
 
@@ -425,12 +431,4 @@ return {
 
   -- python
   { "jmcantrell/vim-virtualenv", ft = "python" },
-
-  -- vim scripting utilities
-  {
-    "tpope/vim-scriptease",
-    keys = {
-      { "<leader>sm", "<cmd>Messages<cr>", desc = "Messages" },
-    },
-  },
 }

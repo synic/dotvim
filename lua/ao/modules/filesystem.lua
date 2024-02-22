@@ -16,11 +16,7 @@ local function browse_at_project_directory()
 
   local pathname, _ = project.get_project_root()
 
-  if pathname then
-    vim.fn.execute("edit " .. pathname)
-  else
-    vim.fn.execute("edit .")
-  end
+  vim.fn.execute("edit " .. (pathname or "."))
 end
 
 utils.map_keys({
