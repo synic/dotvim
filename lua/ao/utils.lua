@@ -2,6 +2,9 @@ local module = {}
 
 module.get_help = function()
   vim.ui.input({ prompt = "enter search term" }, function(input)
+    if input == nil then
+      return
+    end
     vim.cmd("help " .. input)
   end)
 end
@@ -118,6 +121,11 @@ end
 module.goto_config_directory = function()
   vim.cmd.tcd(vim.fn.stdpath("config"))
   vim.cmd.edit(".")
+end
+
+module.has_module = function(n)
+  local status, _ = pcall(require, n)
+  return status
 end
 
 return module

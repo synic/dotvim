@@ -57,8 +57,42 @@ return {
     },
   },
 
+  -- various interface and vim scripting utilities
+  {
+    "tpope/vim-scriptease",
+    lazy = false,
+    keys = {
+      { "<leader>sm", "<cmd>Messages<cr>", desc = "Show notifications/messages" },
+    },
+  },
+
   -- show indent scope
-  { "echasnovski/mini.indentscope", version = false, lazy = false, opts = {} },
+  {
+    "echasnovski/mini.indentscope",
+    version = false,
+    lazy = false,
+    opts = {},
+    init = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = {
+          "help",
+          "alpha",
+          "dashboard",
+          "neo-tree",
+          "Trouble",
+          "trouble",
+          "lazy",
+          "mason",
+          "notify",
+          "toggleterm",
+          "lazyterm",
+        },
+        callback = function()
+          vim.b.miniindentscope_disable = true
+        end,
+      })
+    end,
+  },
 
   -- highlight css and other colors
   {
@@ -80,7 +114,6 @@ return {
   -- show marks in gutter
   "kshenoy/vim-signature",
 
-  -- breadcrumbs
   {
     "Bekaboo/dropbar.nvim",
     event = { "BufReadPre", "BufNewFile" },
@@ -94,7 +127,26 @@ return {
     opts = function()
       local dutils = require("dropbar.utils")
       local preview = false
+      local ignore = { "gitcommit" }
       return {
+        general = {
+          enable = function(buf, win)
+            return vim.fn.win_gettype(win) == ""
+              and vim.wo[win].winbar == ""
+              and vim.bo[buf].bt == ""
+              and not utils.table_contains(ignore, vim.bo[buf].ft)
+              and (
+                vim.bo[buf].ft == "markdown"
+                or (
+                  buf
+                    and vim.api.nvim_buf_is_valid(buf)
+                    and (pcall(vim.treesitter.get_parser, buf, vim.bo[buf].ft))
+                    and true
+                  or false
+                )
+              )
+          end,
+        },
         menu = {
           preview = preview,
           keymaps = {
@@ -154,6 +206,10 @@ return {
           },
         },
       }
+    end,
+    config = function(_, opts)
+      require("dropbar").setup(opts)
+      vim.ui.select = require("dropbar.utils.menu").select
     end,
     dependencies = {
       "nvim-telescope/telescope-fzf-native.nvim",

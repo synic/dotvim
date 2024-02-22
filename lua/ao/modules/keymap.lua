@@ -28,10 +28,7 @@ local categories = {
     P = { "+plugins" },
     c = { "+configuration", p = { "+plugins" } },
     q = { "+quit" },
-    x = { "+misc" },
-  },
-  ["<localleader>"] = {
-    g = { "+git", h = { "+hunks" } },
+    ["?"] = { "help" },
   },
 }
 
@@ -94,15 +91,16 @@ utils.map_keys({
 
   -- help
   { "<leader>hh", "<cmd>lua require('ao.utils').get_help()<cr>", desc = "Show help", silent = true },
+  { "<leader>?", "<cmd>lua require('ao.utils').get_help()<cr>", desc = "Show help", silent = true },
 
   -- configuration
   { "<leader>cm", utils.goto_config_directory, desc = "Manage config" },
+  { "<leader>cx", "<cmd>lua require('ao.utils').close_all_floating_windows()<cr>", desc = "Close plugin manager" },
 
   -- misc
 
   { "vig", "ggVG", desc = "Select whole buffer", silent = true },
   { "<leader><localleader>", "<localleader>", desc = "Local buffer options", silent = true },
-  { "<leader>xx", "<cmd>lua require('ao.utils').close_all_floating_windows()<cr>", desc = "Close floating windows" },
   { "<leader>qq", "<cmd>qa!<cr>", desc = "Quit Vim" },
 })
 

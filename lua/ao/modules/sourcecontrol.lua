@@ -7,15 +7,15 @@ local function gitsigns_on_attach(bufnr)
     -- stylua: ignore start
     { "]h", gs.next_hunk, desc = "Next hunk", buffer = bufnr },
     { "[h", gs.prev_hunk, desc = "Prev hunk", buffer = bufnr },
-    { "<localleader>ghs", "<cmd>Gitsigns stage_hunk<CR>", desc = "Stage hunk", buffer = bufnr, modes = {"n", "v"} },
-    { "<localleader>ghr", "<cmd>Gitsigns reset_hunk<CR>", desc = "Reset hunk", buffer = bufnr, modes = {"n", "v"} },
-    { "<localleader>ghS", gs.stage_buffer, desc = "Stage buffer", buffer = bufnr },
-    { "<localleader>ghu", gs.undo_stage_hunk, desc = "Undo stage Hunk", buffer = bufnr },
-    { "<localleader>ghR", gs.reset_buffer, desc = "Reset buffer", buffer = bufnr },
-    { "<localleader>ghp", gs.preview_hunk, desc = "Preview hunk", buffer = bufnr },
-    { "<localleader>ghb", function() gs.blame_line({ full = true }) end, desc = "Blame line", buffer = bufnr },
-    { "<localleader>ghd", gs.diffthis, desc = "Diff this", buffer = bufnr },
-    { "<localleader>ghD", function() gs.diffthis("~") end, desc = "Diff this ~", buffer = bufnr },
+    { "ghs", "<cmd>Gitsigns stage_hunk<CR>", desc = "Stage hunk", buffer = bufnr, modes = {"n", "v"} },
+    { "ghr", "<cmd>Gitsigns reset_hunk<CR>", desc = "Reset hunk", buffer = bufnr, modes = {"n", "v"} },
+    { "ghS", gs.stage_buffer, desc = "Stage buffer", buffer = bufnr },
+    { "ghu", gs.undo_stage_hunk, desc = "Undo stage Hunk", buffer = bufnr },
+    { "ghR", gs.reset_buffer, desc = "Reset buffer", buffer = bufnr },
+    { "ghp", gs.preview_hunk, desc = "Preview hunk", buffer = bufnr },
+    { "ghb", function() gs.blame_line({ full = true }) end, desc = "Blame line", buffer = bufnr },
+    { "ghd", gs.diffthis, desc = "Diff this", buffer = bufnr },
+    { "ghD", function() gs.diffthis("~") end, desc = "Diff this ~", buffer = bufnr },
     { "ih", "<cmd><C-U>Gitsigns select_hunk<cr>", desc = "Select hunk", buffer = bufnr, modes = {"o", "x"} },
   })
 end
@@ -52,12 +52,12 @@ return {
     config = true,
   },
 
-  -- git utilities
+  -- git blame
   {
-    "tpope/vim-fugitive",
+    "FabijanZulj/blame.nvim",
     keys = {
-      { "<leader>gb", "<cmd>Git blame<cr>", desc = "Git blame" },
-      { "<leader>ga", "<cmd>Git add %<cr>", desc = "Git add" },
+      { "<leader>gb", "<cmd>ToggleBlame virtual<cr>", desc = "Git blame" },
+      { "<leader>gB", "<cmd>ToggleBlame window<cr>", desc = "Git blame (window)" },
     },
   },
 
@@ -82,46 +82,26 @@ return {
   -- git client
   {
     "NeogitOrg/neogit",
+    dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" },
+    keys = {
+      { "<leader>gs", neogit_open, desc = "Git status" },
+    },
     opts = {
       kind = "auto",
-      commit_editor = {
-        kind = "auto",
-      },
-      commit_select_view = {
-        kind = "auto",
-      },
+      commit_editor = { kind = "auto" },
+      commit_select_view = { kind = "auto" },
+      log_view = { kind = "auto" },
+      rebase_editor = { kind = "auto" },
+      reflog_view = { kind = "auto" },
+      merge_editor = { kind = "auto" },
+      description_editor = { kind = "auto" },
+      tag_editor = { kind = "auto" },
+      preview_buffer = { kind = "split" },
+      popup = { kind = "split" },
       commit_view = {
         kind = "vsplit",
         verify_commit = vim.fn.executable("gpg") == 1,
       },
-      log_view = {
-        kind = "auto",
-      },
-      rebase_editor = {
-        kind = "auto",
-      },
-      reflog_view = {
-        kind = "auto",
-      },
-      merge_editor = {
-        kind = "auto",
-      },
-      description_editor = {
-        kind = "auto",
-      },
-      tag_editor = {
-        kind = "auto",
-      },
-      preview_buffer = {
-        kind = "split",
-      },
-      popup = {
-        kind = "split",
-      },
     },
-    keys = {
-      { "<leader>gs", neogit_open, desc = "Git status" },
-    },
-    dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" },
   },
 }
