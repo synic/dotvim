@@ -7,7 +7,7 @@ vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\
 vim.g.netrw_browse_split = 0
 
 local function browse_at_project_directory()
-  local status, project = pcall(require, "project_nvim.project")
+  local status, project = pcall(require, "project")
 
   if not status then
     print("Unable to determine project root")

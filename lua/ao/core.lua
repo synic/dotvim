@@ -24,9 +24,9 @@ module.install_plugin_manager = function()
 end
 
 module.boostrap_project_list = function(path)
-  local project_file_path = vim.fn.stdpath("data") .. "/project_nvim/project_history"
+  local project_file_path = vim.fn.stdpath("data") .. "/project/history"
   if not vim.loop.fs_stat(project_file_path) then
-    local status, history = pcall(require, "project_nvim.utils.history")
+    local status, history = pcall(require, "project.utils.history")
 
     if not status then
       return

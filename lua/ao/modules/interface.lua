@@ -42,6 +42,41 @@ local function golden_ratio_toggle()
   end
 end
 
+local tabby_get_tab_name = function(tab)
+  local status, name = pcall(vim.api.nvim_tabpage_get_var, tab.number(), "ao-tab-name")
+
+  if status and name ~= nil then
+    return name
+  end
+
+  return tab.name()
+end
+
+local set_tab_name = function(tabnr)
+  if tabnr == nil then
+    tabnr = vim.fn.tabpagenr()
+  end
+
+  local status, current = pcall(vim.api.nvim_tabpage_get_var, tabnr, "ao-tab-name")
+
+  if not status then
+    current = ""
+  end
+
+  vim.ui.input({ prompt = "Set layout name: ", default = current }, function(name)
+    if name == nil then
+      pcall(vim.api.nvim_tabpage_del_var, tabnr, "ao-tab-name")
+      return
+    end
+
+    vim.api.nvim_tabpage_set_var(tabnr, "ao-tab-name", name)
+  end)
+end
+
+utils.map_keys({
+  { "<leader>lN", set_tab_name, desc = "Set layout name" },
+})
+
 return {
   -- extensible core UI hooks
   {
@@ -241,7 +276,7 @@ return {
               line.sep("", hl, theme.fill),
               tab.is_current() and "" or "󰆣",
               tab.number(),
-              tab.name(),
+              tabby_get_tab_name(tab),
               tab.close_btn(""),
               line.sep("", hl, theme.fill),
               hl = hl,
