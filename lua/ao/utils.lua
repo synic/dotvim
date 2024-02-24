@@ -10,12 +10,10 @@ module.get_help = function()
 end
 
 module.close_all_floating_windows = function()
-  local closed_windows = {}
   for _, win in ipairs(vim.api.nvim_list_wins()) do
     local config = vim.api.nvim_win_get_config(win)
     if config.relative ~= "" then -- is_floating_window?
       vim.api.nvim_win_close(win, false) -- do not force
-      table.insert(closed_windows, win)
     end
   end
 end
@@ -83,10 +81,21 @@ module.scandir = function(directory)
 end
 
 module.on_load = function(name, fn)
+  if vim.g.ao_module_loaded_list == nil then
+    vim.g.ao_module_loaded_list = {}
+  end
+
   vim.api.nvim_create_autocmd("User", {
     pattern = "LazyLoad",
     callback = function(event)
       if event.data == name then
+        if module.table_contains(vim.g.ao_module_loaded_list, name) then
+          return true
+        end
+
+        local tbl = vim.g.ao_module_loaded_list
+        table.insert(tbl, name)
+        vim.g.ao_module_loaded_list = tbl
         fn(name)
         return true
       end
@@ -108,7 +117,7 @@ module.get_current_git_branch = function()
 end
 
 module.find_project_root = function()
-  local project_status, project = pcall(require, "project_nvim.project")
+  local project_status, project = pcall(require, "project")
 
   if not project_status then
     return

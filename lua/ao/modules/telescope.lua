@@ -1,7 +1,7 @@
 local utils = require("ao.utils")
 
 local function telescope_grep_project_for_term()
-  local status, project = pcall(require, "project_nvim.project")
+  local status, project = pcall(require, "project")
 
   if not status then
     print("Unable to determine project root")
@@ -31,7 +31,7 @@ local function ctrlsf_search_for_term(prompt_bufnr)
 end
 
 local function telescope_load_projects()
-  local status, projects = pcall(require, "project_nvim")
+  local status, projects = pcall(require, "project")
   if status then
     if not #projects.get_recent_projects() then
       print("No projects found")
@@ -224,12 +224,28 @@ return {
     },
     lazy = false,
     config = function()
-      require("project_nvim").setup({
+      require("project").setup({
         manual_mode = false,
         silent_chdir = true,
         detection_methods = { "pattern", "lsp" },
         patterns = { ".git", ".svn" },
         exclude_dirs = { "node_modules" },
+        custom_chdir_fn = function(path, method)
+          if method ~= "telescope" then
+            return false
+          end
+
+          local tabnr = vim.fn.tabpagenr()
+          local status, _ = pcall(vim.api.nvim_tabpage_get_var, tabnr, "ao-tab-name")
+
+          if status then
+            return false
+          end
+
+          vim.api.nvim_tabpage_set_var(tabnr, "ao-tab-name", vim.fn.fnamemodify(path, ":t"))
+
+          return false
+        end,
         pattern_get_current_dir_fn = function()
           local status, oil = pcall(require, "oil")
 

@@ -28,7 +28,7 @@ end
 -- another tab, nothing will happen. NeoGit is already open, even if you can't see it.
 local function neogit_open()
   local cwd = "%:p:h"
-  local status, project = pcall(require, "project_nvim.project")
+  local status, project = pcall(require, "project")
 
   if status then
     local project_root, _ = project.get_project_root()
