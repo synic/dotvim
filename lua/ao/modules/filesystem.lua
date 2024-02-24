@@ -153,7 +153,7 @@ return {
       use_default_keymaps = false,
       constrain_cursor = "name",
     },
-    dependencies = { "nvim-tree/nvim-web-devicons", "synic/project.nvim" },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     init = function()
       vim.g.ao_oil_navigation_keys_enabled = true
       vim.api.nvim_create_autocmd("FileType", {

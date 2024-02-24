@@ -372,7 +372,6 @@ return {
       return {
         sources = {
           -- formatting
-          ns.builtins.formatting.trim_whitespace, -- general
           ns.builtins.formatting.stylua, -- lua
           ns.builtins.formatting.black, -- python
           ns.builtins.formatting.prettierd.with({
@@ -381,18 +380,15 @@ return {
           ns.builtins.formatting.prettier.with({
             filetypes = { "svelte" },
           }),
-          ns.builtins.formatting.rustfmt,
           ns.builtins.formatting.gofmt,
           ns.builtins.formatting.goimports_reviser,
           ns.builtins.formatting.golines,
-          ns.builtins.formatting.templ,
           ns.builtins.formatting.rustywind.with({
             filetypes = { "typescript", "javascript", "css", "templ", "html" },
           }),
 
           -- diagnostics
           ns.builtins.diagnostics.gitlint,
-          ns.builtins.diagnostics.ruff,
           ns.builtins.diagnostics.mypy,
           ns.builtins.diagnostics.yamllint,
           ns.builtins.diagnostics.hadolint, -- Dockerfile
@@ -409,12 +405,7 @@ return {
               group = augroup,
               buffer = bufnr,
               callback = function()
-                vim.lsp.buf.format({
-                  bufnr = bufnr,
-                  filter = function(c)
-                    return c.name == "null-ls"
-                  end,
-                })
+                vim.lsp.buf.format({ bufnr = bufnr })
               end,
             })
           end
