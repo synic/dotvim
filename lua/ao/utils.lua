@@ -117,13 +117,13 @@ module.get_current_git_branch = function()
 end
 
 module.find_project_root = function()
-  local project_status, project = pcall(require, "project")
+  local project_status, noun = pcall(require, "noun")
 
   if not project_status then
     return
   end
 
-  local project_root, _ = project.get_project_root()
+  local project_root, _ = noun.get_project_root()
   return project_root
 end
 

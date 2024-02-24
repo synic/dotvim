@@ -1,7 +1,7 @@
 local utils = require("ao.utils")
 
 local function telescope_grep_project_for_term()
-  local status, project = pcall(require, "project")
+  local status, noun = pcall(require, "noun")
 
   if not status then
     print("Unable to determine project root")
@@ -10,7 +10,7 @@ local function telescope_grep_project_for_term()
 
   local builtin = require("telescope.builtin")
   local current_word = vim.fn.expand("<cword>")
-  local project_root, _ = project.get_project_root()
+  local project_root, _ = noun.get_project_root()
 
   builtin.grep_string({
     cwd = project_root,
@@ -31,16 +31,16 @@ local function ctrlsf_search_for_term(prompt_bufnr)
 end
 
 local function telescope_load_projects()
-  local status, projects = pcall(require, "project")
+  local status, noun = pcall(require, "noun")
   if status then
-    if not #projects.get_recent_projects() then
+    if not #noun.get_recent_projects() then
       print("No projects found")
       return
     end
   end
 
   vim.schedule(function()
-    require("telescope").extensions.projects.projects({ layout_config = { width = 0.5, height = 0.3 } })
+    require("telescope").extensions.noun.noun({ layout_config = { width = 0.5, height = 0.3 } })
   end)
 end
 
@@ -218,23 +218,19 @@ return {
   -- telescope project support
   -- can load and run separately from telescope, so it is not listed as a dependency.
   {
-    "synic/project.nvim",
+    "synic/noun.nvim",
     keys = {
       { "<leader>pp", telescope_load_projects, desc = "Projects" },
     },
     lazy = false,
     config = function()
-      require("project").setup({
+      require("noun").setup({
         manual_mode = false,
         silent_chdir = true,
         detection_methods = { "pattern", "lsp" },
         patterns = { ".git", ".svn" },
         exclude_dirs = { "node_modules" },
-        custom_chdir_fn = function(path, method)
-          if method ~= "telescope" then
-            return false
-          end
-
+        project_selected_callback_fn = function(path)
           local tabnr = vim.fn.tabpagenr()
           local status, _ = pcall(vim.api.nvim_tabpage_get_var, tabnr, "ao-tab-name")
 
@@ -263,7 +259,7 @@ return {
       })
 
       utils.on_load("telescope.nvim", function()
-        require("telescope").load_extension("projects")
+        require("telescope").load_extension("noun")
       end)
     end,
   },
