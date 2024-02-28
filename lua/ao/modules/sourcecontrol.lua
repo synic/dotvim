@@ -4,19 +4,50 @@ local function gitsigns_on_attach(bufnr)
   local gs = package.loaded.gitsigns
 
   utils.map_keys({
-    -- stylua: ignore start
-    { "]h",  gs.next_hunk,                                  desc = "Next hunk",       buffer = bufnr },
-    { "[h",  gs.prev_hunk,                                  desc = "Prev hunk",       buffer = bufnr },
-    { "ghs", "<cmd>Gitsigns stage_hunk<CR>",                desc = "Stage hunk",      buffer = bufnr, modes = { "n", "v" } },
-    { "ghr", "<cmd>Gitsigns reset_hunk<CR>",                desc = "Reset hunk",      buffer = bufnr, modes = { "n", "v" } },
-    { "ghS", gs.stage_buffer,                               desc = "Stage buffer",    buffer = bufnr },
-    { "ghu", gs.undo_stage_hunk,                            desc = "Undo stage Hunk", buffer = bufnr },
-    { "ghR", gs.reset_buffer,                               desc = "Reset buffer",    buffer = bufnr },
-    { "ghp", gs.preview_hunk,                               desc = "Preview hunk",    buffer = bufnr },
-    { "ghb", function() gs.blame_line({ full = true }) end, desc = "Blame line",      buffer = bufnr },
-    { "ghd", gs.diffthis,                                   desc = "Diff this",       buffer = bufnr },
-    { "ghD", function() gs.diffthis("~") end,               desc = "Diff this ~",     buffer = bufnr },
-    { "ih",  "<cmd><C-U>Gitsigns select_hunk<cr>",          desc = "Select hunk",     buffer = bufnr, modes = { "o", "x" } },
+    { "]h", gs.next_hunk, desc = "Next hunk", buffer = bufnr },
+    { "[h", gs.prev_hunk, desc = "Prev hunk", buffer = bufnr },
+    {
+      "ghs",
+      "<cmd>Gitsigns stage_hunk<CR>",
+      desc = "Stage hunk",
+      buffer = bufnr,
+      modes = { "n", "v" },
+    },
+    {
+      "ghr",
+      "<cmd>Gitsigns reset_hunk<CR>",
+      desc = "Reset hunk",
+      buffer = bufnr,
+      modes = { "n", "v" },
+    },
+    { "ghS", gs.stage_buffer, desc = "Stage buffer", buffer = bufnr },
+    { "ghu", gs.undo_stage_hunk, desc = "Undo stage Hunk", buffer = bufnr },
+    { "ghR", gs.reset_buffer, desc = "Reset buffer", buffer = bufnr },
+    { "ghp", gs.preview_hunk, desc = "Preview hunk", buffer = bufnr },
+    {
+      "ghb",
+      function()
+        gs.blame_line({ full = true })
+      end,
+      desc = "Blame line",
+      buffer = bufnr,
+    },
+    { "ghd", gs.diffthis, desc = "Diff this", buffer = bufnr },
+    {
+      "ghD",
+      function()
+        gs.diffthis("~")
+      end,
+      desc = "Diff this ~",
+      buffer = bufnr,
+    },
+    {
+      "ih",
+      "<cmd><C-U>Gitsigns select_hunk<cr>",
+      desc = "Select hunk",
+      buffer = bufnr,
+      modes = { "o", "x" },
+    },
   })
 end
 

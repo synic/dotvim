@@ -81,21 +81,10 @@ module.scandir = function(directory)
 end
 
 module.on_load = function(name, fn)
-  if vim.g.ao_module_loaded_list == nil then
-    vim.g.ao_module_loaded_list = {}
-  end
-
   vim.api.nvim_create_autocmd("User", {
     pattern = "LazyLoad",
     callback = function(event)
       if event.data == name then
-        if module.table_contains(vim.g.ao_module_loaded_list, name) then
-          return true
-        end
-
-        local tbl = vim.g.ao_module_loaded_list
-        table.insert(tbl, name)
-        vim.g.ao_module_loaded_list = tbl
         fn(name)
         return true
       end

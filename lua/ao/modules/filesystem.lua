@@ -7,14 +7,7 @@ vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\
 vim.g.netrw_browse_split = 0
 
 local function browse_at_project_directory()
-  local status, project = pcall(require, "project")
-
-  if not status then
-    print("Unable to determine project root")
-    return
-  end
-
-  local pathname, _ = project.get_project_root()
+  local pathname = utils.find_project_root()
 
   vim.fn.execute("edit " .. (pathname or "."))
 end
@@ -87,7 +80,7 @@ local function oil_touch()
     end
 
     if name == "." or name == ".." then
-      print("Invalid file name: " .. name)
+      print("Invalid file name: " .. name, vim.log.levels.ERROR)
       return
     end
 
@@ -98,7 +91,7 @@ local function oil_touch()
 
     local p = path:new(dir .. name)
     if p:exists() then
-      print("File already exists: ", path.filename)
+      vim.notify("File already exists: ", path.filename, vim.log.levels.WARN)
       return
     end
 

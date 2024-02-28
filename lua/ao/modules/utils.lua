@@ -56,9 +56,6 @@ local plugins = {
     end,
   },
 
-  -- tmux navigation integration
-  { "christoomey/vim-tmux-navigator" },
-
   -- create an image of your code snippet (to post on Twitter, etc)
   {
     "ellisonleao/carbon-now.nvim",

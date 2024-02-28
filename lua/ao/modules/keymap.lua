@@ -9,7 +9,7 @@ local function buffer_show_name(full_path)
 
   local path = vim.fn.expand(pattern)
   vim.fn.setreg("+", path)
-  print(path)
+  vim.notify(path)
 end
 
 local categories = {
@@ -68,6 +68,7 @@ utils.map_keys({
   { "<leader>lc", "<cmd>tabclose<cr>", desc = "Close layout", silent = true },
   { "<leader>ln", "<cmd>tabnext<cr>", desc = "Next layout", silent = true },
   { "<leader>lp", "<cmd>tabprev<cr>", desc = "Previous layout", silent = true },
+  { "<leader>l<tab>", "g<Tab>", desc = "Go to last layout", silent = true },
 
   -- toggles
   { "<leader>th", "<cmd>let &hls = !&hls<cr>", desc = "Toggle search highlights", silent = true },
@@ -87,20 +88,49 @@ utils.map_keys({
     desc = "Show full buffer path",
     silent = true,
   },
-  { "<leader>bn", "<cmd>enew<cr>", desc = "New buffer", silent = true },
+  {
+    "<leader>bn",
+    "<cmd>enew<cr>",
+    desc = "New buffer",
+    silent = true,
+  },
 
   -- help
-  { "<leader>hh", "<cmd>lua require('ao.utils').get_help()<cr>", desc = "Show help", silent = true },
-  { "<leader>?", "<cmd>lua require('ao.utils').get_help()<cr>", desc = "Show help", silent = true },
+  {
+    "<leader>hh",
+    "<cmd>lua require('ao.utils').get_help()<cr>",
+    desc = "Show help",
+    silent = true,
+  },
+  {
+    "<leader>?",
+    "<cmd>lua require('ao.utils').get_help()<cr>",
+    desc = "Show help",
+    silent = true,
+  },
 
   -- configuration
   { "<leader>cm", utils.goto_config_directory, desc = "Manage config" },
-  { "<leader>cx", "<cmd>lua require('ao.utils').close_all_floating_windows()<cr>", desc = "Close plugin manager" },
+  {
+    "<leader>cx",
+    "<cmd>lua require('ao.utils').close_all_floating_windows()<cr>",
+    desc = "Close plugin manager",
+  },
 
   -- misc
 
-  { "vig", "ggVG", desc = "Select whole buffer", silent = true },
-  { "<leader><localleader>", "<localleader>", desc = "Local buffer options", silent = true },
+  {
+    "vig",
+    "ggVG",
+    desc = "Select whole buffer",
+    silent = true,
+  },
+  {
+    "<leader><localleader>",
+    "<localleader>",
+    desc = "Local buffer options",
+    silent = true,
+  },
   { "<leader>qq", "<cmd>qa!<cr>", desc = "Quit Vim" },
 })
 
