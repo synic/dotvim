@@ -1,21 +1,30 @@
 local utils = require("ao.utils")
 
 local function telescope_grep_project_for_term()
-  local status, noun = pcall(require, "noun")
-
-  if not status then
-    print("Unable to determine project root")
-    return
-  end
-
   local builtin = require("telescope.builtin")
   local current_word = vim.fn.expand("<cword>")
-  local project_root, _ = noun.get_project_root()
+  local project_root = utils.find_project_root()
 
   builtin.grep_string({
-    cwd = project_root,
+    cwd = (project_root or "."),
     search = current_word,
   })
+end
+
+local telescope_tabs_entry_formatter = function(tab_id, _, file_names, _, is_current)
+  local status, name = pcall(vim.api.nvim_tabpage_get_var, tab_id, "ao-tab-name")
+  local display = "[No Name]"
+
+  if status and name ~= nil then
+    display = name
+  else
+    local entry_string = table.concat(file_names, ", ")
+    if entry_string == "" then
+      entry_string = "[No Name]"
+    end
+    display = entry_string
+  end
+  return string.format("%d: %s%s", tab_id, display, is_current and " <" or "")
 end
 
 local function telescope_grep_working_directory()
@@ -24,24 +33,20 @@ local function telescope_grep_working_directory()
 end
 
 local function ctrlsf_search_for_term(prompt_bufnr)
-  print("this was called")
   local current_picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
   local prompt = current_picker:_get_prompt()
-  vim.cmd("CtrlSF " .. prompt)
+  vim.cmd.CtrlSF(prompt)
 end
 
 local function telescope_load_projects()
-  local status, noun = pcall(require, "noun")
-  if status then
-    if not #noun.get_recent_projects() then
-      print("No projects found")
-      return
-    end
+  local noun = require("noun")
+
+  if #noun.get_recent_projects() == 0 then
+    vim.notify("No projects found", vim.log.levels.WARN)
+    return
   end
 
-  vim.schedule(function()
-    require("telescope").extensions.noun.noun({ layout_config = { width = 0.5, height = 0.3 } })
-  end)
+  require("telescope").extensions.noun.noun({ layout_config = { width = 0.45, height = 0.4 } })
 end
 
 local function telescope_git_files()
@@ -63,7 +68,7 @@ local function telescope_find_project_files()
   if project_root and project_root ~= "" then
     builtin.find_files({ cwd = project_root })
   else
-    print("No project root was found, listing projects...")
+    vim.notify("No project root was found, listing projects...")
     telescope_load_projects()
   end
 end
@@ -81,6 +86,12 @@ local function telescope_search_buffers()
   })
 end
 
+local function telescope_show_tabs()
+  require("telescope").extensions["telescope-tabs"].list_tabs({
+    layout_config = { width = 0.4, height = 0.3 },
+  })
+end
+
 return {
   -- fuzzy finder and list manager
   {
@@ -94,7 +105,7 @@ return {
         telescope_new_tab_with_projects,
         desc = "New layout with project",
       },
-      { "<leader>ll", "<cmd>lua require('telescope-tabs').list_tabs()<cr>", desc = "List layouts" },
+      { "<leader>ll", telescope_show_tabs, desc = "List layouts" },
 
       -- search
       {
@@ -108,7 +119,7 @@ return {
         telescope_grep_working_directory,
         desc = "Search in current directory",
       },
-      { "<leader>ss", "<cmd>lua require('telescope').extensions.luasnip.luasnip()<cr>", desc = "Snippets" },
+      { "<leader>ss", "<cmd>Telescope luasnip<cr>", desc = "Snippets" },
       { "<leader>sS", "<cmd>Telescope spell_suggest<cr>", desc = "Spelling suggestions" },
       { "<leader>sT", "<cmd>Telescope colorscheme<cr>", desc = "Themes" },
       { "<leader>,", "<cmd>Telescope oldfiles<cr>", desc = "Recent files" },
@@ -123,6 +134,8 @@ return {
       -- projects
       { "<leader>pf", telescope_find_project_files, desc = "Find project file" },
       { "<leader>pg", telescope_git_files, desc = "Find git files" },
+      { "<leader>pp", telescope_load_projects, desc = "Projects" },
+      { "<leader>pa", "<cmd>AddProject<cr>", desc = "Add project to projects list" },
       {
         "<leader>sp",
         "<cmd>Telescope live_grep<cr>",
@@ -152,10 +165,8 @@ return {
             override_file_sorter = true,
             case_mode = "smart_case",
           },
-          project = {
-            base_dirs = {
-              { "~/Projects", max_depth = 1 },
-            },
+          ["telescope-tabs"] = {
+            prompt_title = "Layouts",
           },
         },
         pickers = {
@@ -182,11 +193,17 @@ return {
     end,
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "LukasPietzschmann/telescope-tabs",
       "benfowler/telescope-luasnip.nvim",
       {
+        "nvim-telescope/telescope-ui-select.nvim",
+        config = function()
+          utils.on_load("telescope.nvim", function()
+            require("telescope").load_extension("ui-select")
+          end)
+        end,
+      },
+      {
         "debugloop/telescope-undo.nvim",
-
         config = function()
           utils.on_load("telescope.nvim", function()
             require("telescope").load_extension("undo")
@@ -194,13 +211,12 @@ return {
         end,
       },
       {
-        "nvim-telescope/telescope-ui-select.nvim",
-
-        config = function()
-          utils.on_load("telescope.nvim", function()
-            require("telescope").load_extension("ui-select")
-          end)
-        end,
+        "LukasPietzschmann/telescope-tabs",
+        opts = {
+          entry_formatter = telescope_tabs_entry_formatter,
+          entry_ordinal = telescope_tabs_entry_formatter,
+          show_preview = false,
+        },
       },
       {
         "nvim-telescope/telescope-fzf-native.nvim",
@@ -212,55 +228,51 @@ return {
           end)
         end,
       },
-    },
-  },
+      {
+        "synic/noun.nvim",
+        opts = {
+          manual_mode = true,
+          silent_chdir = true,
+          detection_methods = { "pattern", "lsp" },
+          -- has to be global, there's some weird interaction between telescope and `:tcd`/`:lcd` that will sometimes cause
+          -- the first file that you open after selecting a project to be blank
+          scope_chdir = "global",
+          patterns = { ".git", ".svn" },
+          exclude_dirs = { "node_modules" },
+          project_selected_callback_fn = function(path)
+            local tabnr = vim.fn.tabpagenr()
+            local status, _ = pcall(vim.api.nvim_tabpage_get_var, tabnr, "ao-tab-name")
 
-  -- telescope project support
-  -- can load and run separately from telescope, so it is not listed as a dependency.
-  {
-    "synic/noun.nvim",
-    keys = {
-      { "<leader>pp", telescope_load_projects, desc = "Projects" },
-    },
-    lazy = false,
-    config = function()
-      require("noun").setup({
-        manual_mode = false,
-        silent_chdir = true,
-        detection_methods = { "pattern", "lsp" },
-        patterns = { ".git", ".svn" },
-        exclude_dirs = { "node_modules" },
-        project_selected_callback_fn = function(path)
-          local tabnr = vim.fn.tabpagenr()
-          local status, _ = pcall(vim.api.nvim_tabpage_get_var, tabnr, "ao-tab-name")
-
-          if status then
-            return false
-          end
-
-          vim.api.nvim_tabpage_set_var(tabnr, "ao-tab-name", vim.fn.fnamemodify(path, ":t"))
-
-          return false
-        end,
-        pattern_get_current_dir_fn = function()
-          local status, oil = pcall(require, "oil")
-
-          if status then
-            local dir = oil.get_current_dir()
-
-            if dir ~= nil then
-              return dir
+            if status then
+              return false
             end
-          end
-          return vim.fn.expand("%:p:h", true)
-        end,
-        show_hidden = false,
-        datapath = vim.fn.stdpath("data"),
-      })
 
-      utils.on_load("telescope.nvim", function()
-        require("telescope").load_extension("noun")
-      end)
-    end,
+            vim.api.nvim_tabpage_set_var(tabnr, "ao-tab-name", vim.fn.fnamemodify(path, ":t"))
+
+            return false
+          end,
+          pattern_get_current_dir_fn = function()
+            local status, oil = pcall(require, "oil")
+
+            if status then
+              local dir = oil.get_current_dir()
+
+              if dir ~= nil then
+                return dir
+              end
+            end
+            return vim.fn.expand("%:p:h", true)
+          end,
+          show_hidden = false,
+          datapath = vim.fn.stdpath("data"),
+        },
+        config = function(_, opts)
+          utils.on_load("telescope.nvim", function()
+            require("telescope").load_extension("noun")
+          end)
+          require("noun").setup(opts)
+        end,
+      },
+    },
   },
 }

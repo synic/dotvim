@@ -29,7 +29,9 @@ return {
   -- ability to toggle diagnostics
   {
     "WhoIsSethDaniel/toggle-lsp-diagnostics.nvim",
-    keys = { { "<leader>ta", "<cmd>ToggleDiag<cr>", desc = "Lsp diagnostics" } },
+    keys = {
+      { "<leader>ta", "<cmd>ToggleDiag<cr>", desc = "Lsp diagnostics" },
+    },
   },
 
   -- Debug Adapter Protocol plugin
@@ -49,7 +51,11 @@ return {
       },
     },
     keys = {
-      { "<leader>db", "<cmd>lua require('dap').toggle_breakpoint()<cr>", desc = "Toggle breakpoint" },
+      {
+        "<leader>db",
+        "<cmd>lua require('dap').toggle_breakpoint()<cr>",
+        desc = "Toggle breakpoint",
+      },
       { "<leader>dc", "<cmd>lua require('dap').continue()<cr>", desc = "Continue" },
       { "<leader>dd", "<cmd>lua require('dap').run_last()<cr>", desc = "Run last" },
       { "<leader>dq", "<cmd>lua require('dap').close()<cr><cmd>lua require('dapui').close()<cr>", desc = "Close" },

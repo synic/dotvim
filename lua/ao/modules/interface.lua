@@ -33,10 +33,10 @@ local function golden_ratio_toggle()
   vim.cmd.GoldenRatioToggle()
   if vim.g.golden_ratio_enabled == 0 then
     vim.g.golden_ratio_enabled = 1
-    print("Enabled golden ratio")
+    vim.notify("Enabled golden ratio")
   else
     vim.g.golden_ratio_enabled = 0
-    print("Disabled golden ratio")
+    vim.notify("Disabled golden ratio")
     vim.g.equalalways = true
     vim.cmd("wincmd =")
   end
@@ -168,19 +168,19 @@ return {
         general = {
           enable = function(buf, win)
             return vim.fn.win_gettype(win) == ""
-                and vim.wo[win].winbar == ""
-                and vim.bo[buf].bt == ""
-                and not utils.table_contains(ignore, vim.bo[buf].ft)
-                and (
-                  vim.bo[buf].ft == "markdown"
-                  or (
-                    buf
+              and vim.wo[win].winbar == ""
+              and vim.bo[buf].bt == ""
+              and not utils.table_contains(ignore, vim.bo[buf].ft)
+              and (
+                vim.bo[buf].ft == "markdown"
+                or (
+                  buf
                     and vim.api.nvim_buf_is_valid(buf)
                     and (pcall(vim.treesitter.get_parser, buf, vim.bo[buf].ft))
                     and true
-                    or false
-                  )
+                  or false
                 )
+              )
           end,
         },
         menu = {
@@ -314,9 +314,9 @@ return {
           { "diagnostics" },
         },
         lualine_x = {
-          { "encoding",   fmt = lualine_trunc(0, 0, 120) },
+          { "encoding", fmt = lualine_trunc(0, 0, 120) },
           { "fileformat", fmt = lualine_trunc(0, 0, 120) },
-          { "filetype",   fmt = lualine_trunc(0, 0, 120) },
+          { "filetype", fmt = lualine_trunc(0, 0, 120) },
         },
         lualine_y = {
           { "progress", fmt = lualine_trunc(0, 0, 100) },
@@ -325,7 +325,7 @@ return {
           {
             "filename",
             file_status = true, -- displays file status (readonly status, modified status)
-            path = 1,           -- 0 = just filename, 1 = relative path, 2 = absolute path
+            path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
           },
         },
       },
@@ -373,7 +373,7 @@ return {
     end,
     keys = {
       { "<leader><leader>", "<plug>(easymotion-overwin-f)", desc = "Jump to location", mode = "n" },
-      { "<leader><leader>", "<plug>(easymotion-bd-f)",      desc = "Jump to location", mode = "v" },
+      { "<leader><leader>", "<plug>(easymotion-bd-f)", desc = "Jump to location", mode = "v" },
     },
   },
 
@@ -433,9 +433,9 @@ return {
       }
 
       if
-          vim.g.colors_name == "gruvbox-material"
-          or vim.g.colors_name:find("^catppuccin") ~= nil
-          or vim.g.colors_name:find("^rose-pine") ~= nil
+        vim.g.colors_name == "gruvbox-material"
+        or vim.g.colors_name:find("^catppuccin") ~= nil
+        or vim.g.colors_name:find("^rose-pine") ~= nil
       then
         hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
           vim.api.nvim_set_hl(0, "IblIndent", { fg = "#333333" })

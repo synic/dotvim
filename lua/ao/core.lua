@@ -23,19 +23,23 @@ module.install_plugin_manager = function()
   return lazy, was_installed
 end
 
-module.boostrap_project_list = function(path)
+module.bootstrap_project_list = function(path)
   local project_file_path = vim.fn.stdpath("data") .. "/noun/history"
+
   if not vim.loop.fs_stat(project_file_path) then
+    vim.notify("bootstrapping project list for noun.nvim")
+    vim.cmd("Lazy load noun.nvim")
     local status, history = pcall(require, "noun.utils.history")
 
     if not status then
+      vim.notify("unable to load noun to populate project list", vim.log.levels.ERROR)
       return
     end
 
     local handle = io.open(project_file_path, "w")
 
     if not handle then
-      print("Could not open project history file for writing")
+      vim.notify("Could not open project history file for writing", vim.log.levels.ERROR)
       return
     end
 
@@ -78,11 +82,16 @@ module.setup = function(config)
 
   lazy.install({ wait = installed, show = false })
 
-  if config.projects_directory then
-    module.boostrap_project_list(config.projects_directory)
-  end
-
   utils.close_all_floating_windows()
+
+  if config.projects_directory then
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "VeryLazy",
+      callback = function()
+        module.bootstrap_project_list(config.projects_directory)
+      end,
+    })
+  end
 
   vim.api.nvim_create_autocmd("ColorScheme", {
     pattern = "*",

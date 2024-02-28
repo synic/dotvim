@@ -73,7 +73,8 @@ return {
   },
   {
     "williamboman/mason-lspconfig.nvim",
-    dependencies = { "williamboman/mason.nvim", "hrsh7th/cmp-nvim-lsp" },
+    dependencies = { "hrsh7th/cmp-nvim-lsp" },
+    lazy = true,
     opts = {
       ensure_installed = {
         "lua_ls",
@@ -89,14 +90,14 @@ return {
       },
       automatic_installation = true,
     },
-    lazy = true,
+    init = function()
+      vim.filetype.add({ extension = { templ = "templ" } })
+    end,
     config = function(_, opts)
       local lsp = require("lspconfig")
       local m = require("mason-lspconfig")
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
-
-      vim.filetype.add({ extension = { templ = "templ" } })
 
       m.setup(opts)
       m.setup_handlers({
@@ -194,7 +195,12 @@ return {
     dependencies = {
       "hrsh7th/nvim-cmp",
       "williamboman/mason-lspconfig.nvim",
-      "williamboman/mason.nvim",
+      { "folke/neodev.nvim", ft = "lua" },
+      {
+        "jose-elias-alvarez/typescript.nvim",
+        ft = { "typescript", "javascript" },
+        opts = { server = { on_attach = lsp_on_attach } },
+      },
     },
     opts = {
       diagnostics = {
@@ -243,10 +249,9 @@ return {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     dependencies = {
-      {
-        "nvim-treesitter/nvim-treesitter-textobjects",
-        event = { "BufReadPre", "BufNewFile" },
-      },
+      "nvim-treesitter/nvim-treesitter-textobjects",
+      { "windwp/nvim-ts-autotag", config = true },
+      { "nvim-treesitter/nvim-treesitter-context", config = true },
     },
     event = { "BufReadPre", "BufNewFile" },
     cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
@@ -308,7 +313,6 @@ return {
           },
           include_surrounding_whitespace = false,
         },
-
         move = {
           enable = true,
           set_jumps = true, -- whether to set jumps in the jumplist
@@ -342,19 +346,6 @@ return {
     config = function(_, opts)
       require("nvim-treesitter.configs").setup(opts)
     end,
-  },
-
-  -- automatically close tags in jsx, tsx
-  {
-    "windwp/nvim-ts-autotag",
-    event = { "BufReadPre", "BufNewFile" },
-    opts = {},
-  },
-
-  {
-    "jose-elias-alvarez/typescript.nvim",
-    ft = { "typescript", "javascript" },
-    opts = { server = { on_attach = lsp_on_attach } },
   },
 
   -- diagnostics and formatting
@@ -405,7 +396,19 @@ return {
               group = augroup,
               buffer = bufnr,
               callback = function()
-                vim.lsp.buf.format({ bufnr = bufnr })
+                local buf = vim.api.nvim_get_current_buf()
+                local ft = vim.bo[buf].filetype
+                local have_nls = package.loaded["null-ls"]
+                  and (#require("null-ls.sources").get_available(ft, "NULL_LS_FORMATTING") > 0)
+                vim.lsp.buf.format({
+                  bufnr = bufnr,
+                  filter = function(c)
+                    if have_nls then
+                      return c.name == "null-ls"
+                    end
+                    return c.name ~= "null-ls"
+                  end,
+                })
               end,
             })
           end
@@ -413,9 +416,6 @@ return {
       }
     end,
   },
-
-  -- vim specific lua development plugin
-  { "folke/neodev.nvim", ft = "lua" },
 
   -- dart
   { "dart-lang/dart-vim-plugin", ft = "dart" },
