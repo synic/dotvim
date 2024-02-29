@@ -1,6 +1,6 @@
-local module = {}
+local M = {}
 
-module.get_help = function()
+M.get_help = function()
   vim.ui.input({ prompt = "enter search term" }, function(input)
     if input == nil then
       return
@@ -9,7 +9,7 @@ module.get_help = function()
   end)
 end
 
-module.close_all_floating_windows = function()
+M.close_all_floating_windows = function()
   for _, win in ipairs(vim.api.nvim_list_wins()) do
     local config = vim.api.nvim_win_get_config(win)
     if config.relative ~= "" then -- is_floating_window?
@@ -18,8 +18,8 @@ module.close_all_floating_windows = function()
   end
 end
 
-module.map_keys = function(keymap)
-  for _, key_data in pairs(keymap) do
+M.map_keys = function(keymap)
+  for _, key_data in ipairs(keymap) do
     local modes = key_data.modes or { "n" }
     key_data.modes = nil
 
@@ -29,29 +29,29 @@ module.map_keys = function(keymap)
     key_data[1] = nil
     key_data[2] = nil
 
-    for _, mode in pairs(modes) do
+    for _, mode in ipairs(modes) do
       vim.keymap.set(mode, left, right, key_data)
     end
   end
 end
 
-module.basename = function(str)
+M.basename = function(str)
   return string.gsub(str, "(.*/)(.*)", "%2")
 end
 
-module.join_paths = function(...)
+M.join_paths = function(...)
   local result = table.concat({ ... }, "/")
   return result
 end
 
-module.table_concat = function(table1, table2)
+M.table_concat = function(table1, table2)
   for i = 1, #table2 do
     table1[#table1 + 1] = table2[i]
   end
   return table1
 end
 
-module.table_contains = function(tbl, value)
+M.table_contains = function(tbl, value)
   for i = 1, #tbl do
     if tbl[i] == value then
       return true
@@ -60,7 +60,7 @@ module.table_contains = function(tbl, value)
   return false
 end
 
-module.scandir = function(directory)
+M.scandir = function(directory)
   local i, t, popen = 0, {}, io.popen
   local pfile = popen('ls -a "' .. directory .. '"')
 
@@ -80,19 +80,29 @@ module.scandir = function(directory)
   return t
 end
 
-module.on_load = function(name, fn)
+M.on_load = function(name, callback)
+  local status, config = pcall(require, "lazy.core.config")
+
+  -- if it's already loaded, then just run the callback
+  if status then
+    if config.plugins[name]._.loaded ~= nil then
+      callback(name)
+      return
+    end
+  end
+
   vim.api.nvim_create_autocmd("User", {
     pattern = "LazyLoad",
     callback = function(event)
       if event.data == name then
-        fn(name)
+        callback(name)
         return true
       end
     end,
   })
 end
 
-module.get_current_git_branch = function()
+M.get_current_git_branch = function()
   local branch = io.popen("git rev-parse --abbrev-ref HEAD 2> /dev/null")
   if branch then
     local name = branch:read("*l")
@@ -105,7 +115,7 @@ module.get_current_git_branch = function()
   end
 end
 
-module.find_project_root = function()
+M.find_project_root = function()
   local project_status, noun = pcall(require, "noun")
 
   if not project_status then
@@ -116,14 +126,14 @@ module.find_project_root = function()
   return project_root
 end
 
-module.goto_config_directory = function()
+M.goto_config_directory = function()
   vim.cmd.tcd(vim.fn.stdpath("config"))
   vim.cmd.edit(".")
 end
 
-module.has_module = function(n)
+M.has_module = function(n)
   local status, _ = pcall(require, n)
   return status
 end
 
-return module
+return M

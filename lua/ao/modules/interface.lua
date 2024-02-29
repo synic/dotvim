@@ -152,6 +152,9 @@ return {
 
   {
     "Bekaboo/dropbar.nvim",
+    dependencies = {
+      "nvim-telescope/telescope-fzf-native.nvim",
+    },
     event = { "BufReadPre", "BufNewFile" },
     keys = {
       {
@@ -247,9 +250,6 @@ return {
       require("dropbar").setup(opts)
       vim.ui.select = require("dropbar.utils.menu").select
     end,
-    dependencies = {
-      "nvim-telescope/telescope-fzf-native.nvim",
-    },
   },
 
   -- fancy up those tabs
@@ -413,62 +413,37 @@ return {
     keys = {
       { "<leader>ti", indent_blankline_toggle, desc = "Toggle indent guide" },
     },
-    config = function()
+    opts = {
+      whitespace = { remove_blankline_trail = false },
+      scope = { enabled = false },
+      exclude = {
+        filetypes = {
+          "help",
+          "startify",
+          "dashboard",
+          "packer",
+          "NeoGitStatus",
+          "markdown",
+          "lazy",
+          "mazon",
+          "NvimTree",
+          "Trouble",
+          "text",
+        },
+      },
+      indent = { char = "|" },
+    },
+    config = function(_, opts)
       local ibl = require("ibl")
-      local hooks = require("ibl.hooks")
       local conf = require("ibl.config")
 
-      local exclude = {
-        "help",
-        "startify",
-        "dashboard",
-        "packer",
-        "NeoGitStatus",
-        "markdown",
-        "lazy",
-        "mazon",
-        "NvimTree",
-        "Trouble",
-        "text",
-      }
-
-      if
-        vim.g.colors_name == "gruvbox-material"
-        or vim.g.colors_name:find("^catppuccin") ~= nil
-        or vim.g.colors_name:find("^rose-pine") ~= nil
-      then
-        hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-          vim.api.nvim_set_hl(0, "IblIndent", { fg = "#333333" })
-          vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#444444" })
-          vim.api.nvim_set_hl(0, "IblScope", { fg = "#444444" })
-          vim.api.nvim_set_hl(0, "NonText", { fg = "#444444" })
-          vim.api.nvim_set_hl(0, "Whitespace", { fg = "#444444" })
-          vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#444444" })
-        end)
-      end
-
-      if vim.g.colors_name == "everforest" then
-        hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-          vim.api.nvim_set_hl(0, "IblIndent", { fg = "#444444" })
-          vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#555555" })
-          vim.api.nvim_set_hl(0, "IblScope", { fg = "#555555" })
-          vim.api.nvim_set_hl(0, "NonText", { fg = "#555555" })
-          vim.api.nvim_set_hl(0, "Whitespace", { fg = "#555555" })
-          vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#555555" })
-        end)
-      end
-
-      ibl.setup({
-        whitespace = { remove_blankline_trail = false },
-        scope = { enabled = false },
-        exclude = { filetypes = exclude },
-        indent = { char = "|" },
-      })
+      ibl.setup(opts)
 
       vim.api.nvim_create_autocmd("BufEnter", {
         pattern = "*",
         callback = function()
-          vim.opt.list = not utils.table_contains(exclude, vim.bo.filetype) and conf.get_config(-1).enabled
+          vim.opt.list = not utils.table_contains(opts.exclude.filetypes, vim.bo.filetype)
+            and conf.get_config(-1).enabled
         end,
       })
 

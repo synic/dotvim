@@ -34,11 +34,6 @@ if !empty(glob('$VIMHOME/autoload/plug.vim'))
   call plug#end()
 endif
 
-function! NetRWCurrentProject()
-  let pathname = ProjectRootGuess()
-  execute 'edit ' . pathname
-endfunction
-
 nnoremap <silent><leader>w/ <cmd>vsplit<cr>
 nnoremap <silent><leader>w- <cmd>split<cr>
 nnoremap <silent><leader>wh <cmd>wincmd h<cr>
@@ -52,7 +47,6 @@ nnoremap <leader><leader> <plug>(easymotion-overwin-f)
 nnoremap <silent><leader>tn <cmd>set number!<cr>
 nnoremap <silent><leader>th <cmd>set nohlsearch!<cr>
 nnoremap - <cmd>edit .<cr>
-nnoremap _ <cmd>call NetRWCurrentProject()<cr>
 
 try
   colorscheme gruvbox-material
@@ -64,6 +58,3 @@ endtry
 
 autocmd VimResized * :wincmd =
 autocmd BufEnter * silent! lcd %:p:h
-
-" auto reload this file when saving
-autocmd! bufwritepost oldvimconfig.vim source %

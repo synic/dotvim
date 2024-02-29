@@ -359,6 +359,12 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     opts = function()
       local ns = require("null-ls")
+      local custom = require("ao.custom.none-ls")
+
+      -- only use none-ls for formatting these filetypes; the rest can use any formatter
+      local only_nonels_formatting_filetypes = {
+        "lua",
+      }
 
       return {
         sources = {
@@ -377,6 +383,7 @@ return {
           ns.builtins.formatting.rustywind.with({
             filetypes = { "typescript", "javascript", "css", "templ", "html" },
           }),
+          custom.trim_whitespace,
 
           -- diagnostics
           ns.builtins.diagnostics.gitlint,
@@ -398,15 +405,13 @@ return {
               callback = function()
                 local buf = vim.api.nvim_get_current_buf()
                 local ft = vim.bo[buf].filetype
-                local have_nls = package.loaded["null-ls"]
-                  and (#require("null-ls.sources").get_available(ft, "NULL_LS_FORMATTING") > 0)
                 vim.lsp.buf.format({
                   bufnr = bufnr,
                   filter = function(c)
-                    if have_nls then
+                    if utils.table_contains(only_nonels_formatting_filetypes, ft) then
                       return c.name == "null-ls"
                     end
-                    return c.name ~= "null-ls"
+                    return true
                   end,
                 })
               end,
