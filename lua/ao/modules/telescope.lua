@@ -1,4 +1,5 @@
 local utils = require("ao.utils")
+local themes = require("ao.modules.themes")
 
 local function telescope_grep_project_for_term()
   local builtin = require("telescope.builtin")
@@ -121,12 +122,14 @@ return {
       },
       { "<leader>ss", "<cmd>Telescope luasnip<cr>", desc = "Snippets" },
       { "<leader>sS", "<cmd>Telescope spell_suggest<cr>", desc = "Spelling suggestions" },
-      { "<leader>sT", "<cmd>Telescope colorscheme<cr>", desc = "Themes" },
       { "<leader>,", "<cmd>Telescope oldfiles<cr>", desc = "Recent files" },
       { "<leader>sR", "<cmd>Telescope registers<cr>", desc = "Registers" },
       { "<leader>sl", "<cmd>Telescope marks<cr>", desc = "Marks" },
       { "<leader>.", "<cmd>Telescope resume<cr>", desc = "Resume last search" },
       { "<leader>sb", "<cmd>Telescope builtin<cr>", desc = "List pickers" },
+
+      -- themes
+      { "<leader>st", themes.load_themes_and_pick, desc = "List themes" },
 
       -- undo
       { "<leader>tu", "<cmd>Telescope undo<cr>", desc = "Undo tree" },
@@ -188,6 +191,10 @@ return {
               },
             },
           },
+          colorscheme = {
+            enable_preview = true,
+            layout_config = { width = 0.4, height = 0.6 },
+          },
         },
       })
     end,
@@ -231,7 +238,7 @@ return {
       {
         "synic/noun.nvim",
         opts = {
-          manual_mode = true,
+          manual_mode = false,
           silent_chdir = true,
           detection_methods = { "pattern", "lsp" },
           -- has to be global, there's some weird interaction between telescope and `:tcd`/`:lcd` that will sometimes cause
@@ -267,10 +274,10 @@ return {
           datapath = vim.fn.stdpath("data"),
         },
         config = function(_, opts)
+          require("noun").setup(opts)
           utils.on_load("telescope.nvim", function()
             require("telescope").load_extension("noun")
           end)
-          require("noun").setup(opts)
         end,
       },
     },

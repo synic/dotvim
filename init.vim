@@ -138,13 +138,6 @@ end
 
 if has('nvim')
   lua require('ao')
-  set shada=!,'20,<50,s10,h
 else
-  set colorcolumn=80
-  set signcolumn=yes
   source $VIMHOME/vim/config.vim
-
-  " automatically reload vimrc and gvimrc on save
-  autocmd! bufwritepost vimrc source %
-  autocmd! bufwritepost gvimrc source %
 end

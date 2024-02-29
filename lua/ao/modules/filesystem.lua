@@ -121,7 +121,7 @@ return {
         end,
       },
       keymaps = {
-        ["<CR>"] = "actions.select",
+        ["<cr>"] = "actions.select",
         ["g/"] = "actions.select_vsplit",
         ["g-"] = "actions.select_split",
         ["gt"] = "actions.select_tab",

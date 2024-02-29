@@ -1,7 +1,7 @@
 local utils = require("ao.utils")
-local module = {}
+local M = {}
 
-module.install_plugin_manager = function()
+M.install_plugin_manager = function()
   local was_installed = false
   local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
   if not vim.loop.fs_stat(lazypath) then
@@ -23,12 +23,12 @@ module.install_plugin_manager = function()
   return lazy, was_installed
 end
 
-module.bootstrap_project_list = function(path)
+M.bootstrap_project_list = function(path)
   local project_file_path = vim.fn.stdpath("data") .. "/noun/history"
 
   if not vim.loop.fs_stat(project_file_path) then
     vim.notify("bootstrapping project list for noun.nvim")
-    vim.cmd("Lazy load noun.nvim")
+    require("lazy.core.loader").load({ "noun.nvim" })
     local status, history = pcall(require, "noun.utils.history")
 
     if not status then
@@ -61,14 +61,34 @@ module.bootstrap_project_list = function(path)
   end
 end
 
-module.setup = function(config)
+M.load_plugin_specs = function()
+  local plugins = {}
+  local path = vim.fn.stdpath("config") .. "/lua/ao/modules"
+  local items = vim.split(vim.fn.glob(vim.fn.resolve(path .. "/*.lua")), "\n", { trimempty = true })
+
+  for _, item in ipairs(items) do
+    local m = require("ao.modules." .. vim.fn.fnamemodify(item, ":t:r"))
+    local v = m.plugin_specs
+
+    if v == nil then
+      plugins = utils.table_concat(plugins, m)
+    else
+      plugins = utils.table_concat(plugins, (type(v) == "function" and v() or v))
+    end
+  end
+
+  return plugins
+end
+
+M.setup = function(config)
   if config.guifont then
     vim.api.nvim_set_option("guifont", config.guifont)
   end
 
-  local lazy, installed = module.install_plugin_manager()
+  local lazy, installed = M.install_plugin_manager()
+  local plugins = M.load_plugin_specs()
 
-  lazy.setup("ao.modules", {
+  lazy.setup(plugins, {
     install = { install_missing = false },
     change_detection = {
       -- with change detection enabled, lazy.nvim does something when you save
@@ -88,24 +108,14 @@ module.setup = function(config)
     vim.api.nvim_create_autocmd("User", {
       pattern = "VeryLazy",
       callback = function()
-        module.bootstrap_project_list(config.projects_directory)
+        M.bootstrap_project_list(config.projects_directory)
       end,
     })
   end
-
-  vim.api.nvim_create_autocmd("ColorScheme", {
-    pattern = "*",
-    callback = module.setup_alternate_colors,
-  })
 
   if config.theme then
     vim.cmd.colorscheme(config.theme)
   end
 end
 
-module.setup_alternate_colors = function()
-  vim.api.nvim_set_hl(0, "EasyMotionTarget", { link = "Search" })
-  vim.api.nvim_set_hl(0, "LirDir", { link = "netrwDir" })
-end
-
-return module
+return M
