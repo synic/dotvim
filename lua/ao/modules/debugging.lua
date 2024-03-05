@@ -126,9 +126,18 @@ return {
     "rcarriga/nvim-dap-ui",
     lazy = true,
     dependencies = {
+      -- baleia displays color escape codes properly.
+      -- currently used to colorize the dap-repl output.
       {
         "m00qek/baleia.nvim",
         submodules = false,
+        version = "v1.3.0",
+        opts = {},
+        init = function()
+          vim.api.nvim_create_user_command("BaleiaColorize", function()
+            require("baleia").setup().once(vim.api.nvim_get_current_buf())
+          end, {})
+        end,
       },
     },
     config = function(_, opts)
