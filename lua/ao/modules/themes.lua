@@ -7,6 +7,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   callback = function()
     vim.api.nvim_set_hl(0, "EasyMotionTarget", { link = "Search" })
     vim.api.nvim_set_hl(0, "LirDir", { link = "netrwDir" })
+    vim.api.nvim_set_hl(0, "SignatureMarkText", { link = "DiagnosticSignInfo" })
   end,
 })
 
@@ -14,7 +15,7 @@ M.plugin_specs = {
   {
     "sainnhe/gruvbox-material",
     lazy = true,
-    init = function()
+    config = function()
       vim.g.gruvbox_material_background = "medium"
 
       vim.api.nvim_create_autocmd("ColorScheme", {
@@ -36,7 +37,7 @@ M.plugin_specs = {
     "rose-pine/neovim",
     name = "rose-pine",
     lazy = true,
-    init = function()
+    config = function()
       vim.api.nvim_create_autocmd("ColorScheme", {
         pattern = "*",
         callback = function(opts)
@@ -47,7 +48,6 @@ M.plugin_specs = {
             vim.api.nvim_set_hl(0, "NonText", { fg = "#444444" })
             vim.api.nvim_set_hl(0, "Whitespace", { fg = "#444444" })
             vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#444444" })
-            vim.api.nvim_set_hl(0, "SignatureMarkText", { fg = "#f38ba8" })
           end
         end,
       })
@@ -56,14 +56,12 @@ M.plugin_specs = {
   {
     "catppuccin/nvim",
     name = "catppuccin",
-    lazy = false,
-    priority = 1000,
-    init = function()
+    lazy = true,
+    config = function()
       vim.api.nvim_create_autocmd("ColorScheme", {
         pattern = "*",
         callback = function(opts)
           if opts.match:find("^catppuccin") ~= nil then
-            vim.api.nvim_set_hl(0, "SignatureMarkText", { fg = "#f38ba8" })
             vim.api.nvim_set_hl(0, "TabLineSel", { fg = "#b4befe", bg = "#45475a" })
             vim.api.nvim_set_hl(0, "IblIndent", { fg = "#333333" })
             vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#444444" })
@@ -84,12 +82,12 @@ M.plugin_specs = {
       background = "hard",
       ui_contrast = "high",
     },
-
-    init = function()
+    config = function(_, opts)
+      require("everforest").setup(opts)
       vim.api.nvim_create_autocmd("ColorScheme", {
         pattern = "*",
-        callback = function(opts)
-          if opts.match:find("^everforest") ~= nil then
+        callback = function(o)
+          if o.match:find("^everforest") ~= nil then
             vim.api.nvim_set_hl(0, "IblIndent", { fg = "#444444" })
             vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#555555" })
             vim.api.nvim_set_hl(0, "IblScope", { fg = "#555555" })
@@ -106,6 +104,37 @@ M.plugin_specs = {
   { "rebelot/kanagawa.nvim", lazy = true },
   { "Mofiqul/dracula.nvim", lazy = true },
   { "joshdick/onedark.vim", lazy = true },
+  { "EdenEast/nightfox.nvim", lazy = true },
+  {
+    "AlexvZyl/nordic.nvim",
+    lazy = true,
+    config = function()
+      require("nordic").load()
+    end,
+  },
+  {
+    "ribru17/bamboo.nvim",
+    lazy = true,
+    config = function()
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        pattern = "*",
+        callback = function(o)
+          if o.match:find("^bamboo") ~= nil then
+            vim.api.nvim_set_hl(0, "IblIndent", { fg = "#333333" })
+            vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#444444" })
+            vim.api.nvim_set_hl(0, "IblScope", { fg = "#444444" })
+            vim.api.nvim_set_hl(0, "NonText", { fg = "#444444" })
+            vim.api.nvim_set_hl(0, "Whitespace", { fg = "#444444" })
+            vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#444444" })
+          end
+        end,
+      })
+      require("bamboo").setup({
+        -- optional configuration here
+      })
+      require("bamboo").load()
+    end,
+  },
 }
 
 -- make sure that all the themes are loaded before showing the picker

@@ -27,7 +27,6 @@ snippet nestmodule "NestJS Module"
 snippet nestcommand "NestJS Management Command"
 	import { Command, CommandArguments, _cli } from '@squareboat/nest-console';
 
-	import { sleep } from '@defiq/common';
 	import { ManagementCommand } from '@defiq/common/management';
 
 	@Command('${1:Name}', {
@@ -36,8 +35,6 @@ snippet nestcommand "NestJS Management Command"
 	export class ${3:ClassName}Command implements ManagementCommand {
 		public async handle(args: CommandArguments): Promise<void> {
 			${4:Body}
-
-			await sleep(2);
 		}
 	}
 

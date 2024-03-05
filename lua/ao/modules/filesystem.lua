@@ -112,7 +112,9 @@ return {
         { "icon", add_padding = false },
       },
       skip_confirm_for_simple_edits = true,
-      lsp_rename_autosave = true,
+      lsp_file_methods = {
+        autosave_changes = true,
+      },
       cleanup_delay_ms = 30 * 1000,
       view_options = {
         show_hidden = true,

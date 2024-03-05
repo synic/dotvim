@@ -3,6 +3,6 @@ local core = require("ao.core")
 
 core.setup({
   guifont = "Hack:h11",
-  theme = "rose-pine",
+  theme = "duskfox",
   projects_directory = os.getenv("HOME") .. "/Projects",
 })
