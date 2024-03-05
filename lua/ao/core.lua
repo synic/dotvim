@@ -80,6 +80,16 @@ M.load_plugin_specs = function()
   return plugins
 end
 
+local function load_theme(theme)
+  require("lazy.core.loader").colorscheme(theme)
+  local status = pcall(vim.cmd.colorscheme, theme)
+  if not status then
+    vim.notify("Unable to load colorscheme " .. theme, vim.log.levels.ERROR)
+  end
+
+  return status
+end
+
 M.setup = function(config, startup_callback_fn)
   if config.guifont then
     vim.api.nvim_set_option("guifont", config.guifont)
@@ -102,6 +112,11 @@ M.setup = function(config, startup_callback_fn)
 
   lazy.sync({ wait = installed, show = false })
 
+  local theme_load_status = false
+  if config.theme then
+    theme_load_status = load_theme(config.theme)
+  end
+
   vim.api.nvim_create_autocmd("User", {
     pattern = "VeryLazy",
     callback = function()
@@ -113,7 +128,7 @@ M.setup = function(config, startup_callback_fn)
         M.bootstrap_project_list(config.projects_directory)
       end
 
-      if config.theme then
+      if config.theme and not theme_load_status then
         require("lazy.core.loader").colorscheme(config.theme)
         vim.schedule(function()
           vim.cmd.colorscheme(config.theme)
