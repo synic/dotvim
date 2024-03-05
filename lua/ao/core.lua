@@ -28,7 +28,7 @@ M.bootstrap_project_list = function(path)
 
   if not vim.loop.fs_stat(project_file_path) then
     vim.notify("bootstrapping project list for noun.nvim")
-    require("lazy.core.loader").load({ "noun.nvim" })
+    require("lazy.core.loader").load({ "noun.nvim" }, {})
     local status, history = pcall(require, "noun.utils.history")
 
     if not status then
@@ -80,7 +80,7 @@ M.load_plugin_specs = function()
   return plugins
 end
 
-M.setup = function(config)
+M.setup = function(config, startup_callback_fn)
   if config.guifont then
     vim.api.nvim_set_option("guifont", config.guifont)
   end
@@ -100,22 +100,29 @@ M.setup = function(config)
     },
   })
 
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "VeryLazy",
+    callback = function()
+      if startup_callback_fn then
+        startup_callback_fn()
+      end
+
+      if config.projects_directory then
+        M.bootstrap_project_list(config.projects_directory)
+      end
+
+      if config.theme then
+        require("lazy.core.loader").colorscheme(config.theme)
+        vim.schedule(function()
+          vim.cmd.colorscheme(config.theme)
+        end)
+      end
+    end,
+  })
+
   lazy.install({ wait = installed, show = false })
 
   utils.close_all_floating_windows()
-
-  if config.projects_directory then
-    vim.api.nvim_create_autocmd("User", {
-      pattern = "VeryLazy",
-      callback = function()
-        M.bootstrap_project_list(config.projects_directory)
-      end,
-    })
-  end
-
-  if config.theme then
-    vim.cmd.colorscheme(config.theme)
-  end
 end
 
 return M

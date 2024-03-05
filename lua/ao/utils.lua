@@ -116,14 +116,14 @@ M.get_current_git_branch = function()
 end
 
 M.find_project_root = function()
-  local project_status, noun = pcall(require, "noun")
+  local status, noun = pcall(require, "noun")
 
-  if not project_status then
+  if not status then
     return
   end
 
-  local project_root, _ = noun.get_project_root()
-  return project_root
+  local root, _ = noun.get_project_root()
+  return root
 end
 
 M.goto_config_directory = function()

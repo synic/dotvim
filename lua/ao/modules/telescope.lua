@@ -127,6 +127,7 @@ return {
       { "<leader>sl", "<cmd>Telescope marks<cr>", desc = "Marks" },
       { "<leader>.", "<cmd>Telescope resume<cr>", desc = "Resume last search" },
       { "<leader>sb", "<cmd>Telescope builtin<cr>", desc = "List pickers" },
+      { "<leader>sn", "<cmd>Telescope notify<cr>", desc = "Notifications" },
 
       -- themes
       { "<leader>st", themes.load_themes_and_pick, desc = "List themes" },
@@ -193,7 +194,6 @@ return {
           },
           colorscheme = {
             enable_preview = true,
-            layout_config = { width = 0.4, height = 0.6 },
           },
         },
       })

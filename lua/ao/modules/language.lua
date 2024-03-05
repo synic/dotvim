@@ -260,6 +260,9 @@ return {
         enable = true,
         additional_vim_regex_highlighting = false,
       },
+      indent = {
+        enable = true,
+      },
       auto_install = true,
       ensure_installed = {
         "typescript",
@@ -364,6 +367,10 @@ return {
       -- only use none-ls for formatting these filetypes; the rest can use any formatter
       local only_nonels_formatting_filetypes = {
         "lua",
+        "typescript",
+        "javascript",
+        "go",
+        "svelte",
       }
 
       return {
