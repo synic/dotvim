@@ -100,6 +100,8 @@ M.setup = function(config, startup_callback_fn)
     },
   })
 
+  lazy.sync({ wait = installed, show = false })
+
   vim.api.nvim_create_autocmd("User", {
     pattern = "VeryLazy",
     callback = function()
@@ -119,8 +121,6 @@ M.setup = function(config, startup_callback_fn)
       end
     end,
   })
-
-  lazy.install({ wait = installed, show = false })
 
   utils.close_all_floating_windows()
 end

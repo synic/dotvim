@@ -117,6 +117,7 @@ return {
 
         ["htmx"] = function()
           lsp.htmx.setup({
+            flags = flags,
             capabilities = capabilities,
             on_attach = lsp_on_attach,
             filetypes = { "html", "templ" },
@@ -125,6 +126,7 @@ return {
 
         ["tailwindcss"] = function()
           lsp.tailwindcss.setup({
+            flags = flags,
             on_attach = lsp_on_attach,
             capabilities = capabilities,
             filetypes = { "templ", "astro", "javascript", "typescript", "react", "css" },
@@ -155,6 +157,15 @@ return {
                 },
               },
             },
+          })
+        end,
+
+        ["templ"] = function()
+          lsp.templ.setup({
+            capabilities = capabilities,
+            on_attach = lsp_on_attach,
+            flags = flags,
+            filetypes = { "templ" },
           })
         end,
 

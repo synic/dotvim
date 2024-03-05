@@ -393,20 +393,6 @@ return {
     end,
   },
 
-  -- baleia displays color escape codes properly.
-  -- currently used to colorize the dap-repl output.
-  {
-    "m00qek/baleia.nvim",
-    version = "v1.3.0",
-    opts = {},
-    lazy = true,
-    init = function()
-      vim.api.nvim_create_user_command("BaleiaColorize", function()
-        require("baleia").setup().once(vim.api.nvim_get_current_buf())
-      end, {})
-    end,
-  },
-
   -- get around faster and easier
   {
     "Lokaltog/vim-easymotion",
