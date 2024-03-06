@@ -69,7 +69,7 @@ local function telescope_find_project_files()
   if project_root and project_root ~= "" then
     builtin.find_files({ cwd = project_root })
   else
-    vim.notify("No project root was found, listing projects...")
+    vim.notify("No project root was found, listing projects...", vim.log.levels.INFO)
     telescope_load_projects()
   end
 end

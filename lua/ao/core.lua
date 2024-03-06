@@ -27,7 +27,7 @@ M.bootstrap_project_list = function(path)
   local project_file_path = vim.fn.stdpath("data") .. "/noun/history"
 
   if not vim.loop.fs_stat(project_file_path) then
-    vim.notify("bootstrapping project list for noun.nvim")
+    vim.notify("noun.nvim: bootstrapping project list from: " .. path)
     require("lazy.core.loader").load({ "noun.nvim" }, {})
     local status, history = pcall(require, "noun.utils.history")
 
