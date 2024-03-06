@@ -56,12 +56,12 @@ local function oil_setup_navigation_keys(echo)
       { desc = "Go up one directory", buffer = true }
     )
     if echo then
-      vim.notify("oil navigation keys enabled")
+      vim.notify("Oil: navigation keys enabled")
     end
   else
     pcall(vim.keymap.del, "n", "h", { buffer = true })
     pcall(vim.keymap.del, "n", "l", { buffer = true })
-    vim.notify("oil navigation keys disabled")
+    vim.notify("Oil: navigation keys disabled")
   end
 end
 

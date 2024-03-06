@@ -33,16 +33,16 @@ local function golden_ratio_toggle()
   vim.cmd.GoldenRatioToggle()
   if vim.g.golden_ratio_enabled == 0 then
     vim.g.golden_ratio_enabled = 1
-    vim.notify("Enabled golden ratio")
+    vim.notify("Golden Ratio: enabled")
   else
     vim.g.golden_ratio_enabled = 0
-    vim.notify("Disabled golden ratio")
+    vim.notify("Golden Ratio: disabled")
     vim.g.equalalways = true
     vim.cmd("wincmd =")
   end
 end
 
-local tabby_get_tab_name = function(tab)
+local get_tab_name = function(tab)
   local status, name = pcall(vim.api.nvim_tabpage_get_var, tab.number(), "ao-tab-name")
 
   if status and name ~= nil then
@@ -69,8 +69,8 @@ local set_tab_name = function(tabnr)
     else
       vim.api.nvim_tabpage_set_var(tabnr, "ao-tab-name", name)
     end
-    vim.cmd.tabnext()
-    vim.cmd.tabprev()
+
+    vim.cmd.redrawtabline()
   end)
 end
 
@@ -320,7 +320,7 @@ return {
               line.sep("", hl, theme.fill),
               tab.is_current() and "" or "󰆣",
               tab.number(),
-              tabby_get_tab_name(tab),
+              get_tab_name(tab),
               tab.close_btn(""),
               line.sep("", hl, theme.fill),
               hl = hl,
@@ -481,7 +481,12 @@ return {
   },
 
   -- fidget.nvim shows lsp and null-ls status at the bottom right of the screen
-  { "j-hui/fidget.nvim", tag = "legacy", event = "LspAttach", opts = {} },
+  {
+    "j-hui/fidget.nvim",
+    event = "LspAttach",
+    tag = "legacy",
+    config = true,
+  },
 
   -- automatically close inactive buffers
   {
