@@ -45,7 +45,7 @@ return {
         dependencies = "mason.nvim",
         opts = {
           automatic_installation = true,
-          ensure_installed = { "node2" },
+          ensure_installed = {},
           handlers = {},
         },
       },
