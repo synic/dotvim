@@ -1,5 +1,5 @@
 local utils = require("ao.utils")
-local themes = require("ao.modules.themes")
+local interface = require("ao.modules.interface")
 
 local function telescope_grep_project_for_term()
   local builtin = require("telescope.builtin")
@@ -12,11 +12,11 @@ local function telescope_grep_project_for_term()
   })
 end
 
-local telescope_tabs_entry_formatter = function(tab_id, _, file_names, _, is_current)
-  local status, name = pcall(vim.api.nvim_tabpage_get_var, tab_id, "ao-tab-name")
+local telescope_tabs_entry_formatter = function(tabnr, _, file_names, _, is_current)
+  local name = interface.get_tab_name(tabnr)
   local display = "[No Name]"
 
-  if status and name ~= nil then
+  if name ~= "" then
     display = name
   else
     local entry_string = table.concat(file_names, ", ")
@@ -25,7 +25,7 @@ local telescope_tabs_entry_formatter = function(tab_id, _, file_names, _, is_cur
     end
     display = entry_string
   end
-  return string.format("%d: %s%s", tab_id, display, is_current and " <" or "")
+  return string.format("%d: %s%s", tabnr, display, is_current and " <" or "")
 end
 
 local function telescope_grep_working_directory()
@@ -122,15 +122,15 @@ return {
       },
       { "<leader>ss", "<cmd>Telescope luasnip<cr>", desc = "Snippets" },
       { "<leader>sS", "<cmd>Telescope spell_suggest<cr>", desc = "Spelling suggestions" },
-      { "<leader>,", "<cmd>Telescope oldfiles<cr>", desc = "Recent files" },
       { "<leader>sR", "<cmd>Telescope registers<cr>", desc = "Registers" },
       { "<leader>sl", "<cmd>Telescope marks<cr>", desc = "Marks" },
-      { "<leader>.", "<cmd>Telescope resume<cr>", desc = "Resume last search" },
       { "<leader>sb", "<cmd>Telescope builtin<cr>", desc = "List pickers" },
       { "<leader>sn", "<cmd>Telescope notify<cr>", desc = "Notifications" },
+      { "<leader>.", "<cmd>Telescope resume<cr>", desc = "Resume last search" },
+      { "<leader>,", "<cmd>Telescope oldfiles<cr>", desc = "Recent files" },
 
       -- themes
-      { "<leader>st", themes.load_themes_and_pick, desc = "List themes" },
+      { "<leader>st", "<cmd>ColorSchemePicker<cr>", desc = "List themes" },
 
       -- undo
       { "<leader>tu", "<cmd>Telescope undo<cr>", desc = "Undo tree" },
@@ -158,6 +158,8 @@ return {
               ["<C-j>"] = "move_selection_next",
               ["<C-k>"] = "move_selection_previous",
               ["<C-/>"] = actions.file_vsplit,
+              ["//"] = actions.file_vsplit,
+              ["--"] = actions.file_split,
               ["<C-->"] = actions.file_split,
             },
           },
@@ -247,15 +249,7 @@ return {
           patterns = { ".git", ".svn" },
           exclude_dirs = { "node_modules" },
           project_selected_callback_fn = function(path)
-            local tabnr = vim.fn.tabpagenr()
-            local status, _ = pcall(vim.api.nvim_tabpage_get_var, tabnr, "ao-tab-name")
-
-            if status then
-              return false
-            end
-
-            vim.api.nvim_tabpage_set_var(tabnr, "ao-tab-name", vim.fn.fnamemodify(path, ":t"))
-
+            require("ao.modules.interface").set_tab_name(vim.fn.fnamemodify(path, ":t"))
             return false
           end,
           pattern_get_current_dir_fn = function()

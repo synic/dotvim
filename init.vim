@@ -14,8 +14,6 @@ if 0 | endif
 
 let $VIMHOME = expand('<sfile>:p:h')
 
-inoremap fd <esc>
-vnoremap fd <esc>
 vnoremap < <gv
 vnoremap > >gv
 nnoremap vig ggVG

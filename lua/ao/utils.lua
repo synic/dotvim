@@ -136,4 +136,9 @@ M.has_module = function(n)
   return status
 end
 
+M.set_tab_var = function(tabnr, key, value)
+  local handle = vim.api.nvim_list_tabpages()[tabnr or vim.fn.tabpagenr()]
+  vim.api.nvim_tabpage_set_var(handle, key, value)
+end
+
 return M
