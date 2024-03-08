@@ -1,5 +1,8 @@
 local utils = require("ao.utils")
 
+local M = {}
+local tab_name_key = "aotabname"
+
 vim.g.neovide_remember_window_size = true
 
 local function indent_blankline_toggle()
@@ -42,43 +45,39 @@ local function golden_ratio_toggle()
   end
 end
 
-local get_tab_name = function(tab)
-  local status, name = pcall(vim.api.nvim_tabpage_get_var, tab.number(), "ao-tab-name")
-
-  if status and name ~= nil then
-    return name
-  end
-
-  return tab.name()
+M.get_tab_name = function(tabnr)
+  return vim.fn.gettabvar(tabnr or vim.fn.tabpagenr(), tab_name_key)
 end
 
-local set_tab_name = function(tabnr)
+M.set_tab_name = function(name, tabnr, force)
+  tabnr = tabnr or vim.fn.tabpagenr()
+  local current = M.get_tab_name(tabnr)
+
+  if current ~= "" and not force then
+    return false
+  end
+
+  utils.set_tab_var(tabnr, tab_name_key, name)
+  vim.cmd.redrawtabline()
+end
+
+local prompt_tab_name = function(tabnr)
   if tabnr == nil then
     tabnr = vim.fn.tabpagenr()
   end
 
-  local status, current = pcall(vim.api.nvim_tabpage_get_var, tabnr, "ao-tab-name")
-
-  if not status then
-    current = ""
-  end
+  local current = vim.fn.gettabvar(tabnr, tab_name_key)
 
   vim.ui.input({ prompt = "Set layout name: ", default = current }, function(name)
-    if name == nil then
-      pcall(vim.api.nvim_tabpage_del_var, tabnr, "ao-tab-name")
-    else
-      vim.api.nvim_tabpage_set_var(tabnr, "ao-tab-name", name)
-    end
-
-    vim.cmd.redrawtabline()
+    M.set_tab_name(name or "", tabnr, true)
   end)
 end
 
 utils.map_keys({
-  { "<leader>lN", set_tab_name, desc = "Set layout name" },
+  { "<leader>lN", prompt_tab_name, desc = "Set layout name" },
 })
 
-return {
+M.plugin_specs = {
   -- extensible core UI hooks
   {
     "stevearc/dressing.nvim",
@@ -320,7 +319,7 @@ return {
               line.sep("", hl, theme.fill),
               tab.is_current() and "" or "󰆣",
               tab.number(),
-              get_tab_name(tab),
+              M.get_tab_name(tab.number()) or tab.name(),
               tab.close_btn(""),
               line.sep("", hl, theme.fill),
               hl = hl,
@@ -495,3 +494,5 @@ return {
     event = { "BufReadPre", "BufNewFile" },
   },
 }
+
+return M

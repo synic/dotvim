@@ -16,7 +16,7 @@ local categories = {
   ["<leader>"] = {
     b = { "+buffers" },
     w = { "+windows", m = { "+move" } },
-    l = { "+layouts/tabs" },
+    l = { "+layouts" },
     d = { "+debug" },
     h = { "+help" },
     g = { "+git" },
@@ -25,7 +25,6 @@ local categories = {
     t = { "+toggles" },
     u = { "+ui" },
     e = { "+diagnostis" },
-    P = { "+plugins" },
     c = { "+configuration", p = { "+plugins" } },
     q = { "+quit" },
     ["?"] = { "help" },

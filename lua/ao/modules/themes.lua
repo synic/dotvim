@@ -1,7 +1,3 @@
-local M = {
-  have_loaded_all_plugins = false,
-}
-
 vim.api.nvim_create_autocmd("ColorScheme", {
   pattern = "*",
   callback = function()
@@ -11,10 +7,52 @@ vim.api.nvim_create_autocmd("ColorScheme", {
   end,
 })
 
-M.plugin_specs = {
+local keys = {
+  { "<leader>st", "<cmd>ColorSchemePicker<cr>", desc = "List themes" },
+}
+
+local builtins = {
+  "zellner",
+  "torte",
+  "slate",
+  "shine",
+  "ron",
+  "quiet",
+  "peachpuff",
+  "pablo",
+  "murphy",
+  "lunaperche",
+  "koehler",
+  "industry",
+  "evening",
+  "elflord",
+  "desert",
+  "delek",
+  "default",
+  "darkblue",
+  "blue",
+  "zaibatsu",
+}
+
+vim.api.nvim_create_user_command("ColorSchemePicker", function()
+  local target = vim.fn.getcompletion
+
+  vim.fn.getcompletion = function()
+    return vim.tbl_filter(function(color)
+      return not vim.tbl_contains(builtins, color)
+      ---@diagnostic disable-next-line: redundant-parameter
+    end, target("", "color"))
+  end
+
+  vim.cmd.Telescope("colorscheme")
+  vim.fn.getcompletion = target
+end, {})
+
+return {
   {
     "sainnhe/gruvbox-material",
     lazy = true,
+    keys = vim.deepcopy(keys),
     config = function()
       vim.g.gruvbox_material_background = "medium"
 
@@ -37,6 +75,7 @@ M.plugin_specs = {
     "rose-pine/neovim",
     name = "rose-pine",
     lazy = true,
+    keys = vim.deepcopy(keys),
     config = function()
       vim.api.nvim_create_autocmd("ColorScheme", {
         pattern = "*",
@@ -57,6 +96,7 @@ M.plugin_specs = {
     "catppuccin/nvim",
     name = "catppuccin",
     lazy = true,
+    keys = vim.deepcopy(keys),
     config = function()
       vim.api.nvim_create_autocmd("ColorScheme", {
         pattern = "*",
@@ -78,6 +118,7 @@ M.plugin_specs = {
     "neanias/everforest-nvim",
     name = "everforest",
     lazy = true,
+    keys = vim.deepcopy(keys),
     opts = {
       background = "hard",
       ui_contrast = "high",
@@ -99,15 +140,16 @@ M.plugin_specs = {
       })
     end,
   },
-  { "folke/tokyonight.nvim", lazy = true },
-  { "bluz71/vim-nightfly-colors", name = "nightfly", lazy = true },
-  { "rebelot/kanagawa.nvim", lazy = true },
-  { "Mofiqul/dracula.nvim", lazy = true },
-  { "joshdick/onedark.vim", lazy = true },
-  { "EdenEast/nightfox.nvim", lazy = true },
+  { "folke/tokyonight.nvim", lazy = true, keys = vim.deepcopy(keys) },
+  { "bluz71/vim-nightfly-colors", name = "nightfly", lazy = true, keys = vim.deepcopy(keys) },
+  { "rebelot/kanagawa.nvim", lazy = true, keys = vim.deepcopy(keys) },
+  { "Mofiqul/dracula.nvim", lazy = true, keys = vim.deepcopy(keys) },
+  { "joshdick/onedark.vim", lazy = true, keys = vim.deepcopy(keys) },
+  { "EdenEast/nightfox.nvim", lazy = true, keys = vim.deepcopy(keys) },
   {
     "AlexvZyl/nordic.nvim",
     lazy = true,
+    keys = vim.deepcopy(keys),
     config = function()
       require("nordic").load()
     end,
@@ -115,6 +157,7 @@ M.plugin_specs = {
   {
     "ribru17/bamboo.nvim",
     lazy = true,
+    keys = vim.deepcopy(keys),
     config = function()
       vim.api.nvim_create_autocmd("ColorScheme", {
         pattern = "*",
@@ -136,26 +179,3 @@ M.plugin_specs = {
     end,
   },
 }
-
--- make sure that all the themes are loaded before showing the picker
-M.load_themes_and_pick = function()
-  if not M.have_loaded_all_plugins then
-    local config = require("lazy.core.config")
-    local to_load = {}
-
-    for _, spec in ipairs(M.plugin_specs) do
-      local loc = (type(spec) == "string" and spec or spec[1])
-      for _, plugin in pairs(config.plugins) do
-        if plugin[1] == loc then
-          table.insert(to_load, plugin)
-        end
-      end
-    end
-
-    require("lazy.core.loader").load(to_load, {})
-    M.have_loaded_all_plugins = true
-  end
-  vim.cmd.Telescope("colorscheme")
-end
-
-return M

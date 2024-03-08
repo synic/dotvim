@@ -28,7 +28,7 @@ M.bootstrap_project_list = function(path)
 
   if not vim.loop.fs_stat(project_file_path) then
     vim.notify("noun.nvim: bootstrapping project list from: " .. path)
-    require("lazy.core.loader").load({ "noun.nvim" }, {})
+    require("lazy.core.loader").load({ "noun.nvim" }, { ["noun.nvim"] = "bootstrap" })
     local status, history = pcall(require, "noun.utils.history")
 
     if not status then
@@ -43,13 +43,9 @@ M.bootstrap_project_list = function(path)
       return
     end
 
-    local pfile = io.popen("ls -d1 " .. path .. "/*")
+    local files = vim.split(vim.fn.glob(path .. "/*"), "\n", { trimempty = true })
 
-    if pfile == nil then
-      return
-    end
-
-    for filename in pfile:lines() do
+    for _, filename in ipairs(files) do
       if vim.loop.fs_stat(filename .. "/.git") then
         handle:write(filename .. "\n")
         table.insert(history.session_projects, filename)
@@ -59,6 +55,16 @@ M.bootstrap_project_list = function(path)
     handle:close()
     history.read_projects_from_history()
   end
+end
+
+local function load_theme(theme)
+  require("lazy.core.loader").colorscheme(theme)
+  local status = pcall(vim.cmd.colorscheme, theme)
+  if not status then
+    vim.notify("Unable to load colorscheme " .. theme, vim.log.levels.ERROR)
+  end
+
+  return status
 end
 
 M.load_plugin_specs = function()
@@ -80,25 +86,14 @@ M.load_plugin_specs = function()
   return plugins
 end
 
-local function load_theme(theme)
-  require("lazy.core.loader").colorscheme(theme)
-  local status = pcall(vim.cmd.colorscheme, theme)
-  if not status then
-    vim.notify("Unable to load colorscheme " .. theme, vim.log.levels.ERROR)
-  end
-
-  return status
-end
-
 M.setup = function(config, startup_callback_fn)
   if config.guifont then
     vim.api.nvim_set_option("guifont", config.guifont)
   end
 
   local lazy, installed = M.install_plugin_manager()
-  local plugins = M.load_plugin_specs()
 
-  lazy.setup(plugins, {
+  lazy.setup(M.load_plugin_specs(), {
     install = { install_missing = false },
     change_detection = {
       -- with change detection enabled, lazy.nvim does something when you save
