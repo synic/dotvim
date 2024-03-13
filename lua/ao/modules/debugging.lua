@@ -18,6 +18,7 @@ return {
       use_diagnostic_signs = true,
     },
     keys = {
+      { "<leader>e<leader>", "<cmd>lua vim.diagnostic.open_float()<cr>", desc = "Show error" },
       { "<leader>el", "<cmd>TroubleToggle<cr>", desc = "Toggle trouble" },
       { "<leader>en", "<cmd>lua vim.diagnostic.goto_next()<cr>", desc = "Next error" },
       { "<leader>ep", "<cmd>lua vim.diagnostic.goto_prev()<cr>", desc = "Next error" },
