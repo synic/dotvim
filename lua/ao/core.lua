@@ -105,7 +105,9 @@ M.setup = function(config, startup_callback_fn)
     },
   })
 
-  lazy.sync({ wait = installed, show = false })
+  if installed then
+    lazy.restore({ wait = true, show = false })
+  end
 
   local theme_load_status = false
   if config.theme then
