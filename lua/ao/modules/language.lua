@@ -34,7 +34,7 @@ local function lsp_on_attach(_, bufnr)
       buffer = bufnr,
     },
     {
-      "gs",
+      "gS",
       require("telescope.builtin").lsp_document_symbols,
       desc = "Document symbols",
       buffer = bufnr,
@@ -261,7 +261,7 @@ return {
         additional_vim_regex_highlighting = false,
       },
       indent = {
-        enable = true,
+        enable = false, -- in my experience, this never works quite right
       },
       auto_install = true,
       ensure_installed = {

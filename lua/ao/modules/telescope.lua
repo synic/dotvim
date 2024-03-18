@@ -203,6 +203,7 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "benfowler/telescope-luasnip.nvim",
+      "synic/telescope-dirpicker.nvim",
       {
         "nvim-telescope/telescope-ui-select.nvim",
         config = function()
@@ -246,7 +247,7 @@ return {
           -- has to be global, there's some weird interaction between telescope and `:tcd`/`:lcd` that will sometimes cause
           -- the first file that you open after selecting a project to be blank
           scope_chdir = "global",
-          patterns = { ".git", ".svn" },
+          patterns = { ".git", ".svn", ".project" },
           exclude_dirs = { "node_modules" },
           project_selected_callback_fn = function(path)
             require("ao.modules.interface").set_tab_name(vim.fn.fnamemodify(path, ":t"))

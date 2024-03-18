@@ -119,6 +119,8 @@ return {
     },
     opts = {
       kind = "vsplit",
+      auto_show_console = false,
+      remember_settings = true,
       commit_editor = { kind = "split" },
       commit_select_view = { kind = "split" },
       log_view = { kind = "split" },

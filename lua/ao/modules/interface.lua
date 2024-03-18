@@ -290,7 +290,6 @@ M.plugin_specs = {
         callback = clear_winbar_bg,
       })
       require("dropbar").setup(opts)
-      vim.ui.select = require("dropbar.utils.menu").select
     end,
   },
 
@@ -394,7 +393,14 @@ M.plugin_specs = {
   {
     "folke/flash.nvim",
     event = "VeryLazy",
-    opts = {},
+    lazy = false,
+    opts = {
+      labels = "asdfghjklqwertyuiopzxcvbnm.,/'-",
+      modes = {
+        search = { enabled = false },
+        char = { enabled = false },
+      },
+    },
     keys = {
       {
         "s",
