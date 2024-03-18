@@ -14,7 +14,7 @@ if has('nvim')
       'n',
       'gO',
       '<cmd>lua vim.lsp.buf.execute_command({ command = "_typescript.organizeImports", arguments={vim.fn.expand("%:p") }})<cr>',
-      { desc = 'organize imports' }
+      { desc = 'Organize imports' }
     )
 
     vim.api.nvim_buf_set_keymap(
@@ -22,7 +22,7 @@ if has('nvim')
       'n',
       '<localleader>f',
       '<cmd>TypescriptRenameFile<cr>',
-      { desc = 'rename file' }
+      { desc = 'Rename file' }
     )
 END_OF_LUA
 end

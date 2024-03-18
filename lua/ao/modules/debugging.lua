@@ -38,32 +38,16 @@ return {
   -- Debug Adapter Protocol plugin
   {
     "mfussenegger/nvim-dap",
-    event = { "BufReadPre", "BufNewFile" },
+    lazy = true,
     dependencies = {
-      "rcarriga/nvim-dap-ui",
       {
         "jay-babu/mason-nvim-dap.nvim",
-        dependencies = "mason.nvim",
         opts = {
           automatic_installation = true,
           ensure_installed = {},
           handlers = {},
         },
       },
-    },
-    keys = {
-      {
-        "<leader>db",
-        "<cmd>lua require('dap').toggle_breakpoint()<cr>",
-        desc = "Toggle breakpoint",
-      },
-      { "<leader>dc", "<cmd>lua require('dap').continue()<cr>", desc = "Continue" },
-      { "<leader>dd", "<cmd>lua require('dap').run_last()<cr>", desc = "Run last" },
-      { "<leader>dq", "<cmd>lua require('dap').close()<cr><cmd>lua require('dapui').close()<cr>", desc = "Close" },
-      { "<leader>dn", "<cmd>lua require('dap').step_over()<cr>", desc = "Step over" },
-      { "<leader>ds", "<cmd>lua require('dap').step_into()<cr>", desc = "Step into" },
-      { "<leader>do", "<cmd>lua require('dap').step_out()<cr>", desc = "Step out" },
-      { "<leader>dc", "<cmd>lua require('dap').continue()<cr>", desc = "Continue" },
     },
     config = function()
       local dap = require("dap")
@@ -127,6 +111,7 @@ return {
     "rcarriga/nvim-dap-ui",
     lazy = true,
     dependencies = {
+      { "nvim-neotest/nvim-nio", "mfussenegger/nvim-dap" },
       -- baleia displays color escape codes properly.
       -- currently used to colorize the dap-repl output.
       {
@@ -140,6 +125,20 @@ return {
           end, {})
         end,
       },
+    },
+    keys = {
+      {
+        "<leader>db",
+        "<cmd>lua require('dap').toggle_breakpoint()<cr>",
+        desc = "Toggle breakpoint",
+      },
+      { "<leader>dc", "<cmd>lua require('dap').continue()<cr>", desc = "Continue" },
+      { "<leader>dd", "<cmd>lua require('dap').run_last()<cr>", desc = "Run last" },
+      { "<leader>dq", "<cmd>lua require('dap').close()<cr><cmd>lua require('dapui').close()<cr>", desc = "Close" },
+      { "<leader>dn", "<cmd>lua require('dap').step_over()<cr>", desc = "Step over" },
+      { "<leader>ds", "<cmd>lua require('dap').step_into()<cr>", desc = "Step into" },
+      { "<leader>do", "<cmd>lua require('dap').step_out()<cr>", desc = "Step out" },
+      { "<leader>dc", "<cmd>lua require('dap').continue()<cr>", desc = "Continue" },
     },
     config = function(_, opts)
       local dap = require("dap")
