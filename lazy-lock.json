@@ -41,7 +41,6 @@
   "nightfox.nvim": { "branch": "main", "commit": "a4eb88b2dad3fba5c2d87f82cd15dfb9de73913d" },
   "none-ls.nvim": { "branch": "main", "commit": "72e25ed4162474ef5d666525853f8a42bffd97c5" },
   "nordic.nvim": { "branch": "main", "commit": "51133434926a6a25c524aacf58ed835b28ac3139" },
-  "noun.nvim": { "branch": "main", "commit": "9d75504b4b60221b6412ce7d3ce769bd13fc930c" },
   "nvim-cmp": { "branch": "main", "commit": "04e0ca376d6abdbfc8b52180f8ea236cbfddf782" },
   "nvim-comment": { "branch": "main", "commit": "e9ac16ab056695cad6461173693069ec070d2b23" },
   "nvim-dap": { "branch": "master", "commit": "c1695e500c7d552a0a19953a9aefcc89178fb1af" },

@@ -1,4 +1,7 @@
-local M = {}
+local M = {
+  root_names = { ".git", ".svn" },
+  root_cache = {},
+}
 
 M.get_help = function()
   vim.ui.input({ prompt = "enter search term" }, function(input)
@@ -116,19 +119,30 @@ M.get_current_git_branch = function()
 end
 
 M.find_project_root = function()
-  local status, noun = pcall(require, "noun")
-
-  if not status then
-    return
+  local path = vim.api.nvim_buf_get_name(0)
+  if path == nil or path == "" then
+    return nil
   end
 
-  local root, _ = noun.get_project_root()
+  path = vim.fs.dirname(M.normalize_path(path))
+  local root = M.root_cache[path]
+  if root == nil then
+    local root_file = vim.fs.find(M.root_names, { path = path, upward = true })[1]
+    if root_file == nil then
+      return nil
+    end
+    root = vim.fs.dirname(root_file)
+    M.root_cache[path] = root
+  end
   return root
 end
 
 M.goto_config_directory = function()
   vim.cmd.tcd(vim.fn.stdpath("config"))
-  vim.cmd.edit(".")
+  local current_cwd = vim.loop.cwd()
+  vim.cmd.cd(vim.fn.stdpath("config"))
+  vim.cmd("Telescope find_files")
+  vim.cmd.cd(current_cwd)
 end
 
 M.has_module = function(n)
@@ -139,6 +153,14 @@ end
 M.set_tab_var = function(tabnr, key, value)
   local handle = vim.api.nvim_list_tabpages()[tabnr or vim.fn.tabpagenr()]
   vim.api.nvim_tabpage_set_var(handle, key, value)
+end
+
+M.normalize_path = function(path)
+  if path:find("^oil://") then
+    path = string.sub(path, 7)
+  end
+
+  return path
 end
 
 return M
