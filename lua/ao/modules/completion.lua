@@ -15,7 +15,7 @@ return {
   -- main completion engine
   {
     "hrsh7th/nvim-cmp",
-    event = { "InsertEnter" },
+    event = { "BufReadPre", "BufNewFile" },
     version = false,
     opts = function()
       local cmp = require("cmp")

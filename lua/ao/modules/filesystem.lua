@@ -6,6 +6,19 @@ vim.g.netrw_banner = 0
 vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\.\S\+]]
 vim.g.netrw_browse_split = 0
 
+vim.api.nvim_create_autocmd("BufEnter", {
+  callback = function()
+    local root = utils.find_project_root()
+    if root == nil then
+      root = vim.fn.expand("%:h")
+    end
+
+    if root and root ~= "" then
+      vim.cmd.tcd(root)
+    end
+  end,
+})
+
 local function browse_at_project_directory()
   local pathname = utils.find_project_root()
 

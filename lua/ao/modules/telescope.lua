@@ -1,4 +1,5 @@
 local utils = require("ao.utils")
+local config = require("ao.config")
 local interface = require("ao.modules.interface")
 
 local function telescope_grep_project_for_term()
@@ -40,14 +41,26 @@ local function ctrlsf_search_for_term(prompt_bufnr)
 end
 
 local function telescope_load_projects()
-  local noun = require("noun")
+  local telescope_config = require("telescope.config").values
+  require("telescope").extensions.dirpicker.dirpicker({
+    cwd = config.options.projects_directory or ".",
+    layout_config = { width = 0.45, height = 0.4 },
+    prompt_title = "Projects",
+    sorter = telescope_config.generic_sorter({}),
+    on_select = function(dir)
+      require("ao.modules.interface").set_tab_name(vim.fn.fnamemodify(dir, ":t"))
+      vim.cmd.tcd(dir)
 
-  if #noun.get_recent_projects() == 0 then
-    vim.notify("No projects found", vim.log.levels.WARN)
-    return
-  end
-
-  require("telescope").extensions.noun.noun({ layout_config = { width = 0.45, height = 0.4 } })
+      -- workaround, sometimes when immediately loading `find_files` after `tcd`, the first file opened is blank
+      -- this doesn't seem to happen with `vim.cmd.cd`, so here, save the current directory, change directory,
+      -- find_files, and then change back. absolutely no idea why this works
+      local current_cwd = vim.loop.cwd()
+      print(dir)
+      vim.cmd.cd(dir)
+      require("telescope.builtin").find_files()
+      vim.cmd.cd(current_cwd)
+    end,
+  })
 end
 
 local function telescope_git_files()
@@ -149,6 +162,7 @@ return {
     cmd = "Telescope",
     config = function()
       local telescope = require("telescope")
+
       local actions = require("telescope.actions")
 
       telescope.setup({
@@ -235,43 +249,6 @@ return {
         config = function()
           utils.on_load("telescope.nvim", function()
             require("telescope").load_extension("fzf")
-          end)
-        end,
-      },
-      {
-        "synic/noun.nvim",
-        opts = {
-          manual_mode = false,
-          silent_chdir = true,
-          detection_methods = { "pattern", "lsp" },
-          -- has to be global, there's some weird interaction between telescope and `:tcd`/`:lcd` that will sometimes cause
-          -- the first file that you open after selecting a project to be blank
-          scope_chdir = "global",
-          patterns = { ".git", ".svn", ".project" },
-          exclude_dirs = { "node_modules" },
-          project_selected_callback_fn = function(path)
-            require("ao.modules.interface").set_tab_name(vim.fn.fnamemodify(path, ":t"))
-            return false
-          end,
-          pattern_get_current_dir_fn = function()
-            local status, oil = pcall(require, "oil")
-
-            if status then
-              local dir = oil.get_current_dir()
-
-              if dir ~= nil then
-                return dir
-              end
-            end
-            return vim.fn.expand("%:p:h", true)
-          end,
-          show_hidden = false,
-          datapath = vim.fn.stdpath("data"),
-        },
-        config = function(_, opts)
-          require("noun").setup(opts)
-          utils.on_load("telescope.nvim", function()
-            require("telescope").load_extension("noun")
           end)
         end,
       },
