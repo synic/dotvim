@@ -10,11 +10,11 @@ vim.api.nvim_create_autocmd("BufEnter", {
   callback = function()
     local root = utils.find_project_root()
     if root == nil then
-      root = vim.fn.expand("%:h")
+      root = utils.normalize_path(vim.fn.expand("%:h"))
     end
 
     if root and root ~= "" then
-      vim.cmd.tcd(root)
+      vim.cmd.lcd(root)
     end
   end,
 })

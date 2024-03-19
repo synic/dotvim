@@ -1,6 +1,7 @@
 local utils = require("ao.utils")
 local config = require("ao.config")
 local interface = require("ao.modules.interface")
+local M = {}
 
 local function telescope_grep_project_for_term()
   local builtin = require("telescope.builtin")
@@ -47,20 +48,19 @@ local function telescope_load_projects()
     layout_config = { width = 0.45, height = 0.4 },
     prompt_title = "Projects",
     sorter = telescope_config.generic_sorter({}),
-    on_select = function(dir)
-      require("ao.modules.interface").set_tab_name(vim.fn.fnamemodify(dir, ":t"))
-      vim.cmd.tcd(dir)
-
-      -- workaround, sometimes when immediately loading `find_files` after `tcd`, the first file opened is blank
-      -- this doesn't seem to happen with `vim.cmd.cd`, so here, save the current directory, change directory,
-      -- find_files, and then change back. absolutely no idea why this works
-      local current_cwd = vim.loop.cwd()
-      print(dir)
-      vim.cmd.cd(dir)
-      require("telescope.builtin").find_files()
-      vim.cmd.cd(current_cwd)
-    end,
+    on_select = M.open_project,
   })
+end
+
+M.open_project = function(dir)
+  local status, builtin = pcall(require, "telescope.builtin")
+  require("ao.modules.interface").set_tab_name(vim.fn.fnamemodify(dir, ":t"))
+
+  if status then
+    builtin.find_files({ cwd = dir })
+  else
+    vim.cmd.edit(dir)
+  end
 end
 
 local function telescope_git_files()
@@ -106,7 +106,7 @@ local function telescope_show_tabs()
   })
 end
 
-return {
+M.plugin_specs = {
   -- fuzzy finder and list manager
   {
     "nvim-telescope/telescope.nvim",
@@ -217,7 +217,14 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "benfowler/telescope-luasnip.nvim",
-      "synic/telescope-dirpicker.nvim",
+      {
+        "synic/telescope-dirpicker.nvim",
+        config = function()
+          utils.on_load("telescope.nvim", function()
+            require("telescope").load_extension("dirpicker")
+          end)
+        end,
+      },
       {
         "nvim-telescope/telescope-ui-select.nvim",
         config = function()
@@ -255,3 +262,5 @@ return {
     },
   },
 }
+
+return M

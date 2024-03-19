@@ -39,9 +39,8 @@ local plugins = {
   {
     "terrortylor/nvim-comment",
     event = { "BufReadPre", "BufNewFile" },
-    config = function(_, opts)
-      require("nvim_comment").setup(opts)
-    end,
+    name = "nvim_comment",
+    config = true,
   },
 
   -- snippets
@@ -93,7 +92,7 @@ local plugins = {
 
 -- if wakatime is installed/enabled but the configuration file doesn't exist,
 -- it becomes very annoying. Only try to enable it if the config file is already present.
-local wakatime_config = { "wakatime/vim-wakatime", event = { "BufReadPre", "BufNewFile" }, lazy = true }
+local wakatime_config = { "wakatime/vim-wakatime", event = { "BufReadPre", "BufNewFile" } }
 local wakatime_config_path = utils.join_paths(os.getenv("HOME"), ".wakatime.cfg")
 
 if vim.loop.fs_stat(wakatime_config_path) then
