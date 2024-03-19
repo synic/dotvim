@@ -124,7 +124,9 @@ M.find_project_root = function()
     return nil
   end
 
-  path = vim.fs.dirname(M.normalize_path(path))
+  path = M.normalize_path(path)
+  path = vim.fs.dirname(path)
+
   local root = M.root_cache[path]
   if root == nil then
     local root_file = vim.fs.find(M.root_names, { path = path, upward = true })[1]
@@ -138,11 +140,7 @@ M.find_project_root = function()
 end
 
 M.goto_config_directory = function()
-  vim.cmd.tcd(vim.fn.stdpath("config"))
-  local current_cwd = vim.loop.cwd()
-  vim.cmd.cd(vim.fn.stdpath("config"))
-  vim.cmd("Telescope find_files")
-  vim.cmd.cd(current_cwd)
+  require("ao.modules.telescope").open_project(vim.fn.stdpath("config"))
 end
 
 M.has_module = function(n)

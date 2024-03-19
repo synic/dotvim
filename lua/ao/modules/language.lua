@@ -188,6 +188,13 @@ return {
     end,
   },
 
+  { "folke/neodev.nvim", ft = "lua" },
+  {
+    "jose-elias-alvarez/typescript.nvim",
+    ft = { "typescript", "javascript" },
+    opts = { server = { on_attach = lsp_on_attach } },
+  },
+
   -- lsp
   {
     "neovim/nvim-lspconfig",
@@ -195,12 +202,6 @@ return {
     dependencies = {
       "hrsh7th/nvim-cmp",
       "williamboman/mason-lspconfig.nvim",
-      { "folke/neodev.nvim", ft = "lua" },
-      {
-        "jose-elias-alvarez/typescript.nvim",
-        ft = { "typescript", "javascript" },
-        opts = { server = { on_attach = lsp_on_attach } },
-      },
     },
     opts = {
       diagnostics = {
@@ -260,18 +261,7 @@ return {
         enable = true,
         additional_vim_regex_highlighting = false,
       },
-      indent = {
-        enable = false, -- in my experience, this never works quite right
-      },
       auto_install = true,
-      ensure_installed = {
-        "lua",
-        "vimdoc",
-        "vim",
-        "rust",
-        "markdown",
-        "markdown_inline",
-      },
       incremental_selection = {
         enable = true,
         keymaps = {
@@ -331,7 +321,7 @@ return {
         },
         lsp_interop = {
           enable = true,
-          border = "none",
+          border = "rounded",
           peek_definition_code = {
             ["gF"] = "@function.outer",
             ["gC"] = "@class.outer",
