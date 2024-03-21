@@ -12,19 +12,16 @@ local function telescope_grep_project_for_term()
   builtin.grep_string({ cwd = (root or "."), search = current_word })
 end
 
-local telescope_tabs_entry_formatter = function(tabnr, _, file_names, _, is_current)
+local telescope_tabs_entry_formatter = function(tabnr, _, _, _, is_current)
   local name = interface.get_tab_name(tabnr)
   local display = "[No Name]"
 
   if name ~= "" then
     display = name
   else
-    local entry_string = table.concat(file_names, ", ")
-    if entry_string == "" then
-      entry_string = "[No Name]"
-    end
-    display = entry_string
+    display = require("tabby.feature.tab_name").get(tabnr)
   end
+
   return string.format("%d: %s%s", tabnr, display, is_current and " <" or "")
 end
 
@@ -46,8 +43,7 @@ local function telescope_load_projects()
     layout_config = { width = 0.45, height = 0.4 },
     prompt_title = "Projects",
     sorter = telescope_config.generic_sorter({}),
-    -- on_select = projects.open,
-    on_select = vim.cmd.edit,
+    on_select = projects.open,
   })
 end
 
