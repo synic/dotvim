@@ -307,6 +307,18 @@ M.plugin_specs = {
         win = "TabLine",
         tail = "TabLine",
       }
+
+      local function tab_display(tab)
+        local name = M.get_tab_name(tab.number())
+        if not name or name == "" then
+          name = tab.name()
+          if name == "[No Name]" or name == "[Floating]" then
+            return ""
+          end
+        end
+        return name
+      end
+
       require("tabby.tabline").set(function(line)
         return {
           {
@@ -319,7 +331,7 @@ M.plugin_specs = {
               line.sep("", hl, theme.fill),
               tab.is_current() and "" or "󰆣",
               tab.number(),
-              M.get_tab_name(tab.number()) or tab.name(),
+              tab_display(tab),
               tab.close_btn(""),
               line.sep("", hl, theme.fill),
               hl = hl,

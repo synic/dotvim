@@ -85,20 +85,15 @@ end
 -- open neogit on one tab, and leave it open, and then try to open neogit again on
 -- another tab, nothing will happen. NeoGit is already open, even if you can't see it.
 local function neogit_open()
-  local cwd = "%:p:h"
-
   local root = projects.find_root()
-
-  if root then
-    cwd = root
-  end
 
   for _, buf in pairs(vim.api.nvim_list_bufs()) do
     if vim.api.nvim_buf_get_option(buf, "filetype"):find("^Neogit") ~= nil then
       vim.api.nvim_buf_delete(buf, { force = true })
     end
   end
-  require("neogit").open({ cwd = cwd })
+
+  require("neogit").open({ cwd = (root or ".") })
 end
 
 M.plugin_specs = {
