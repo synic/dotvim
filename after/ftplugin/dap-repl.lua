@@ -1,6 +1,6 @@
-local status, baleia_module = pcall(require, "baleia")
+local has_baleia, baleia = pcall(require, "baleia")
 
-if status then
-  local baleia = baleia_module.setup()
-  baleia.automatically(vim.api.nvim_get_current_buf())
+if has_baleia then
+  local b = baleia.setup()
+  b.automatically(vim.api.nvim_get_current_buf())
 end

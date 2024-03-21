@@ -1,4 +1,31 @@
 local utils = require("ao.utils")
+local projects = require("ao.modules.projects")
+local M = {}
+
+M.git_get_repo_name = function()
+  local out = io.popen("git rev-parse --show-toplevel")
+  if out then
+    local name = out:read("*l")
+    out:close()
+
+    if name then
+      return vim.fs.base(name)
+    end
+  end
+  return nil
+end
+
+M.git_get_current_branch = function()
+  local out = io.popen("git rev-parse --abbrev-ref HEAD 2> /dev/null")
+  if out then
+    local name = out:read("*l")
+    out:close()
+    if name then
+      return name
+    end
+  end
+  return nil
+end
 
 local function gitsigns_on_attach(bufnr)
   local gs = package.loaded.gitsigns
@@ -60,10 +87,10 @@ end
 local function neogit_open()
   local cwd = "%:p:h"
 
-  local project_root = utils.find_project_root()
+  local root = projects.find_root()
 
-  if project_root then
-    cwd = project_root
+  if root then
+    cwd = root
   end
 
   for _, buf in pairs(vim.api.nvim_list_bufs()) do
@@ -74,7 +101,7 @@ local function neogit_open()
   require("neogit").open({ cwd = cwd })
 end
 
-return {
+M.plugin_specs = {
   -- display conflicts
   {
     "akinsho/git-conflict.nvim",
@@ -137,3 +164,5 @@ return {
     },
   },
 }
+
+return M

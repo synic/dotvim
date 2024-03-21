@@ -38,7 +38,6 @@ local plugins = {
   -- commenting blocks
   {
     "terrortylor/nvim-comment",
-    event = { "BufReadPre", "BufNewFile" },
     name = "nvim_comment",
     config = true,
   },
@@ -46,7 +45,7 @@ local plugins = {
   -- snippets
   {
     "L3MON4D3/LuaSnip",
-    event = { "BufReadPre", "BufNewFile" },
+    -- event = { "BufReadPre", "BufNewFile" },
     config = function()
       require("luasnip.loaders.from_snipmate").lazy_load({
         paths = { vim.fn.stdpath("config") .. "/snippets" },
@@ -96,7 +95,7 @@ local wakatime_config = { "wakatime/vim-wakatime", event = { "BufReadPre", "BufN
 local wakatime_config_path = utils.join_paths(os.getenv("HOME"), ".wakatime.cfg")
 
 if vim.loop.fs_stat(wakatime_config_path) then
-  plugins = utils.table_concat(plugins, wakatime_config)
+  table.insert(plugins, wakatime_config)
 end
 
 return plugins

@@ -1,7 +1,4 @@
-local M = {
-  root_names = { ".git", ".svn" },
-  root_cache = {},
-}
+local M = {}
 
 M.get_help = function()
   vim.ui.input({ prompt = "enter search term" }, function(input)
@@ -84,10 +81,10 @@ M.scandir = function(directory)
 end
 
 M.on_load = function(name, callback)
-  local status, config = pcall(require, "lazy.core.config")
+  local has_lazy, config = pcall(require, "lazy.core.config")
 
   -- if it's already loaded, then just run the callback
-  if status then
+  if has_lazy then
     if config.plugins[name]._.loaded ~= nil then
       callback(name)
       return
@@ -105,56 +102,26 @@ M.on_load = function(name, callback)
   })
 end
 
-M.get_current_git_branch = function()
-  local branch = io.popen("git rev-parse --abbrev-ref HEAD 2> /dev/null")
-  if branch then
-    local name = branch:read("*l")
-    branch:close()
-    if name then
-      return name
-    else
-      return ""
-    end
-  end
-end
-
-M.find_project_root = function()
-  local path = vim.api.nvim_buf_get_name(0)
-  if path == nil or path == "" then
-    return nil
-  end
-
-  path = M.normalize_path(path)
-  path = vim.fs.dirname(path)
-
-  local root = M.root_cache[path]
-  if root == nil then
-    local root_file = vim.fs.find(M.root_names, { path = path, upward = true })[1]
-    if root_file == nil then
-      return nil
-    end
-    root = vim.fs.dirname(root_file)
-    M.root_cache[path] = root
-  end
-  return root
-end
-
-M.goto_config_directory = function()
-  require("ao.modules.telescope").open_project(vim.fn.stdpath("config"))
-end
-
-M.has_module = function(n)
-  local status, _ = pcall(require, n)
-  return status
-end
-
 M.set_tab_var = function(tabnr, key, value)
   local handle = vim.api.nvim_list_tabpages()[tabnr or vim.fn.tabpagenr()]
+  if handle == nil then
+    return
+  end
   vim.api.nvim_tabpage_set_var(handle, key, value)
 end
 
+M.set_buf_var = function(bufnr, key, value)
+  local handle = vim.api.nvim_list_bufs()[bufnr or vim.fn.bufnr()]
+  if handle == nil then
+    return
+  end
+  vim.api.nvim_buf_set_var(handle, key, value)
+end
+
 M.normalize_path = function(path)
-  if path:find("^oil://") then
+  if path == "oil:" then
+    return "/"
+  elseif path:find("^oil://") then
     path = string.sub(path, 7)
   end
 
