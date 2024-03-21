@@ -46,7 +46,8 @@ local function telescope_load_projects()
     layout_config = { width = 0.45, height = 0.4 },
     prompt_title = "Projects",
     sorter = telescope_config.generic_sorter({}),
-    on_select = projects.open,
+    -- on_select = projects.open,
+    on_select = vim.cmd.edit,
   })
 end
 
@@ -60,6 +61,11 @@ local function telescope_git_files()
   else
     telescope_load_projects()
   end
+end
+
+local function telescope_search_project()
+  local builtin = require("telescope.builtin")
+  builtin.live_grep({ cwd = projects.find_root() })
 end
 
 local function telescope_find_project_files()
@@ -139,12 +145,7 @@ M.plugin_specs = {
       { "<leader>pf", telescope_find_project_files, desc = "Find project file" },
       { "<leader>pg", telescope_git_files, desc = "Find git files" },
       { "<leader>pp", telescope_load_projects, desc = "Projects" },
-      { "<leader>pa", "<cmd>AddProject<cr>", desc = "Add project to projects list" },
-      {
-        "<leader>sp",
-        "<cmd>Telescope live_grep<cr>",
-        desc = "Search project for text",
-      },
+      { "<leader>sp", telescope_search_project, desc = "Search project for text" },
     },
     cmd = "Telescope",
     config = function()
@@ -199,6 +200,9 @@ M.plugin_specs = {
           },
         },
       })
+
+      telescope.load_extension("ui-select")
+      telescope.load_extension("fzf")
     end,
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -206,14 +210,7 @@ M.plugin_specs = {
       "synic/telescope-dirpicker.nvim",
       "smartpde/telescope-recent-files",
       "debugloop/telescope-undo.nvim",
-      {
-        "nvim-telescope/telescope-ui-select.nvim",
-        config = function()
-          utils.on_load("telescope.nvim", function()
-            require("telescope").load_extension("ui-select")
-          end)
-        end,
-      },
+      "nvim-telescope/telescope-ui-select.nvim",
       {
         "LukasPietzschmann/telescope-tabs",
         opts = {
@@ -226,11 +223,6 @@ M.plugin_specs = {
         "nvim-telescope/telescope-fzf-native.nvim",
         build = "make",
         enabled = vim.fn.executable("make") == 1,
-        config = function()
-          utils.on_load("telescope.nvim", function()
-            require("telescope").load_extension("fzf")
-          end)
-        end,
       },
     },
   },
