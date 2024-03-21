@@ -1,4 +1,5 @@
 local utils = require("ao.utils")
+local filesystem = require("ao.modules.filesystem")
 
 local function buffer_show_name(full_path)
   local pattern = "%p"
@@ -109,7 +110,7 @@ utils.map_keys({
   },
 
   -- configuration
-  { "<leader>cm", utils.goto_config_directory, desc = "Manage config" },
+  { "<leader>cm", filesystem.goto_config_directory, desc = "Manage config" },
   {
     "<leader>cx",
     "<cmd>lua require('ao.utils').close_all_floating_windows()<cr>",

@@ -4,60 +4,20 @@ local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 local flags = { allow_incremental_sync = true, debounce_text_changes = 200 }
 
 local function lsp_on_attach(_, bufnr)
+  local telescope = require("telescope.builtin")
   utils.map_keys({
     { "<localleader>r", vim.lsp.buf.rename, desc = "Rename symbol", buffer = bufnr },
     { "<localleader>a", vim.lsp.buf.code_action, desc = "Code actions", buffer = bufnr },
-    { "gd", vim.lsp.buf.definition, desc = "Goto definition", buffer = bufnr },
+    { "gd", telescope.lsp_definitions, desc = "Goto definition", buffer = bufnr },
     { "gD", vim.lsp.buf.declaration, desc = "Goto declaration", buffer = bufnr },
-    {
-      "g/",
-      "<cmd>vsplit<cr><cmd>lua vim.lsp.buf.definition()<cr>",
-      desc = "Goto def in vsplit",
-      buffer = bufnr,
-    },
-    {
-      "g-",
-      "<cmd>split<cr><cmd>lua vim.lsp.buf.definition()<cr>",
-      desc = "Goto def in hsplit",
-      buffer = bufnr,
-    },
-    {
-      "gr",
-      require("telescope.builtin").lsp_references,
-      desc = "Goto reference",
-      buffer = bufnr,
-    },
-    {
-      "gI",
-      require("telescope.builtin").lsp_implementations,
-      desc = "Goto implementation",
-      buffer = bufnr,
-    },
-    {
-      "gS",
-      require("telescope.builtin").lsp_document_symbols,
-      desc = "Document symbols",
-      buffer = bufnr,
-    },
-    {
-      "gW",
-      require("telescope.builtin").lsp_dynamic_workspace_symbols,
-      desc = "Workspace symbols",
-      buffer = bufnr,
-    },
-    {
-      "g=",
-      "<cmd>lua vim.lsp.buf.format()<cr>",
-      desc = "Format document",
-      buffer = bufnr,
-    },
-    {
-      -- see :help K for why it's this keymap
-      "K",
-      "<cmd>lua vim.lsp.buf.hover()<cr>",
-      desc = "Show definition",
-      buffer = bufnr,
-    },
+    { "g/", "<cmd>vsplit<cr><cmd>Telescope lsp_definitions<cr>", desc = "Goto def in vsplit", buffer = bufnr },
+    { "g-", "<cmd>split<cr><cmd>Telescope lsp_definitions<cr>", desc = "Goto def in hsplit", buffer = bufnr },
+    { "gr", telescope.lsp_references, desc = "Goto reference", buffer = bufnr },
+    { "gI", telescope.lsp_implementations, desc = "Goto implementation", buffer = bufnr },
+    { "g.", telescope.lsp_document_symbols, desc = "Document symbols", buffer = bufnr },
+    { "gW", telescope.lsp_dynamic_workspace_symbols, desc = "Workspace symbols", buffer = bufnr },
+    { "g=", "<cmd>lua vim.lsp.buf.format()<cr>", desc = "Format document", buffer = bufnr },
+    { "K", "<cmd>lua vim.lsp.buf.hover()<cr>", desc = "Show definition", buffer = bufnr },
   })
 end
 
@@ -198,7 +158,6 @@ return {
   -- lsp
   {
     "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "hrsh7th/nvim-cmp",
       "williamboman/mason-lspconfig.nvim",
@@ -254,8 +213,6 @@ return {
       { "windwp/nvim-ts-autotag", config = true },
       { "nvim-treesitter/nvim-treesitter-context", config = true },
     },
-    event = { "BufReadPre", "BufNewFile" },
-    cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
     opts = {
       highlight = {
         enable = true,
@@ -342,7 +299,6 @@ return {
       "jose-elias-alvarez/typescript.nvim",
       "davidmh/cspell.nvim",
     },
-    event = { "BufReadPre", "BufNewFile" },
     opts = function()
       local ns = require("null-ls")
       local custom = require("ao.custom.none-ls")

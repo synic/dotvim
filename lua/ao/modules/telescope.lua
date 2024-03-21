@@ -1,17 +1,15 @@
 local utils = require("ao.utils")
 local config = require("ao.config")
 local interface = require("ao.modules.interface")
+local projects = require("ao.modules.projects")
 local M = {}
 
 local function telescope_grep_project_for_term()
   local builtin = require("telescope.builtin")
   local current_word = vim.fn.expand("<cword>")
-  local project_root = utils.find_project_root()
+  local root = projects.find_root()
 
-  builtin.grep_string({
-    cwd = (project_root or "."),
-    search = current_word,
-  })
+  builtin.grep_string({ cwd = (root or "."), search = current_word })
 end
 
 local telescope_tabs_entry_formatter = function(tabnr, _, file_names, _, is_current)
@@ -44,23 +42,12 @@ end
 local function telescope_load_projects()
   local telescope_config = require("telescope.config").values
   require("telescope").extensions.dirpicker.dirpicker({
-    cwd = config.options.projects_directory or ".",
+    cwd = config.options.projects.directory or ".",
     layout_config = { width = 0.45, height = 0.4 },
     prompt_title = "Projects",
     sorter = telescope_config.generic_sorter({}),
-    on_select = M.open_project,
+    on_select = projects.open,
   })
-end
-
-M.open_project = function(dir)
-  local status, builtin = pcall(require, "telescope.builtin")
-  require("ao.modules.interface").set_tab_name(vim.fn.fnamemodify(dir, ":t"))
-
-  if status then
-    builtin.find_files({ cwd = dir })
-  else
-    vim.cmd.edit(dir)
-  end
 end
 
 local function telescope_git_files()
@@ -78,9 +65,9 @@ end
 local function telescope_find_project_files()
   local builtin = require("telescope.builtin")
 
-  local project_root = utils.find_project_root()
-  if project_root and project_root ~= "" then
-    builtin.find_files({ cwd = project_root })
+  local root = projects.find_root()
+  if root and root ~= "" then
+    builtin.find_files({ cwd = root })
   else
     vim.notify("No project root was found, listing projects...", vim.log.levels.INFO)
     telescope_load_projects()
@@ -140,7 +127,7 @@ M.plugin_specs = {
       { "<leader>sb", "<cmd>Telescope builtin<cr>", desc = "List pickers" },
       { "<leader>sn", "<cmd>Telescope notify<cr>", desc = "Notifications" },
       { "<leader>.", "<cmd>Telescope resume<cr>", desc = "Resume last search" },
-      { "<leader>,", "<cmd>Telescope oldfiles<cr>", desc = "Recent files" },
+      { "<leader>,", "<cmd>lua require('telescope').extensions.recent_files.pick()<cr>", desc = "Recent files" },
 
       -- themes
       { "<leader>st", "<cmd>ColorSchemePicker<cr>", desc = "List themes" },
@@ -162,8 +149,15 @@ M.plugin_specs = {
     cmd = "Telescope",
     config = function()
       local telescope = require("telescope")
-
       local actions = require("telescope.actions")
+      local grep_mappings = {
+        i = {
+          ["<C-e>"] = ctrlsf_search_for_term,
+        },
+        n = {
+          ["e"] = ctrlsf_search_for_term,
+        },
+      }
 
       telescope.setup({
         defaults = {
@@ -195,18 +189,10 @@ M.plugin_specs = {
             ignore_current_buffer = true,
           },
           live_grep = {
-            mappings = {
-              i = {
-                ["<C-e>"] = ctrlsf_search_for_term,
-              },
-            },
+            mappings = vim.deepcopy(grep_mappings),
           },
           grep_string = {
-            mappings = {
-              i = {
-                ["<C-e>"] = ctrlsf_search_for_term,
-              },
-            },
+            mappings = vim.deepcopy(grep_mappings),
           },
           colorscheme = {
             enable_preview = true,
@@ -217,27 +203,14 @@ M.plugin_specs = {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "benfowler/telescope-luasnip.nvim",
-      {
-        "synic/telescope-dirpicker.nvim",
-        config = function()
-          utils.on_load("telescope.nvim", function()
-            require("telescope").load_extension("dirpicker")
-          end)
-        end,
-      },
+      "synic/telescope-dirpicker.nvim",
+      "smartpde/telescope-recent-files",
+      "debugloop/telescope-undo.nvim",
       {
         "nvim-telescope/telescope-ui-select.nvim",
         config = function()
           utils.on_load("telescope.nvim", function()
             require("telescope").load_extension("ui-select")
-          end)
-        end,
-      },
-      {
-        "debugloop/telescope-undo.nvim",
-        config = function()
-          utils.on_load("telescope.nvim", function()
-            require("telescope").load_extension("undo")
           end)
         end,
       },

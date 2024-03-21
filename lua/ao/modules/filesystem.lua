@@ -1,4 +1,6 @@
 local utils = require("ao.utils")
+local projects = require("ao.modules.projects")
+local M = {}
 
 vim.g.netrw_liststyle = 0
 vim.g.netrw_keepdir = 0
@@ -6,31 +8,16 @@ vim.g.netrw_banner = 0
 vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\.\S\+]]
 vim.g.netrw_browse_split = 0
 
-vim.api.nvim_create_autocmd("BufEnter", {
-  callback = function()
-    local root = utils.find_project_root()
-    if root == nil then
-      root = utils.normalize_path(vim.fn.expand("%:h"))
-    end
-
-    if root and root ~= "" then
-      vim.cmd.lcd(root)
-    end
-  end,
-})
-
 local function browse_at_project_directory()
-  local pathname = utils.find_project_root()
-
+  local pathname = projects.find_root()
   vim.fn.execute("edit " .. (pathname or "."))
 end
 
-utils.map_keys({
-  { "-", vim.cmd.Oil, desc = "Browse current directory" },
-  { "<leader>-", vim.cmd.Oil, desc = "Browse current directory" },
-  { "_", browse_at_project_directory, desc = "Browse current project" },
-  { "<leader>_", browse_at_project_directory, desc = "Browse current project" },
-})
+local function browse_at_current_directory()
+  vim.cmd.Oil()
+end
+
+utils.map_keys({})
 
 local function oil_rename()
   local oil = require("oil")
@@ -56,18 +43,12 @@ end
 
 local function oil_setup_navigation_keys(echo)
   if vim.b.ao_oil_navigation_keys_enabled then
-    vim.keymap.set(
-      "n",
-      "h",
-      "<cmd>lua require'oil.actions'.parent.callback()<cr>",
-      { desc = "Go up one directory", buffer = true }
-    )
-    vim.keymap.set(
-      "n",
-      "l",
-      "<cmd>lua require'oil.actions'.select.callback()<cr>",
-      { desc = "Go up one directory", buffer = true }
-    )
+    vim.keymap.set("n", "h", function()
+      require("oil.actions").parent.callback()
+    end, { desc = "Go up one directory", buffer = true })
+    vim.keymap.set("n", "l", function()
+      require("oil.actions").select.callback()
+    end, { desc = "Go up one directory", buffer = true })
     if echo then
       vim.notify("Oil: navigation keys enabled")
     end
@@ -113,54 +94,66 @@ local function oil_touch()
   end)
 end
 
-return {
+M.goto_config_directory = function()
+  require("ao.modules.projects").open(vim.fn.stdpath("config"))
+end
+
+M.plugin_specs = {
   -- dired like filemanager
   {
     "stevearc/oil.nvim",
-    opts = {
-      columns = {
-        "permissions",
-        "size",
-        "mtime",
-        { "icon", add_padding = false },
-      },
-      skip_confirm_for_simple_edits = true,
-      lsp_file_methods = {
-        autosave_changes = true,
-      },
-      cleanup_delay_ms = 30 * 1000,
-      view_options = {
-        show_hidden = true,
-        is_always_hidden = function(name, _)
-          return name == "." or name == ".."
-        end,
-      },
-      keymaps = {
-        ["<cr>"] = "actions.select",
-        ["g/"] = "actions.select_vsplit",
-        ["g-"] = "actions.select_split",
-        ["gt"] = "actions.select_tab",
-        ["<C-p>"] = "actions.preview",
-        ["<C-c>"] = "actions.close",
-        ["<C-l>"] = "actions.refresh",
-        ["<C-h>"] = "actions.select_split",
-        ["<C-v>"] = "actions.select_vsplit",
-        ["gs"] = "actions.change_sort",
-        ["gx"] = "actions.open_external",
-        ["gk"] = { desc = "Toggle navigation keys", callback = oil_toggle_navigation_keys },
-        ["gR"] = "actions.refresh",
-        ["gr"] = { desc = "Rename", callback = oil_rename },
-        ["gn"] = { desc = "Create new file", callback = oil_touch },
-        ["gd"] = { desc = "Delete", callback = oil_delete },
-        ["g\\"] = "actions.toggle_trash",
-        ["g."] = "actions.toggle_hidden",
-        ["`"] = "actions.tcd",
-        ["~"] = "actions.refresh",
-        ["-"] = "actions.parent",
-      },
-      use_default_keymaps = false,
-      constrain_cursor = "name",
+    keys = {
+      { "-", browse_at_current_directory, desc = "Browse current directory" },
+      { "<leader>-", browse_at_current_directory, desc = "Browse current directory" },
+      { "_", browse_at_project_directory, desc = "Browse current project" },
+      { "<leader>_", browse_at_project_directory, desc = "Browse current project" },
     },
+    opts = function()
+      return {
+        columns = {
+          "permissions",
+          "size",
+          "mtime",
+          { "icon", add_padding = false },
+        },
+        skip_confirm_for_simple_edits = true,
+        lsp_file_methods = {
+          autosave_changes = true,
+        },
+        cleanup_delay_ms = 30 * 1000,
+        view_options = {
+          show_hidden = true,
+          is_always_hidden = function(name, _)
+            return name == "." or name == ".."
+          end,
+        },
+        keymaps = {
+          ["<cr>"] = "actions.select",
+          ["g/"] = "actions.select_vsplit",
+          ["g-"] = "actions.select_split",
+          ["gt"] = "actions.select_tab",
+          ["<C-p>"] = "actions.preview",
+          ["<C-c>"] = "actions.close",
+          ["<C-l>"] = "actions.refresh",
+          ["<C-h>"] = "actions.select_split",
+          ["<C-v>"] = "actions.select_vsplit",
+          ["gs"] = "actions.change_sort",
+          ["gx"] = "actions.open_external",
+          ["gk"] = { desc = "Toggle navigation keys", callback = oil_toggle_navigation_keys },
+          ["gR"] = "actions.refresh",
+          ["gr"] = { desc = "Rename", callback = oil_rename },
+          ["gn"] = { desc = "Create new file", callback = oil_touch },
+          ["gd"] = { desc = "Delete", callback = oil_delete },
+          ["g\\"] = "actions.toggle_trash",
+          ["g."] = "actions.toggle_hidden",
+          ["`"] = "actions.tcd",
+          ["~"] = "actions.refresh",
+          ["-"] = "actions.parent",
+        },
+        use_default_keymaps = false,
+        constrain_cursor = "name",
+      }
+    end,
     dependencies = { "nvim-tree/nvim-web-devicons" },
     init = function()
       vim.g.ao_oil_navigation_keys_enabled = true
@@ -178,3 +171,5 @@ return {
     end,
   },
 }
+
+return M

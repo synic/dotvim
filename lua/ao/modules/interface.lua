@@ -59,6 +59,7 @@ M.set_tab_name = function(name, tabnr, force)
 
   utils.set_tab_var(tabnr, tab_name_key, name)
   vim.cmd.redrawtabline()
+  return true
 end
 
 local prompt_tab_name = function(tabnr)
@@ -340,37 +341,52 @@ M.plugin_specs = {
   {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = {
-      options = {
-        component_separators = "|",
-        section_separators = { left = "", right = "" },
-      },
-      sections = {
-        lualine_b = {
-          {
-            "branch",
-            fmt = lualine_trunc(200, 30, 100),
+    opts = function()
+      local lualine_utils = require("lualine.utils.utils")
+      local projects = require("ao.modules.projects")
+
+      local function repo_name(_, is_focused)
+        if not is_focused then
+          return ""
+        end
+
+        local root = projects.find_root(vim.fn.bufnr())
+        if not root or root == "" then
+          return ""
+        end
+
+        return lualine_utils.stl_escape(vim.fs.basename(root))
+      end
+
+      return {
+        options = {
+          component_separators = "|",
+          section_separators = { left = "", right = "" },
+        },
+        sections = {
+          lualine_b = {
+            { repo_name },
+            { "diff" },
+            { "diagnostics" },
           },
-          { "diff" },
-          { "diagnostics" },
-        },
-        lualine_x = {
-          { "encoding", fmt = lualine_trunc(0, 0, 120) },
-          { "fileformat", fmt = lualine_trunc(0, 0, 120) },
-          { "filetype", fmt = lualine_trunc(0, 0, 120) },
-        },
-        lualine_y = {
-          { "progress", fmt = lualine_trunc(0, 0, 100) },
-        },
-        lualine_c = {
-          {
-            "filename",
-            file_status = true, -- displays file status (readonly status, modified status)
-            path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
+          lualine_c = {
+            {
+              "filename",
+              file_status = true, -- displays file status (readonly status, modified status)
+              path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
+            },
+          },
+          lualine_x = {
+            { "encoding", fmt = lualine_trunc(0, 0, 120) },
+            { "fileformat", fmt = lualine_trunc(0, 0, 120) },
+            { "filetype", fmt = lualine_trunc(0, 0, 120) },
+          },
+          lualine_y = {
+            { "progress", fmt = lualine_trunc(0, 0, 100) },
           },
         },
-      },
-    },
+      }
+    end,
   },
 
   -- toggle golden ratio

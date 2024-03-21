@@ -19,4 +19,8 @@ sessions/
 # packer
 plugin/packer_compiled.lua
 
+# python
 .mypy_cache
+
+# local config
+lua/local_config.lua
