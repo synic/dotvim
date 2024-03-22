@@ -11,6 +11,7 @@ local function buffer_show_name(full_path)
   local path = vim.fn.expand(pattern)
   vim.fn.setreg("+", path)
   vim.notify(path)
+  print(path)
 end
 
 local categories = {

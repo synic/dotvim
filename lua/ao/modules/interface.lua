@@ -45,11 +45,11 @@ local function golden_ratio_toggle()
   end
 end
 
-M.get_tab_name = function(tabnr)
+function M.get_tab_name(tabnr)
   return vim.fn.gettabvar(tabnr or vim.fn.tabpagenr(), tab_name_key)
 end
 
-M.set_tab_name = function(name, tabnr, force)
+function M.set_tab_name(name, tabnr, force)
   tabnr = tabnr or vim.fn.tabpagenr()
   local current = M.get_tab_name(tabnr)
 
@@ -362,7 +362,7 @@ M.plugin_specs = {
           return ""
         end
 
-        local root = projects.find_root(vim.fn.bufnr())
+        local root = projects.find_path_root(vim.loop.cwd())
         if not root or root == "" then
           return ""
         end
@@ -377,7 +377,7 @@ M.plugin_specs = {
         },
         sections = {
           lualine_b = {
-            { repo_name },
+            { repo_name, icon = "" },
             { "diff" },
             { "diagnostics" },
           },
@@ -518,7 +518,6 @@ M.plugin_specs = {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
     event = { "BufReadPre", "BufNewFile" },
-    lazy = true,
     keys = {
       { "<leader>ti", indent_blankline_toggle, desc = "Toggle indent guide" },
     },

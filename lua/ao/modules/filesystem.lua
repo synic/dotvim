@@ -9,7 +9,7 @@ vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\
 vim.g.netrw_browse_split = 0
 
 local function browse_at_project_directory()
-  local pathname = projects.find_root()
+  local pathname = projects.find_buffer_root()
   vim.fn.execute("edit " .. (pathname or "."))
 end
 
@@ -85,7 +85,7 @@ local function oil_touch()
 
     local p = path:new(dir .. name)
     if p:exists() then
-      vim.notify("File already exists: ", path.filename, vim.log.levels.WARN)
+      vim.notify("File exists: " .. path.filename, vim.log.levels.WARN)
       return
     end
 
@@ -94,7 +94,7 @@ local function oil_touch()
   end)
 end
 
-M.goto_config_directory = function()
+function M.goto_config_directory()
   require("ao.modules.projects").open(vim.fn.stdpath("config"))
 end
 

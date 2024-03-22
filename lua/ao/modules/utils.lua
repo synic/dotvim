@@ -42,6 +42,19 @@ local plugins = {
     config = true,
   },
 
+  -- joining and splitting
+  {
+    "Wansmer/treesj",
+    keys = {
+      { "gj", "<cmd>lua require('treesj').split()<cr>", desc = "Split" },
+      { "gJ", "<cmd>lua require('treesj').join()<cr>", desc = "Join" },
+    },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    opts = {
+      use_default_keymaps = false,
+    },
+  },
+
   -- snippets
   {
     "L3MON4D3/LuaSnip",

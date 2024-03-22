@@ -1,13 +1,14 @@
-local utils = require("ao.utils")
 local config = require("ao.config")
+local utils = require("ao.utils")
 local interface = require("ao.modules.interface")
 local projects = require("ao.modules.projects")
+
 local M = {}
 
-local function telescope_grep_project_for_term()
+local function telescope_search_project_for_term()
   local builtin = require("telescope.builtin")
   local current_word = vim.fn.expand("<cword>")
-  local root = projects.find_root()
+  local root = projects.find_buffer_root()
 
   builtin.grep_string({ cwd = (root or "."), search = current_word })
 end
@@ -25,9 +26,9 @@ local telescope_tabs_entry_formatter = function(tabnr, _, _, _, is_current)
   return string.format("%d: %s%s", tabnr, display, is_current and " <" or "")
 end
 
-local function telescope_grep_working_directory()
+local function telescope_search_cwd()
   local builtin = require("telescope.builtin")
-  builtin.live_grep({ cwd = vim.fn.expand("%:p:h") })
+  builtin.live_grep({ cwd = utils.remove_oil(vim.fn.expand("%:p:h")) })
 end
 
 local function ctrlsf_search_for_term(prompt_bufnr)
@@ -36,15 +37,20 @@ local function ctrlsf_search_for_term(prompt_bufnr)
   vim.cmd.CtrlSF(prompt)
 end
 
-local function telescope_load_projects()
+local function telescope_pick_project()
   local telescope_config = require("telescope.config").values
   require("telescope").extensions.dirpicker.dirpicker({
     cwd = config.options.projects.directory or ".",
-    layout_config = { width = 0.45, height = 0.4 },
+    layout_config = { width = 0.45, height = 0.4, preview_width = 0.5 },
     prompt_title = "Projects",
     sorter = telescope_config.generic_sorter({}),
     on_select = projects.open,
   })
+end
+
+local function telescope_switch_project()
+  utils.set_tab_name(nil)
+  telescope_pick_project()
 end
 
 local function telescope_git_files()
@@ -55,30 +61,30 @@ local function telescope_git_files()
   if ret == 0 then
     builtin.git_files()
   else
-    telescope_load_projects()
+    telescope_pick_project()
   end
 end
 
 local function telescope_search_project()
   local builtin = require("telescope.builtin")
-  builtin.live_grep({ cwd = projects.find_root() })
+  builtin.live_grep({ cwd = projects.find_buffer_root() })
 end
 
 local function telescope_find_project_files()
   local builtin = require("telescope.builtin")
 
-  local root = projects.find_root()
+  local root = projects.find_buffer_root()
   if root and root ~= "" then
     builtin.find_files({ cwd = root })
   else
-    vim.notify("No project root was found, listing projects...", vim.log.levels.INFO)
-    telescope_load_projects()
+    vim.notify("Project: no project selected", vim.log.levels.INFO)
+    telescope_pick_project()
   end
 end
 
-local function telescope_new_tab_with_projects()
+local function telescope_new_tab_with_project()
   vim.cmd.tabnew()
-  telescope_load_projects()
+  telescope_pick_project()
 end
 
 local function telescope_search_buffers()
@@ -105,7 +111,7 @@ M.plugin_specs = {
       -- layouts/windows
       {
         "<leader>lt",
-        telescope_new_tab_with_projects,
+        telescope_new_tab_with_project,
         desc = "New layout with project",
       },
       { "<leader>ll", telescope_show_tabs, desc = "List layouts" },
@@ -113,13 +119,13 @@ M.plugin_specs = {
       -- search
       {
         "<leader>*",
-        telescope_grep_project_for_term,
+        telescope_search_project_for_term,
         desc = "Search for term in project",
         mode = { "n", "v" },
       },
       {
         "<leader>sd",
-        telescope_grep_working_directory,
+        telescope_search_cwd,
         desc = "Search in current directory",
       },
       { "<leader>ss", "<cmd>Telescope luasnip<cr>", desc = "Snippets" },
@@ -140,7 +146,8 @@ M.plugin_specs = {
       -- projects
       { "<leader>pf", telescope_find_project_files, desc = "Find project file" },
       { "<leader>pg", telescope_git_files, desc = "Find git files" },
-      { "<leader>pp", telescope_load_projects, desc = "Projects" },
+      { "<leader>pp", telescope_pick_project, desc = "Pick Project" },
+      { "<leader>pP", telescope_switch_project, desc = "Pick Project" },
       { "<leader>sp", telescope_search_project, desc = "Search project for text" },
     },
     cmd = "Telescope",
@@ -184,15 +191,26 @@ M.plugin_specs = {
           buffers = {
             sort_mru = true,
             ignore_current_buffer = true,
+            layout_config = {
+              preview_width = 0.55,
+            },
           },
           live_grep = {
             mappings = vim.deepcopy(grep_mappings),
           },
           grep_string = {
             mappings = vim.deepcopy(grep_mappings),
+            layout_config = {
+              preview_width = 0.5,
+            },
           },
           colorscheme = {
             enable_preview = true,
+          },
+          find_files = {
+            layout_config = {
+              preview_width = 0.55,
+            },
           },
         },
       })
