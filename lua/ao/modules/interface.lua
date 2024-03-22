@@ -1,7 +1,7 @@
 local utils = require("ao.utils")
+local projects = require("ao.modules.projects")
 
 local M = {}
-local tab_name_key = "aotabname"
 
 vim.g.neovide_remember_window_size = true
 
@@ -28,7 +28,9 @@ end
 
 local function search_in_project_root()
   vim.ui.input({ prompt = "term: " }, function(input)
-    vim.cmd('CtrlSF "' .. input .. '"')
+    if input and input ~= "" then
+      vim.cmd('CtrlSF "' .. input .. '"')
+    end
   end)
 end
 
@@ -46,37 +48,12 @@ local function golden_ratio_toggle()
 end
 
 function M.get_tab_name(tabnr)
-  return vim.fn.gettabvar(tabnr or vim.fn.tabpagenr(), tab_name_key)
-end
-
-function M.set_tab_name(name, tabnr, force)
-  tabnr = tabnr or vim.fn.tabpagenr()
-  local current = M.get_tab_name(tabnr)
-
-  if current ~= "" and not force then
-    return false
+  if vim.fn.gettabvar(tabnr or 0, "projectset") ~= true then
+    return nil
   end
 
-  utils.set_tab_var(tabnr, tab_name_key, name)
-  vim.cmd.redrawtabline()
-  return true
+  return projects.get_name(tabnr)
 end
-
-local prompt_tab_name = function(tabnr)
-  if tabnr == nil then
-    tabnr = vim.fn.tabpagenr()
-  end
-
-  local current = vim.fn.gettabvar(tabnr, tab_name_key)
-
-  vim.ui.input({ prompt = "Set layout name: ", default = current }, function(name)
-    M.set_tab_name(name or "", tabnr, true)
-  end)
-end
-
-utils.map_keys({
-  { "<leader>lN", prompt_tab_name, desc = "Set layout name" },
-})
 
 M.plugin_specs = {
   -- extensible core UI hooks
@@ -152,7 +129,6 @@ M.plugin_specs = {
   {
     "norcalli/nvim-colorizer.lua",
     name = "colorizer",
-    event = { "BufReadPre", "BufNewFile" },
     opts = {
       "javascript",
       "css",
@@ -174,7 +150,7 @@ M.plugin_specs = {
     dependencies = {
       "nvim-telescope/telescope-fzf-native.nvim",
     },
-    event = { "BufReadPre", "BufNewFile" },
+    event = { "BufReadPost", "BufNewFile" },
     keys = {
       {
         "<localleader>,",
@@ -308,17 +284,6 @@ M.plugin_specs = {
         tail = "TabLine",
       }
 
-      local function tab_display(tab)
-        local name = M.get_tab_name(tab.number())
-        if not name or name == "" then
-          name = tab.name()
-          if name == "[No Name]" or name == "[Floating]" then
-            return ""
-          end
-        end
-        return name
-      end
-
       require("tabby.tabline").set(function(line)
         return {
           {
@@ -331,7 +296,7 @@ M.plugin_specs = {
               line.sep("", hl, theme.fill),
               tab.is_current() and "" or "󰆣",
               tab.number(),
-              tab_display(tab),
+              (M.get_tab_name(tab.number()) or ""),
               tab.close_btn(""),
               line.sep("", hl, theme.fill),
               hl = hl,
@@ -355,19 +320,14 @@ M.plugin_specs = {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = function()
       local lualine_utils = require("lualine.utils.utils")
-      local projects = require("ao.modules.projects")
 
       local function repo_name(_, is_focused)
         if not is_focused then
           return ""
         end
 
-        local root = projects.find_path_root(vim.loop.cwd())
-        if not root or root == "" then
-          return ""
-        end
-
-        return lualine_utils.stl_escape(vim.fs.basename(root))
+        local path = projects.find_buffer_root()
+        return lualine_utils.stl_escape(vim.fs.basename(path or ""))
       end
 
       return {
@@ -377,16 +337,12 @@ M.plugin_specs = {
         },
         sections = {
           lualine_b = {
-            { repo_name, icon = "" },
+            { repo_name, icon = "" },
             { "diff" },
             { "diagnostics" },
           },
           lualine_c = {
-            {
-              "filename",
-              file_status = true, -- displays file status (readonly status, modified status)
-              path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
-            },
+            { "filename", file_status = true, path = 1 },
           },
           lualine_x = {
             { "encoding", fmt = lualine_trunc(0, 0, 120) },
@@ -508,16 +464,13 @@ M.plugin_specs = {
   },
 
   -- show search/replace results as they are being typed
-  {
-    "haya14busa/incsearch.vim",
-    event = { "BufReadPre", "BufNewFile" },
-  },
+  { "haya14busa/incsearch.vim" },
 
   -- show indent guide
   {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
-    event = { "BufReadPre", "BufNewFile" },
+    lazy = false,
     keys = {
       { "<leader>ti", indent_blankline_toggle, desc = "Toggle indent guide" },
     },
@@ -571,6 +524,7 @@ M.plugin_specs = {
   {
     "chrisgrieser/nvim-early-retirement",
     config = true,
+    lazy = false,
     event = { "BufReadPre", "BufNewFile" },
   },
 }

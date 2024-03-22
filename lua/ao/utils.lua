@@ -120,10 +120,27 @@ end
 
 function M.remove_oil(path)
   if path == "oil:" then
-    path = "/"
+    return true, "/"
   elseif path:find("^oil://") then
-    path = string.sub(path, 7)
+    return true, string.sub(path, 7)
   end
+  return false, path
+end
+
+function M.is_new_file()
+  local filename = vim.fn.expand("%")
+  return filename ~= "" and vim.bo.buftype == "" and vim.fn.filereadable(filename) == 0
+end
+
+function M.get_buffer_cwd(bufnr)
+  local path = vim.api.nvim_buf_get_name(bufnr or vim.fn.bufnr())
+  local is_oil = false
+  is_oil, path = M.remove_oil(path)
+
+  if not is_oil then
+    path = vim.fs.dirname(path)
+  end
+
   return path
 end
 

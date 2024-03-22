@@ -10,11 +10,11 @@ vim.g.netrw_browse_split = 0
 
 local function browse_at_project_directory()
   local pathname = projects.find_buffer_root()
-  vim.fn.execute("edit " .. (pathname or "."))
+  vim.cmd.edit((pathname or "."))
 end
 
 local function browse_at_current_directory()
-  vim.cmd.Oil()
+  vim.cmd.edit((utils.get_buffer_cwd() or "."))
 end
 
 utils.map_keys({})
@@ -108,6 +108,7 @@ M.plugin_specs = {
       { "_", browse_at_project_directory, desc = "Browse current project" },
       { "<leader>_", browse_at_project_directory, desc = "Browse current project" },
     },
+    lazy = false,
     opts = function()
       return {
         columns = {
