@@ -2,7 +2,7 @@ local utils = require("ao.utils")
 local config = require("ao.config")
 local M = {}
 
-M.install_plugin_manager = function()
+function M.install_plugin_manager()
   local was_installed = false
   local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
   if not vim.loop.fs_stat(lazypath) then
@@ -34,7 +34,7 @@ local function load_theme(theme)
   return was_set
 end
 
-M.load_plugin_specs = function()
+function M.load_plugin_specs()
   local plugins = {}
   local path = vim.fn.stdpath("config") .. "/lua/ao/modules"
   local items = vim.split(vim.fn.glob(vim.fn.resolve(path .. "/*.lua")), "\n", { trimempty = true })
@@ -53,7 +53,7 @@ M.load_plugin_specs = function()
   return plugins
 end
 
-M.setup = function(opts, startup_callback_fn)
+function M.setup(opts, startup_callback_fn)
   config.options = vim.tbl_deep_extend("force", config.options, opts)
   if config.options.appearance.guifont then
     vim.api.nvim_set_option("guifont", config.options.appearance.guifont)

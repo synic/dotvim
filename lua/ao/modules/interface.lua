@@ -1,7 +1,7 @@
 local utils = require("ao.utils")
+local projects = require("ao.modules.projects")
 
 local M = {}
-local tab_name_key = "aotabname"
 
 vim.g.neovide_remember_window_size = true
 
@@ -26,9 +26,9 @@ local function lualine_trunc(trunc_width, trunc_len, hide_width, no_ellipsis)
   end
 end
 
-local function search_in_project_root()
-  vim.ui.input({ prompt = "term: " }, function(input)
-    vim.cmd('CtrlSF "' .. input .. '"')
+local function ctrlsf_search_in_project_root()
+  vim.ui.input({ prompt = "search: " }, function(input)
+    vim.cmd.CtrlSF(input)
   end)
 end
 
@@ -45,45 +45,17 @@ local function golden_ratio_toggle()
   end
 end
 
-M.get_tab_name = function(tabnr)
-  return vim.fn.gettabvar(tabnr or vim.fn.tabpagenr(), tab_name_key)
-end
-
-M.set_tab_name = function(name, tabnr, force)
-  tabnr = tabnr or vim.fn.tabpagenr()
-  local current = M.get_tab_name(tabnr)
-
-  if current ~= "" and not force then
-    return false
+function M.get_tab_name(tabnr)
+  if vim.fn.gettabvar(tabnr or 0, "projectset") ~= true then
+    return nil
   end
 
-  utils.set_tab_var(tabnr, tab_name_key, name)
-  vim.cmd.redrawtabline()
-  return true
+  return projects.get_name(tabnr)
 end
-
-local prompt_tab_name = function(tabnr)
-  if tabnr == nil then
-    tabnr = vim.fn.tabpagenr()
-  end
-
-  local current = vim.fn.gettabvar(tabnr, tab_name_key)
-
-  vim.ui.input({ prompt = "Set layout name: ", default = current }, function(name)
-    M.set_tab_name(name or "", tabnr, true)
-  end)
-end
-
-utils.map_keys({
-  { "<leader>lN", prompt_tab_name, desc = "Set layout name" },
-})
 
 M.plugin_specs = {
   -- extensible core UI hooks
-  {
-    "stevearc/dressing.nvim",
-    opts = {},
-  },
+  { "stevearc/dressing.nvim", config = true, event = "VeryLazy" },
 
   -- zen mode (maximize windows, etc)
   {
@@ -96,6 +68,7 @@ M.plugin_specs = {
   -- notifications
   {
     "rcarriga/nvim-notify",
+    event = "VeryLazy",
     opts = {
       render = "minimal",
       stages = "fade",
@@ -114,7 +87,6 @@ M.plugin_specs = {
   -- various interface and vim scripting utilities
   {
     "tpope/vim-scriptease",
-    lazy = false,
     keys = {
       { "<leader>sm", "<cmd>Messages<cr>", desc = "Show notifications/messages" },
     },
@@ -123,28 +95,34 @@ M.plugin_specs = {
   -- show indent scope
   {
     "echasnovski/mini.indentscope",
+    event = "VeryLazy",
     version = false,
-    lazy = false,
-    opts = {},
+    config = true,
     init = function()
+      local disable_for = {
+        "help",
+        "alpha",
+        "dashboard",
+        "neo-tree",
+        "Trouble",
+        "trouble",
+        "lazy",
+        "mason",
+        "notify",
+        "toggleterm",
+        "lazyterm",
+      }
       vim.api.nvim_create_autocmd("FileType", {
-        pattern = {
-          "help",
-          "alpha",
-          "dashboard",
-          "neo-tree",
-          "Trouble",
-          "trouble",
-          "lazy",
-          "mason",
-          "notify",
-          "toggleterm",
-          "lazyterm",
-        },
+        pattern = disable_for,
         callback = function()
           vim.b.miniindentscope_disable = true
         end,
       })
+
+      -- for lazy loading into an existing file
+      if utils.table_contains(disable_for, vim.bo.filetype) then
+        vim.b.miniindentscope_disable = true
+      end
     end,
   },
 
@@ -152,7 +130,6 @@ M.plugin_specs = {
   {
     "norcalli/nvim-colorizer.lua",
     name = "colorizer",
-    event = { "BufReadPre", "BufNewFile" },
     opts = {
       "javascript",
       "css",
@@ -167,20 +144,14 @@ M.plugin_specs = {
   },
 
   -- show marks in gutter
-  "kshenoy/vim-signature",
+  { "kshenoy/vim-signature", event = "VeryLazy" },
 
   {
     "Bekaboo/dropbar.nvim",
-    dependencies = {
-      "nvim-telescope/telescope-fzf-native.nvim",
-    },
-    event = { "BufReadPre", "BufNewFile" },
+    event = "VeryLazy",
+    dependencies = { "nvim-telescope/telescope-fzf-native.nvim" },
     keys = {
-      {
-        "<localleader>,",
-        "<cmd>lua require('dropbar.api').pick()<cr>",
-        desc = "Dropbar picker",
-      },
+      { "<localleader>,", "<cmd>lua require('dropbar.api').pick()<cr>", desc = "Dropbar picker" },
     },
     opts = function()
       local dutils = require("dropbar.utils")
@@ -308,17 +279,6 @@ M.plugin_specs = {
         tail = "TabLine",
       }
 
-      local function tab_display(tab)
-        local name = M.get_tab_name(tab.number())
-        if not name or name == "" then
-          name = tab.name()
-          if name == "[No Name]" or name == "[Floating]" then
-            return ""
-          end
-        end
-        return name
-      end
-
       require("tabby.tabline").set(function(line)
         return {
           {
@@ -331,7 +291,7 @@ M.plugin_specs = {
               line.sep("", hl, theme.fill),
               tab.is_current() and "" or "󰆣",
               tab.number(),
-              tab_display(tab),
+              (M.get_tab_name(tab.number()) or ""),
               tab.close_btn(""),
               line.sep("", hl, theme.fill),
               hl = hl,
@@ -352,22 +312,18 @@ M.plugin_specs = {
   -- statusline
   {
     "nvim-lualine/lualine.nvim",
+    event = "VeryLazy",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = function()
       local lualine_utils = require("lualine.utils.utils")
-      local projects = require("ao.modules.projects")
 
       local function repo_name(_, is_focused)
         if not is_focused then
           return ""
         end
 
-        local root = projects.find_root(vim.fn.bufnr())
-        if not root or root == "" then
-          return ""
-        end
-
-        return lualine_utils.stl_escape(vim.fs.basename(root))
+        local path = projects.find_buffer_root()
+        return lualine_utils.stl_escape(vim.fs.basename(path or ""))
       end
 
       return {
@@ -377,16 +333,12 @@ M.plugin_specs = {
         },
         sections = {
           lualine_b = {
-            { repo_name },
+            { repo_name, icon = "" },
             { "diff" },
             { "diagnostics" },
           },
           lualine_c = {
-            {
-              "filename",
-              file_status = true, -- displays file status (readonly status, modified status)
-              path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
-            },
+            { "filename", file_status = true, path = 1 },
           },
           lualine_x = {
             { "encoding", fmt = lualine_trunc(0, 0, 120) },
@@ -421,7 +373,6 @@ M.plugin_specs = {
   {
     "folke/flash.nvim",
     event = "VeryLazy",
-    lazy = false,
     opts = {
       labels = "asdfghjklqwertyuiopzxcvbnm.,/'-",
       modes = {
@@ -489,36 +440,27 @@ M.plugin_specs = {
   -- search
   {
     "dyng/ctrlsf.vim",
-    cmd = { "CtrlSF" },
     keys = {
-      { "<leader>sf", search_in_project_root, desc = "Search in project root" },
+      { "<leader>sf", ctrlsf_search_in_project_root, desc = "Search in project root" },
     },
+    cmd = { "CtrlSF" },
     init = function()
       vim.g.better_whitespace_filetypes_blacklist = { "ctrlsf" }
       vim.g.ctrlsf_default_view_mode = "normal"
       vim.g.ctrlsf_default_root = "project+wf"
-      vim.g.ctrlsf_auto_close = {
-        normal = 0,
-        compact = 1,
-      }
-      vim.g.ctrlsf_auto_focus = {
-        at = "start",
-      }
+      vim.g.ctrlsf_auto_close = { normal = 0, compact = 1 }
+      vim.g.ctrlsf_auto_focus = { at = "start" }
     end,
   },
 
   -- show search/replace results as they are being typed
-  {
-    "haya14busa/incsearch.vim",
-    event = { "BufReadPre", "BufNewFile" },
-  },
+  { "haya14busa/incsearch.vim", event = "VeryLazy" },
 
   -- show indent guide
   {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
-    event = { "BufReadPre", "BufNewFile" },
-    lazy = true,
+    event = "VeryLazy",
     keys = {
       { "<leader>ti", indent_blankline_toggle, desc = "Toggle indent guide" },
     },
@@ -561,19 +503,10 @@ M.plugin_specs = {
   },
 
   -- fidget.nvim shows lsp and null-ls status at the bottom right of the screen
-  {
-    "j-hui/fidget.nvim",
-    event = "LspAttach",
-    tag = "legacy",
-    config = true,
-  },
+  { "j-hui/fidget.nvim", event = "LspAttach", tag = "legacy", config = true },
 
   -- automatically close inactive buffers
-  {
-    "chrisgrieser/nvim-early-retirement",
-    config = true,
-    event = { "BufReadPre", "BufNewFile" },
-  },
+  { "chrisgrieser/nvim-early-retirement", config = true, event = { "BufAdd" } },
 }
 
 return M

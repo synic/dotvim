@@ -9,11 +9,14 @@ vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\
 vim.g.netrw_browse_split = 0
 
 local function browse_at_project_directory()
-  local pathname = projects.find_root()
-  vim.fn.execute("edit " .. (pathname or "."))
+  local pathname = projects.find_buffer_root()
+  vim.cmd.Oil((pathname or "."))
 end
 
 local function browse_at_current_directory()
+  -- oil is a bit strange, if you pass no arguments, it does not open in `vim.loop.cwd()` like telescope. It always
+  -- opens in the current buffer's directory. If you pass a path, it won't select the current buffer's file
+  -- automatically.
   vim.cmd.Oil()
 end
 
@@ -85,7 +88,7 @@ local function oil_touch()
 
     local p = path:new(dir .. name)
     if p:exists() then
-      vim.notify("File already exists: ", path.filename, vim.log.levels.WARN)
+      vim.notify("File exists: " .. path.filename, vim.log.levels.WARN)
       return
     end
 
@@ -94,7 +97,7 @@ local function oil_touch()
   end)
 end
 
-M.goto_config_directory = function()
+function M.goto_config_directory()
   require("ao.modules.projects").open(vim.fn.stdpath("config"))
 end
 
@@ -108,6 +111,9 @@ M.plugin_specs = {
       { "_", browse_at_project_directory, desc = "Browse current project" },
       { "<leader>_", browse_at_project_directory, desc = "Browse current project" },
     },
+    -- if you lazy load oil, things will be weird if you open a directory from the command line, even if you use the
+    -- `VeryLazy` event, so do not lazy load.
+    lazy = false,
     opts = function()
       return {
         columns = {

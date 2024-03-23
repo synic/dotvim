@@ -73,34 +73,6 @@ return {
             trae = true,
             port = 9229,
           },
-          -- {
-          --   type = "pwa-node",
-          --   request = "launch",
-          --   name = "Launch file",
-          --   program = "${file}",
-          --   cwd = "${workspaceFolder}",
-          -- },
-          -- {
-          --   type = "pwa-node",
-          --   request = "attach",
-          --   name = "Attach",
-          --   processId = require("dap.utils").pick_process,
-          --   cwd = "${workspaceFolder}",
-          -- },
-          -- {
-          --   type = "pwa-node",
-          --   request = "attach",
-          --   name = "Attach Docker (VSCode)",
-          --   port = 9229,
-          --   restart = true,
-          --   stopOnEntry = false,
-          --   protocol = "inspector",
-          --   trace = true,
-          --   sourceMaps = true,
-          --   localRoot = "${workspaceFolder}",
-          --   cwd = "${workspaceFolder}",
-          --   remoteRoot = "/app",
-          -- },
         }
       end
     end,
@@ -109,7 +81,6 @@ return {
   -- UI for DAP
   {
     "rcarriga/nvim-dap-ui",
-    lazy = true,
     dependencies = {
       { "nvim-neotest/nvim-nio", "mfussenegger/nvim-dap" },
       -- baleia displays color escape codes properly.
