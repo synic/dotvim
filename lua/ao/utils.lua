@@ -1,6 +1,6 @@
 local M = {}
 
-M.get_help = function()
+function M.get_help()
   vim.ui.input({ prompt = "enter search term" }, function(input)
     if input == nil then
       return
@@ -9,7 +9,7 @@ M.get_help = function()
   end)
 end
 
-M.close_all_floating_windows = function()
+function M.close_all_floating_windows()
   for _, win in ipairs(vim.api.nvim_list_wins()) do
     local config = vim.api.nvim_win_get_config(win)
     if config.relative ~= "" then -- is_floating_window?
@@ -18,7 +18,7 @@ M.close_all_floating_windows = function()
   end
 end
 
-M.map_keys = function(keymap)
+function M.map_keys(keymap)
   for _, key_data in ipairs(keymap) do
     local modes = key_data.modes or { "n" }
     key_data.modes = nil
@@ -35,23 +35,23 @@ M.map_keys = function(keymap)
   end
 end
 
-M.basename = function(str)
+function M.basename(str)
   return string.gsub(str, "(.*/)(.*)", "%2")
 end
 
-M.join_paths = function(...)
+function M.join_paths(...)
   local result = table.concat({ ... }, "/")
   return result
 end
 
-M.table_concat = function(table1, table2)
+function M.table_concat(table1, table2)
   for i = 1, #table2 do
     table1[#table1 + 1] = table2[i]
   end
   return table1
 end
 
-M.table_contains = function(tbl, value)
+function M.table_contains(tbl, value)
   for i = 1, #tbl do
     if tbl[i] == value then
       return true
@@ -60,7 +60,7 @@ M.table_contains = function(tbl, value)
   return false
 end
 
-M.scandir = function(directory)
+function M.scandir(directory)
   local i, t, popen = 0, {}, io.popen
   local pfile = popen('ls -a "' .. directory .. '"')
 
@@ -80,7 +80,7 @@ M.scandir = function(directory)
   return t
 end
 
-M.on_load = function(name, callback)
+function M.on_load(name, callback)
   local has_lazy, config = pcall(require, "lazy.core.config")
 
   -- if it's already loaded, then just run the callback
@@ -102,7 +102,7 @@ M.on_load = function(name, callback)
   })
 end
 
-M.set_tab_var = function(tabnr, key, value)
+function M.set_tab_var(tabnr, key, value)
   local handle = vim.api.nvim_list_tabpages()[tabnr or vim.fn.tabpagenr()]
   if handle == nil then
     return
@@ -110,7 +110,7 @@ M.set_tab_var = function(tabnr, key, value)
   vim.api.nvim_tabpage_set_var(handle, key, value)
 end
 
-M.set_buf_var = function(bufnr, key, value)
+function M.set_buf_var(bufnr, key, value)
   local handle = vim.api.nvim_list_bufs()[bufnr or vim.fn.bufnr()]
   if handle == nil then
     return
@@ -118,11 +118,27 @@ M.set_buf_var = function(bufnr, key, value)
   vim.api.nvim_buf_set_var(handle, key, value)
 end
 
-M.normalize_path = function(path)
+function M.remove_oil(path)
   if path == "oil:" then
-    return "/"
+    return true, "/"
   elseif path:find("^oil://") then
-    path = string.sub(path, 7)
+    return true, string.sub(path, 7)
+  end
+  return false, path
+end
+
+function M.is_new_file()
+  local filename = vim.fn.expand("%")
+  return filename ~= "" and vim.bo.buftype == "" and vim.fn.filereadable(filename) == 0
+end
+
+function M.get_buffer_cwd(bufnr)
+  local path = vim.api.nvim_buf_get_name(bufnr or vim.fn.bufnr())
+  local is_oil = false
+  is_oil, path = M.remove_oil(path)
+
+  if not is_oil then
+    path = vim.fs.dirname(path)
   end
 
   return path

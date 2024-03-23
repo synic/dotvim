@@ -16,6 +16,7 @@ return {
   {
     "hrsh7th/nvim-cmp",
     version = false,
+    event = "VeryLazy",
     opts = function()
       local cmp = require("cmp")
       local lspkind = require("lspkind")

@@ -2,7 +2,7 @@ local utils = require("ao.utils")
 local projects = require("ao.modules.projects")
 local M = {}
 
-M.git_get_repo_name = function()
+function M.git_get_repo_name()
   local out = io.popen("git rev-parse --show-toplevel")
   if out then
     local name = out:read("*l")
@@ -15,7 +15,7 @@ M.git_get_repo_name = function()
   return nil
 end
 
-M.git_get_current_branch = function()
+function M.git_get_current_branch()
   local out = io.popen("git rev-parse --abbrev-ref HEAD 2> /dev/null")
   if out then
     local name = out:read("*l")
@@ -85,7 +85,7 @@ end
 -- open neogit on one tab, and leave it open, and then try to open neogit again on
 -- another tab, nothing will happen. NeoGit is already open, even if you can't see it.
 local function neogit_open()
-  local root = projects.find_root()
+  local root = projects.find_buffer_root()
 
   for _, buf in pairs(vim.api.nvim_list_bufs()) do
     if vim.api.nvim_buf_get_option(buf, "filetype"):find("^Neogit") ~= nil then
@@ -98,12 +98,7 @@ end
 
 M.plugin_specs = {
   -- display conflicts
-  {
-    "akinsho/git-conflict.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    version = "*",
-    config = true,
-  },
+  { "akinsho/git-conflict.nvim", event = "VeryLazy", version = "*", config = true },
 
   -- git blame
   {
@@ -117,7 +112,7 @@ M.plugin_specs = {
   -- show git status in gutter, allow staging of hunks
   {
     "lewis6991/gitsigns.nvim",
-    event = { "BufReadPre", "BufNewFile" },
+    event = "VeryLazy",
     opts = {
       signs = {
         add = { text = "▎" },

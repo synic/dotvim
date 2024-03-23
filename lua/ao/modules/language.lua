@@ -34,7 +34,7 @@ return {
   {
     "williamboman/mason-lspconfig.nvim",
     dependencies = { "hrsh7th/cmp-nvim-lsp" },
-    lazy = true,
+    event = "VeryLazy",
     opts = {
       ensure_installed = { "lua_ls" },
       automatic_installation = true,
@@ -158,10 +158,8 @@ return {
   -- lsp
   {
     "neovim/nvim-lspconfig",
-    dependencies = {
-      "hrsh7th/nvim-cmp",
-      "williamboman/mason-lspconfig.nvim",
-    },
+    dependencies = { "hrsh7th/nvim-cmp", "williamboman/mason-lspconfig.nvim" },
+    event = "VeryLazy",
     opts = {
       diagnostics = {
         underline = true,
@@ -208,6 +206,9 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
+    -- if you lazy load treesitter, you'll get an error when opening a lua file from the command line, even if you use
+    -- the `VeryLazy` event, so do not lazy load.
+    lazy = false,
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
       { "windwp/nvim-ts-autotag", config = true },
@@ -299,6 +300,7 @@ return {
       "jose-elias-alvarez/typescript.nvim",
       "davidmh/cspell.nvim",
     },
+    event = "VeryLazy",
     opts = function()
       local ns = require("null-ls")
       local custom = require("ao.custom.none-ls")
