@@ -77,6 +77,7 @@ local function dirpicker_pick_project(cb)
     layout_config = { width = 0.45, height = 0.4, preview_width = 0.5 },
     prompt_title = "Projects",
     sorter = telescope_config.generic_sorter({}),
+    cmd = config.options.projects.cmd,
     on_select = cb,
   })
 end
