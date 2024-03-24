@@ -34,6 +34,15 @@ local builtins = {
   "zaibatsu",
 }
 
+local function set_whitespace_colors()
+  vim.api.nvim_set_hl(0, "IblIndent", { fg = "#333333" })
+  vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#444444" })
+  vim.api.nvim_set_hl(0, "IblScope", { fg = "#444444" })
+  vim.api.nvim_set_hl(0, "NonText", { fg = "#444444" })
+  vim.api.nvim_set_hl(0, "Whitespace", { fg = "#444444" })
+  vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#444444" })
+end
+
 vim.api.nvim_create_user_command("ColorSchemePicker", function()
   local target = vim.fn.getcompletion
 
@@ -51,7 +60,6 @@ end, {})
 return {
   {
     "sainnhe/gruvbox-material",
-    lazy = true,
     keys = vim.deepcopy(keys),
     config = function()
       vim.g.gruvbox_material_background = "medium"
@@ -60,12 +68,7 @@ return {
         pattern = "*",
         callback = function(opts)
           if opts.match:find("^gruvbox") ~= nil then
-            vim.api.nvim_set_hl(0, "IblIndent", { fg = "#333333" })
-            vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#444444" })
-            vim.api.nvim_set_hl(0, "IblScope", { fg = "#444444" })
-            vim.api.nvim_set_hl(0, "NonText", { fg = "#444444" })
-            vim.api.nvim_set_hl(0, "Whitespace", { fg = "#444444" })
-            vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#444444" })
+            set_whitespace_colors()
           end
         end,
       })
@@ -74,19 +77,13 @@ return {
   {
     "rose-pine/neovim",
     name = "rose-pine",
-    lazy = true,
     keys = vim.deepcopy(keys),
     config = function()
       vim.api.nvim_create_autocmd("ColorScheme", {
         pattern = "*",
         callback = function(opts)
           if opts.match:find("^rose%-pine") ~= nil then
-            vim.api.nvim_set_hl(0, "IblIndent", { fg = "#333333" })
-            vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#444444" })
-            vim.api.nvim_set_hl(0, "IblScope", { fg = "#444444" })
-            vim.api.nvim_set_hl(0, "NonText", { fg = "#444444" })
-            vim.api.nvim_set_hl(0, "Whitespace", { fg = "#444444" })
-            vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#444444" })
+            set_whitespace_colors()
           end
         end,
       })
@@ -95,7 +92,6 @@ return {
   {
     "catppuccin/nvim",
     name = "catppuccin",
-    lazy = true,
     keys = vim.deepcopy(keys),
     config = function()
       vim.api.nvim_create_autocmd("ColorScheme", {
@@ -103,12 +99,7 @@ return {
         callback = function(opts)
           if opts.match:find("^catppuccin") ~= nil then
             vim.api.nvim_set_hl(0, "TabLineSel", { fg = "#b4befe", bg = "#45475a" })
-            vim.api.nvim_set_hl(0, "IblIndent", { fg = "#333333" })
-            vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#444444" })
-            vim.api.nvim_set_hl(0, "IblScope", { fg = "#444444" })
-            vim.api.nvim_set_hl(0, "NonText", { fg = "#444444" })
-            vim.api.nvim_set_hl(0, "Whitespace", { fg = "#444444" })
-            vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#444444" })
+            set_whitespace_colors()
           end
         end,
       })
@@ -117,7 +108,6 @@ return {
   {
     "neanias/everforest-nvim",
     name = "everforest",
-    lazy = true,
     keys = vim.deepcopy(keys),
     opts = {
       background = "hard",
@@ -140,42 +130,51 @@ return {
       })
     end,
   },
-  { "folke/tokyonight.nvim", lazy = true, keys = vim.deepcopy(keys) },
-  { "bluz71/vim-nightfly-colors", name = "nightfly", lazy = true, keys = vim.deepcopy(keys) },
-  { "rebelot/kanagawa.nvim", lazy = true, keys = vim.deepcopy(keys) },
-  { "Mofiqul/dracula.nvim", lazy = true, keys = vim.deepcopy(keys) },
-  { "joshdick/onedark.vim", lazy = true, keys = vim.deepcopy(keys) },
-  { "EdenEast/nightfox.nvim", lazy = true, keys = vim.deepcopy(keys) },
+  { "folke/tokyonight.nvim", keys = vim.deepcopy(keys) },
+  { "bluz71/vim-nightfly-colors", name = "nightfly", keys = vim.deepcopy(keys) },
+  { "rebelot/kanagawa.nvim", keys = vim.deepcopy(keys) },
+  { "Mofiqul/dracula.nvim", keys = vim.deepcopy(keys) },
+  { "joshdick/onedark.vim", keys = vim.deepcopy(keys) },
+  { "EdenEast/nightfox.nvim", keys = vim.deepcopy(keys) },
   {
     "AlexvZyl/nordic.nvim",
-    lazy = true,
+
     keys = vim.deepcopy(keys),
     config = function()
       require("nordic").load()
+
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        pattern = "*",
+        callback = function(o)
+          if o.match:find("^nordic") ~= nil then
+            vim.api.nvim_set_hl(0, "Delimiter", { fg = "#9c9aa2" })
+            vim.api.nvim_set_hl(0, "IblIndent", { fg = "#444444" })
+            vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#555555" })
+            vim.api.nvim_set_hl(0, "IblScope", { fg = "#555555" })
+            vim.api.nvim_set_hl(0, "NonText", { fg = "#555555" })
+            vim.api.nvim_set_hl(0, "Whitespace", { fg = "#555555" })
+            vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#555555" })
+          end
+        end,
+      })
     end,
   },
   {
     "ribru17/bamboo.nvim",
-    lazy = true,
     keys = vim.deepcopy(keys),
     config = function()
       vim.api.nvim_create_autocmd("ColorScheme", {
         pattern = "*",
         callback = function(o)
           if o.match:find("^bamboo") ~= nil then
-            vim.api.nvim_set_hl(0, "IblIndent", { fg = "#333333" })
-            vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#444444" })
-            vim.api.nvim_set_hl(0, "IblScope", { fg = "#444444" })
-            vim.api.nvim_set_hl(0, "NonText", { fg = "#444444" })
-            vim.api.nvim_set_hl(0, "Whitespace", { fg = "#444444" })
-            vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#444444" })
+            set_whitespace_colors()
           end
         end,
       })
-      require("bamboo").setup({
-        -- optional configuration here
-      })
-      require("bamboo").load()
+
+      local bamboo = require("bamboo")
+      bamboo.setup({})
+      bamboo.load()
     end,
   },
 }

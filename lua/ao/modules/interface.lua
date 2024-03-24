@@ -26,12 +26,6 @@ local function lualine_trunc(trunc_width, trunc_len, hide_width, no_ellipsis)
   end
 end
 
-local function ctrlsf_search_in_project_root()
-  vim.ui.input({ prompt = "search: " }, function(input)
-    vim.cmd.CtrlSF(input)
-  end)
-end
-
 local function golden_ratio_toggle()
   vim.cmd.GoldenRatioToggle()
   if vim.g.golden_ratio_enabled == 0 then
