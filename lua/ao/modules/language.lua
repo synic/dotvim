@@ -11,6 +11,8 @@ local function lsp_on_attach(_, bufnr)
     { "<localleader>r", vim.lsp.buf.rename, desc = "Rename symbol", buffer = bufnr },
     { "<localleader>,", vim.lsp.buf.code_action, desc = "Code actions", buffer = bufnr },
     { "<localleader>=", vim.lsp.buf.format, desc = "Format document", buffer = bufnr, modes = { "n", "v" } },
+    { "<localleader>^", "<cmd>LspRestart<cr>", desc = "Restart LSP", buffer = bufnr },
+    { "<localleader>$", "<cmd>LspInfo<cr>", desc = "LSP Info", buffer = bufnr },
     { "=", vim.lsp.buf.format, desc = "Format selection", buffer = bufnr, modes = { "v" } },
 
     { "gd", telescope.lsp_definitions, desc = "Definition(s)", buffer = bufnr },
@@ -244,6 +246,10 @@ return {
         additional_vim_regex_highlighting = false,
       },
       auto_install = true,
+      ensure_installed = {
+        "lua",
+        "vimdoc",
+      },
       incremental_selection = {
         enable = true,
         keymaps = {

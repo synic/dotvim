@@ -93,6 +93,7 @@ local function neogit_open()
     end
   end
 
+  print("neogit cwd", root)
   require("neogit").open({ cwd = (root or ".") })
 end
 

@@ -72,4 +72,17 @@ function M.open(dir)
   require("telescope.builtin").find_files({ cwd = dir })
 end
 
+local chdir_aucmds = { "BufEnter", "VimEnter" }
+
+for _, aucmd in ipairs(chdir_aucmds) do
+  vim.api.nvim_create_autocmd(aucmd, {
+    callback = function()
+      local root = M.find_buffer_root()
+      if root and root ~= nil then
+        vim.cmd.lcd(root)
+      end
+    end,
+  })
+end
+
 return M
