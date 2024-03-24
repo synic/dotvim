@@ -27,7 +27,7 @@ local function oil_rename()
   local entry = oil.get_cursor_entry()
 
   if entry ~= nil then
-    vim.ui.input({ prompt = "Rename file: ", default = entry.name }, function(name)
+    vim.ui.input({ prompt = "Rename: ", default = entry.name }, function(name)
       if name == nil then
         return
       end

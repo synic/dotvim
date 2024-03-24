@@ -151,7 +151,7 @@ M.plugin_specs = {
     event = "VeryLazy",
     dependencies = { "nvim-telescope/telescope-fzf-native.nvim" },
     keys = {
-      { "<localleader>,", "<cmd>lua require('dropbar.api').pick()<cr>", desc = "Dropbar picker" },
+      { "<localleader>.", "<cmd>lua require('dropbar.api').pick()<cr>", desc = "Breadcrumb picker" },
     },
     opts = function()
       local dutils = require("dropbar.utils")
@@ -440,9 +440,6 @@ M.plugin_specs = {
   -- search
   {
     "dyng/ctrlsf.vim",
-    keys = {
-      { "<leader>sf", ctrlsf_search_in_project_root, desc = "Search in project root" },
-    },
     cmd = { "CtrlSF" },
     init = function()
       vim.g.better_whitespace_filetypes_blacklist = { "ctrlsf" }
