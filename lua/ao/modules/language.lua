@@ -5,20 +5,36 @@ local flags = { allow_incremental_sync = true, debounce_text_changes = 200 }
 
 local function lsp_on_attach(_, bufnr)
   local telescope = require("telescope.builtin")
+  local ft = vim.bo[bufnr].filetype
+
   utils.map_keys({
     { "<localleader>r", vim.lsp.buf.rename, desc = "Rename symbol", buffer = bufnr },
-    { "<localleader>a", vim.lsp.buf.code_action, desc = "Code actions", buffer = bufnr },
-    { "gd", telescope.lsp_definitions, desc = "Goto definition", buffer = bufnr },
-    { "gD", vim.lsp.buf.declaration, desc = "Goto declaration", buffer = bufnr },
+    { "<localleader>,", vim.lsp.buf.code_action, desc = "Code actions", buffer = bufnr },
+    { "<localleader>=", vim.lsp.buf.format, desc = "Format document", buffer = bufnr, modes = { "n", "v" } },
+    { "=", vim.lsp.buf.format, desc = "Format selection", buffer = bufnr, modes = { "v" } },
+
+    { "gd", telescope.lsp_definitions, desc = "Definition(s)", buffer = bufnr },
+    { "gD", vim.lsp.buf.declaration, desc = "Declaration(s)", buffer = bufnr },
     { "g/", "<cmd>vsplit<cr><cmd>Telescope lsp_definitions<cr>", desc = "Goto def in vsplit", buffer = bufnr },
     { "g-", "<cmd>split<cr><cmd>Telescope lsp_definitions<cr>", desc = "Goto def in hsplit", buffer = bufnr },
-    { "gr", telescope.lsp_references, desc = "Goto reference", buffer = bufnr },
-    { "gI", telescope.lsp_implementations, desc = "Goto implementation", buffer = bufnr },
+    { "gr", telescope.lsp_references, desc = "Reference(s)", buffer = bufnr },
+    { "gI", telescope.lsp_implementations, desc = "Implementation(s)", buffer = bufnr },
     { "g.", telescope.lsp_document_symbols, desc = "Document symbols", buffer = bufnr },
     { "gW", telescope.lsp_dynamic_workspace_symbols, desc = "Workspace symbols", buffer = bufnr },
-    { "g=", "<cmd>lua vim.lsp.buf.format()<cr>", desc = "Format document", buffer = bufnr },
-    { "K", "<cmd>lua vim.lsp.buf.hover()<cr>", desc = "Show definition", buffer = bufnr },
+    { "K", vim.lsp.buf.hover, desc = "Hover", buffer = bufnr },
   })
+
+  if ft == "typescript" then
+    utils.map_keys({
+      {
+        "<localleader>o",
+        function()
+          vim.lsp.buf.execute_command({ command = "_typescript.organizeImports", arguments = { vim.fn.expand("%:p") } })
+        end,
+        desc = "Organize imports",
+      },
+    })
+  end
 end
 
 return {
@@ -57,6 +73,7 @@ return {
             flags = flags,
             settings = {
               Lua = {
+                runtime = { path = { "?.lua", "?/init.lua", "lua/?.lua", "lua/?/init.lua" } },
                 diagnostics = { globals = { "vim", "hs" } },
                 completion = { callSnippet = "Replace", autoRequire = true, displayContext = 7 },
               },
@@ -152,7 +169,13 @@ return {
   {
     "jose-elias-alvarez/typescript.nvim",
     ft = { "typescript", "javascript" },
-    opts = { server = { on_attach = lsp_on_attach } },
+    opts = {
+      server = { on_attach = lsp_on_attach },
+    },
+    config = function(_, opts)
+      require("typescript").setup(opts)
+      require("null-ls").register(require("typescript.extensions.null-ls.code-actions"))
+    end,
   },
 
   -- lsp
@@ -213,6 +236,7 @@ return {
       "nvim-treesitter/nvim-treesitter-textobjects",
       { "windwp/nvim-ts-autotag", config = true },
       { "nvim-treesitter/nvim-treesitter-context", config = true },
+      "JoosepAlviste/nvim-ts-context-commentstring",
     },
     opts = {
       highlight = {
@@ -295,11 +319,7 @@ return {
   -- diagnostics and formatting
   {
     "nvimtools/none-ls.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "jose-elias-alvarez/typescript.nvim",
-      "davidmh/cspell.nvim",
-    },
+    dependencies = { "nvim-lua/plenary.nvim", "davidmh/cspell.nvim" },
     event = "VeryLazy",
     opts = function()
       local ns = require("null-ls")
@@ -339,9 +359,6 @@ return {
           ns.builtins.diagnostics.yamllint,
           ns.builtins.diagnostics.hadolint, -- Dockerfile
           ns.builtins.diagnostics.markdownlint_cli2,
-
-          -- -- actions
-          require("typescript.extensions.null-ls.code-actions"),
         },
 
         on_attach = function(client, bufnr)
@@ -351,8 +368,7 @@ return {
               group = augroup,
               buffer = bufnr,
               callback = function()
-                local buf = vim.api.nvim_get_current_buf()
-                local ft = vim.bo[buf].filetype
+                local ft = vim.bo[bufnr].filetype
                 vim.lsp.buf.format({
                   bufnr = bufnr,
                   filter = function(c)

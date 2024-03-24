@@ -86,6 +86,7 @@ utils.map_keys({
 
   -- buffers
   { "<leader><tab>", "<cmd>b#<cr>", desc = "Previous buffer" },
+  { "<leader>b<tab>", "<cmd>b#<cr>", desc = "Previous buffer" },
   { "<leader>bd", "<cmd>bdelete!<cr>", desc = "Close current window and quit buffer" },
   { "<leader>bp", buffer_show_path, desc = "Show buffer path" },
   { "<leader>bP", buffer_show_full_path, desc = "Show full buffer path" },
