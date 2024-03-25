@@ -43,6 +43,18 @@ local function set_whitespace_colors()
   vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#444444" })
 end
 
+local function on_colorcheme_load(pattern, cb)
+  cb()
+  vim.api.nvim_create_autocmd("ColorScheme", {
+    pattern = "*",
+    callback = function(cs)
+      if cs.match:find(pattern) ~= nil then
+        cb()
+      end
+    end,
+  })
+end
+
 vim.api.nvim_create_user_command("ColorSchemePicker", function()
   local target = vim.fn.getcompletion
 
@@ -63,15 +75,7 @@ return {
     keys = vim.deepcopy(keys),
     config = function()
       vim.g.gruvbox_material_background = "medium"
-
-      vim.api.nvim_create_autocmd("ColorScheme", {
-        pattern = "*",
-        callback = function(opts)
-          if opts.match:find("^gruvbox") ~= nil then
-            set_whitespace_colors()
-          end
-        end,
-      })
+      on_colorcheme_load("^gruvbox", set_whitespace_colors)
     end,
   },
   {
@@ -79,14 +83,7 @@ return {
     name = "rose-pine",
     keys = vim.deepcopy(keys),
     config = function()
-      vim.api.nvim_create_autocmd("ColorScheme", {
-        pattern = "*",
-        callback = function(opts)
-          if opts.match:find("^rose%-pine") ~= nil then
-            set_whitespace_colors()
-          end
-        end,
-      })
+      on_colorcheme_load("^rose%-pine", set_whitespace_colors)
     end,
   },
   {
@@ -94,15 +91,10 @@ return {
     name = "catppuccin",
     keys = vim.deepcopy(keys),
     config = function()
-      vim.api.nvim_create_autocmd("ColorScheme", {
-        pattern = "*",
-        callback = function(opts)
-          if opts.match:find("^catppuccin") ~= nil then
-            vim.api.nvim_set_hl(0, "TabLineSel", { fg = "#b4befe", bg = "#45475a" })
-            set_whitespace_colors()
-          end
-        end,
-      })
+      on_colorcheme_load("^catppuccin", function()
+        vim.api.nvim_set_hl(0, "TabLineSel", { fg = "#b4befe", bg = "#45475a" })
+        set_whitespace_colors()
+      end)
     end,
   },
   {
@@ -115,19 +107,14 @@ return {
     },
     config = function(_, opts)
       require("everforest").setup(opts)
-      vim.api.nvim_create_autocmd("ColorScheme", {
-        pattern = "*",
-        callback = function(o)
-          if o.match:find("^everforest") ~= nil then
-            vim.api.nvim_set_hl(0, "IblIndent", { fg = "#444444" })
-            vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#555555" })
-            vim.api.nvim_set_hl(0, "IblScope", { fg = "#555555" })
-            vim.api.nvim_set_hl(0, "NonText", { fg = "#555555" })
-            vim.api.nvim_set_hl(0, "Whitespace", { fg = "#555555" })
-            vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#555555" })
-          end
-        end,
-      })
+      on_colorcheme_load("^everforest", function()
+        vim.api.nvim_set_hl(0, "IblIndent", { fg = "#444444" })
+        vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#555555" })
+        vim.api.nvim_set_hl(0, "IblScope", { fg = "#555555" })
+        vim.api.nvim_set_hl(0, "NonText", { fg = "#555555" })
+        vim.api.nvim_set_hl(0, "Whitespace", { fg = "#555555" })
+        vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#555555" })
+      end)
     end,
   },
   { "folke/tokyonight.nvim", keys = vim.deepcopy(keys) },
@@ -138,25 +125,26 @@ return {
   { "EdenEast/nightfox.nvim", keys = vim.deepcopy(keys) },
   {
     "AlexvZyl/nordic.nvim",
-
     keys = vim.deepcopy(keys),
-    config = function()
-      require("nordic").load()
+    opts = {
+      cursorline = {
+        theme = "light",
+      },
+    },
+    config = function(_, opts)
+      local nordic = require("nordic")
+      nordic.setup(opts)
+      nordic.load()
 
-      vim.api.nvim_create_autocmd("ColorScheme", {
-        pattern = "*",
-        callback = function(o)
-          if o.match:find("^nordic") ~= nil then
-            vim.api.nvim_set_hl(0, "Delimiter", { fg = "#9c9aa2" })
-            vim.api.nvim_set_hl(0, "IblIndent", { fg = "#444444" })
-            vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#555555" })
-            vim.api.nvim_set_hl(0, "IblScope", { fg = "#555555" })
-            vim.api.nvim_set_hl(0, "NonText", { fg = "#555555" })
-            vim.api.nvim_set_hl(0, "Whitespace", { fg = "#555555" })
-            vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#555555" })
-          end
-        end,
-      })
+      on_colorcheme_load("^nordic", function()
+        vim.api.nvim_set_hl(0, "Delimiter", { fg = "#9c9aa2" })
+        vim.api.nvim_set_hl(0, "IblIndent", { fg = "#333344" })
+        vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#444455" })
+        vim.api.nvim_set_hl(0, "IblScope", { fg = "#444455" })
+        vim.api.nvim_set_hl(0, "NonText", { fg = "#333344" })
+        vim.api.nvim_set_hl(0, "Whitespace", { fg = "#333344" })
+        vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#333344" })
+      end)
     end,
   },
   {

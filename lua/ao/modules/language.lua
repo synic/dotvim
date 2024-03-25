@@ -1,7 +1,15 @@
 local utils = require("ao.utils")
+local editorconfig = require("editorconfig")
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 local flags = { allow_incremental_sync = true, debounce_text_changes = 200 }
+
+-- setup trim trailing whitespace
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead", "BufFilePost" }, {
+  callback = function(opts)
+    editorconfig.properties.trim_trailing_whitespace(opts.buf, "true")
+  end,
+})
 
 local function lsp_on_attach(_, bufnr)
   local telescope = require("telescope.builtin")
@@ -329,7 +337,6 @@ return {
     event = "VeryLazy",
     opts = function()
       local ns = require("null-ls")
-      local custom = require("ao.custom.none-ls")
 
       -- only use none-ls for formatting these filetypes; the rest can use any formatter
       local only_nonels_formatting_filetypes = {
@@ -357,7 +364,6 @@ return {
           ns.builtins.formatting.rustywind.with({
             filetypes = { "typescript", "javascript", "css", "templ", "html" },
           }),
-          custom.trim_whitespace,
 
           -- diagnostics
           ns.builtins.diagnostics.gitlint,

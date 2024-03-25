@@ -85,7 +85,10 @@ end
 -- open neogit on one tab, and leave it open, and then try to open neogit again on
 -- another tab, nothing will happen. NeoGit is already open, even if you can't see it.
 local function neogit_open()
+  local status = require("neogit.status")
+  local neogit = require("neogit")
   local root = projects.find_buffer_root()
+  local cwd = (utils.get_buffer_cwd() or ".")
 
   for _, buf in pairs(vim.api.nvim_list_bufs()) do
     if vim.api.nvim_buf_get_option(buf, "filetype"):find("^Neogit") ~= nil then
@@ -93,8 +96,24 @@ local function neogit_open()
     end
   end
 
-  print("neogit cwd", root)
-  require("neogit").open({ cwd = (root or ".") })
+  cwd = (root or cwd)
+
+  -- NeoGit appears to have some issues when being opened and then closed and then reopened with a new cwd, so this
+  -- works around that.
+
+  if status.status_buffer then
+    status.close()
+    status.status_buffer = nil
+  end
+
+  neogit.open({ cwd = cwd })
+
+  vim.defer_fn(function()
+    vim.cmd.lcd(cwd)
+    vim.o.autochdir = nil
+    status.old_cwd = nil
+    status.prev_autochdir = nil
+  end, 100)
 end
 
 M.plugin_specs = {
@@ -138,6 +157,7 @@ M.plugin_specs = {
       kind = "vsplit",
       auto_show_console = false,
       remember_settings = true,
+      debug = true,
       commit_editor = { kind = "split" },
       commit_select_view = { kind = "split" },
       log_view = { kind = "split" },

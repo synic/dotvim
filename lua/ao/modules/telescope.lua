@@ -71,13 +71,11 @@ local function ctrlsf_search_for_term(prompt_bufnr)
 end
 
 local function dirpicker_pick_project(cb)
-  local telescope_config = require("telescope.config").values
   require("telescope").extensions.dirpicker.dirpicker({
     cwd = config.options.projects.directory or ".",
     layout_config = { width = 0.45, height = 0.4, preview_width = 0.5 },
     prompt_title = "Projects",
-    sorter = telescope_config.generic_sorter({}),
-    cmd = config.options.projects.cmd,
+    cmd = projects.find_projects,
     on_select = cb,
   })
 end
@@ -149,7 +147,7 @@ M.plugin_specs = {
 
       -- search
       { "<leader>*", telescope_search_project_cursor_term, desc = "Search project for term", mode = { "n", "v" } },
-      { "<leader>sd", telescope_search_cwd, desc = "Search in buffer's directory" },
+      { "<leader>sf", telescope_search_cwd, desc = "Search in buffer's directory" },
       { "<leader>sp", telescope_search_project, desc = "Search project for text" },
       { "<leader>ss", "<cmd>Telescope luasnip<cr>", desc = "Snippets" },
       { "<leader>sS", "<cmd>Telescope spell_suggest<cr>", desc = "Spelling suggestions" },

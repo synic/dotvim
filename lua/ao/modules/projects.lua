@@ -4,21 +4,36 @@ local utils = require("ao.utils")
 local M = { plugin_specs = {} }
 local root_cache = {}
 
-local function get_buffer_path(bufnr, winnr)
-  local path = vim.api.nvim_buf_get_name(bufnr or 0)
+function M.find_projects(opts)
+  local path = require("plenary.path")
+  local items, projects = {}, {}
+  local files = vim.split(vim.fn.glob(opts.cwd .. "/*"), "\n", { trimempty = true })
+  local uv = vim.loop
 
-  if not path or path == "" then
-    -- only check cwd if bufnr wasn't passed
-    if not bufnr then
-      path = vim.fn.getcwd(winnr or 0)
+  for _, file in ipairs(files) do
+    if string.sub(file, 1, 1) and path.new(file):is_dir() then
+      local fd = uv.fs_open(file .. "", "r", 438)
+
+      if fd ~= nil then
+        local stat = uv.fs_fstat(fd)
+        if stat ~= nil then
+          table.insert(items, { path = file, mtime = stat.mtime })
+        end
+      else
+        table.insert(items, { path = file, mtime = 0 })
+      end
     end
-  elseif path:find("^oil:") then
-    _, path = utils.remove_oil(path)
-  else
-    path = vim.fs.dirname(path)
   end
 
-  return path
+  table.sort(items, function(p1, p2)
+    return p1.mtime.sec > p2.mtime.sec
+  end)
+
+  for _, item in ipairs(items) do
+    table.insert(projects, item.path)
+  end
+
+  return projects
 end
 
 function M.find_path_root(path)
@@ -45,7 +60,7 @@ function M.find_path_root(path)
 end
 
 function M.find_buffer_root(bufnr)
-  return M.find_path_root(get_buffer_path(bufnr))
+  return M.find_path_root(utils.get_buffer_cwd(bufnr))
 end
 
 function M.get_dir(tabnr)
@@ -64,25 +79,27 @@ function M.set(dir)
   vim.cmd.redrawtabline()
 end
 
+-- NOTE: currently unused
+function M.___setup_autochdir()
+  local chdir_aucmds = { "BufNewFile", "BufRead", "BufFilePost" }
+
+  vim.api.nvim_create_autocmd(chdir_aucmds, {
+    callback = function(opts)
+      local root = M.find_buffer_root(opts.buf)
+      if root and root ~= "" then
+        vim.cmd.lcd(root)
+      end
+    end,
+  })
+end
+
 function M.open(dir)
+  vim.notify("Project: opening " .. dir)
   if not vim.t.projectset then
     M.set(dir)
   end
 
   require("telescope.builtin").find_files({ cwd = dir })
-end
-
-local chdir_aucmds = { "BufEnter", "VimEnter" }
-
-for _, aucmd in ipairs(chdir_aucmds) do
-  vim.api.nvim_create_autocmd(aucmd, {
-    callback = function()
-      local root = M.find_buffer_root()
-      if root and root ~= nil then
-        vim.cmd.lcd(root)
-      end
-    end,
-  })
 end
 
 return M
