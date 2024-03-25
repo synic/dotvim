@@ -5,9 +5,9 @@ let s:current_equalalways = 1
 
 " install vim-plug if it's not already installed
 if empty(glob('$VIMHOME/autoload/plug.vim'))
-  silent !curl -sfLo $VIMHOME/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC | bdelete | colorscheme gruvbox-material
+	silent !curl -sfLo $VIMHOME/autoload/plug.vim --create-dirs
+		\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC | bdelete | colorscheme gruvbox-material
 endif
 
 let g:EasyMotion_smartcase = 1
@@ -25,13 +25,13 @@ let g:airline#extensions#tabline#show_tab_type = 0
 let g:airline#extensions#whitespace#enabled = 0
 
 if !empty(glob('$VIMHOME/autoload/plug.vim'))
-  call plug#begin('$VIMHOME/vim/plugins')
+	call plug#begin('$VIMHOME/vim/plugins')
 
-  Plug 'Lokaltog/vim-easymotion'
-  Plug 'sainnhe/gruvbox-material'
-  Plug 'bling/vim-airline'
+	Plug 'Lokaltog/vim-easymotion'
+	Plug 'sainnhe/gruvbox-material'
+	Plug 'bling/vim-airline'
 
-  call plug#end()
+	call plug#end()
 endif
 
 nnoremap <silent><leader>w/ <cmd>vsplit<cr>
@@ -49,12 +49,18 @@ nnoremap <silent><leader>th <cmd>set nohlsearch!<cr>
 nnoremap - <cmd>edit .<cr>
 
 try
-  colorscheme gruvbox-material
-  let g:gruvbox_material_background = 'hard'
-  hi ColorColumn guibg=#303030 ctermbg=236
+	colorscheme gruvbox-material
+	let g:gruvbox_material_background = 'hard'
+	hi ColorColumn guibg=#303030 ctermbg=236
 catch /^Vim\%((\a\+)\)\=:E185/
-  colorscheme desert
+	colorscheme desert
 endtry
+
+" netrw configuration
+let g:netrw_liststyle = 1
+let g:netrw_banner = 0
+let g:netrw_list_hide =
+	    \ '\(^\|\s\s\)\zs\.\S\+,\(^\|\s\s\)ntuser\.\S\+,__pycache__,\.pyc'
 
 autocmd VimResized * :wincmd =
 autocmd BufEnter * silent! lcd %:p:h

@@ -12,7 +12,7 @@
 " skip init for vim-tiny or vim-small
 if 0 | endif
 
-let $VIMHOME = expand('<sfile>:p:h')
+let $VIMHOME = has('nvim') ? stdpath('config') : expand('<sfile>:p:h')
 
 vnoremap < <gv
 vnoremap > >gv
@@ -22,8 +22,8 @@ nnoremap yig ggVGy
 filetype plugin on
 filetype plugin indent on
 
-let mapleader="\<space>"
-let maplocalleader=","
+let mapleader='\<space>'
+let maplocalleader=','
 set backspace=2         " allow backspacing over everything in insert mode
 set cindent
 set smartindent
@@ -113,29 +113,23 @@ syntax enable
 " enable system clipboard by default
 set clipboard=unnamed
 
-" netrw configuration
-let g:netrw_liststyle = 1
-let g:netrw_banner = 0
-let g:netrw_list_hide =
-      \ '\(^\|\s\s\)\zs\.\S\+,\(^\|\s\s\)ntuser\.\S\+,__pycache__,\.pyc'
-
 " if using a mac, set LC_CTYPE if it's not already
 if has('macunix') && empty($LC_CTYPE)
-  let $LC_CTYPE = 'en_US.UTF-8'
+	let $LC_CTYPE = 'en_US.UTF-8'
 endif
 
 if has('vim_starting')
-  if &compatible
-    set nocompatible " disable vi settings
-  endif
+	if &compatible
+		set nocompatible " disable vi settings
+	endif
 endif
 
 if has('termguicolors')
-  set termguicolors
+	set termguicolors
 end
 
 if has('nvim')
-  lua require('ao')
+	lua require('ao')
 else
-  source $VIMHOME/vim/config.vim
+	source $VIMHOME/vim/config.vim
 end

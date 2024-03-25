@@ -1,147 +1,147 @@
 return {
-  -- show diagnostics in gutter and quick fix list
-  {
-    "folke/trouble.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    event = { "LspAttach" },
-    opts = {
-      mode = "document_diagnostics",
-      signs = {
-        error = "",
-        warning = "",
-        hint = "",
-        information = "",
-        other = "",
-      },
-      auto_close = true,
-      icons = false,
-      use_diagnostic_signs = true,
-    },
-    keys = {
-      { "<leader>e<leader>", "<cmd>lua vim.diagnostic.open_float()<cr>", desc = "Show error" },
-      { "<leader>el", "<cmd>TroubleToggle<cr>", desc = "Toggle trouble" },
-      { "<leader>en", "<cmd>lua vim.diagnostic.goto_next()<cr>", desc = "Next error" },
-      { "<leader>ep", "<cmd>lua vim.diagnostic.goto_prev()<cr>", desc = "Next error" },
-      { "<leader>ed", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "Document diagnostics" },
-      { "<leader>ew", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace diagnostics" },
-    },
-  },
+	-- show diagnostics in gutter and quick fix list
+	{
+		"folke/trouble.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		event = { "LspAttach" },
+		opts = {
+			mode = "document_diagnostics",
+			signs = {
+				error = "",
+				warning = "",
+				hint = "",
+				information = "",
+				other = "",
+			},
+			auto_close = true,
+			icons = false,
+			use_diagnostic_signs = true,
+		},
+		keys = {
+			{ "<leader>e<leader>", "<cmd>lua vim.diagnostic.open_float()<cr>", desc = "Show error" },
+			{ "<leader>el", "<cmd>TroubleToggle<cr>", desc = "Toggle trouble" },
+			{ "<leader>en", "<cmd>lua vim.diagnostic.goto_next()<cr>", desc = "Next error" },
+			{ "<leader>ep", "<cmd>lua vim.diagnostic.goto_prev()<cr>", desc = "Next error" },
+			{ "<leader>ed", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "Document diagnostics" },
+			{ "<leader>ew", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace diagnostics" },
+		},
+	},
 
-  -- ability to toggle diagnostics
-  {
-    "WhoIsSethDaniel/toggle-lsp-diagnostics.nvim",
-    keys = {
-      { "<leader>ta", "<cmd>ToggleDiag<cr>", desc = "Lsp diagnostics" },
-    },
-  },
+	-- ability to toggle diagnostics
+	{
+		"WhoIsSethDaniel/toggle-lsp-diagnostics.nvim",
+		keys = {
+			{ "<leader>ta", "<cmd>ToggleDiag<cr>", desc = "Lsp diagnostics" },
+		},
+	},
 
-  -- Debug Adapter Protocol plugin
-  {
-    "mfussenegger/nvim-dap",
-    lazy = true,
-    dependencies = {
-      {
-        "jay-babu/mason-nvim-dap.nvim",
-        opts = {
-          automatic_installation = true,
-          ensure_installed = {},
-          handlers = {},
-        },
-      },
-    },
-    config = function()
-      local dap = require("dap")
+	-- Debug Adapter Protocol plugin
+	{
+		"mfussenegger/nvim-dap",
+		lazy = true,
+		dependencies = {
+			{
+				"jay-babu/mason-nvim-dap.nvim",
+				opts = {
+					automatic_installation = true,
+					ensure_installed = {},
+					handlers = {},
+				},
+			},
+		},
+		config = function()
+			local dap = require("dap")
 
-      for _, language in ipairs({ "typescript", "javascript" }) do
-        dap.configurations[language] = {
-          {
-            request = "attach",
-            sourceMaps = true,
-            skipFiles = {
-              "node_modules/**/*.js",
-            },
-            outFiles = {
-              "${workspaceRoot}/dist/**/*.js",
-            },
-            protocol = "inspector",
-            restart = true,
-            type = "node2",
-            name = "Attach Docker Node",
-            localRoot = "${workspaceFolder}",
-            cwd = "${workspaceFolder}",
-            remoteRoot = "/app",
-            trae = true,
-            port = 9229,
-          },
-        }
-      end
-    end,
-  },
+			for _, language in ipairs({ "typescript", "javascript" }) do
+				dap.configurations[language] = {
+					{
+						request = "attach",
+						sourceMaps = true,
+						skipFiles = {
+							"node_modules/**/*.js",
+						},
+						outFiles = {
+							"${workspaceRoot}/dist/**/*.js",
+						},
+						protocol = "inspector",
+						restart = true,
+						type = "node2",
+						name = "Attach Docker Node",
+						localRoot = "${workspaceFolder}",
+						cwd = "${workspaceFolder}",
+						remoteRoot = "/app",
+						trae = true,
+						port = 9229,
+					},
+				}
+			end
+		end,
+	},
 
-  -- UI for DAP
-  {
-    "rcarriga/nvim-dap-ui",
-    dependencies = {
-      { "nvim-neotest/nvim-nio", "mfussenegger/nvim-dap" },
-      -- baleia displays color escape codes properly.
-      -- currently used to colorize the dap-repl output.
-      {
-        "m00qek/baleia.nvim",
-        submodules = false,
-        version = "v1.3.0",
-        opts = {},
-        init = function()
-          vim.api.nvim_create_user_command("BaleiaColorize", function()
-            require("baleia").setup().once(vim.api.nvim_get_current_buf())
-          end, {})
-        end,
-      },
-    },
-    keys = {
-      {
-        "<leader>db",
-        "<cmd>lua require('dap').toggle_breakpoint()<cr>",
-        desc = "Toggle breakpoint",
-      },
-      { "<leader>dc", "<cmd>lua require('dap').continue()<cr>", desc = "Continue" },
-      { "<leader>dd", "<cmd>lua require('dap').run_last()<cr>", desc = "Run last" },
-      { "<leader>dq", "<cmd>lua require('dap').close()<cr><cmd>lua require('dapui').close()<cr>", desc = "Close" },
-      { "<leader>dn", "<cmd>lua require('dap').step_over()<cr>", desc = "Step over" },
-      { "<leader>ds", "<cmd>lua require('dap').step_into()<cr>", desc = "Step into" },
-      { "<leader>do", "<cmd>lua require('dap').step_out()<cr>", desc = "Step out" },
-      { "<leader>dc", "<cmd>lua require('dap').continue()<cr>", desc = "Continue" },
-    },
-    config = function(_, opts)
-      local dap = require("dap")
-      local dapui = require("dapui")
+	-- UI for DAP
+	{
+		"rcarriga/nvim-dap-ui",
+		dependencies = {
+			{ "nvim-neotest/nvim-nio", "mfussenegger/nvim-dap" },
+			-- baleia displays color escape codes properly.
+			-- currently used to colorize the dap-repl output.
+			{
+				"m00qek/baleia.nvim",
+				submodules = false,
+				version = "v1.3.0",
+				opts = {},
+				init = function()
+					vim.api.nvim_create_user_command("BaleiaColorize", function()
+						require("baleia").setup().once(vim.api.nvim_get_current_buf())
+					end, {})
+				end,
+			},
+		},
+		keys = {
+			{
+				"<leader>db",
+				"<cmd>lua require('dap').toggle_breakpoint()<cr>",
+				desc = "Toggle breakpoint",
+			},
+			{ "<leader>dc", "<cmd>lua require('dap').continue()<cr>", desc = "Continue" },
+			{ "<leader>dd", "<cmd>lua require('dap').run_last()<cr>", desc = "Run last" },
+			{ "<leader>dq", "<cmd>lua require('dap').close()<cr><cmd>lua require('dapui').close()<cr>", desc = "Close" },
+			{ "<leader>dn", "<cmd>lua require('dap').step_over()<cr>", desc = "Step over" },
+			{ "<leader>ds", "<cmd>lua require('dap').step_into()<cr>", desc = "Step into" },
+			{ "<leader>do", "<cmd>lua require('dap').step_out()<cr>", desc = "Step out" },
+			{ "<leader>dc", "<cmd>lua require('dap').continue()<cr>", desc = "Continue" },
+		},
+		config = function(_, opts)
+			local dap = require("dap")
+			local dapui = require("dapui")
 
-      dap.listeners.after.event_initialized["dapui_config"] = function()
-        dapui.open()
-      end
-      dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close()
-      end
-      dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close()
-      end
+			dap.listeners.after.event_initialized["dapui_config"] = function()
+				dapui.open()
+			end
+			dap.listeners.before.event_terminated["dapui_config"] = function()
+				dapui.close()
+			end
+			dap.listeners.before.event_exited["dapui_config"] = function()
+				dapui.close()
+			end
 
-      local icons = {
-        Stopped = { "󰁕 ", "DiagnosticWarn", "DapStoppedLine" },
-        Breakpoint = " ",
-        BreakpointCondition = " ",
-        BreakpointRejected = { " ", "DiagnosticError" },
-        LogPoint = ".>",
-      }
+			local icons = {
+				Stopped = { "󰁕 ", "DiagnosticWarn", "DapStoppedLine" },
+				Breakpoint = " ",
+				BreakpointCondition = " ",
+				BreakpointRejected = { " ", "DiagnosticError" },
+				LogPoint = ".>",
+			}
 
-      for name, sign in pairs(icons) do
-        sign = type(sign) == "table" and sign or { sign }
-        vim.fn.sign_define(
-          "Dap" .. name,
-          { text = sign[1], texthl = sign[2] or "DapBreakpoint", linehl = sign[3], numhl = sign[3] }
-        )
-      end
+			for name, sign in pairs(icons) do
+				sign = type(sign) == "table" and sign or { sign }
+				vim.fn.sign_define(
+					"Dap" .. name,
+					{ text = sign[1], texthl = sign[2] or "DapBreakpoint", linehl = sign[3], numhl = sign[3] }
+				)
+			end
 
-      dapui.setup(opts)
-    end,
-  },
+			dapui.setup(opts)
+		end,
+	},
 }
