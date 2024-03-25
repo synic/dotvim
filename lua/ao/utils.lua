@@ -132,12 +132,17 @@ function M.is_new_file()
   return filename ~= "" and vim.bo.buftype == "" and vim.fn.filereadable(filename) == 0
 end
 
-function M.get_buffer_cwd(bufnr)
-  local path = vim.api.nvim_buf_get_name(bufnr or vim.fn.bufnr())
-  local is_oil = false
-  is_oil, path = M.remove_oil(path)
+function M.get_buffer_cwd(bufnr, winnr)
+  local path = vim.api.nvim_buf_get_name(bufnr or 0)
 
-  if not is_oil then
+  if not path or path == "" then
+    -- only check cwd if bufnr wasn't passed
+    if not bufnr then
+      path = vim.fn.getcwd(winnr or 0)
+    end
+  elseif path:find("^oil:") then
+    _, path = M.remove_oil(path)
+  else
     path = vim.fs.dirname(path)
   end
 
