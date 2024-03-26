@@ -22,26 +22,26 @@ nnoremap yig ggVGy
 filetype plugin on
 filetype plugin indent on
 
-let mapleader='\<space>'
+let mapleader="\<space>" " must be double quotes, don't change
 let maplocalleader=','
-set backspace=2         " allow backspacing over everything in insert mode
+set backspace=2          " allow backspacing over everything in insert mode
 set cindent
 set smartindent
 set noautoindent
-set nobackup            " don't keep a backup file
-set viminfo='20,\"50    " read/write a .viminfo file
-set history=50          " keep 50 lines of command line history
-set ruler               " show the cursor position all the time
-set nowrap              " make sure that long lines don't wrap
-set laststatus=2        " Make sure the status line is always displayed
+set nobackup             " don't keep a backup file
+set viminfo='20,\"50     " read/write a .viminfo file
+set history=50           " keep 50 lines of command line history
+set ruler                " show the cursor position all the time
+set nowrap               " make sure that long lines don't wrap
+set laststatus=2         " Make sure the status line is always displayed
 set splitright
 set splitbelow
-set visualbell          " use a visual bell instead of beeping
-set incsearch           " use incremental search
+set visualbell           " use a visual bell instead of beeping
+set incsearch            " use incremental search
 set wildmenu
 set wildmode=longest:full,full
 set nohlsearch
-set equalalways         " keep windows equalized
+set equalalways          " keep windows equalized
 set nowritebackup
 set nobackup
 set noswapfile
