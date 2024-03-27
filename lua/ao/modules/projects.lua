@@ -1,18 +1,92 @@
 local config = require("ao.config")
 local utils = require("ao.utils")
 
-local M = { plugin_specs = {} }
+local M = {}
 local root_cache = {}
+local uv = vim.uv or vim.loop
+
+local function telescope_search_project_cursor_term()
+	local builtin = require("telescope.builtin")
+	local current_word = vim.fn.expand("<cword>")
+	local root = M.find_buffer_root()
+
+	builtin.grep_string({ cwd = (root or "."), search = current_word })
+end
+
+local function telescope_git_files()
+	local builtin = require("telescope.builtin")
+
+	local root = M.find_buffer_root()
+	if root and root ~= "" then
+		builtin.git_files({ cwd = root })
+	else
+		vim.notify("Project: no project selected", vim.log.levels.INFO)
+		M.telescope_pick_project()
+	end
+end
+
+local function dirpicker_pick_project(cb)
+	require("telescope").extensions.dirpicker.dirpicker({
+		cwd = config.options.projects.directory or ".",
+		layout_config = { width = 0.45, height = 0.4, preview_width = 0.5 },
+		prompt_title = "Projects",
+		cmd = M.find_projects,
+		on_select = cb,
+	})
+end
+
+local function telescope_pick_project()
+	dirpicker_pick_project(M.open)
+end
+
+local function telescope_switch_project()
+	vim.t.project_dir = false
+	telescope_pick_project()
+end
+
+local function telescope_new_tab_with_project()
+	dirpicker_pick_project(function(dir)
+		vim.cmd.tabnew()
+		M.open(dir)
+	end)
+end
+
+local function telescope_goto_project()
+	vim.cmd.Oil(vim.fn.getcwd(-1, 0))
+end
+
+local function telescope_set_project()
+	local root = M.find_buffer_root()
+	if root and root ~= "" then
+		M.set(root)
+	end
+end
+
+local function telescope_search_project()
+	local builtin = require("telescope.builtin")
+	builtin.live_grep({ cwd = (M.find_buffer_root() or ".") })
+end
+
+local function telescope_find_project_files()
+	local builtin = require("telescope.builtin")
+
+	local root = M.find_buffer_root()
+	if root and root ~= "" then
+		builtin.find_files({ cwd = root })
+	else
+		vim.notify("Project: no project selected", vim.log.levels.INFO)
+		telescope_pick_project()
+	end
+end
 
 function M.find_projects(opts)
 	local path = require("plenary.path")
 	local items, projects = {}, {}
 	local files = vim.split(vim.fn.glob(opts.cwd .. "/*"), "\n", { trimempty = true })
-	local uv = vim.loop
 
 	for _, file in ipairs(files) do
 		if string.sub(file, 1, 1) and path.new(file):is_dir() then
-			local fd = uv.fs_open(file .. "", "r", 438)
+			local fd = uv.fs_open(file .. "/.git/index", "r", 438)
 
 			if fd ~= nil then
 				local stat = uv.fs_fstat(fd)
@@ -20,7 +94,7 @@ function M.find_projects(opts)
 					table.insert(items, { path = file, mtime = stat.mtime })
 				end
 			else
-				table.insert(items, { path = file, mtime = 0 })
+				table.insert(items, { path = file, mtime = { sec = 0 } })
 			end
 		end
 	end
@@ -69,13 +143,13 @@ function M.get_dir(tabnr)
 end
 
 function M.get_name(tabnr)
-	local path = M.get_dir(tabnr)
-	return path and vim.fs.basename(path) or nil
+	local path = vim.fn.gettabvar(tabnr or 0, "project_dir")
+	return (path and path ~= "") and vim.fs.basename(path) or nil
 end
 
 function M.set(dir)
-	vim.t.projectset = true
-	vim.cmd.tcd(dir)
+	print("Project: opening", dir)
+	vim.t.project_dir = dir
 	vim.cmd.redrawtabline()
 end
 
@@ -89,22 +163,39 @@ function M.setup_autochdir()
 		callback = function(opts)
 			local root = M.find_buffer_root(opts.buf)
 			if root and root ~= "" then
-				vim.cmd.lcd(root)
+				vim.cmd.cd(root)
 			end
 		end,
 	})
 end
 
--- M.setup_autochdir()
+M.setup_autochdir()
 
 function M.open(dir)
-	dir = vim.fn.resolve(vim.fn.expand(dir))
-	print("Project: opening", dir)
-	if not vim.t.projectset then
+	if not vim.t.project_dir then
 		M.set(dir)
 	end
 
 	require("telescope.builtin").find_files({ cwd = dir })
 end
+
+M.plugin_specs = {
+	{
+		"synic/telescope-dirpicker.nvim",
+		dependencies = { "telescope.nvim" },
+		keys = {
+			{ "<leader>lt", telescope_new_tab_with_project, desc = "New layout with project" },
+			{ "<leader>*", telescope_search_project_cursor_term, desc = "Search project for term", mode = { "n", "v" } },
+			{ "<leader>sp", telescope_search_project, desc = "Search project for text" },
+			{ "<leader>p/", telescope_search_project, desc = "Search project for text" },
+			{ "<leader>pf", telescope_find_project_files, desc = "Find project file" },
+			{ "<leader>pg", telescope_git_files, desc = "Find git files" },
+			{ "<leader>pp", telescope_pick_project, desc = "Pick project" },
+			{ "<leader>pP", telescope_switch_project, desc = "Switch project" },
+			{ "<leader>ph", telescope_goto_project, desc = "Go to project home" },
+			{ "<leader>pS", telescope_set_project, desc = "Set project home" },
+		},
+	},
+}
 
 return M

@@ -2,10 +2,12 @@ local utils = require("ao.utils")
 local config = require("ao.config")
 local M = {}
 
+local uv = vim.uv or vim.loop
+
 function M.install_plugin_manager()
 	local was_installed = false
 	local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-	if not vim.loop.fs_stat(lazypath) then
+	if not uv.fs_stat(lazypath) then
 		vim.fn.system({
 			"git",
 			"clone",

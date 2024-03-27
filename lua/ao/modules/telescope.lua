@@ -1,17 +1,8 @@
-local config = require("ao.config")
 local utils = require("ao.utils")
 local interface = require("ao.modules.interface")
 local projects = require("ao.modules.projects")
 
 local M = {}
-
-local function telescope_search_project_cursor_term()
-	local builtin = require("telescope.builtin")
-	local current_word = vim.fn.expand("<cword>")
-	local root = projects.find_buffer_root()
-
-	builtin.grep_string({ cwd = (root or "."), search = current_word })
-end
 
 local function telescope_narrow_grep(prompt_bufnr)
 	local builtin = require("telescope.builtin")
@@ -29,7 +20,7 @@ local function telescope_narrow_grep(prompt_bufnr)
 
 	vim.notify('narrowing to: "' .. prompt .. '"')
 
-	builtin.grep_string({ cwd = (root or "."), search = prompt, default_text = prompt })
+	builtin.grep_string({ cwd = (root or "."), search = prompt })
 end
 
 local telescope_tabs_entry_formatter = function(tabnr, _, _, _, is_current)
@@ -42,7 +33,7 @@ local telescope_tabs_entry_formatter = function(tabnr, _, _, _, is_current)
 		display = require("tabby.feature.tab_name").get(tabnr)
 	end
 
-	if vim.fn.gettabvar(tabnr, "projectset") == true then
+	if vim.fn.gettabvar(tabnr, "project_dir") ~= "" then
 		display = "project: " .. display
 	end
 
@@ -70,86 +61,13 @@ local function ctrlsf_search_for_term(prompt_bufnr)
 	vim.cmd.CtrlSF(prompt)
 end
 
-local function dirpicker_pick_project(cb)
-	require("telescope").extensions.dirpicker.dirpicker({
-		cwd = config.options.projects.directory or ".",
-		layout_config = { width = 0.45, height = 0.4, preview_width = 0.5 },
-		prompt_title = "Projects",
-		cmd = projects.find_projects,
-		on_select = cb,
-	})
-end
-
-local function telescope_pick_project()
-	dirpicker_pick_project(projects.open)
-end
-
-local function telescope_switch_project()
-	vim.t.projectset = false
-	telescope_pick_project()
-end
-
-local function telescope_git_files()
-	local builtin = require("telescope.builtin")
-
-	local root = projects.find_buffer_root()
-	if root and root ~= "" then
-		builtin.git_files({ cwd = root })
-	else
-		vim.notify("Project: no project selected", vim.log.levels.INFO)
-		telescope_pick_project()
-	end
-end
-
-local function telescope_search_project()
-	local builtin = require("telescope.builtin")
-	builtin.live_grep({ cwd = (projects.find_buffer_root() or ".") })
-end
-
-local function telescope_find_project_files()
-	local builtin = require("telescope.builtin")
-
-	local root = projects.find_buffer_root()
-	if root and root ~= "" then
-		builtin.find_files({ cwd = root })
-	else
-		vim.notify("Project: no project selected", vim.log.levels.INFO)
-		telescope_pick_project()
-	end
-end
-
-local function telescope_new_tab_with_project()
-	dirpicker_pick_project(function(dir)
-		vim.cmd.tabnew()
-		projects.open(dir)
-	end)
-end
-
-local function telescope_goto_project()
-	vim.cmd.Oil(vim.fn.getcwd(-1, 0))
-end
-
-local function telescope_set_project()
-	local root = projects.find_buffer_root()
-	if root and root ~= "" then
-		projects.set(root)
-	end
-end
-
 M.plugin_specs = {
 	-- fuzzy finder and list manager
 	{
 		"nvim-telescope/telescope.nvim",
 		keys = {
-			-- layouts/windows
-			{ "<leader>lt", telescope_new_tab_with_project, desc = "New layout with project" },
-			{ "<leader>ll", "<cmd>Telescope telescope-tabs list_tabs<cr>", desc = "List layouts" },
-
 			-- search
-			{ "<leader>*", telescope_search_project_cursor_term, desc = "Search project for term", mode = { "n", "v" } },
 			{ "<leader>sf", telescope_search_cwd, desc = "Search in buffer's directory" },
-			{ "<leader>sp", telescope_search_project, desc = "Search project for text" },
-			{ "<leader>ss", "<cmd>Telescope luasnip<cr>", desc = "Snippets" },
 			{ "<leader>sS", "<cmd>Telescope spell_suggest<cr>", desc = "Spelling suggestions" },
 			{ "<leader>sR", "<cmd>Telescope registers<cr>", desc = "Registers" },
 			{ "<leader>sl", "<cmd>Telescope marks<cr>", desc = "Marks" },
@@ -157,7 +75,6 @@ M.plugin_specs = {
 			{ "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Search buffer" },
 			{ "<leader>sn", "<cmd>Telescope notify<cr>", desc = "Notifications" },
 			{ "<leader>.", "<cmd>Telescope resume<cr>", desc = "Resume last search" },
-			{ "<leader>,", "<cmd>Telescope recent_files pick<cr>", desc = "Recent files" },
 
 			-- buffers
 			{ "<leader>bb", "<cmd>Telescope buffers<cr>", desc = "Show buffers" },
@@ -166,22 +83,10 @@ M.plugin_specs = {
 			-- files
 			{ "<leader>ff", telescope_find_files_cwd, desc = "Find files" },
 			{ "<leader>fr", "<cmd>Telescope recent_files pick<cr>", desc = "Recent files" },
-			{ "<leader>fs", telescope_search_cwd, desc = "Search files" },
+			{ "<leader>fs", telescope_search_cwd, desc = "Search files in current dir" },
 
 			-- themes
 			{ "<leader>st", "<cmd>ColorSchemePicker<cr>", desc = "List themes" },
-
-			-- undo
-			{ "<leader>tu", "<cmd>Telescope undo<cr>", desc = "Undo tree" },
-
-			-- projects
-			{ "<leader>p/", telescope_search_project, desc = "Search project for text" },
-			{ "<leader>pf", telescope_find_project_files, desc = "Find project file" },
-			{ "<leader>pg", telescope_git_files, desc = "Find git files" },
-			{ "<leader>pp", telescope_pick_project, desc = "Pick project" },
-			{ "<leader>pP", telescope_switch_project, desc = "Switch project" },
-			{ "<leader>ph", telescope_goto_project, desc = "Go to project home" },
-			{ "<leader>pS", telescope_set_project, desc = "Set project home" },
 		},
 		cmd = "Telescope",
 		config = function()
@@ -192,12 +97,8 @@ M.plugin_specs = {
 				defaults = {
 					mappings = {
 						i = {
-							["<C-j>"] = "move_selection_next",
-							["<C-k>"] = "move_selection_previous",
-							["<C-/>"] = actions.file_vsplit,
 							["//"] = actions.file_vsplit,
 							["--"] = actions.file_split,
-							["<C-->"] = actions.file_split,
 						},
 					},
 				},
@@ -233,14 +134,6 @@ M.plugin_specs = {
 						},
 					},
 					grep_string = {
-						mappings = {
-							i = {
-								["<C-e>"] = ctrlsf_search_for_term,
-							},
-							n = {
-								["e"] = ctrlsf_search_for_term,
-							},
-						},
 						layout_config = {
 							preview_width = 0.5,
 						},
@@ -264,24 +157,49 @@ M.plugin_specs = {
 		end,
 		dependencies = {
 			"nvim-lua/plenary.nvim",
-			"benfowler/telescope-luasnip.nvim",
-			"synic/telescope-dirpicker.nvim",
-			"smartpde/telescope-recent-files",
-			"debugloop/telescope-undo.nvim",
 			"nvim-telescope/telescope-ui-select.nvim",
-			{
-				"LukasPietzschmann/telescope-tabs",
-				opts = {
-					entry_formatter = telescope_tabs_entry_formatter,
-					entry_ordinal = telescope_tabs_entry_formatter,
-					show_preview = false,
-				},
-			},
 			{
 				"nvim-telescope/telescope-fzf-native.nvim",
 				build = "make",
 				enabled = vim.fn.executable("make") == 1,
 			},
+		},
+	},
+
+	{
+		"benfowler/telescope-luasnip.nvim",
+		dependences = { "telescope.nvim" },
+		{ "<leader>ss", "<cmd>Telescope luasnip<cr>", desc = "Snippets" },
+	},
+
+	{
+		"debugloop/telescope-undo.nvim",
+		dependences = { "telescope.nvim" },
+		keys = {
+			{ "<leader>tu", "<cmd>Telescope undo<cr>", desc = "Undo tree" },
+		},
+	},
+
+	{
+		"smartpde/telescope-recent-files",
+		dependencies = { "telescope.nvim" },
+		keys = {
+			{ "<leader>,", "<cmd>Telescope recent_files pick<cr>", desc = "Recent files" },
+		},
+	},
+
+	{
+		"LukasPietzschmann/telescope-tabs",
+		opts = {
+			entry_formatter = telescope_tabs_entry_formatter,
+			entry_ordinal = telescope_tabs_entry_formatter,
+			show_preview = false,
+		},
+		dependencies = { "telescope.nvim" },
+		keys = {
+
+			-- layouts/windows
+			{ "<leader>ll", "<cmd>Telescope telescope-tabs list_tabs<cr>", desc = "List layouts" },
 		},
 	},
 }

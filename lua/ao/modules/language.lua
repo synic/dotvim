@@ -75,7 +75,10 @@ return {
 						flags = flags,
 						settings = {
 							Lua = {
-								runtime = { path = { "?.lua", "?/init.lua", "lua/?.lua", "lua/?/init.lua" } },
+								runtime = {
+									version = "LuaJIT",
+									path = { "?.lua", "?/init.lua", "lua/?.lua", "lua/?/init.lua" },
+								},
 								diagnostics = { globals = { "vim", "hs" } },
 								completion = { callSnippet = "Replace", autoRequire = true, displayContext = 7 },
 							},
@@ -343,7 +346,7 @@ return {
 			return {
 				sources = {
 					-- formatting
-					ns.builtins.formatting.stylua, -- lua
+					ns.builtins.formatting.stylua,
 					ns.builtins.formatting.black, -- python
 					ns.builtins.formatting.prettierd.with({
 						filetypes = { "typescript", "javascript" },

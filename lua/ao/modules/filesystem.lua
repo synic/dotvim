@@ -14,7 +14,7 @@ local function browse_at_project_directory()
 end
 
 local function browse_at_current_directory()
-	-- oil is a bit strange, if you pass no arguments, it does not open in `vim.loop.cwd()` like telescope. It always
+	-- oil is a bit strange, if you pass no arguments, it does not open in `vim.uv.cwd()` like telescope. It always
 	-- opens in the current buffer's directory. If you pass a path, it won't select the current buffer's file
 	-- automatically.
 	vim.cmd.Oil()
