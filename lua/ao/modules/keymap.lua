@@ -18,6 +18,18 @@ local function buffer_show_full_path()
 	buffer_show_path(true)
 end
 
+local function align_cursors()
+	local current = vim.fn.winnr()
+	---@diagnostic disable-next-line: deprecated
+	local l, c = unpack(vim.api.nvim_win_get_cursor(0))
+
+	vim.cmd.windo("norm 0")
+	vim.cmd(current .. "windo normal! m'")
+	vim.fn.cursor(l, c)
+
+	vim.cmd("normal! m'")
+end
+
 local categories = {
 	["<leader>"] = {
 		b = { "+buffers" },
@@ -61,6 +73,7 @@ utils.map_keys({
 	{ "<leader>wml", "<cmd>wincmd L<cr>", desc = "Move window right" },
 	{ "<leader>wR", "<cmd>wincmd R<cr>", desc = "Rotate windows" },
 	{ "<leader>wT", "<cmd>wincmd T<cr>", desc = "Move to new layout" },
+	{ "<leader>w;", align_cursors, desc = "Move cursor to 0 in all windows" },
 
 	-- layouts/tabs
 	{ "<leader>l.", "<cmd>tabnew<cr>", desc = "New layout" },

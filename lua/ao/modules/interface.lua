@@ -40,7 +40,7 @@ local function golden_ratio_toggle()
 end
 
 function M.get_tab_name(tabnr)
-	if vim.fn.gettabvar(tabnr or 0, "projectset") ~= true then
+	if vim.fn.gettabvar(tabnr or 0, "project_dir") == "" then
 		return nil
 	end
 
@@ -50,14 +50,6 @@ end
 M.plugin_specs = {
 	-- extensible core UI hooks
 	{ "stevearc/dressing.nvim", config = true, event = "VeryLazy" },
-
-	-- zen mode (maximize windows, etc)
-	{
-		"pocco81/true-zen.nvim",
-		keys = {
-			{ "<leader>tz", "<cmd>TZMinimalist<cr>", desc = "Toggle zen mode" },
-		},
-	},
 
 	-- notifications
 	{

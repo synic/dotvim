@@ -1,4 +1,5 @@
 local utils = require("ao.utils")
+local uv = vim.uv or vim.loop
 
 local function zoom_toggle()
 	if vim.t.zoomed then
@@ -98,7 +99,7 @@ local plugins = {
 local wakatime_config = { "wakatime/vim-wakatime", event = "VeryLazy" }
 local wakatime_config_path = utils.join_paths(os.getenv("HOME"), ".wakatime.cfg")
 
-if vim.loop.fs_stat(wakatime_config_path) then
+if uv.fs_stat(wakatime_config_path) then
 	table.insert(plugins, wakatime_config)
 end
 
