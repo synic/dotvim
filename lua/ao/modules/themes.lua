@@ -141,15 +141,10 @@ return {
 			nordic.load()
 
 			on_colorcheme_load("^nordic", function()
+				set_whitespace_colors()
 				vim.api.nvim_set_hl(0, "Delimiter", { fg = "#9c9aa2" })
-				vim.api.nvim_set_hl(0, "IblIndent", { fg = "#333344" })
-				vim.api.nvim_set_hl(0, "IblWhitespace", { fg = "#444455" })
-				vim.api.nvim_set_hl(0, "IblScope", { fg = "#444455" })
-				vim.api.nvim_set_hl(0, "NonText", { fg = "#333344" })
-				vim.api.nvim_set_hl(0, "Whitespace", { fg = "#333344" })
-				vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#333344" })
-				vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#333344" })
-				vim.api.nvim_set_hl(0, "@spell", { link = "String" })
+				vim.api.nvim_set_hl(0, "@spell.templ", { link = "String" })
+				vim.api.nvim_set_hl(0, "@spell.go", { link = "String" })
 			end)
 		end,
 	},
