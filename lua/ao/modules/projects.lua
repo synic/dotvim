@@ -5,6 +5,39 @@ local M = {}
 local root_cache = {}
 local uv = vim.uv or vim.loop
 
+-- would rather not use this function and instead just use `:tcd` per tab (which I'm doing anyway), however,
+-- there are various plugins that have issue with the file not being in the same location as the cwd (stylua, for
+-- example, has trouble saving if the cwd is some other directory.
+local function setup_autochdir()
+	local chdir_aucmds = { "BufNewFile", "BufRead", "BufFilePost", "BufEnter", "VimEnter" }
+
+	vim.api.nvim_create_autocmd(chdir_aucmds, {
+		callback = function(opts)
+			local root = M.find_buffer_root(opts.buf)
+			if root and root ~= "" then
+				vim.cmd.cd(root)
+			end
+		end,
+	})
+end
+
+local function setup_project_hotkeys()
+	local keys = {}
+	for key, dir in pairs(config.options.projects.bookmarks) do
+		local name = vim.fn.fnamemodify(dir, ":t")
+		table.insert(keys, {
+			"<leader>p" .. key,
+			function()
+				vim.cmd.tabnew()
+				M.open(dir)
+			end,
+			desc = "Open project " .. name,
+		})
+	end
+
+	utils.map_keys(keys)
+end
+
 local function telescope_search_project_cursor_term()
 	local builtin = require("telescope.builtin")
 	local current_word = vim.fn.expand("<cword>")
@@ -153,24 +186,6 @@ function M.set(dir)
 	vim.cmd.redrawtabline()
 end
 
--- would rather not use this function and instead just use `:tcd` per tab (which I'm doing anyway), however,
--- there are various plugins that have issue with the file not being in the same location as the cwd (stylua, for
--- example, has trouble saving if the cwd is some other directory.
-function M.setup_autochdir()
-	local chdir_aucmds = { "BufNewFile", "BufRead", "BufFilePost", "BufEnter", "VimEnter" }
-
-	vim.api.nvim_create_autocmd(chdir_aucmds, {
-		callback = function(opts)
-			local root = M.find_buffer_root(opts.buf)
-			if root and root ~= "" then
-				vim.cmd.cd(root)
-			end
-		end,
-	})
-end
-
-M.setup_autochdir()
-
 function M.open(dir)
 	if not vim.t.project_dir then
 		M.set(dir)
@@ -197,5 +212,8 @@ M.plugin_specs = {
 		},
 	},
 }
+
+setup_autochdir()
+setup_project_hotkeys()
 
 return M

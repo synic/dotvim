@@ -11,7 +11,8 @@ local keys = {
 	{ "<leader>st", "<cmd>ColorSchemePicker<cr>", desc = "List themes" },
 }
 
-local builtins = {
+-- don't display these themes in the picker
+local skip_themes = {
 	"zellner",
 	"torte",
 	"slate",
@@ -32,6 +33,9 @@ local builtins = {
 	"darkblue",
 	"blue",
 	"zaibatsu",
+	"sorbet",
+	"morning",
+	"wildcharm",
 }
 
 local function set_whitespace_colors()
@@ -60,7 +64,7 @@ vim.api.nvim_create_user_command("ColorSchemePicker", function()
 
 	vim.fn.getcompletion = function()
 		return vim.tbl_filter(function(color)
-			return not vim.tbl_contains(builtins, color)
+			return not vim.tbl_contains(skip_themes, color)
 			---@diagnostic disable-next-line: redundant-parameter
 		end, target("", "color"))
 	end
@@ -144,6 +148,8 @@ return {
 				vim.api.nvim_set_hl(0, "NonText", { fg = "#333344" })
 				vim.api.nvim_set_hl(0, "Whitespace", { fg = "#333344" })
 				vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#333344" })
+				vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#333344" })
+				vim.api.nvim_set_hl(0, "@spell", { link = "String" })
 			end)
 		end,
 	},

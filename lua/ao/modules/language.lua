@@ -360,11 +360,14 @@ return {
 					ns.builtins.formatting.rustywind.with({
 						filetypes = { "typescript", "javascript", "css", "templ", "html" },
 					}),
-					custom.trim_whitespace,
+					custom.trim_whitespace.with({
+						filetypes = { "markdown", "yaml", "dockerfile", "Makefile", "sh", "zsh", "bash" },
+					}),
 
 					-- diagnostics
 					ns.builtins.diagnostics.gitlint,
 					ns.builtins.diagnostics.mypy,
+					ns.builtins.diagnostics.trail_space,
 					ns.builtins.diagnostics.yamllint,
 					ns.builtins.diagnostics.hadolint, -- Dockerfile
 					ns.builtins.diagnostics.markdownlint_cli2,
