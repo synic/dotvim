@@ -2,8 +2,20 @@ local utils = require("ao.utils")
 local projects = require("ao.modules.projects")
 local M = {}
 
+local function show_git_branch()
+	local branch = M.git_get_current_branch()
+	if not branch or branch == "" then
+		branch = "not currently in a repository"
+	else
+		vim.fn.setreg("+", branch)
+	end
+
+	vim.notify("Branch: " .. branch)
+	print(branch)
+end
+
 utils.map_keys({
-	{ "<leader>ga", "<cmd>:!git add %<cr>", desc = "Git add current file" },
+	{ "<leader>g?", show_git_branch, desc = "Show current branch" },
 })
 
 function M.git_get_repo_name()
@@ -124,12 +136,12 @@ M.plugin_specs = {
 	-- display conflicts
 	{ "akinsho/git-conflict.nvim", event = "VeryLazy", version = "*", config = true },
 
-	-- git blame
+	-- git utilities
 	{
-		"FabijanZulj/blame.nvim",
+		"tpope/vim-fugitive",
 		keys = {
-			{ "<leader>gb", "<cmd>ToggleBlame virtual<cr>", desc = "Git blame" },
-			{ "<leader>gB", "<cmd>ToggleBlame window<cr>", desc = "Git blame (window)" },
+			{ "<leader>gb", "<cmd>Git blame<cr>", desc = "Git blame" },
+			{ "<leader>ga", "<cmd>Git add %<cr>", desc = "Git add" },
 		},
 	},
 
