@@ -114,9 +114,6 @@ local function neogit_open()
 
 	cwd = (root or cwd)
 
-	-- NeoGit appears to have some issues when being opened and then closed and then reopened with a new cwd, so this
-	-- works around that.
-
 	if status.status_buffer then
 		status.close()
 		status.status_buffer = nil
@@ -124,6 +121,8 @@ local function neogit_open()
 
 	neogit.open({ cwd = cwd })
 
+	-- NeoGit appears to have some issues when being opened and then closed and then reopened with a new cwd, so this
+	-- works around that.
 	vim.defer_fn(function()
 		vim.cmd.lcd(cwd)
 		vim.o.autochdir = nil
@@ -173,6 +172,7 @@ M.plugin_specs = {
 			kind = "vsplit",
 			auto_show_console = false,
 			remember_settings = true,
+			disable_context_highlighting = true,
 			debug = true,
 			commit_editor = { kind = "split" },
 			commit_select_view = { kind = "split" },

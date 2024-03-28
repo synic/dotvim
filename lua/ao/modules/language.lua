@@ -35,6 +35,7 @@ local function lsp_on_attach(_, bufnr)
 				end,
 				desc = "Organize imports",
 			},
+			{ "<localleader>f", "<cmd>TypescriptRenameFile<cr>", desc = "Rename file" },
 		})
 	end
 end
