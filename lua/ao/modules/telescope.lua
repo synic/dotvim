@@ -87,6 +87,9 @@ M.plugin_specs = {
 
 			-- themes
 			{ "<leader>st", "<cmd>ColorSchemePicker<cr>", desc = "List themes" },
+
+			-- misq
+			{ "<leader>sq", "<cmd>Telescope quickfix<cr>", desc = "Search quickfix" },
 		},
 		cmd = "Telescope",
 		config = function()

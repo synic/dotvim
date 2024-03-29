@@ -100,7 +100,7 @@ local wakatime_config = { "wakatime/vim-wakatime", event = "VeryLazy" }
 local wakatime_config_path = utils.join_paths(os.getenv("HOME"), ".wakatime.cfg")
 
 if uv.fs_stat(wakatime_config_path) then
-	table.insert(plugins, wakatime_config)
+	plugins[#plugins + 1] = wakatime_config
 end
 
 return plugins
