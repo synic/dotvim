@@ -19,8 +19,10 @@ local key_categories = {
 		e = { "diagnostis" },
 		c = { "configuration", p = { "plugins" } },
 		q = { "quit" },
+		["/"] = { "vsplit" },
+		["-"] = { "split" },
 	},
-	["g"] = { ["h"] = { "hunk" } },
+	g = { ["h"] = { "hunk" } },
 }
 
 vim.g.neovide_remember_window_size = true
@@ -64,8 +66,8 @@ utils.map_keys({
 	{ "<leader>wl", "<cmd>wincmd l<cr>", desc = "Go right" },
 	{ "<leader>w/", "<cmd>vs<cr>", desc = "Split vertically" },
 	{ "<leader>w-", "<cmd>sp<cr>", desc = "Split horizontally" },
-	{ "<leader>/", "<cmd>vs<cr>", desc = "Split vertically" },
-	{ "<leader>-", "<cmd>sp<cr>", desc = "Split horizontally" },
+	{ "<leader>/w", "<cmd>vs<cr>", desc = "Split window vertically" },
+	{ "<leader>-w", "<cmd>sp<cr>", desc = "Split window horizontally" },
 	{ "<leader>wc", "<cmd>close<cr>", desc = "Close window" },
 	{ "<leader>wd", "<cmd>q<cr>", desc = "Quit window" },
 	{ "<leader>w=", "<C-w>=", desc = "Equalize windows" },

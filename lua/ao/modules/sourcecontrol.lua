@@ -172,7 +172,6 @@ M.plugin_specs = {
 			kind = "vsplit",
 			auto_show_console = false,
 			remember_settings = true,
-			disable_context_highlighting = true,
 			debug = true,
 			commit_editor = { kind = "split" },
 			commit_select_view = { kind = "split" },

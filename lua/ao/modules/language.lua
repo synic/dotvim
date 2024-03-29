@@ -67,8 +67,7 @@ return {
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
-			m.setup(opts)
-			m.setup_handlers({
+			opts.handlers = {
 				["lua_ls"] = function()
 					lsp.lua_ls.setup({
 						capabilities = capabilities,
@@ -167,7 +166,9 @@ return {
 						flags = flags,
 					})
 				end,
-			})
+			}
+
+			m.setup(opts)
 		end,
 	},
 
