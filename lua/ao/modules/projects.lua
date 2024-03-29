@@ -5,9 +5,9 @@ local M = {}
 local root_cache = {}
 local uv = vim.uv or vim.loop
 
--- would rather not use this function and instead just use `:tcd` per tab (which I'm doing anyway), however,
--- there are various plugins that have issue with the file not being in the same location as the cwd (stylua, for
--- example, has trouble saving if the cwd is some other directory.
+-- would rather not use this function and instead just use `:tcd` per tab, however, there are various plugins that
+-- have issue with the file not being in the same location as the cwd (stylua, for example, has trouble saving if the
+-- cwd is some other directory.
 local function setup_autochdir()
 	local chdir_aucmds = { "BufNewFile", "BufRead", "BufFilePost", "BufEnter", "VimEnter" }
 
@@ -25,14 +25,14 @@ local function setup_project_hotkeys()
 	local keys = {}
 	for key, dir in pairs(config.options.projects.bookmarks) do
 		local name = vim.fn.fnamemodify(dir, ":t")
-		table.insert(keys, {
+		keys[#keys + 1] = {
 			"<leader>p" .. key,
 			function()
 				vim.cmd.tabnew()
 				M.open(dir)
 			end,
 			desc = "Open project " .. name,
-		})
+		}
 	end
 
 	utils.map_keys(keys)
@@ -103,9 +103,9 @@ end
 local function telescope_find_project_files()
 	local builtin = require("telescope.builtin")
 
-	local root = M.find_buffer_root()
-	if root and root ~= "" then
-		builtin.find_files({ cwd = root })
+	local project_dir = vim.t.project_dir
+	if project_dir and project_dir ~= "" then
+		builtin.find_files({ cwd = project_dir })
 	else
 		vim.notify("Project: no project selected", vim.log.levels.INFO)
 		telescope_pick_project()
@@ -124,10 +124,10 @@ function M.find_projects(opts)
 			if fd ~= nil then
 				local stat = uv.fs_fstat(fd)
 				if stat ~= nil then
-					table.insert(items, { path = file, mtime = stat.mtime })
+					items[#items + 1] = { path = file, mtime = stat.mtime }
 				end
 			else
-				table.insert(items, { path = file, mtime = { sec = 0 } })
+				items[#items + 1] = { path = file, mtime = { sec = 0 } }
 			end
 		end
 	end
@@ -137,7 +137,7 @@ function M.find_projects(opts)
 	end)
 
 	for _, item in ipairs(items) do
-		table.insert(projects, item.path)
+		projects[#projects + 1] = item.path
 	end
 
 	return projects
