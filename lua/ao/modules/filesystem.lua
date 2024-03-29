@@ -8,16 +8,22 @@ vim.g.netrw_banner = 0
 vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\.\S\+]]
 vim.g.netrw_browse_split = 0
 
-local function browse_at_project_directory()
-	local pathname = projects.find_buffer_root()
-	vim.cmd.Oil((pathname or "."))
-end
+local function browse_directory(type, precmd)
+	return function()
+		if precmd then
+			vim.cmd[precmd]()
+		end
 
-local function browse_at_current_directory()
-	-- oil is a bit strange, if you pass no arguments, it does not open in `vim.uv.cwd()` like telescope. It always
-	-- opens in the current buffer's directory. If you pass a path, it won't select the current buffer's file
-	-- automatically.
-	vim.cmd.Oil()
+		if type == "current" then
+			-- oil is a bit strange, if you pass no arguments, it does not open in `vim.uv.cwd()` like telescope. It always
+			-- opens in the current buffer's directory. If you pass a path, it won't select the current buffer's file
+			-- automatically.
+			vim.cmd.Oil()
+		else
+			local pathname = projects.find_buffer_root()
+			vim.cmd.Oil((pathname or "."))
+		end
+	end
 end
 
 utils.map_keys({})
@@ -106,10 +112,12 @@ M.plugin_specs = {
 	{
 		"stevearc/oil.nvim",
 		keys = {
-			{ "-", browse_at_current_directory, desc = "Browse current directory" },
-			{ "<leader>-", browse_at_current_directory, desc = "Browse current directory" },
-			{ "_", browse_at_project_directory, desc = "Browse current project" },
-			{ "<leader>_", browse_at_project_directory, desc = "Browse current project" },
+			{ "-", browse_directory("current"), desc = "Browse current directory" },
+			{ "_", browse_directory("project"), desc = "Browse current project" },
+			{ "<leader>/-", browse_directory("current", "vsplit"), desc = "Browse current directory in vsplit" },
+			{ "<leader>/_", browse_directory("project", "vsplit"), desc = "Browse current directory in vsplit" },
+			{ "<leader>--", browse_directory("current", "split"), desc = "Browse current directory in split" },
+			{ "<leader>-_", browse_directory("project", "split"), desc = "Browse current directory in split" },
 		},
 		-- if you lazy load oil, things will be weird if you open a directory from the command line, even if you use the
 		-- `VeryLazy` event, so do not lazy load.

@@ -142,9 +142,8 @@ return {
 
 			on_colorcheme_load("^nordic", function()
 				set_whitespace_colors()
+				vim.cmd([[hi clear @spell]])
 				vim.api.nvim_set_hl(0, "Delimiter", { fg = "#9c9aa2" })
-				vim.api.nvim_set_hl(0, "@spell.templ", { link = "String" })
-				vim.api.nvim_set_hl(0, "@spell.go", { link = "String" })
 			end)
 		end,
 	},
