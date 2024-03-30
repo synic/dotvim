@@ -26,8 +26,6 @@ local key_categories = {
 	g = { h = { "hunk" } },
 }
 
-vim.g.neovide_remember_window_size = true
-
 local function buffer_show_path(full)
 	local pattern = "%p"
 
@@ -57,6 +55,23 @@ local function zero_window_cursors(tabnr)
 	end
 
 	vim.cmd(current .. "windo normal! m'")
+end
+
+local function quickfix_remove_item_move_next()
+	vim.cmd.copen()
+	local curqfidx = vim.fn.line(".")
+	local qfall = vim.fn.getqflist()
+
+	if #qfall == 0 then
+		return
+	end
+
+	table.remove(qfall, curqfidx)
+	vim.fn.setqflist(qfall, "r")
+
+	local new_idx = curqfidx < #qfall and curqfidx or math.max(curqfidx - 1, 1)
+	vim.api.nvim_win_set_cursor(vim.fn.win_getid(), { new_idx, 0 })
+	vim.cmd("cc" .. new_idx)
 end
 
 utils.map_keys({
@@ -121,12 +136,13 @@ utils.map_keys({
 	{ "<leader>?", "<cmd>lua require('ao.utils').get_help()<cr>", desc = "Show help" },
 
 	-- quickfix
-	{ "<leader>q<space>", "<cmd>copen<cr>", desc = "Open quickfix" },
+	{ "<leader>qq", "<cmd>copen<cr>", desc = "Open quickfix" },
 	{ "<leader>qj", "<cmd>cn<cr>", desc = "Next quickfix item" },
 	{ "<leader>qk", "<cmd>cp<cr>", desc = "Previous quickfix item" },
 	{ "<leader>qn", "<cmd>cn<cr>", desc = "Next quickfix item" },
 	{ "<leader>qp", "<cmd>cp<cr>", desc = "Previous quickfix item" },
-	{ "<leader>qq", "<cmd>cclose<cr>", desc = "Close quickfix" },
+	{ "<leader>qc", "<cmd>cclose<cr>", desc = "Close quickfix" },
+	{ "<leader>q<space>", quickfix_remove_item_move_next, desc = "Remove quickfix item and move next" },
 
 	-- misc
 	{ "vig", "ggVG", desc = "Select whole buffer" },
