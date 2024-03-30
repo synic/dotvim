@@ -10,9 +10,13 @@ local uv = vim.uv or vim.loop
 -- cwd is some other directory.
 local function setup_autochdir()
 	local chdir_aucmds = { "BufNewFile", "BufRead", "BufFilePost", "BufEnter", "VimEnter" }
+	local skip_filetypes = { "qf" }
 
 	vim.api.nvim_create_autocmd(chdir_aucmds, {
 		callback = function(opts)
+			if utils.table_contains(skip_filetypes, vim.bo[opts.buf].filetype) then
+				return
+			end
 			local root = M.find_buffer_root(opts.buf)
 			if root and root ~= "" then
 				vim.cmd.cd(root)
@@ -103,9 +107,12 @@ end
 local function telescope_find_project_files()
 	local builtin = require("telescope.builtin")
 
-	local project_dir = vim.t.project_dir
-	if project_dir and project_dir ~= "" then
-		builtin.find_files({ cwd = project_dir })
+	local root = M.find_buffer_root()
+	if root and root ~= "" then
+		if not vim.t.project_dir then
+			M.set(root)
+		end
+		builtin.find_files({ cwd = root })
 	else
 		vim.notify("Project: no project selected", vim.log.levels.INFO)
 		telescope_pick_project()

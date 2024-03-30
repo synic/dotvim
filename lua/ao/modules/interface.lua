@@ -18,11 +18,12 @@ local key_categories = {
 		t = { "toggles" },
 		e = { "diagnostis" },
 		c = { "configuration", p = { "plugins" } },
-		q = { "quit" },
+		x = { "misc" },
+		q = { "quickfix" },
 		["/"] = { "vsplit" },
 		["-"] = { "split" },
 	},
-	g = { ["h"] = { "hunk" } },
+	g = { h = { "hunk" } },
 }
 
 vim.g.neovide_remember_window_size = true
@@ -119,10 +120,18 @@ utils.map_keys({
 	{ "<leader>hh", "<cmd>lua require('ao.utils').get_help()<cr>", desc = "Show help" },
 	{ "<leader>?", "<cmd>lua require('ao.utils').get_help()<cr>", desc = "Show help" },
 
+	-- quickfix
+	{ "<leader>q<space>", "<cmd>copen<cr>", desc = "Open quickfix" },
+	{ "<leader>qj", "<cmd>cn<cr>", desc = "Next quickfix item" },
+	{ "<leader>qk", "<cmd>cp<cr>", desc = "Previous quickfix item" },
+	{ "<leader>qn", "<cmd>cn<cr>", desc = "Next quickfix item" },
+	{ "<leader>qp", "<cmd>cp<cr>", desc = "Previous quickfix item" },
+	{ "<leader>qq", "<cmd>cclose<cr>", desc = "Close quickfix" },
+
 	-- misc
 	{ "vig", "ggVG", desc = "Select whole buffer" },
 	{ "<leader><localleader>", "<localleader>", desc = "Local buffer options" },
-	{ "<leader>qq", "<cmd>qa!<cr>", desc = "Quit Vim" },
+	{ "<leader>xq", "<cmd>qa!<cr>", desc = "Quit Vim" },
 	{ "<leader>cm", filesystem.goto_config_directory, desc = "Manage config" },
 	{ "<leader>cx", utils.close_all_floating_windows, desc = "Close plugin manager" },
 	{ "<leader>'", "<cmd>split<cr><cmd>term<cr><cmd>norm A<cr>", desc = "Open terminal" },
@@ -162,6 +171,13 @@ function M.get_tab_name(tabnr)
 end
 
 M.plugin_specs = {
+	-- {
+	-- 	"kevinhwang91/nvim-bqf",
+	-- 	ft = "qf",
+	-- 	dependencies = {
+	-- 		"nvim-treesitter",
+	-- 	},
+	-- },
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
@@ -564,19 +580,6 @@ M.plugin_specs = {
 			{ "<leader><leader>", "<plug>(easymotion-overwin-f)", desc = "Jump to location", mode = "n" },
 			{ "<leader><leader>", "<plug>(easymotion-bd-f)", desc = "Jump to location", mode = "v" },
 		},
-	},
-
-	-- search
-	{
-		"dyng/ctrlsf.vim",
-		cmd = { "CtrlSF" },
-		init = function()
-			vim.g.better_whitespace_filetypes_blacklist = { "ctrlsf" }
-			vim.g.ctrlsf_default_view_mode = "normal"
-			vim.g.ctrlsf_default_root = "project+wf"
-			vim.g.ctrlsf_auto_close = { normal = 0, compact = 1 }
-			vim.g.ctrlsf_auto_focus = { at = "start" }
-		end,
 	},
 
 	-- show search/replace results as they are being typed
