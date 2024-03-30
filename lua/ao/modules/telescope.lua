@@ -1,27 +1,7 @@
 local utils = require("ao.utils")
 local interface = require("ao.modules.interface")
-local projects = require("ao.modules.projects")
 
 local M = {}
-
-local function telescope_narrow_grep(prompt_bufnr)
-	local builtin = require("telescope.builtin")
-	local actions = require("telescope.actions")
-	local current_picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
-
-	local root = projects.find_buffer_root()
-	local prompt = current_picker:_get_prompt()
-	actions.close(prompt_bufnr)
-
-	if not prompt or prompt == "" then
-		vim.notify("no prompt to narrow", vim.log.levels.WARN)
-		return
-	end
-
-	vim.notify('narrowing to: "' .. prompt .. '"')
-
-	builtin.grep_string({ cwd = (root or "."), search = prompt })
-end
 
 local telescope_tabs_entry_formatter = function(tabnr, _, _, _, is_current)
 	local name = interface.get_tab_name(tabnr)
@@ -46,19 +26,6 @@ end
 
 local function telescope_find_files_cwd()
 	require("telescope.builtin").find_files({ cwd = utils.get_buffer_cwd() })
-end
-
-local function ctrlsf_search_for_term(prompt_bufnr)
-	local actions = require("telescope.actions")
-	local current_picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
-
-	local prompt = current_picker:_get_prompt()
-	actions.close(prompt_bufnr)
-	if not prompt then
-		vim.notify("Edit: no search terms", vim.log.levels.WARN)
-		return
-	end
-	vim.cmd.CtrlSF(prompt)
 end
 
 M.plugin_specs = {
@@ -122,18 +89,6 @@ M.plugin_specs = {
 						ignore_current_buffer = true,
 						layout_config = {
 							preview_width = 0.55,
-						},
-					},
-					live_grep = {
-						mappings = {
-							i = {
-								["<C-e>"] = ctrlsf_search_for_term,
-								["<C-;>"] = telescope_narrow_grep,
-							},
-							n = {
-								["e"] = ctrlsf_search_for_term,
-								[";"] = telescope_narrow_grep,
-							},
 						},
 					},
 					grep_string = {

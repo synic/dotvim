@@ -4,9 +4,10 @@ let s:last_search_term = ''
 let s:current_equalalways = 1
 
 " install vim-plug if it's not already installed
+" commit hash is Feb, 2024, tag 0.13.0
 if empty(glob('$VIMHOME/autoload/plug.vim'))
 	silent !curl -sfLo $VIMHOME/autoload/plug.vim --create-dirs
-		\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	  \ https://raw.githubusercontent.com/junegunn/vim-plug/854b081934dd6114a03df712d9f5c3a5818c7c94/plug.vim
 	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC | bdelete | colorscheme gruvbox-material
 endif
 
