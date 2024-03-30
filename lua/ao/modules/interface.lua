@@ -98,6 +98,15 @@ utils.map_keys({
 	{ "<leader>wR", "<cmd>wincmd R<cr>", desc = "Rotate windows" },
 	{ "<leader>wT", "<cmd>wincmd T<cr>", desc = "Move to new layout" },
 	{ "<leader>w;", zero_window_cursors, desc = "Move cursor to 0 in all windows" },
+	{ "<leader>w1", "<cmd>1windo norm! m'<cr>", desc = "Goto window #1" },
+	{ "<leader>w2", "<cmd>2windo norm! m'<cr>", desc = "Goto window #2" },
+	{ "<leader>w3", "<cmd>3windo norm! m'<cr>", desc = "Goto window #3" },
+	{ "<leader>w4", "<cmd>4windo norm! m'<cr>", desc = "Goto window #4" },
+	{ "<leader>w5", "<cmd>5windo norm! m'<cr>", desc = "Goto window #5" },
+	{ "<leader>w6", "<cmd>6windo norm! m'<cr>", desc = "Goto window #6" },
+	{ "<leader>w7", "<cmd>7windo norm! m'<cr>", desc = "Goto window #7" },
+	{ "<leader>w8", "<cmd>8windo norm! m'<cr>", desc = "Goto window #8" },
+	{ "<leader>w9", "<cmd>9windo norm! m'<cr>", desc = "Goto window #9" },
 
 	-- layouts/tabs
 	{ "<leader>l.", "<cmd>tabnew<cr>", desc = "New layout" },
@@ -142,6 +151,7 @@ utils.map_keys({
 	{ "<leader>qn", "<cmd>cn<cr>", desc = "Next quickfix item" },
 	{ "<leader>qp", "<cmd>cp<cr>", desc = "Previous quickfix item" },
 	{ "<leader>qc", "<cmd>cclose<cr>", desc = "Close quickfix" },
+	{ "g;", "<cmd>cn<cr>", desc = "Next quickfix item" },
 	{ "<leader>q<space>", quickfix_remove_item_move_next, desc = "Remove quickfix item and move next" },
 
 	-- misc
