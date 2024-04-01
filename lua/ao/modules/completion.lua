@@ -1,16 +1,3 @@
-local function border(hl_name)
-	return {
-		{ "╭", hl_name },
-		{ "─", hl_name },
-		{ "╮", hl_name },
-		{ "│", hl_name },
-		{ "╯", hl_name },
-		{ "─", hl_name },
-		{ "╰", hl_name },
-		{ "│", hl_name },
-	}
-end
-
 return {
 	-- main completion engine
 	{
@@ -32,13 +19,13 @@ return {
 				window = {
 					completion = {
 						side_padding = 1,
-						border = border("TelescopeBorder"),
-						winhighlight = "Normal:Normal,TelescopeBorder:Normal,CursorLine:TelescopeSelection,Search:None",
+						border = "rounded",
+						winhighlight = "CursorLine:CursorLine,Normal:Normal",
 						scrollbar = false,
 					},
 					documentation = {
-						border = border("TelescopeBorder"),
-						winhighlight = "Normal:TelescopeBorder,TelescopeBorder:Normal,CursorLine:TelescopeSelection,Search:None",
+						border = "rounded",
+						winhighlight = "CursorLine:CursorLine,Normal:Normal",
 						side_padding = 1,
 					},
 				},

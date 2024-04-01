@@ -1,4 +1,7 @@
+local setup_colors_group = vim.api.nvim_create_augroup("AoSetupColors", { clear = true })
+
 vim.api.nvim_create_autocmd("ColorScheme", {
+	group = setup_colors_group,
 	pattern = "*",
 	callback = function()
 		vim.api.nvim_set_hl(0, "EasyMotionTarget", { link = "Search" })
@@ -51,6 +54,7 @@ local function on_colorcheme_load(pattern, cb)
 	cb()
 	vim.api.nvim_create_autocmd("ColorScheme", {
 		pattern = "*",
+		group = setup_colors_group,
 		callback = function(cs)
 			if cs.match:find(pattern) ~= nil then
 				cb()
@@ -144,6 +148,8 @@ return {
 				set_whitespace_colors()
 				vim.cmd([[hi clear @spell]])
 				vim.api.nvim_set_hl(0, "Delimiter", { fg = "#9c9aa2" })
+				vim.api.nvim_set_hl(0, "FloatBorder", { link = "Comment" })
+				vim.api.nvim_set_hl(0, "WinSeparator", { link = "Comment" })
 			end)
 		end,
 	},
@@ -152,6 +158,7 @@ return {
 		keys = vim.deepcopy(keys),
 		config = function()
 			vim.api.nvim_create_autocmd("ColorScheme", {
+				group = setup_colors_group,
 				pattern = "*",
 				callback = function(o)
 					if o.match:find("^bamboo") ~= nil then

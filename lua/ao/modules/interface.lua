@@ -1,6 +1,9 @@
 local utils = require("ao.utils")
 local filesystem = require("ao.modules.filesystem")
 local projects = require("ao.modules.projects")
+local golden_ratio_group = vim.api.nvim_create_augroup("GoldenRatioStartup", { clear = true })
+local clear_winbar_group = vim.api.nvim_create_augroup("WinBarHlClearBg", { clear = true })
+local indentscope_disable_group = vim.api.nvim_create_augroup("MiniIndentScopeDisable", { clear = true })
 
 local M = {}
 
@@ -197,13 +200,6 @@ function M.get_tab_name(tabnr)
 end
 
 M.plugin_specs = {
-	-- {
-	-- 	"kevinhwang91/nvim-bqf",
-	-- 	ft = "qf",
-	-- 	dependencies = {
-	-- 		"nvim-treesitter",
-	-- 	},
-	-- },
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
@@ -245,7 +241,15 @@ M.plugin_specs = {
 		config = function(_, opts)
 			local notify = require("notify")
 			notify.setup(opts)
-			vim.notify = notify
+			local banned_messages = { "No information available" }
+			vim.notify = function(msg, ...)
+				for _, banned in ipairs(banned_messages) do
+					if msg == banned then
+						return
+					end
+				end
+				return notify(msg, ...)
+			end
 		end,
 	},
 
@@ -279,6 +283,7 @@ M.plugin_specs = {
 			}
 			vim.api.nvim_create_autocmd("FileType", {
 				pattern = disable_for,
+				group = indentscope_disable_group,
 				callback = function()
 					vim.b.miniindentscope_disable = true
 				end,
@@ -424,9 +429,10 @@ M.plugin_specs = {
 			clear_winbar_bg()
 
 			vim.api.nvim_create_autocmd("ColorScheme", {
-				group = vim.api.nvim_create_augroup("WinBarHlClearBg", {}),
+				group = clear_winbar_group,
 				callback = clear_winbar_bg,
 			})
+
 			require("dropbar").setup(opts)
 		end,
 	},
@@ -537,6 +543,7 @@ M.plugin_specs = {
 		config = function()
 			vim.cmd.GoldenRatioToggle()
 			vim.api.nvim_create_autocmd("VimEnter", {
+				group = golden_ratio_group,
 				callback = vim.cmd.GoldenRatioToggle,
 			})
 		end,

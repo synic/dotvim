@@ -1,5 +1,7 @@
 local utils = require("ao.utils")
 local projects = require("ao.modules.projects")
+
+local oil_setup_keys_group = vim.api.nvim_create_augroup("OilSetupKeys", { clear = true })
 local M = {}
 
 vim.g.netrw_liststyle = 0
@@ -172,6 +174,7 @@ M.plugin_specs = {
 		init = function()
 			vim.g.ao_oil_navigation_keys_enabled = true
 			vim.api.nvim_create_autocmd("FileType", {
+				group = oil_setup_keys_group,
 				pattern = "*",
 				callback = function()
 					if vim.bo.filetype ~= "oil" then
