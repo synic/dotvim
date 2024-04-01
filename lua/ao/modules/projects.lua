@@ -4,6 +4,7 @@ local utils = require("ao.utils")
 local M = {}
 local root_cache = {}
 local uv = vim.uv or vim.loop
+local chdir_group = vim.api.nvim_create_augroup("ProjectAutoChdir", { clear = true })
 
 -- would rather not use this function and instead just use `:tcd` per tab, however, there are various plugins that
 -- have issue with the file not being in the same location as the cwd (stylua, for example, has trouble saving if the
@@ -13,6 +14,7 @@ local function setup_autochdir()
 	local skip_filetypes = { "qf" }
 
 	vim.api.nvim_create_autocmd(chdir_aucmds, {
+		group = chdir_group,
 		callback = function(opts)
 			if utils.table_contains(skip_filetypes, vim.bo[opts.buf].filetype) then
 				return

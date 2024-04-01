@@ -1,6 +1,6 @@
 local utils = require("ao.utils")
 
-local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+local lsp_formatting_group = vim.api.nvim_create_augroup("LspFormatting", {})
 local flags = { allow_incremental_sync = true, debounce_text_changes = 200 }
 
 local function lsp_on_attach(_, bufnr)
@@ -204,20 +204,31 @@ return {
 			},
 		},
 		config = function()
+			local lsp = require("lspconfig")
+			local defaults = lsp.util.default_config
+
 			vim.diagnostic.config({
 				virtual_text = true,
 				signs = true,
 				update_in_insert = false,
 				underline = true,
 				severity_sort = true,
-				float = { border = "rounded" },
+				float = {
+					border = "rounded",
+					side_padding = 1,
+					winhighlight = "CursorLine:CursorLine,Normal:Normal",
+				},
 			})
 
 			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+				side_padding = 1,
 				border = "rounded",
+				winhighlight = "CursorLine:CursorLine,Normal:Normal",
 			})
 			vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+				side_padding = 1,
 				border = "rounded",
+				winhighlight = "CursorLine:CursorLine,Normal:Normal",
 			})
 
 			local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
@@ -225,8 +236,7 @@ return {
 				local hl = "DiagnosticSign" .. type
 				vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 			end
-			local lsp = require("lspconfig")
-			local defaults = lsp.util.default_config
+
 			defaults.capabilities =
 				vim.tbl_deep_extend("force", defaults.capabilities, require("cmp_nvim_lsp").default_capabilities())
 		end,
@@ -377,9 +387,9 @@ return {
 
 				on_attach = function(client, bufnr)
 					if client.supports_method("textDocument/formatting") then
-						vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+						vim.api.nvim_clear_autocmds({ group = lsp_formatting_group, buffer = bufnr })
 						vim.api.nvim_create_autocmd("BufWritePre", {
-							group = augroup,
+							group = lsp_formatting_group,
 							buffer = bufnr,
 							callback = function()
 								local ft = vim.bo[bufnr].filetype

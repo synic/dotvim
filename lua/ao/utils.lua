@@ -1,4 +1,6 @@
 local uv = vim.uv or vim.loop
+local init_group = vim.api.nvim_create_augroup("UtilsOnLoad", { clear = true })
+
 local M = {}
 
 function M.get_help()
@@ -93,6 +95,7 @@ function M.on_load(name, callback)
 	end
 
 	vim.api.nvim_create_autocmd("User", {
+		group = init_group,
 		pattern = "LazyLoad",
 		callback = function(event)
 			if event.data == name then

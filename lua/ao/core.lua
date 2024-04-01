@@ -1,5 +1,6 @@
 local utils = require("ao.utils")
 local config = require("ao.config")
+local after_load_augroup = vim.api.nvim_create_augroup("AoVimAfterLoad", { clear = true })
 local M = {}
 
 local uv = vim.uv or vim.loop
@@ -73,6 +74,7 @@ function M.setup(opts, startup_callback_fn)
 
 	vim.api.nvim_create_autocmd("User", {
 		pattern = "VeryLazy",
+		group = after_load_augroup,
 		callback = function()
 			if startup_callback_fn then
 				startup_callback_fn()
