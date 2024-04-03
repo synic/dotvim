@@ -27,6 +27,11 @@ local function setup_autochdir()
 	})
 end
 
+local function goto_project_directory()
+	local dir = config.options.projects.directory or "."
+	vim.cmd.edit(dir)
+end
+
 local function setup_project_hotkeys()
 	local keys = {}
 	for key, dir in pairs(config.options.projects.bookmarks) do
@@ -79,7 +84,8 @@ local function telescope_pick_project()
 end
 
 local function telescope_switch_project()
-	vim.t.project_dir = false
+	vim.t.project_dir = nil
+	vim.t.layout_name = nil
 	telescope_pick_project()
 end
 
@@ -185,13 +191,17 @@ function M.get_dir(tabnr)
 end
 
 function M.get_name(tabnr)
-	local path = vim.fn.gettabvar(tabnr or 0, "project_dir")
-	return (path and path ~= "") and vim.fs.basename(path) or nil
+	local name = vim.fn.gettabvar(tabnr or 0, "layout_name")
+	if name and name ~= "" then
+		return name
+	end
+	return nil
 end
 
 function M.set(dir)
 	print("Project: opening", dir)
 	vim.t.project_dir = dir
+	vim.t.layout_name = vim.fn.fnamemodify(dir, ":t")
 	vim.cmd.redrawtabline()
 end
 
@@ -202,6 +212,10 @@ function M.open(dir)
 
 	require("telescope.builtin").find_files({ cwd = dir })
 end
+
+utils.map_keys({
+	{ "<leader>p-", goto_project_directory, desc = "Go to project directory" },
+})
 
 M.plugin_specs = {
 	{

@@ -131,6 +131,7 @@ return {
 	{ "Mofiqul/dracula.nvim", keys = vim.deepcopy(keys) },
 	{ "joshdick/onedark.vim", keys = vim.deepcopy(keys) },
 	{ "EdenEast/nightfox.nvim", keys = vim.deepcopy(keys) },
+	{ "oxfist/night-owl.nvim", keys = vim.deepcopy(keys) },
 	{
 		"AlexvZyl/nordic.nvim",
 		keys = vim.deepcopy(keys),

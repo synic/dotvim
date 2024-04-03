@@ -8,13 +8,9 @@ local telescope_tabs_entry_formatter = function(tabnr, _, _, _, is_current)
 	local display = "[No Name]"
 
 	if name and name ~= "" then
-		display = name
+		display = "project: " .. name
 	else
 		display = require("tabby.feature.tab_name").get(tabnr)
-	end
-
-	if vim.fn.gettabvar(tabnr, "project_dir") ~= "" then
-		display = "project: " .. display
 	end
 
 	return string.format("%d: %s%s", tabnr, display, is_current and " <" or "")
