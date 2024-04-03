@@ -1,3 +1,4 @@
+local config = require("ao.config")
 local setup_colors_group = vim.api.nvim_create_augroup("AoSetupColors", { clear = true })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
@@ -9,37 +10,6 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		vim.api.nvim_set_hl(0, "SignatureMarkText", { link = "DiagnosticSignInfo" })
 	end,
 })
-
-local keys = {
-	{ "<leader>st", "<cmd>ColorSchemePicker<cr>", desc = "List themes" },
-}
-
--- don't display these themes in the picker
-local skip_themes = {
-	"zellner",
-	"torte",
-	"slate",
-	"shine",
-	"ron",
-	"quiet",
-	"peachpuff",
-	"pablo",
-	"murphy",
-	"lunaperche",
-	"koehler",
-	"industry",
-	"evening",
-	"elflord",
-	"desert",
-	"delek",
-	"default",
-	"darkblue",
-	"blue",
-	"zaibatsu",
-	"sorbet",
-	"morning",
-	"wildcharm",
-}
 
 local function set_whitespace_colors()
 	vim.api.nvim_set_hl(0, "IblIndent", { fg = "#333333" })
@@ -63,19 +33,24 @@ local function on_colorcheme_load(pattern, cb)
 	})
 end
 
-vim.api.nvim_create_user_command("ColorSchemePicker", function()
+local function colorscheme_picker()
 	local target = vim.fn.getcompletion
 
+	-- only show themes that were installed via lazy (and habamax because it isn't terrible)
 	vim.fn.getcompletion = function()
 		return vim.tbl_filter(function(color)
-			return not vim.tbl_contains(skip_themes, color)
+			return color == "habamax" or not vim.tbl_contains(config.options.default_colorschemes, color)
 			---@diagnostic disable-next-line: redundant-parameter
 		end, target("", "color"))
 	end
 
 	vim.cmd.Telescope("colorscheme")
 	vim.fn.getcompletion = target
-end, {})
+end
+
+local keys = {
+	{ "<leader>st", colorscheme_picker, desc = "List themes" },
+}
 
 return {
 	{
@@ -168,9 +143,7 @@ return {
 				end,
 			})
 
-			local bamboo = require("bamboo")
-			bamboo.setup({})
-			bamboo.load()
+			require("bamboo").setup({})
 		end,
 	},
 }
