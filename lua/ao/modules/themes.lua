@@ -62,14 +62,6 @@ return {
 		end,
 	},
 	{
-		"rose-pine/neovim",
-		name = "rose-pine",
-		keys = vim.deepcopy(keys),
-		config = function()
-			on_colorcheme_load("^rose%-pine", set_whitespace_colors)
-		end,
-	},
-	{
 		"catppuccin/nvim",
 		name = "catppuccin",
 		keys = vim.deepcopy(keys),
@@ -100,11 +92,8 @@ return {
 			end)
 		end,
 	},
-	{ "folke/tokyonight.nvim", keys = vim.deepcopy(keys) },
-	{ "bluz71/vim-nightfly-colors", name = "nightfly", keys = vim.deepcopy(keys) },
 	{ "rebelot/kanagawa.nvim", keys = vim.deepcopy(keys) },
 	{ "Mofiqul/dracula.nvim", keys = vim.deepcopy(keys) },
-	{ "joshdick/onedark.vim", keys = vim.deepcopy(keys) },
 	{ "EdenEast/nightfox.nvim", keys = vim.deepcopy(keys) },
 	{ "oxfist/night-owl.nvim", keys = vim.deepcopy(keys) },
 	{

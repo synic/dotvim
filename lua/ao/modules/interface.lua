@@ -563,70 +563,14 @@ M.plugin_specs = {
 	{
 		"folke/flash.nvim",
 		event = "VeryLazy",
-		opts = {
-			labels = "asdfghjklqwertyuiopzxcvbnm.,/'-",
-			modes = {
-				search = { enabled = false },
-				char = { enabled = false },
-			},
-		},
+		config = true,
+		-- stylua: ignore
 		keys = {
-			{
-				"s",
-				mode = { "n", "x", "o" },
-				function()
-					require("flash").jump()
-				end,
-				desc = "Flash",
-			},
-			{
-				"S",
-				mode = { "n", "x", "o" },
-				function()
-					require("flash").treesitter()
-				end,
-				desc = "Flash Treesitter",
-			},
-			{
-				"r",
-				mode = "o",
-				function()
-					require("flash").remote()
-				end,
-				desc = "Remote Flash",
-			},
-			{
-				"R",
-				mode = { "o", "x" },
-				function()
-					require("flash").treesitter_search()
-				end,
-				desc = "Treesitter Search",
-			},
-			{
-				"<c-s>",
-				mode = { "c" },
-				function()
-					require("flash").toggle()
-				end,
-				desc = "Toggle Flash Search",
-			},
-		},
-	},
-
-	-- get around faster and easier
-	{
-		"easymotion/vim-easymotion",
-		init = function()
-			vim.g.EasyMotion_smartcase = true
-			vim.g.EasyMotion_do_mapping = false
-			vim.g.EasyMotion_inc_highlight = false
-			vim.g.EasyMotion_disable_two_key_combo = true
-			vim.g.EasyMotion_keys = "abcdefhjkmnoprstuvwxyz;"
-		end,
-		keys = {
-			{ "<leader><leader>", "<plug>(easymotion-overwin-f)", desc = "Jump to location", mode = "n" },
-			{ "<leader><leader>", "<plug>(easymotion-bd-f)", desc = "Jump to location", mode = "v" },
+			{ "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+			{ "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+			{ "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+			{ "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+			{ "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
 		},
 	},
 
