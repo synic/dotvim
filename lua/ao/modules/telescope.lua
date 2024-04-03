@@ -55,11 +55,9 @@ M.plugin_specs = {
 			{ "<leader>sq", "<cmd>Telescope quickfix<cr>", desc = "Search quickfix" },
 		},
 		cmd = "Telescope",
-		config = function()
-			local telescope = require("telescope")
+		opts = function()
 			local actions = require("telescope.actions")
-
-			telescope.setup({
+			return {
 				defaults = {
 					mappings = {
 						i = {
@@ -104,8 +102,40 @@ M.plugin_specs = {
 						layout_config = { width = 0.4, height = 0.3 },
 					},
 				},
-			})
+			}
+		end,
+		config = function(_, opts)
+			local telescope = require("telescope")
+			local has_flash, flash = pcall(require, "flash")
 
+			if has_flash then
+				local function flash_jump(prompt_bufnr)
+					flash.jump({
+						pattern = "^",
+						label = { after = { 0, 0 } },
+						search = {
+							mode = "search",
+							exclude = {
+								function(win)
+									return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "TelescopeResults"
+								end,
+							},
+						},
+						action = function(match)
+							local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
+							picker:set_selection(match.pos[1] - 1)
+						end,
+					})
+				end
+				opts.defaults = vim.tbl_deep_extend("force", opts.defaults or {}, {
+					mappings = {
+						n = { s = flash_jump },
+						i = { ["<c-s>"] = flash_jump },
+					},
+				})
+			end
+
+			telescope.setup(opts)
 			telescope.load_extension("ui-select")
 			telescope.load_extension("fzf")
 		end,
