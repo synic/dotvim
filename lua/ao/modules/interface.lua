@@ -77,6 +77,20 @@ local function quickfix_remove_item_move_next()
 	vim.cmd("cc" .. new_idx)
 end
 
+local function layout_set_name()
+	vim.ui.input({ prompt = "layout name: ", default = (vim.t.layout_name or "") }, function(name)
+		if name then
+			vim.t.layout_name = name
+			vim.cmd.redrawtabline()
+		end
+	end)
+end
+
+local function goto_lazy_dir()
+	local path = vim.fn.resolve(vim.fn.stdpath("data") .. "/" .. "lazy")
+	vim.cmd.edit(path)
+end
+
 utils.map_keys({
 	-- windows
 	{ "<leader>wk", "<cmd>wincmd k<cr>", desc = "Go up" },
@@ -126,6 +140,7 @@ utils.map_keys({
 	{ "<leader>ln", "<cmd>tabnext<cr>", desc = "Next layout" },
 	{ "<leader>lp", "<cmd>tabprev<cr>", desc = "Previous layout" },
 	{ "<leader>l<tab>", "g<Tab>", desc = "Go to last layout" },
+	{ "<leader>lN", layout_set_name, desc = "Set layout name" },
 
 	-- toggles
 	{ "<leader>th", "<cmd>let &hls = !&hls<cr>", desc = "Toggle search highlights" },
@@ -157,12 +172,15 @@ utils.map_keys({
 	{ "g;", "<cmd>cn<cr>", desc = "Next quickfix item" },
 	{ "<leader>q<space>", quickfix_remove_item_move_next, desc = "Remove quickfix item and move next" },
 
+	-- configuration
+	{ "<leader>cm", filesystem.goto_config_directory, desc = "Manage config" },
+	{ "<leader>cl", goto_lazy_dir, desc = "Go to lazy plugins dir" },
+
 	-- misc
 	{ "vig", "ggVG", desc = "Select whole buffer" },
 	{ "<leader><localleader>", "<localleader>", desc = "Local buffer options" },
 	{ "<leader>xq", "<cmd>qa!<cr>", desc = "Quit Vim" },
-	{ "<leader>cm", filesystem.goto_config_directory, desc = "Manage config" },
-	{ "<leader>cx", utils.close_all_floating_windows, desc = "Close plugin manager" },
+	{ "<leader>xx", utils.close_all_floating_windows, desc = "Close all floating windows" },
 	{ "<leader>'", "<cmd>split<cr><cmd>term<cr><cmd>norm A<cr>", desc = "Open terminal" },
 })
 
@@ -192,10 +210,6 @@ local function golden_ratio_toggle()
 end
 
 function M.get_tab_name(tabnr)
-	if vim.fn.gettabvar(tabnr or 0, "project_dir") == "" then
-		return nil
-	end
-
 	return projects.get_name(tabnr)
 end
 
@@ -318,9 +332,7 @@ M.plugin_specs = {
 
 	{
 		"Bekaboo/dropbar.nvim",
-		version = "8.3.0", -- version before winfixbuf
 		event = "VeryLazy",
-		dependencies = { "nvim-telescope/telescope-fzf-native.nvim" },
 		keys = {
 			{ "<localleader>.", "<cmd>lua require('dropbar.api').pick()<cr>", desc = "Breadcrumb picker" },
 		},
@@ -604,10 +616,13 @@ M.plugin_specs = {
 
 	-- get around faster and easier
 	{
-		"Lokaltog/vim-easymotion",
+		"easymotion/vim-easymotion",
 		init = function()
 			vim.g.EasyMotion_smartcase = true
 			vim.g.EasyMotion_do_mapping = false
+			vim.g.EasyMotion_inc_highlight = false
+			vim.g.EasyMotion_disable_two_key_combo = true
+			vim.g.EasyMotion_keys = "abcdefhjkmnoprstuvwxyz;"
 		end,
 		keys = {
 			{ "<leader><leader>", "<plug>(easymotion-overwin-f)", desc = "Jump to location", mode = "n" },

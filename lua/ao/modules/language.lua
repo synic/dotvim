@@ -369,6 +369,7 @@ return {
 					ns.builtins.formatting.gofmt,
 					ns.builtins.formatting.goimports_reviser,
 					ns.builtins.formatting.golines,
+					ns.builtins.formatting.sqlfmt,
 					ns.builtins.formatting.rustywind.with({
 						filetypes = { "typescript", "javascript", "css", "templ", "html" },
 					}),
