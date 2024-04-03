@@ -62,6 +62,9 @@ function M.setup(opts, startup_callback_fn)
 		vim.api.nvim_set_option("guifont", config.options.appearance.guifont)
 	end
 
+	---@diagnostic disable-next-line: redundant-parameter
+	config.options.default_colorschemes = vim.fn.getcompletion("", "color")
+
 	local lazy, installed = M.install_plugin_manager()
 
 	lazy.setup(M.load_plugin_specs(), config.options.lazy)

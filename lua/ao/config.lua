@@ -29,5 +29,6 @@ return {
 				notify = false,
 			},
 		},
+		default_cololorschemes = {},
 	},
 }
