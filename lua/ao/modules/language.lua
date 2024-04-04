@@ -173,6 +173,7 @@ return {
 	},
 
 	{ "folke/neodev.nvim", ft = "lua" },
+
 	{
 		"jose-elias-alvarez/typescript.nvim",
 		ft = { "typescript", "javascript" },

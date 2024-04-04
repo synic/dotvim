@@ -1,7 +1,6 @@
 local utils = require("ao.utils")
 local filesystem = require("ao.modules.filesystem")
 local projects = require("ao.modules.projects")
-local golden_ratio_group = vim.api.nvim_create_augroup("GoldenRatioStartup", { clear = true })
 local clear_winbar_group = vim.api.nvim_create_augroup("WinBarHlClearBg", { clear = true })
 local indentscope_disable_group = vim.api.nvim_create_augroup("MiniIndentScopeDisable", { clear = true })
 
@@ -550,20 +549,19 @@ M.plugin_specs = {
 		},
 		init = function()
 			vim.g.golden_ratio_enabled = 0
-			vim.g.golden_ratio_autocmd = 0
 		end,
 		config = function()
 			vim.cmd.GoldenRatioToggle()
-			vim.api.nvim_create_autocmd("VimEnter", {
-				group = golden_ratio_group,
-				callback = vim.cmd.GoldenRatioToggle,
-			})
 		end,
 	},
+
 	{
 		"folke/flash.nvim",
 		event = "VeryLazy",
-		config = true,
+		opts = {
+			char = { enabled = false },
+			labels = "asdfghjklwertyuiopzxcvbnmABCDEFGHIJKLMNOP",
+		},
 		-- stylua: ignore
 		keys = {
 			{ "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
