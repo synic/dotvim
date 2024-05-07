@@ -1,6 +1,8 @@
 local config = require("ao.config")
 local setup_colors_group = vim.api.nvim_create_augroup("AoSetupColors", { clear = true })
 
+local M = {}
+
 vim.api.nvim_create_autocmd("ColorScheme", {
 	group = setup_colors_group,
 	pattern = "*",
@@ -52,7 +54,7 @@ local keys = {
 	{ "<leader>st", colorscheme_picker, desc = "List themes" },
 }
 
-return {
+M.plugin_specs = {
 	{
 		"sainnhe/gruvbox-material",
 		keys = vim.deepcopy(keys),
@@ -136,3 +138,5 @@ return {
 		end,
 	},
 }
+
+return M

@@ -31,9 +31,6 @@ local plugins = {
 	-- surround plugin
 	{ "kylechui/nvim-surround", version = "*", event = "VeryLazy", config = true },
 
-	-- commenting blocks
-	{ "terrortylor/nvim-comment", main = "nvim_comment", config = true, event = "VeryLazy" },
-
 	-- joining and splitting
 	{
 		"Wansmer/treesj",

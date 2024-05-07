@@ -47,16 +47,20 @@ end
 
 -- excluding the current window, move all cursors to 0 position on their current line
 -- for all windows in the current tab
-local function zero_window_cursors(tabnr)
+local function zero_window_cursors(tabnr, exclude_current)
 	local current = vim.fn.winnr()
 
 	for nr, _ in ipairs(vim.api.nvim_tabpage_list_wins(tabnr or 0)) do
-		if current ~= nr then
+		if current ~= nr or not exclude_current then
 			vim.cmd(nr .. "windo norm 0")
 		end
 	end
 
 	vim.cmd(current .. "windo normal! m'")
+end
+
+local function zero_all_window_cursors(tabnr)
+	zero_window_cursors(tabnr, true)
 end
 
 local function quickfix_remove_item_move_next()
@@ -113,7 +117,8 @@ utils.map_keys({
 	{ "<leader>wml", "<cmd>wincmd L<cr>", desc = "Move window right" },
 	{ "<leader>wR", "<cmd>wincmd R<cr>", desc = "Rotate windows" },
 	{ "<leader>wT", "<cmd>wincmd T<cr>", desc = "Move to new layout" },
-	{ "<leader>w;", zero_window_cursors, desc = "Move cursor to 0 in all windows" },
+	{ "<leader>w;", zero_window_cursors, desc = "Move cursor to 0 in all but the current window" },
+	{ "<leader>w;", zero_all_window_cursors, desc = "Move cursor to 0 in all windows" },
 	{ "<leader>w1", "<cmd>1windo norm! m'<cr>", desc = "Goto window #1" },
 	{ "<leader>w2", "<cmd>2windo norm! m'<cr>", desc = "Goto window #2" },
 	{ "<leader>w3", "<cmd>3windo norm! m'<cr>", desc = "Goto window #3" },
@@ -447,6 +452,18 @@ M.plugin_specs = {
 			require("dropbar").setup(opts)
 		end,
 	},
+	-- get around faster and easier
+	{
+		"Lokaltog/vim-easymotion",
+		init = function()
+			vim.g.EasyMotion_smartcase = true
+			vim.g.EasyMotion_do_mapping = false
+		end,
+		keys = {
+			{ "<leader><leader>", "<plug>(easymotion-overwin-f)", desc = "Jump to location", mode = "n" },
+			{ "<leader><leader>", "<plug>(easymotion-bd-f)", desc = "Jump to location", mode = "v" },
+		},
+	},
 
 	-- fancy up those tabs
 	{
@@ -559,7 +576,9 @@ M.plugin_specs = {
 		"folke/flash.nvim",
 		event = "VeryLazy",
 		opts = {
-			char = { enabled = false },
+			modes = {
+				char = { enabled = false },
+			},
 			labels = "asdfghjklwertyuiopzxcvbnmABCDEFGHIJKLMNOP",
 		},
 		-- stylua: ignore

@@ -1,4 +1,5 @@
 local utils = require("ao.utils")
+local themes = require("ao.modules.themes")
 local interface = require("ao.modules.interface")
 
 local M = {}
@@ -49,7 +50,7 @@ M.plugin_specs = {
 			{ "<leader>fs", telescope_search_cwd, desc = "Search files in current dir" },
 
 			-- themes
-			{ "<leader>st", "<cmd>ColorSchemePicker<cr>", desc = "List themes" },
+			{ "<leader>st", themes.colorscheme_picker, desc = "List themes" },
 
 			-- misq
 			{ "<leader>sq", "<cmd>Telescope quickfix<cr>", desc = "Search quickfix" },

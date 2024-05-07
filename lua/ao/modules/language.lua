@@ -254,7 +254,6 @@ return {
 			"nvim-treesitter/nvim-treesitter-textobjects",
 			{ "windwp/nvim-ts-autotag", config = true },
 			{ "nvim-treesitter/nvim-treesitter-context", config = true },
-			"JoosepAlviste/nvim-ts-context-commentstring",
 		},
 		opts = {
 			highlight = {
@@ -410,6 +409,16 @@ return {
 				end,
 			}
 		end,
+	},
+
+	{
+		"andrewferrier/debugprint.nvim",
+		config = true,
+		event = "VeryLazy",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+		},
+		version = "*",
 	},
 
 	-- dart
