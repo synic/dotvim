@@ -384,6 +384,7 @@ return {
 					ns.builtins.diagnostics.yamllint,
 					ns.builtins.diagnostics.hadolint, -- Dockerfile
 					ns.builtins.diagnostics.markdownlint_cli2,
+					ns.builtins.diagnostics.buf, -- protobuf
 				},
 
 				on_attach = function(client, bufnr)
