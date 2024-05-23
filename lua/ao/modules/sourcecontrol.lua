@@ -164,6 +164,7 @@ M.plugin_specs = {
 	-- git client
 	{
 		"NeogitOrg/neogit",
+		commit = "1c0369a",
 		dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" },
 		keys = {
 			{ "<leader>gs", neogit_open, desc = "Git status" },
