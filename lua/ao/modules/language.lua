@@ -172,7 +172,17 @@ return {
 		end,
 	},
 
-	{ "folke/neodev.nvim", ft = "lua" },
+	-- neovim development
+	{
+		"folke/lazydev.nvim",
+		dependencies = { "Bilal2453/luvit-meta" },
+		ft = "lua",
+		opts = {
+			library = {
+				"luvit-meta/library",
+			},
+		},
+	},
 
 	{
 		"jose-elias-alvarez/typescript.nvim",
@@ -192,7 +202,7 @@ return {
 		dependencies = { "hrsh7th/nvim-cmp", "williamboman/mason-lspconfig.nvim" },
 		event = "VeryLazy",
 		opts = {
-			diagnostics = {
+			diagnostic = {
 				underline = true,
 				update_in_insert = false,
 				inlay_hints = true,
@@ -203,23 +213,22 @@ return {
 				},
 				severity_sort = true,
 			},
+			servers = {
+				dartls = {
+					setup = {
+						on_attach = lsp_on_attach,
+						flags = flags,
+						cmd = { "dart", "language-server", "--protocol=lsp" },
+					},
+				},
+			},
 		},
-		config = function()
+		config = function(_, opts)
 			local lsp = require("lspconfig")
 			local defaults = lsp.util.default_config
 
-			vim.diagnostic.config({
-				virtual_text = true,
-				signs = true,
-				update_in_insert = false,
-				underline = true,
-				severity_sort = true,
-				float = {
-					border = "rounded",
-					side_padding = 1,
-					winhighlight = "CursorLine:CursorLine,Normal:Normal",
-				},
-			})
+			vim.diagnostic.config(opts.diagnostic)
+			lsp.dartls.setup(opts.servers.dartls.setup)
 
 			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 				side_padding = 1,
@@ -370,6 +379,7 @@ return {
 					ns.builtins.formatting.goimports_reviser,
 					ns.builtins.formatting.golines,
 					ns.builtins.formatting.sqlfmt,
+					ns.builtins.formatting.dart_format,
 					ns.builtins.formatting.rustywind.with({
 						filetypes = { "typescript", "javascript", "css", "templ", "html" },
 					}),
@@ -427,4 +437,15 @@ return {
 
 	-- python
 	{ "jmcantrell/vim-virtualenv", ft = "python" },
+
+	-- flutter
+	{
+		"akinsho/flutter-tools.nvim",
+		ft = { "dart" },
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"stevearc/dressing.nvim", -- optional for vim.ui.select
+		},
+		config = true,
+	},
 }
