@@ -269,6 +269,15 @@ return {
 				enable = true,
 				additional_vim_regex_highlighting = false,
 			},
+			indent = {
+				enable = true,
+				-- Disabling for dart because it was causing a few seconds of delay when creating
+				-- a new line in the file.
+				-- https://github.com/UserNobody14/tree-sitter-dart/issues/48
+				-- https://github.com/UserNobody14/tree-sitter-dart/issues/46
+				-- https://github.com/nvim-treesitter/nvim-treesitter/issues/4945
+				disable = { "dart" },
+			},
 			auto_install = true,
 			ensure_installed = {
 				"lua",
@@ -287,6 +296,12 @@ return {
 				select = {
 					enable = true,
 					lookahead = true,
+					-- Disabling for dart because it was causing a few seconds of delay when creating
+					-- a new line in the file.
+					-- https://github.com/UserNobody14/tree-sitter-dart/issues/48
+					-- https://github.com/UserNobody14/tree-sitter-dart/issues/46
+					-- https://github.com/nvim-treesitter/nvim-treesitter/issues/4945
+					disable = { "dart" },
 					keymaps = {
 						["ak"] = { query = "@block.outer", desc = "Around block" },
 						["ik"] = { query = "@block.inner", desc = "Inside block" },
