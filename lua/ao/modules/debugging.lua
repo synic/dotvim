@@ -3,28 +3,14 @@ return {
 	{
 		"folke/trouble.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
-		commit = "f1168feada93c0154ede4d1fe9183bf69bac54ea",
 		event = { "LspAttach" },
-		opts = {
-			mode = "document_diagnostics",
-			signs = {
-				error = "",
-				warning = "",
-				hint = "",
-				information = "",
-				other = "",
-			},
-			auto_close = true,
-			icons = false,
-			use_diagnostic_signs = true,
-		},
+		opts = {},
 		keys = {
 			{ "<leader>e<leader>", "<cmd>lua vim.diagnostic.open_float()<cr>", desc = "Show error" },
-			{ "<leader>el", "<cmd>TroubleToggle<cr>", desc = "Toggle trouble" },
+			{ "<leader>el", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Toggle trouble" },
 			{ "<leader>en", "<cmd>lua vim.diagnostic.goto_next()<cr>", desc = "Next error" },
 			{ "<leader>ep", "<cmd>lua vim.diagnostic.goto_prev()<cr>", desc = "Next error" },
-			{ "<leader>ed", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "Document diagnostics" },
-			{ "<leader>ew", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace diagnostics" },
+			{ "<leader>ew", "<cmd>Trouble diagnostics toggle<cr>", desc = "Workspace diagnostics" },
 		},
 	},
 

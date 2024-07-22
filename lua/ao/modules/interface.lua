@@ -7,25 +7,25 @@ local indentscope_disable_group = vim.api.nvim_create_augroup("MiniIndentScopeDi
 local M = {}
 
 local key_categories = {
-	["<leader>"] = {
-		b = { "buffers" },
-		w = { "windows", m = { "move" } },
-		l = { "layouts" },
-		d = { "debug" },
-		h = { "help" },
-		g = { "git" },
-		f = { "files" },
-		s = { "search" },
-		p = { "project" },
-		t = { "toggles" },
-		e = { "diagnostis" },
-		c = { "configuration", p = { "plugins" } },
-		x = { "misc" },
-		q = { "quickfix" },
-		["/"] = { "vsplit" },
-		["-"] = { "split" },
-	},
-	g = { h = { "hunk" } },
+	{ "<leader>-", group = "split" },
+	{ "<leader>/", group = "vsplit" },
+	{ "<leader>b", group = "buffers" },
+	{ "<leader>c", group = "configuration" },
+	{ "<leader>cp", group = "plugins" },
+	{ "<leader>d", group = "debug" },
+	{ "<leader>e", group = "diagnostis" },
+	{ "<leader>f", group = "files" },
+	{ "<leader>g", group = "git" },
+	{ "<leader>h", group = "help" },
+	{ "<leader>l", group = "layouts" },
+	{ "<leader>p", group = "project" },
+	{ "<leader>q", group = "quickfix" },
+	{ "<leader>s", group = "search" },
+	{ "<leader>t", group = "toggles" },
+	{ "<leader>w", group = "windows" },
+	{ "<leader>wm", group = "move" },
+	{ "<leader>x", group = "misc" },
+	{ "gh", group = "hunk" },
 }
 
 local function buffer_show_path(full)
@@ -167,11 +167,11 @@ utils.map_keys({
 	{ "<leader>?", "<cmd>lua require('ao.utils').get_help()<cr>", desc = "Show help" },
 
 	-- quickfix
-	{ "<leader>qq", "<cmd>copen<cr>", desc = "Open quickfix" },
+	{ "<leader>qq", "<cmd>copen<cr>", desc = "Open quickfix" }, -- overridden in trouble.nvim
 	{ "<leader>qj", "<cmd>cn<cr>", desc = "Next quickfix item" },
 	{ "<leader>qk", "<cmd>cp<cr>", desc = "Previous quickfix item" },
 	{ "<leader>qn", "<cmd>cn<cr>", desc = "Next quickfix item" },
-	{ "<leader>qp", "<cmd>cp<cr>", desc = "Previous quickfix item" },
+	{ "<leader>qp", "<cmd>cp<cr>", desc = "Previous quickfix item" }, -- overridden in trouble.nvim
 	{ "<leader>qc", "<cmd>cclose<cr>", desc = "Close quickfix" },
 	{ "g;", "<cmd>cn<cr>", desc = "Next quickfix item" },
 	{ "<leader>q<space>", quickfix_remove_item_move_next, desc = "Remove quickfix item and move next" },
@@ -227,17 +227,12 @@ M.plugin_specs = {
 		end,
 		opts = {
 			plugins = { spelling = true },
-			mode = { "n", "v" },
-			layout = { align = "center" },
-			triggers_blacklist = {
-				i = { "f", "d" },
-				v = { "f", "d" },
-			},
+			icons = { mappings = false },
 		},
 		config = function(_, opts)
 			local wk = require("which-key")
 			wk.setup(opts)
-			wk.register(key_categories)
+			wk.add(key_categories)
 		end,
 	},
 

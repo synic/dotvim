@@ -154,7 +154,7 @@ M.plugin_specs = {
 	{
 		"benfowler/telescope-luasnip.nvim",
 		dependences = { "telescope.nvim" },
-		{ "<leader>ss", "<cmd>Telescope luasnip<cr>", desc = "Snippets" },
+		keys = { { "<leader>ss", "<cmd>Telescope luasnip<cr>", desc = "Snippets" } },
 	},
 
 	{
