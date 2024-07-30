@@ -226,6 +226,7 @@ M.plugin_specs = {
 			vim.o.timeoutlen = 700
 		end,
 		opts = {
+			preset = "modern",
 			plugins = { spelling = true },
 			icons = { mappings = false },
 		},
