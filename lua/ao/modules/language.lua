@@ -364,11 +364,14 @@ return {
 	-- diagnostics and formatting
 	{
 		"nvimtools/none-ls.nvim",
-		dependencies = { "nvim-lua/plenary.nvim", "davidmh/cspell.nvim" },
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"davidmh/cspell.nvim",
+			"nvimtools/none-ls-extras.nvim",
+		},
 		event = "VeryLazy",
 		opts = function()
 			local ns = require("null-ls")
-			local custom = require("ao.custom.none-ls")
 
 			-- only use none-ls for formatting these filetypes; the rest can use any formatter
 			local only_nonels_formatting_filetypes = {
@@ -398,9 +401,7 @@ return {
 					ns.builtins.formatting.rustywind.with({
 						filetypes = { "typescript", "javascript", "css", "templ", "html" },
 					}),
-					custom.trim_whitespace.with({
-						filetypes = { "markdown", "yaml", "dockerfile", "Makefile", "sh", "zsh", "bash" },
-					}),
+					require("none-ls.formatting.trim_whitespace"),
 
 					-- diagnostics
 					ns.builtins.diagnostics.gitlint,
