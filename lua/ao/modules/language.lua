@@ -396,7 +396,9 @@ return {
 					ns.builtins.formatting.gofmt,
 					ns.builtins.formatting.goimports_reviser,
 					ns.builtins.formatting.golines,
-					ns.builtins.formatting.sqlfmt,
+					ns.builtins.formatting.pg_format.with({
+						extra_args = { "-s", "2", "-u", "1" },
+					}),
 					ns.builtins.formatting.dart_format,
 					ns.builtins.formatting.rustywind.with({
 						filetypes = { "typescript", "javascript", "css", "templ", "html" },
