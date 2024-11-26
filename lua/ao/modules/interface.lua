@@ -341,7 +341,7 @@ M.plugin_specs = {
 			local preview = false
 			local ignore = { "gitcommit" }
 			return {
-				general = {
+				bar = {
 					enable = function(buf, win)
 						return vim.fn.win_gettype(win) == ""
 							and vim.wo[win].winbar == ""
