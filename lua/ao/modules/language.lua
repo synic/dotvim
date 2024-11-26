@@ -28,14 +28,8 @@ local function lsp_on_attach(_, bufnr)
 
 	if ft == "typescript" then
 		utils.map_keys({
-			{
-				"<localleader>o",
-				function()
-					vim.lsp.buf.execute_command({ command = "_typescript.organizeImports", arguments = { vim.fn.expand("%:p") } })
-				end,
-				desc = "Organize imports",
-			},
-			{ "<localleader>f", "<cmd>TypescriptRenameFile<cr>", desc = "Rename file" },
+			{ "<localleader>o", "<cmd>TSToolsOrganizeImports", desc = "Organize imports" },
+			{ "<localleader>f", "<cmd>TSToolsRenameFile<cr>", desc = "Rename file" },
 		})
 	end
 end
@@ -91,7 +85,7 @@ return {
 						flags = flags,
 						capabilities = capabilities,
 						on_attach = lsp_on_attach,
-						filetypes = { "html", "templ" },
+						filetypes = { "html", "templ", "htmldjango" },
 					})
 				end,
 
@@ -100,7 +94,7 @@ return {
 						flags = flags,
 						on_attach = lsp_on_attach,
 						capabilities = capabilities,
-						filetypes = { "templ", "astro", "javascript", "typescript", "react", "css" },
+						filetypes = { "templ", "astro", "javascript", "typescript", "react", "css", "html", "htmldjango" },
 						init_options = { userLanguages = { templ = "html" } },
 					})
 				end,
@@ -140,6 +134,15 @@ return {
 					})
 				end,
 
+				["ts_ls"] = function()
+					lsp.ts_ls.setup({
+						capabilities = capabilities,
+						on_attach = lsp_on_attach,
+						flags = flags,
+						filetypes = { "templ", "javascript", "typescript", "html" },
+					})
+				end,
+
 				["gopls"] = function()
 					lsp.gopls.setup({
 						flags = flags,
@@ -147,7 +150,7 @@ return {
 						on_attach = lsp_on_attach,
 						settings = {
 							gopls = {
-								buildFlags = { "-tags=debug" },
+								buildFlags = { "-tags=debug,release,mage,tools" },
 								completeUnimported = true,
 								analyses = {
 									unusedparams = true,
@@ -158,8 +161,72 @@ return {
 					})
 				end,
 
+				["pyright"] = function()
+					lsp.pyright.setup({
+						flags = flags,
+						capabilities = capabilities,
+						on_attach = lsp_on_attach,
+						settings = {
+							python = {
+								analysis = {
+									typeCheckingMode = "off",
+								},
+							},
+						},
+					})
+				end,
+
+				["basedpyright"] = function()
+					lsp.basedpyright.setup({
+						flags = flags,
+						capabilities = capabilities,
+						on_attach = lsp_on_attach,
+						settings = {
+							python = {
+								typeCheckingMode = "off",
+							},
+						},
+					})
+				end,
+
+				["emmet_language_server"] = function()
+					local c = vim.lsp.protocol.make_client_capabilities()
+					c.textDocument.completion.completionItem.snippetSupport = true
+					lsp.emmet_language_server.setup({
+						-- on_attach = on_attach,
+						capabilities = capabilities,
+						filetypes = {
+							"css",
+							"eruby",
+							"html",
+							"javascript",
+							"javascriptreact",
+							"htmldjango",
+							"less",
+							"sass",
+							"scss",
+							"svelte",
+							"pug",
+							"typescriptreact",
+							"vue",
+							"templ",
+							"heex",
+							"elixir",
+						},
+						init_options = {
+							html = {
+								options = {
+									-- For possible options, see: https://github.com/emmetio/emmet/blob/master/src/config.ts#L79-L267
+									["bem.enabled"] = true,
+								},
+							},
+						},
+					})
+				end,
+
 				-- generic setup function for servers without explicit configuration
 				function(server_name)
+					server_name = server_name == "tsserver" and "ts_ls" or server_name
 					require("lspconfig")[server_name].setup({
 						capabilities = capabilities,
 						on_attach = lsp_on_attach,
@@ -185,15 +252,11 @@ return {
 	},
 
 	{
-		"jose-elias-alvarez/typescript.nvim",
-		ft = { "typescript", "javascript" },
+		"pmizio/typescript-tools.nvim",
+		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
 		opts = {
-			server = { on_attach = lsp_on_attach },
+			on_attach = lsp_on_attach,
 		},
-		config = function(_, opts)
-			require("typescript").setup(opts)
-			require("null-ls").register(require("typescript.extensions.null-ls.code-actions"))
-		end,
 	},
 
 	-- lsp
@@ -276,7 +339,7 @@ return {
 				-- https://github.com/UserNobody14/tree-sitter-dart/issues/48
 				-- https://github.com/UserNobody14/tree-sitter-dart/issues/46
 				-- https://github.com/nvim-treesitter/nvim-treesitter/issues/4945
-				disable = { "dart" },
+				disable = { "dart", "python", "lua", "htmldjango" },
 			},
 			auto_install = true,
 			ensure_installed = {
@@ -377,6 +440,7 @@ return {
 			local only_nonels_formatting_filetypes = {
 				"lua",
 				"typescript",
+				"elixir",
 				"javascript",
 				"go",
 				"svelte",
@@ -386,9 +450,14 @@ return {
 				sources = {
 					-- formatting
 					ns.builtins.formatting.stylua,
-					ns.builtins.formatting.black, -- python
+					ns.builtins.formatting.djhtml.with({
+						"--tabwidth=2",
+					}),
+					ns.builtins.formatting.black,
+					ns.builtins.formatting.mix,
+					-- ns.builtins.formatting.surface,
 					ns.builtins.formatting.prettierd.with({
-						filetypes = { "typescript", "javascript" },
+						filetypes = { "typescript", "javascript", "templ" },
 					}),
 					ns.builtins.formatting.prettier.with({
 						filetypes = { "svelte" },
@@ -397,17 +466,17 @@ return {
 					ns.builtins.formatting.goimports_reviser,
 					ns.builtins.formatting.golines,
 					ns.builtins.formatting.pg_format.with({
-						extra_args = { "-s", "2", "-u", "1" },
+						extra_args = { "-s", "2", "-u", "1", "-w", "120" },
 					}),
 					ns.builtins.formatting.dart_format,
 					ns.builtins.formatting.rustywind.with({
-						filetypes = { "typescript", "javascript", "css", "templ", "html" },
+						filetypes = { "typescript", "javascript", "css", "templ", "html", "htmldjango" },
 					}),
 					require("none-ls.formatting.trim_whitespace"),
 
 					-- diagnostics
 					ns.builtins.diagnostics.gitlint,
-					ns.builtins.diagnostics.mypy,
+					-- ns.builtins.diagnostics.mypy,
 					ns.builtins.diagnostics.trail_space,
 					ns.builtins.diagnostics.yamllint,
 					ns.builtins.diagnostics.hadolint, -- Dockerfile
@@ -455,6 +524,37 @@ return {
 
 	-- python
 	{ "jmcantrell/vim-virtualenv", ft = "python" },
+
+	{ "Vimjas/vim-python-pep8-indent", ft = "python" },
+
+	-- elixir
+	-- {
+	-- 	"elixir-tools/elixir-tools.nvim",
+	-- 	version = "*",
+	-- 	event = { "BufReadPre", "BufNewFile" },
+	-- 	config = function()
+	-- 		local elixir = require("elixir")
+	-- 		local elixirls = require("elixir.elixirls")
+	--
+	-- 		elixir.setup({
+	-- 			nextls = { enable = true },
+	-- 			elixirls = {
+	-- 				enable = true,
+	-- 				settings = elixirls.settings({
+	-- 					dialyzerEnabled = false,
+	-- 					enableTestLenses = false,
+	-- 				}),
+	-- 				on_attach = lsp_on_attach,
+	-- 			},
+	-- 			projectionist = {
+	-- 				enable = true,
+	-- 			},
+	-- 		})
+	-- 	end,
+	-- 	dependencies = {
+	-- 		"nvim-lua/plenary.nvim",
+	-- 	},
+	-- },
 
 	-- flutter
 	{

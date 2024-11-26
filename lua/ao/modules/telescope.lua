@@ -60,6 +60,7 @@ M.plugin_specs = {
 			local actions = require("telescope.actions")
 			return {
 				defaults = {
+					file_ignore_patterns = { "%_templ.go", "node_modules", ".git" },
 					mappings = {
 						i = {
 							["//"] = actions.file_vsplit,
@@ -95,6 +96,7 @@ M.plugin_specs = {
 						enable_preview = true,
 					},
 					find_files = {
+						hidden = true,
 						layout_config = {
 							preview_width = 0.55,
 						},
