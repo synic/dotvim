@@ -24,16 +24,25 @@ end
 function M.map_keys(keymap)
 	for _, key_data in ipairs(keymap) do
 		local modes = key_data.modes or { "n" }
+		local should_apply = true
+
+		if key_data.test ~= nil then
+			should_apply = key_data.test
+			key_data.test = nil
+		end
+
 		key_data.modes = nil
 
-		local left = key_data[1]
-		local right = key_data[2]
+		if should_apply then
+			local left = key_data[1]
+			local right = key_data[2]
 
-		key_data[1] = nil
-		key_data[2] = nil
+			key_data[1] = nil
+			key_data[2] = nil
 
-		for _, mode in ipairs(modes) do
-			vim.keymap.set(mode, left, right, key_data)
+			for _, mode in ipairs(modes) do
+				vim.keymap.set(mode, left, right, key_data)
+			end
 		end
 	end
 end

@@ -180,6 +180,10 @@ utils.map_keys({
 	{ "<leader>cm", filesystem.goto_config_directory, desc = "Manage config" },
 	{ "<leader>cl", goto_lazy_dir, desc = "Go to lazy plugins dir" },
 
+	-- copy/paste on mac
+	{ "<D-v>", "+p<CR>", modes = { "" }, noremap = true, silent = true, test = vim.fn.has("macunix") },
+	{ "<D-v>", "<C-R>+", modes = { "!", "t", "v" }, noremap = true, silent = true, test = vim.fn.has("macunix") },
+
 	-- misc
 	{ "vig", "ggVG", desc = "Select whole buffer" },
 	{ "<leader><localleader>", "<localleader>", desc = "Local buffer options" },
