@@ -28,6 +28,7 @@ function M.install_plugin_manager()
 end
 
 local function load_theme(theme)
+	vim.print(theme)
 	require("lazy.core.loader").colorscheme(theme)
 	local was_set = pcall(vim.cmd.colorscheme, theme)
 	if not was_set then
