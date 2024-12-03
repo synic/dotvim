@@ -94,7 +94,16 @@ return {
 						flags = flags,
 						on_attach = lsp_on_attach,
 						capabilities = capabilities,
-						filetypes = { "templ", "astro", "javascript", "typescript", "react", "css", "html", "htmldjango" },
+						filetypes = {
+							"templ",
+							"astro",
+							"javascript",
+							"typescript",
+							"react",
+							"css",
+							"html",
+							"htmldjango",
+						},
 						init_options = { userLanguages = { templ = "html" } },
 					})
 				end,
@@ -339,7 +348,7 @@ return {
 				-- https://github.com/UserNobody14/tree-sitter-dart/issues/48
 				-- https://github.com/UserNobody14/tree-sitter-dart/issues/46
 				-- https://github.com/nvim-treesitter/nvim-treesitter/issues/4945
-				disable = { "dart", "python", "lua", "htmldjango" },
+				disable = { "dart", "lua", "htmldjango" },
 			},
 			auto_install = true,
 			ensure_installed = {

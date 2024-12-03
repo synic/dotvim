@@ -71,8 +71,8 @@ return {
 					end, { "i", "s" }),
 				}),
 				sources = cmp.config.sources({
-					{ name = "lazydev", grou_index = 0 },
 					{ name = "nvim_lsp" }, -- lsp completion
+					{ name = "lazydev", grou_index = 0 },
 					{ name = "path" }, -- paths (filesystem)
 					{ name = "luasnip" }, -- snippets
 					{

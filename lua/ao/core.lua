@@ -28,7 +28,6 @@ function M.install_plugin_manager()
 end
 
 local function load_theme(theme)
-	vim.print(theme)
 	require("lazy.core.loader").colorscheme(theme)
 	local was_set = pcall(vim.cmd.colorscheme, theme)
 	if not was_set then
@@ -60,7 +59,7 @@ end
 function M.setup(opts, startup_callback_fn)
 	config.options = vim.tbl_deep_extend("force", config.options, opts)
 	if config.options.appearance.guifont then
-		vim.api.nvim_set_option("guifont", config.options.appearance.guifont)
+		vim.o.guifont = config.options.appearance.guifont
 	end
 
 	---@diagnostic disable-next-line: redundant-parameter
