@@ -7,7 +7,7 @@ return {
 	options = {
 		projects = {
 			directory = os.getenv("HOME") .. "/Projects",
-			root_names = { ".git", ".svn", ".project_root" },
+			root_names = { ".git", ".svn", ".project_root", "mix.exs" },
 			-- example command to list and sort by mtime on macos with coreutils:
 			-- cmd = 'find /Users/synic/Projects ! -name ".*" -mindepth 1 -maxdepth 1 -type d -print0 | xargs -0 ls -1 -td',
 			bookmarks = {},

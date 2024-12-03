@@ -135,37 +135,4 @@ return {
 			dapui.setup(opts)
 		end,
 	},
-
-	-- testing
-	{
-		"nvim-neotest/neotest",
-		event = "VeryLazy",
-		keys = {
-			{ "<leader>nn", "<cmd>lua require('neotest').run.run()<cr>", desc = "Run nearest test" },
-			{ "<leader>nb", "<cmd>lua require('neotest').run.run(vim.fn.expand('%s'))<cr>", desc = "Run buffer" },
-			{ "<leader>ns", "<cmd>lua require('neotest').summary.open()<cr>", desc = "Show summary" },
-		},
-		dependencies = {
-			"jfpedroza/neotest-elixir",
-			"nvim-neotest/neotest-vim-test",
-			"nvim-neotest/neotest-go",
-			"nvim-neotest/neotest-python",
-			"nvim-neotest/nvim-nio",
-			"nvim-lua/plenary.nvim",
-			"antoinemadec/FixCursorHold.nvim",
-			"nvim-treesitter/nvim-treesitter",
-		},
-		config = function()
-			require("neotest").setup({
-				log_level = vim.log.levels.DEBUG,
-				adapters = {
-					require("neotest-elixir")({
-						extra_formatters = { "ExUnit.CLIFormatter", "ExUnitNotifier" },
-					}),
-					require("neotest-python"),
-					require("neotest-go"),
-				},
-			})
-		end,
-	},
 }

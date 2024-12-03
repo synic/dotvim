@@ -2,11 +2,12 @@ local core = require("ao.core")
 
 local config = {
 	projects = {
-		directory = os.getenv("HOME") .. "/Projects",
+		entries = {},
+		directory = { path = os.getenv("HOME") .. "/Projects", skip = {} },
 		root_names = { ".git", ".svn", ".project_root" },
 	},
 	appearance = {
-		guifont = "Hack:h11",
+		guifont = "Hack:h13",
 		theme = "duskfox",
 	},
 }

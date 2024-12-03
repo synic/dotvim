@@ -6,6 +6,10 @@ local root_cache = {}
 local uv = vim.uv or vim.loop
 local chdir_group = vim.api.nvim_create_augroup("ProjectAutoChdir", { clear = true })
 
+function string.starts_with(str, start)
+	return string.sub(str, 1, string.len(start)) == start
+end
+
 -- would rather not use this function and instead just use `:tcd` per tab, however, there are various plugins that
 -- have issue with the file not being in the same location as the cwd (stylua, for example, has trouble saving if the
 -- cwd is some other directory.
@@ -71,7 +75,7 @@ end
 
 local function dirpicker_pick_project(cb)
 	require("telescope").extensions.dirpicker.dirpicker({
-		cwd = config.options.projects.directory or ".",
+		cwd = config.options.projects.directory.path or ".",
 		layout_config = { width = 0.45, height = 0.4, preview_width = 0.5 },
 		prompt_title = "Projects",
 		cmd = M.find_projects,
@@ -130,29 +134,33 @@ end
 function M.find_projects(opts)
 	local path = require("plenary.path")
 	local items, projects = {}, {}
-	local files = vim.split(vim.fn.glob(opts.cwd .. "/*"), "\n", { trimempty = true })
+	local dirs = vim.split(vim.fn.glob(opts.cwd .. "/*"), "\n", { trimempty = true })
 
-	for _, file in ipairs(files) do
-		if string.sub(file, 1, 1) and path.new(file):is_dir() then
-			local fd = uv.fs_open(file .. "/.git/index", "r", 438)
+	for _, entry in ipairs(config.options.projects.entries) do
+		projects[#projects + 1] = entry
+	end
 
-			if fd ~= nil then
-				local stat = uv.fs_fstat(fd)
-				if stat ~= nil then
-					items[#items + 1] = { path = file, mtime = stat.mtime }
+	for _, dir in ipairs(dirs) do
+		if string.sub(dir, 1, 1) and path.new(dir):is_dir() then
+			if not string.starts_with(dir, ".") then
+				if not vim.tbl_contains(config.options.projects.directory.skip, vim.fn.fnamemodify(dir, ":t")) then
+					for _, check_file in ipairs(config.options.projects.root_names) do
+						if vim.fn.filereadable(dir .. "/" .. check_file) then
+							items[#items + 1] = dir
+							break
+						end
+					end
 				end
-			else
-				items[#items + 1] = { path = file, mtime = { sec = 0 } }
 			end
 		end
 	end
 
 	table.sort(items, function(p1, p2)
-		return p1.mtime.sec > p2.mtime.sec
+		return string.lower(p1) > string.lower(p2)
 	end)
 
 	for _, item in ipairs(items) do
-		projects[#projects + 1] = item.path
+		projects[#projects + 1] = item
 	end
 
 	return projects
@@ -223,7 +231,12 @@ M.plugin_specs = {
 		dependencies = { "telescope.nvim" },
 		keys = {
 			{ "<leader>lt", telescope_new_tab_with_project, desc = "New layout with project" },
-			{ "<leader>*", telescope_search_project_cursor_term, desc = "Search project for term", mode = { "n", "v" } },
+			{
+				"<leader>*",
+				telescope_search_project_cursor_term,
+				desc = "Search project for term",
+				mode = { "n", "v" },
+			},
 			{ "<leader>sp", telescope_search_project, desc = "Search project for text" },
 			{ "<leader>p/", telescope_search_project, desc = "Search project for text" },
 			{ "<leader>pf", telescope_find_project_files, desc = "Find project file" },

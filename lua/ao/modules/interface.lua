@@ -9,6 +9,7 @@ local M = {}
 local key_categories = {
 	{ "<leader>-", group = "split" },
 	{ "<leader>/", group = "vsplit" },
+	{ "<leader>a", group = "ai" },
 	{ "<leader>b", group = "buffers" },
 	{ "<leader>c", group = "configuration" },
 	{ "<leader>cp", group = "plugins" },

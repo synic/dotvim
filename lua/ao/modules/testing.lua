@@ -1,0 +1,39 @@
+local function open_summary()
+	return function()
+		require("neotest").summary.open()
+		if vim.bo.filetype == "elixir" then
+			vim.cmd.w()
+		end
+	end
+end
+
+return {
+	{
+		"nvim-neotest/neotest",
+		event = "VeryLazy",
+		keys = {
+			{ "<leader>nn", "<cmd>lua require('neotest').run.run()<cr>", desc = "Run nearest test" },
+			{ "<leader>nb", "<cmd>lua require('neotest').run.run(vim.fn.expand('%s'))<cr>", desc = "Run buffer" },
+			{ "<leader>ns", open_summary(), desc = "Show summary" },
+		},
+		dependencies = {
+			"jfpedroza/neotest-elixir",
+			"nvim-neotest/neotest-vim-test",
+			"nvim-neotest/neotest-go",
+			"nvim-neotest/neotest-python",
+			"nvim-neotest/nvim-nio",
+			"nvim-lua/plenary.nvim",
+			"antoinemadec/FixCursorHold.nvim",
+			"nvim-treesitter/nvim-treesitter",
+		},
+		config = function()
+			require("neotest").setup({
+				adapters = {
+					require("neotest-elixir"),
+					require("neotest-python"),
+					require("neotest-go"),
+				},
+			})
+		end,
+	},
+}
