@@ -18,6 +18,7 @@ local key_categories = {
 	{ "<leader>g", group = "git" },
 	{ "<leader>h", group = "help" },
 	{ "<leader>l", group = "layouts" },
+	{ "<leader>n", group = "neotest" },
 	{ "<leader>p", group = "project" },
 	{ "<leader>q", group = "quickfix" },
 	{ "<leader>s", group = "search" },
@@ -556,6 +557,12 @@ M.plugin_specs = {
 				},
 			}
 		end,
+	},
+
+	-- snacks
+	{
+		"folke/snacks.nvim",
+		opts = {},
 	},
 
 	-- toggle golden ratio

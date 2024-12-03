@@ -1,0 +1,36 @@
+extends elixir
+
+snippet def "Elixir Function"
+  def ${1:name}(${2:arguments}) do
+      ${3:body}
+  end
+
+snippet defp "Private Elixir Function"
+  defp ${1:name}(${2:arguments}) do
+      ${3:body}
+  end
+
+snippet defm "Elixir Module"
+  defmodule ${1:Name} do
+    ${2:body}
+  end
+
+snippet defs "Elixir Struct"
+  defmodule ${1:Name} do
+    defstruct [${2:keys}]
+  end
+
+snippet sig_p "Sigil P"
+  ~p"${1:content}"
+
+snippet sig_s "Sigil S"
+  ~s(${1:content})
+
+snippet sig_w "Sigil W"
+  ~w(${1:content})
+
+snippet sig_f "Sigil F"
+  ~f(${1:content})
+
+snippet sig_r "Sigil R"
+  ~r"${1:content}"

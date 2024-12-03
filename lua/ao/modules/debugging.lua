@@ -92,7 +92,11 @@ return {
 			},
 			{ "<leader>dc", "<cmd>lua require('dap').continue()<cr>", desc = "Continue" },
 			{ "<leader>dd", "<cmd>lua require('dap').run_last()<cr>", desc = "Run last" },
-			{ "<leader>dq", "<cmd>lua require('dap').close()<cr><cmd>lua require('dapui').close()<cr>", desc = "Close" },
+			{
+				"<leader>dq",
+				"<cmd>lua require('dap').close()<cr><cmd>lua require('dapui').close()<cr>",
+				desc = "Close",
+			},
 			{ "<leader>dn", "<cmd>lua require('dap').step_over()<cr>", desc = "Step over" },
 			{ "<leader>ds", "<cmd>lua require('dap').step_into()<cr>", desc = "Step into" },
 			{ "<leader>do", "<cmd>lua require('dap').step_out()<cr>", desc = "Step out" },
@@ -129,6 +133,39 @@ return {
 			end
 
 			dapui.setup(opts)
+		end,
+	},
+
+	-- testing
+	{
+		"nvim-neotest/neotest",
+		event = "VeryLazy",
+		keys = {
+			{ "<leader>nn", "<cmd>lua require('neotest').run.run()<cr>", desc = "Run nearest test" },
+			{ "<leader>nb", "<cmd>lua require('neotest').run.run(vim.fn.expand('%s'))<cr>", desc = "Run buffer" },
+			{ "<leader>ns", "<cmd>lua require('neotest').summary.open()<cr>", desc = "Show summary" },
+		},
+		dependencies = {
+			"jfpedroza/neotest-elixir",
+			"nvim-neotest/neotest-vim-test",
+			"nvim-neotest/neotest-go",
+			"nvim-neotest/neotest-python",
+			"nvim-neotest/nvim-nio",
+			"nvim-lua/plenary.nvim",
+			"antoinemadec/FixCursorHold.nvim",
+			"nvim-treesitter/nvim-treesitter",
+		},
+		config = function()
+			require("neotest").setup({
+				log_level = vim.log.levels.DEBUG,
+				adapters = {
+					require("neotest-elixir")({
+						extra_formatters = { "ExUnit.CLIFormatter", "ExUnitNotifier" },
+					}),
+					require("neotest-python"),
+					require("neotest-go"),
+				},
+			})
 		end,
 	},
 }
