@@ -12,9 +12,9 @@ return {
 		"nvim-neotest/neotest",
 		event = "VeryLazy",
 		keys = {
-			{ "<leader>nn", "<cmd>lua require('neotest').run.run()<cr>", desc = "Run nearest test" },
-			{ "<leader>nb", "<cmd>lua require('neotest').run.run(vim.fn.expand('%s'))<cr>", desc = "Run buffer" },
-			{ "<leader>ns", open_summary(), desc = "Show summary" },
+			{ "<localleader>tn", "<cmd>lua require('neotest').run.run()<cr>", desc = "Run nearest test" },
+			{ "<localleader>tb", "<cmd>lua require('neotest').run.run(vim.fn.expand('%s'))<cr>", desc = "Run buffer" },
+			{ "<localleader>ts", open_summary(), desc = "Show summary" },
 		},
 		dependencies = {
 			"jfpedroza/neotest-elixir",
@@ -27,6 +27,7 @@ return {
 			"nvim-treesitter/nvim-treesitter",
 		},
 		config = function()
+			---@diagnostic disable: missing-fields
 			require("neotest").setup({
 				adapters = {
 					require("neotest-elixir"),

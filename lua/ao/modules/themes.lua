@@ -39,6 +39,7 @@ local function colorscheme_picker()
 	local target = vim.fn.getcompletion
 
 	-- only show themes that were installed via lazy (and habamax because it isn't terrible)
+	---@diagnostic disable-next-line: duplicate-set-field
 	vim.fn.getcompletion = function()
 		return vim.tbl_filter(function(color)
 			return color == "habamax" or not vim.tbl_contains(config.options.default_colorschemes, color)

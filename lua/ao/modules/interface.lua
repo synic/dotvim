@@ -19,7 +19,6 @@ local key_categories = {
 	{ "<leader>g", group = "git" },
 	{ "<leader>h", group = "help" },
 	{ "<leader>l", group = "layouts" },
-	{ "<leader>n", group = "neotest" },
 	{ "<leader>p", group = "project" },
 	{ "<leader>q", group = "quickfix" },
 	{ "<leader>s", group = "search" },
@@ -27,6 +26,7 @@ local key_categories = {
 	{ "<leader>w", group = "windows" },
 	{ "<leader>wm", group = "move" },
 	{ "<leader>x", group = "misc" },
+	{ "<localleader>t", group = "neotest" },
 	{ "gh", group = "hunk" },
 }
 
@@ -155,6 +155,7 @@ utils.map_keys({
 	{ "<leader>tt", "<cmd>let &stal = !&stal<cr>", desc = "Toggle tab display" },
 	{ "<leader>tc", "<cmd>let &cuc = !&cuc<cr>", desc = "Toggle cursor column display" },
 	{ "<leader>ti", "<cmd>lua vim.opt.list = not vim.opt.list:get()<cr>", desc = "Toggle indent guide" },
+	{ "<leader>tw", "<cmd>lua vim.opt.list = not vim.opt.list:get()<cr>", desc = "Toggle indent guide" },
 
 	-- buffers
 	{ "<leader><tab>", "<cmd>b#<cr>", desc = "Previous buffer" },
@@ -262,6 +263,7 @@ M.plugin_specs = {
 			local notify = require("notify")
 			notify.setup(opts)
 			local banned_messages = { "No information available" }
+			---@diagnostic disable-next-line: duplicate-set-field
 			vim.notify = function(msg, ...)
 				for _, banned in ipairs(banned_messages) do
 					if msg == banned then
@@ -435,7 +437,9 @@ M.plugin_specs = {
 					local hl = vim.api.nvim_get_hl(0, { name = name, link = false })
 					if hl.bg or hl.ctermbg then
 						hl.bg = nil
+						---@diagnostic disable-next-line: undefined-field, inject-field
 						hl.ctermbg = nil
+						---@diagnostic disable-next-line: param-type-mismatch
 						vim.api.nvim_set_hl(0, name, hl)
 					end
 				end
@@ -454,9 +458,11 @@ M.plugin_specs = {
 			require("dropbar").setup(opts)
 		end,
 	},
+
 	-- get around faster and easier
 	{
 		"Lokaltog/vim-easymotion",
+		enable = false, -- keeps crashing neovim
 		init = function()
 			vim.g.EasyMotion_smartcase = true
 			vim.g.EasyMotion_do_mapping = false
@@ -489,6 +495,7 @@ M.plugin_specs = {
 					},
 					line.tabs().foreach(function(tab)
 						local hl = tab.is_current() and theme.current_tab or theme.tab
+						---@diagnostic disable-next-line: missing-fields, missing-return-value
 						return {
 							line.sep("", hl, theme.fill),
 							tab.is_current() and "" or "󰆣",

@@ -49,7 +49,7 @@ return {
 		dependencies = { "hrsh7th/cmp-nvim-lsp" },
 		event = "VeryLazy",
 		opts = {
-			ensure_installed = { "lua_ls" },
+			ensure_installed = { "lua_ls", "elixirls", "gopls", "ruff", "pyright" },
 			automatic_installation = true,
 		},
 		init = function()
@@ -177,9 +177,9 @@ return {
 						on_attach = lsp_on_attach,
 						settings = {
 							python = {
-								analysis = {
-									typeCheckingMode = "off",
-								},
+								-- analysis = {
+								-- 	typeCheckingMode = "off",
+								-- },
 							},
 						},
 					})
@@ -462,7 +462,6 @@ return {
 					ns.builtins.formatting.djhtml.with({
 						"--tabwidth=2",
 					}),
-					ns.builtins.formatting.black,
 					ns.builtins.formatting.mix,
 					-- ns.builtins.formatting.surface,
 					ns.builtins.formatting.prettierd.with({
@@ -474,6 +473,8 @@ return {
 					ns.builtins.formatting.gofmt,
 					ns.builtins.formatting.goimports_reviser,
 					ns.builtins.formatting.golines,
+					ns.builtins.formatting.isort,
+					ns.builtins.formatting.black,
 					ns.builtins.formatting.pg_format.with({
 						extra_args = { "-s", "2", "-u", "1", "-w", "120" },
 					}),
@@ -535,35 +536,6 @@ return {
 	{ "jmcantrell/vim-virtualenv", ft = "python" },
 
 	{ "Vimjas/vim-python-pep8-indent", ft = "python" },
-
-	-- elixir
-	-- {
-	-- 	"elixir-tools/elixir-tools.nvim",
-	-- 	version = "*",
-	-- 	event = { "BufReadPre", "BufNewFile" },
-	-- 	config = function()
-	-- 		local elixir = require("elixir")
-	-- 		local elixirls = require("elixir.elixirls")
-	--
-	-- 		elixir.setup({
-	-- 			nextls = { enable = true },
-	-- 			elixirls = {
-	-- 				enable = true,
-	-- 				settings = elixirls.settings({
-	-- 					dialyzerEnabled = false,
-	-- 					enableTestLenses = false,
-	-- 				}),
-	-- 				on_attach = lsp_on_attach,
-	-- 			},
-	-- 			projectionist = {
-	-- 				enable = true,
-	-- 			},
-	-- 		})
-	-- 	end,
-	-- 	dependencies = {
-	-- 		"nvim-lua/plenary.nvim",
-	-- 	},
-	-- },
 
 	-- flutter
 	{

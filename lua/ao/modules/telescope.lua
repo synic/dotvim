@@ -65,6 +65,7 @@ M.plugin_specs = {
 						i = {
 							["//"] = actions.file_vsplit,
 							["--"] = actions.file_split,
+							["<c-space>"] = actions.to_fuzzy_refine,
 						},
 					},
 				},

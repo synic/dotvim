@@ -3,7 +3,6 @@ local utils = require("ao.utils")
 
 local M = {}
 local root_cache = {}
-local uv = vim.uv or vim.loop
 local chdir_group = vim.api.nvim_create_augroup("ProjectAutoChdir", { clear = true })
 
 function string.starts_with(str, start)
@@ -141,6 +140,7 @@ function M.find_projects(opts)
 	end
 
 	for _, dir in ipairs(dirs) do
+		---@diagnostic disable-next-line: need-check-nil, param-type-mismatch
 		if string.sub(dir, 1, 1) and path.new(dir):is_dir() then
 			if not string.starts_with(dir, ".") then
 				if not vim.tbl_contains(config.options.projects.directory.skip, vim.fn.fnamemodify(dir, ":t")) then

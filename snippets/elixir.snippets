@@ -148,3 +148,194 @@ snippet try try .. rescue .. end
   rescue
     ${2} -> ${3}
   end
+
+
+# LiveView Snippets
+snippet live "LiveView module"
+  defmodule ${1:ModuleName}Live do
+    use ${2:MyAppWeb}, :live_view
+
+    @impl true
+    def mount(_params, _session, socket) do
+      {:ok, socket}
+    end
+
+    @impl true
+    def handle_params(_params, _url, socket) do
+      {:noreply, socket}
+    end
+
+    @impl true
+    def render(assigns) do
+      ~H"""
+      ${3:<div>Content</div>}
+      """
+    end
+  end
+
+snippet livecomp "LiveComponent module"
+  defmodule ${1:ModuleName}Component do
+    use ${2:MyAppWeb}, :live_component
+
+    @impl true
+    def update(assigns, socket) do
+      {:ok, assign(socket, assigns)}
+    end
+
+    @impl true
+    def render(assigns) do
+      ~H"""
+      ${3:<div>Content</div>}
+      """
+    end
+  end
+
+snippet mount "mount/3 callback"
+  @impl true
+  def mount(_params, _session, socket) do
+    {:ok, assign(socket, ${1:key}: ${2:value})}
+  end
+
+snippet handle_event "handle_event/3 callback"
+  @impl true
+  def handle_event("${1:event_name}", ${2:params}, socket) do
+    {:noreply, socket}
+  end
+
+snippet handle_info "handle_info/2 callback"
+  @impl true
+  def handle_info({:${1:message}, ${2:payload}}, socket) do
+    {:noreply, socket}
+  end
+
+snippet handle_params "handle_params/3 callback"
+  @impl true
+  def handle_params(params, _url, socket) do
+    {:noreply, assign(socket, ${1:key}: params["${2:param}"])}
+  end
+
+# Schema Snippets
+snippet schema "Ecto schema"
+  defmodule ${1:ModuleName} do
+    use Ecto.Schema
+    import Ecto.Changeset
+
+    schema "${2:table_name}" do
+      ${3:field :name, :string}
+
+      timestamps()
+    end
+
+    def changeset(%__MODULE__{} = ${4:model}, attrs) do
+      ${4:model}
+      |> cast(attrs, [${5:fields}])
+      |> validate_required([${6:required_fields}])
+    end
+  end
+
+# Context Snippets
+snippet context "Context module"
+  defmodule ${1:ModuleName} do
+    import Ecto.Query
+    alias ${2:MyApp}.Repo
+    alias ${2:MyApp}.${3:Schema}
+
+    def list_${4:resources} do
+      Repo.all(${3:Schema})
+    end
+
+    def get_${5:resource}!(id) do
+      Repo.get!(${3:Schema}, id)
+    end
+
+    def create_${5:resource}(attrs \\\\ %{}) do
+      %${3:Schema}{}
+      |> ${3:Schema}.changeset(attrs)
+      |> Repo.insert()
+    end
+
+    def update_${5:resource}(%${3:Schema}{} = ${5:resource}, attrs) do
+      ${5:resource}
+      |> ${3:Schema}.changeset(attrs)
+      |> Repo.update()
+    end
+
+    def delete_${5:resource}(%${3:Schema}{} = ${5:resource}) do
+      Repo.delete(${5:resource})
+    end
+  end
+
+# Testing Snippets
+snippet datacase "DataCase test"
+  defmodule ${1:ModuleName}Test do
+    use ${2:MyApp}.DataCase
+
+    alias ${2:MyApp}.${3:Context}
+
+    describe "${4:group_name}" do
+      test "${5:test_description}" do
+        ${6}
+      end
+    end
+  end
+
+snippet conncase "ConnCase test"
+  defmodule ${1:ModuleName}Test do
+    use ${2:MyAppWeb}.ConnCase
+
+    describe "${3:group_name}" do
+      test "${4:test_description}", %{conn: conn} do
+        ${5}
+      end
+    end
+  end
+
+snippet livecase "LiveViewCase test"
+  defmodule ${1:ModuleName}Test do
+    use ${2:MyAppWeb}.ConnCase
+
+    import Phoenix.LiveViewTest
+
+    describe "${3:group_name}" do
+      test "${4:test_description}", %{conn: conn} do
+        {:ok, view, _html} = live(conn, ~p"${5:/path}")
+        ${6}
+      end
+    end
+  end
+
+# Common LiveView Helpers
+snippet event "JS.push event"
+  phx-click={JS.push("${1:event_name}", value: %{${2:key}: ${3:value}})}
+
+snippet target "JS.target"
+  phx-target={@myself}
+
+snippet loading "Loading states"
+  phx-loading-class="opacity-50"
+
+snippet debounce "Debounce input"
+  phx-debounce="300"
+
+snippet stream "stream_configure"
+  @impl true
+  def mount(_params, _session, socket) do
+    {:ok, stream(socket, :${1:collection}, [])}
+  end
+
+snippet form "LiveView form"
+  <.form for={@form} phx-submit="save" phx-change="validate">
+    <.input field={@form[:${1:field}]} type="${2:text}" label="${3:Label}" />
+    <.button type="submit">Save</.button>
+  </.form>
+
+snippet modal "LiveView modal"
+  <.modal :if={@${1:show_modal}} id="${2:modal-id}" on_cancel={JS.patch(~p"${3:/path}")}>
+    <:title>${4:Modal Title}</:title>
+    ${5:Content}
+  </.modal>
+
+snippet flash "Flash message"
+  <.flash kind={:info} title="${1:Success!}" flash={@flash}>
+    ${2:Message}
+  </.flash>

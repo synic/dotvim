@@ -107,7 +107,7 @@ local function neogit_open()
 	local cwd = (utils.get_buffer_cwd() or ".")
 
 	for _, buf in pairs(vim.api.nvim_list_bufs()) do
-		if vim.api.nvim_buf_get_option(buf, "filetype"):find("^Neogit") ~= nil then
+		if vim.bo[buf].filetype:find("^Neogit") ~= nil then
 			vim.api.nvim_buf_delete(buf, { force = true })
 		end
 	end

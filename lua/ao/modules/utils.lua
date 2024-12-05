@@ -89,6 +89,15 @@ local plugins = {
 			},
 		},
 	},
+
+	-- markdown renderer
+	{
+		"MeanderingProgrammer/render-markdown.nvim",
+		opts = {
+			file_types = { "markdown", "Avante" },
+		},
+		ft = { "markdown", "Avante" },
+	},
 }
 
 -- if wakatime is installed/enabled but the configuration file doesn't exist,
