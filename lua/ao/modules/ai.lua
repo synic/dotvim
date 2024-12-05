@@ -21,8 +21,8 @@ return {
 					dismiss = "<C-]>",
 				},
 				jump = {
-					next = "]]",
-					prev = "[[",
+					next = "<c-j>",
+					prev = "<c-k>",
 				},
 				submit = {
 					normal = "<CR>",

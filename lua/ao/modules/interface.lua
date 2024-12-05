@@ -459,20 +459,6 @@ M.plugin_specs = {
 		end,
 	},
 
-	-- get around faster and easier
-	{
-		"Lokaltog/vim-easymotion",
-		enable = false, -- keeps crashing neovim
-		init = function()
-			vim.g.EasyMotion_smartcase = true
-			vim.g.EasyMotion_do_mapping = false
-		end,
-		keys = {
-			{ "<leader><leader>", "<plug>(easymotion-overwin-f)", desc = "Jump to location", mode = "n" },
-			{ "<leader><leader>", "<plug>(easymotion-bd-f)", desc = "Jump to location", mode = "v" },
-		},
-	},
-
 	-- fancy up those tabs
 	{
 		"nanozuki/tabby.nvim",
@@ -570,7 +556,39 @@ M.plugin_specs = {
 	-- snacks
 	{
 		"folke/snacks.nvim",
-		opts = {},
+		event = "VeryLazy",
+		keys = {
+			{ "<leader>gl", "<cmd>lua require('snacks').lazygit()<cr>", desc = "Open LazyGit" },
+			{ "<leader>gl", "<cmd>lua require('snacks').lazygit()<cr>", desc = "Open LazyGit" },
+			{ "<leader>gB", "<cmd>lua require('snacks').gitbrowse()<cr>", desc = "Open github in browser" },
+			{ "<leader>g,", "<cmd>lua require('snacks').git.blame_line()<cr>", desc = "Blame line" },
+			{ "<leader>:", "<cmd>lua require('snacks').scratch()<cr>", desc = "Scratch Buffers" },
+		},
+		opts = {
+			dashboard = {
+				enabled = true,
+				sections = {
+					{ section = "header" },
+					{ icon = " ", title = "Keymaps", section = "keys", indent = 2, padding = 1 },
+					{ icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
+					{
+						icon = " ",
+						title = "Projects",
+						section = "projects",
+						indent = 2,
+						padding = 1,
+						action = function(dir)
+							require("ao.modules.projects").open(dir)
+						end,
+					},
+					{ section = "startup" },
+				},
+			},
+			lazygit = { enabled = true },
+			git = { enabled = true },
+			gitbrowse = { enabled = true },
+			scratch = { enabled = true },
+		},
 	},
 
 	-- toggle golden ratio
@@ -593,12 +611,14 @@ M.plugin_specs = {
 		opts = {
 			modes = {
 				char = { enabled = false },
+				search = { enabled = true },
 			},
 			labels = "asdfghjklwertyuiopzxcvbnmABCDEFGHIJKLMNOP",
 		},
 		-- stylua: ignore
 		keys = {
 			{ "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+			{ "<leader><leader>", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
 			{ "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
 			{ "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
 			{ "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },

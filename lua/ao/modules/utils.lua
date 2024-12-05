@@ -40,6 +40,7 @@ local plugins = {
 		},
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
 		opts = {
+			max_join_length = 2000, -- just do it, and let the formatter worry about it being too long
 			use_default_keymaps = false,
 		},
 	},

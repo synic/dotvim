@@ -13,6 +13,7 @@ return {
 		event = "VeryLazy",
 		keys = {
 			{ "<localleader>tn", "<cmd>lua require('neotest').run.run()<cr>", desc = "Run nearest test" },
+			{ "<localleader>t,", "<cmd>lua require('neotest').run.run()<cr>", desc = "Run nearest test" },
 			{ "<localleader>tb", "<cmd>lua require('neotest').run.run(vim.fn.expand('%s'))<cr>", desc = "Run buffer" },
 			{ "<localleader>ts", open_summary(), desc = "Show summary" },
 		},

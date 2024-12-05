@@ -459,6 +459,7 @@ return {
 				sources = {
 					-- formatting
 					ns.builtins.formatting.stylua,
+					ns.builtins.formatting.shfmt,
 					ns.builtins.formatting.djhtml.with({
 						"--tabwidth=2",
 					}),

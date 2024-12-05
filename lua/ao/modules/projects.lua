@@ -75,7 +75,8 @@ end
 local function dirpicker_pick_project(cb)
 	require("telescope").extensions.dirpicker.dirpicker({
 		cwd = config.options.projects.directory.path or ".",
-		layout_config = { width = 0.45, height = 0.4, preview_width = 0.5 },
+		enable_preview = false,
+		layout_config = { width = 0.50, height = 0.30 },
 		prompt_title = "Projects",
 		cmd = M.find_projects,
 		on_select = cb,

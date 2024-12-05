@@ -7,7 +7,7 @@ local config = {
 		root_names = { ".git", ".svn", ".project_root" },
 	},
 	appearance = {
-		guifont = "Hack:h13",
+		guifont = "Hack Nerd Font Mono:h12",
 		theme = "duskfox",
 	},
 }
