@@ -14,6 +14,7 @@ local key_categories = {
 	{ "<leader>c", group = "configuration" },
 	{ "<leader>cp", group = "plugins" },
 	{ "<leader>d", group = "debug" },
+	{ "<leader>dt", group = "testing" },
 	{ "<leader>e", group = "diagnostis" },
 	{ "<leader>f", group = "files" },
 	{ "<leader>g", group = "git" },
@@ -561,7 +562,6 @@ M.plugin_specs = {
 			{ "<leader>gB", "<cmd>lua require('snacks').gitbrowse()<cr>", desc = "Open github in browser" },
 			{ "<leader>g,", "<cmd>lua require('snacks').git.blame_line()<cr>", desc = "Blame line" },
 			{ "<leader>:", "<cmd>lua require('snacks').scratch()<cr>", desc = "Scratch Buffers" },
-			{ "<leader>bd", "<cmd>lua require('snacks').dashboard()<cr>", desc = "Dashboard" },
 			{ "<leader>^", "<cmd>lua require('snacks').dashboard()<cr>", desc = "Dashboard" },
 		},
 		opts = {
@@ -611,7 +611,6 @@ M.plugin_specs = {
 		opts = {
 			modes = {
 				char = { enabled = false },
-				search = { enabled = true },
 			},
 			labels = "asdfghjklwertyuiopzxcvbnmABCDEFGHIJKLMNOP",
 		},

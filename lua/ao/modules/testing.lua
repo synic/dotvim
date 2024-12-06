@@ -1,6 +1,6 @@
 local function open_summary()
 	return function()
-		require("neotest").summary.open()
+		require("neotest").summary.toggle()
 		if vim.bo.filetype == "elixir" then
 			vim.cmd.w()
 		end
@@ -12,10 +12,10 @@ return {
 		"nvim-neotest/neotest",
 		event = "BufEnter",
 		keys = {
-			{ "<localleader>tn", "<cmd>lua require('neotest').run.run()<cr>", desc = "Run nearest test" },
-			{ "<localleader>t,", "<cmd>lua require('neotest').run.run()<cr>", desc = "Run nearest test" },
-			{ "<localleader>tb", "<cmd>lua require('neotest').run.run(vim.fn.expand('%s'))<cr>", desc = "Run buffer" },
-			{ "<localleader>ts", open_summary(), desc = "Show summary" },
+			{ "<leader>dtn", "<cmd>lua require('neotest').run.run()<cr>", desc = "Run nearest test" },
+			{ "<leader>dt,", "<cmd>lua require('neotest').run.run()<cr>", desc = "Run nearest test" },
+			{ "<leader>dtb", "<cmd>lua require('neotest').run.run(vim.fn.expand('%s'))<cr>", desc = "Run buffer" },
+			{ "<leader>dts", open_summary(), desc = "Toggle summary" },
 		},
 		dependencies = {
 			"jfpedroza/neotest-elixir",

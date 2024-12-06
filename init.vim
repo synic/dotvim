@@ -74,6 +74,10 @@ set modelines=5
 set showmatch
 set matchtime=5
 
+" ignore case when searching by default
+set ignorecase
+set smartcase
+
 " setup tabs for 4 spaces
 set tabstop=4
 set shiftwidth=4

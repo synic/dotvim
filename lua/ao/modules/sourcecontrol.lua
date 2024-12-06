@@ -163,7 +163,6 @@ M.plugin_specs = {
 			kind = "vsplit",
 			auto_show_console = false,
 			remember_settings = true,
-			debug = true,
 			commit_editor = { kind = "split" },
 			commit_select_view = { kind = "split" },
 			log_view = { kind = "split" },
@@ -174,6 +173,11 @@ M.plugin_specs = {
 			tag_editor = { kind = "split" },
 			preview_buffer = { kind = "split" },
 			popup = { kind = "split" },
+			auto_refresh = true,
+			filewatcher = {
+				interval = 1000,
+				enabled = true,
+			},
 			commit_view = {
 				kind = "vsplit",
 				verify_commit = vim.fn.executable("gpg") == 1,

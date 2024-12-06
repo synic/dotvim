@@ -49,7 +49,16 @@ return {
 		dependencies = { "hrsh7th/cmp-nvim-lsp" },
 		event = "VeryLazy",
 		opts = {
-			ensure_installed = { "lua_ls", "elixirls", "gopls", "ruff", "pyright" },
+			ensure_installed = {
+				"lua_ls",
+				"elixirls",
+				"gopls",
+				"ruff",
+				"pyright",
+				"vimls",
+				"bashls",
+				"emmet_language_server",
+			},
 			automatic_installation = true,
 		},
 		init = function()
