@@ -343,12 +343,7 @@ return {
 			},
 			indent = {
 				enable = true,
-				-- Disabling for dart because it was causing a few seconds of delay when creating
-				-- a new line in the file.
-				-- https://github.com/UserNobody14/tree-sitter-dart/issues/48
-				-- https://github.com/UserNobody14/tree-sitter-dart/issues/46
-				-- https://github.com/nvim-treesitter/nvim-treesitter/issues/4945
-				disable = { "dart", "lua", "htmldjango" },
+				disable = { "dart", "htmldjango" },
 			},
 			auto_install = true,
 			ensure_installed = {
@@ -520,32 +515,6 @@ return {
 		end,
 	},
 
-	{
-		"andrewferrier/debugprint.nvim",
-		config = true,
-		event = "VeryLazy",
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-		},
-		version = "*",
-	},
-
-	-- dart
-	{ "dart-lang/dart-vim-plugin", ft = "dart" },
-
 	-- python
 	{ "jmcantrell/vim-virtualenv", ft = "python" },
-
-	{ "Vimjas/vim-python-pep8-indent", ft = "python" },
-
-	-- flutter
-	{
-		"akinsho/flutter-tools.nvim",
-		ft = { "dart" },
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"stevearc/dressing.nvim", -- optional for vim.ui.select
-		},
-		config = true,
-	},
 }

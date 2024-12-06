@@ -73,12 +73,27 @@ local function telescope_git_files()
 end
 
 local function dirpicker_pick_project(cb)
+	local cwd = config.options.projects.directory.path or "."
+	local width = 0.37
+	if vim.o.columns < 130 then
+		width = 0.50
+	end
+
+	local projects = M.find_projects({ cwd = cwd })
+	local height = #projects + 5 -- number of projects, plus padding and borders, plus input box
+
+	if height > 15 then
+		height = 15
+	end
+
 	require("telescope").extensions.dirpicker.dirpicker({
-		cwd = config.options.projects.directory.path or ".",
+		cwd = cwd,
 		enable_preview = false,
-		layout_config = { width = 0.50, height = 0.30 },
+		layout_config = { width = width, height = height },
 		prompt_title = "Projects",
-		cmd = M.find_projects,
+		cmd = function(_)
+			return projects
+		end,
 		on_select = cb,
 	})
 end

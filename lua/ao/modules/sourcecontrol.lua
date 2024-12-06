@@ -122,10 +122,13 @@ M.plugin_specs = {
 
 	-- git utilities
 	{
-		"tpope/vim-fugitive",
+		"FabijanZulj/blame.nvim",
+		lazy = false,
+		opts = {
+			date_format = "%Y.%m.%d %H:%M",
+		},
 		keys = {
-			{ "<leader>gb", "<cmd>Git blame<cr>", desc = "Git blame" },
-			{ "<leader>ga", "<cmd>Git add %<cr>", desc = "Git add" },
+			{ "<leader>gb", "<cmd>BlameToggle<cr>", desc = "Git blame" },
 		},
 	},
 
@@ -149,7 +152,10 @@ M.plugin_specs = {
 	-- git client
 	{
 		"NeogitOrg/neogit",
-		dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" },
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"sindrets/diffview.nvim",
+		},
 		keys = {
 			{ "<leader>gs", neogit_open, desc = "Git status" },
 		},

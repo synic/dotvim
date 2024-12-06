@@ -10,7 +10,7 @@ end
 return {
 	{
 		"nvim-neotest/neotest",
-		event = "VeryLazy",
+		event = "BufEnter",
 		keys = {
 			{ "<localleader>tn", "<cmd>lua require('neotest').run.run()<cr>", desc = "Run nearest test" },
 			{ "<localleader>t,", "<cmd>lua require('neotest').run.run()<cr>", desc = "Run nearest test" },
@@ -19,7 +19,6 @@ return {
 		},
 		dependencies = {
 			"jfpedroza/neotest-elixir",
-			"nvim-neotest/neotest-vim-test",
 			"nvim-neotest/neotest-go",
 			"nvim-neotest/neotest-python",
 			"nvim-neotest/nvim-nio",

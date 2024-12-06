@@ -22,12 +22,6 @@ utils.map_keys({
 })
 
 local plugins = {
-	-- automatically set tabstop settings, etc
-	{ "tpope/vim-sleuth", event = "VeryLazy" },
-
-	-- automatically enter paste mode
-	{ "ConradIrwin/vim-bracketed-paste", event = "VeryLazy" },
-
 	-- surround plugin
 	{ "kylechui/nvim-surround", version = "*", event = "VeryLazy", config = true },
 

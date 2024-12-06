@@ -558,11 +558,11 @@ M.plugin_specs = {
 		"folke/snacks.nvim",
 		event = "VeryLazy",
 		keys = {
-			{ "<leader>gl", "<cmd>lua require('snacks').lazygit()<cr>", desc = "Open LazyGit" },
-			{ "<leader>gl", "<cmd>lua require('snacks').lazygit()<cr>", desc = "Open LazyGit" },
 			{ "<leader>gB", "<cmd>lua require('snacks').gitbrowse()<cr>", desc = "Open github in browser" },
 			{ "<leader>g,", "<cmd>lua require('snacks').git.blame_line()<cr>", desc = "Blame line" },
 			{ "<leader>:", "<cmd>lua require('snacks').scratch()<cr>", desc = "Scratch Buffers" },
+			{ "<leader>bd", "<cmd>lua require('snacks').dashboard()<cr>", desc = "Dashboard" },
+			{ "<leader>^", "<cmd>lua require('snacks').dashboard()<cr>", desc = "Dashboard" },
 		},
 		opts = {
 			dashboard = {
@@ -575,6 +575,7 @@ M.plugin_specs = {
 						icon = " ",
 						title = "Projects",
 						section = "projects",
+						limit = 7,
 						indent = 2,
 						padding = 1,
 						action = function(dir)
@@ -584,7 +585,6 @@ M.plugin_specs = {
 					{ section = "startup" },
 				},
 			},
-			lazygit = { enabled = true },
 			git = { enabled = true },
 			gitbrowse = { enabled = true },
 			scratch = { enabled = true },
