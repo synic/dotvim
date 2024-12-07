@@ -2,7 +2,10 @@ return {
 	{
 		"yetone/avante.nvim",
 		version = false, -- set this if you want to always pull the latest change
-		event = "BufEnter",
+		keys = {
+			{ "<leader>aa", "<cmd>AvanteAsk<cr>", mode = "n", desc = "avante: ask" },
+			{ "<leader>aa", ":<C-u>AvanteAsk<cr>", mode = { "x", "v", "s" }, desc = "avante: ask" },
+		},
 		opts = {
 			mappings = {
 				diff = {

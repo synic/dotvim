@@ -487,12 +487,15 @@ return {
 					ns.builtins.formatting.rustywind.with({
 						filetypes = { "typescript", "javascript", "css", "templ", "html", "htmldjango" },
 					}),
+
 					require("none-ls.formatting.trim_whitespace"),
 
 					-- diagnostics
 					ns.builtins.diagnostics.gitlint,
 					-- ns.builtins.diagnostics.mypy,
-					ns.builtins.diagnostics.trail_space,
+					ns.builtins.diagnostics.trail_space.with({
+						disabled_filetypes = { "ctrlsf" },
+					}),
 					ns.builtins.diagnostics.yamllint,
 					ns.builtins.diagnostics.hadolint, -- Dockerfile
 					ns.builtins.diagnostics.markdownlint_cli2,

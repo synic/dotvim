@@ -10,7 +10,7 @@ end
 return {
 	{
 		"nvim-neotest/neotest",
-		event = "BufEnter",
+		ft = { "go", "python", "elixir" },
 		keys = {
 			{ "<leader>dtn", "<cmd>lua require('neotest').run.run()<cr>", desc = "Run nearest test" },
 			{ "<leader>dt,", "<cmd>lua require('neotest').run.run()<cr>", desc = "Run nearest test" },

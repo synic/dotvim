@@ -1,5 +1,4 @@
 local utils = require("ao.utils")
-local projects = require("ao.modules.projects")
 local M = {}
 
 local function show_git_branch()
@@ -133,7 +132,6 @@ M.plugin_specs = {
 	-- git utilities
 	{
 		"FabijanZulj/blame.nvim",
-		lazy = false,
 		opts = {
 			date_format = "%Y.%m.%d %H:%M",
 		},
