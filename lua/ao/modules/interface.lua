@@ -650,6 +650,7 @@ M.plugin_specs = {
 			{ ";b", "<cmd>HopWordBC<cr>", desc = "Hop to word before cursor" },
 			{ ";w", "<cmd>HopWord<cr>", desc = "Hop to word in current buffer" },
 			{ ";a", "<cmd>HopWordAC<cr>", desc = "Hop to word after cursor" },
+			{ ";c", "<cmd>HopCamelCaseMW<cr>", desc = "Hop to camelCase word" },
 			{ ";d", "<cmd>HopLineMW<cr>", desc = "Hop to line" },
 			{ ";f", "<cmd>HopNodes<cr>", desc = "Hop to node" },
 			{ ";s", "<cmd>HopPatternMW<cr>", desc = "Hop to pattern" },
