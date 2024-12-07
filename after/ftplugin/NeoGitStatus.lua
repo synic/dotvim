@@ -1,4 +1,4 @@
-vim.api.nvim_buf_set_keymap(0, "n", "gP", "", {
+vim.api.nvim_buf_set_keymap(0, "n", "g,", "", {
 	desc = "Open GitHub in browser",
 	callback = function()
 		-- Get the remote URL
@@ -34,8 +34,14 @@ vim.api.nvim_buf_set_keymap(0, "n", "gP", "", {
 		end
 		branch = branch:gsub("\n$", "")
 
-		-- Construct final URL
-		local url = string.format("%s/tree/%s", result, branch)
+		-- If we're already on main/master, compare with HEAD
+		if branch == "main" or branch == "master" then
+			vim.notify("Already on main/master branch", vim.log.levels.WARN)
+			return
+		end
+
+		-- Construct compare URL
+		local url = string.format("%s/compare/main...%s", result, branch)
 
 		-- Determine OS and open URL
 		local os_name = vim.loop.os_uname().sysname
