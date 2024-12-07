@@ -617,6 +617,7 @@ M.plugin_specs = {
 		keys = {
 			{ "<leader><leader>", "<cmd>HopWordMW<cr>", desc = "Hop to word" },
 			{ ";b", "<cmd>HopWordBC<cr>", desc = "Hop to word before cursor" },
+			{ ";w", "<cmd>HopWord<cr>", desc = "Hop to word in current buffer" },
 			{ ";a", "<cmd>HopWordAC<cr>", desc = "Hop to word after cursor" },
 			{ ";;", "<cmd>HopLineMW<cr>", desc = "Hop to line" },
 			{ ";f", "<cmd>HopNodes<cr>", desc = "Hop to node" },
