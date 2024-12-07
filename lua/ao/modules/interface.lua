@@ -27,6 +27,7 @@ local key_categories = {
 	{ "<leader>w", group = "windows" },
 	{ "<leader>wm", group = "move" },
 	{ "<leader>x", group = "misc" },
+	{ ";", group = "hop" },
 	{ "<localleader>t", group = "neotest" },
 	{ "gh", group = "hunk" },
 }
@@ -605,23 +606,22 @@ M.plugin_specs = {
 		end,
 	},
 
+	-- move faster and easier
 	{
-		"folke/flash.nvim",
-		event = "VeryLazy",
+		"smoka7/hop.nvim",
+		version = "*",
 		opts = {
-			modes = {
-				char = { enabled = false },
-			},
-			labels = "asdfghjklwertyuiopzxcvbnmABCDEFGHIJKLMNOP",
+			keys = "etovxqpdygfblzhckisuran",
+			quit_key = "<SPC>",
 		},
-		-- stylua: ignore
 		keys = {
-			{ "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-			{ "<leader><leader>", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-			{ "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-			{ "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-			{ "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-			{ "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+			{ "<leader><leader>", "<cmd>HopWordMW<cr>", desc = "Hop to word" },
+			{ ";b", "<cmd>HopWordBC<cr>", desc = "Hop to word before cursor" },
+			{ ";a", "<cmd>HopWordAC<cr>", desc = "Hop to word after cursor" },
+			{ ";;", "<cmd>HopLineMW<cr>", desc = "Hop to line" },
+			{ ";f", "<cmd>HopNodes<cr>", desc = "Hop to node" },
+			{ ";s", "<cmd>HopPatternMW<cr>", desc = "Hop to pattern" },
+			{ ";j", "<cmd>HopVertical<cr>", desc = "Hop to location vertically" },
 		},
 	},
 
