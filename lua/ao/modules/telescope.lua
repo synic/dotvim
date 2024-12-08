@@ -25,19 +25,6 @@ local function telescope_find_files_cwd()
 	require("telescope.builtin").find_files({ cwd = utils.get_buffer_cwd() })
 end
 
-local function ctrlsf_search_for_term(prompt_bufnr)
-	local actions = require("telescope.actions")
-	local current_picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
-
-	local prompt = current_picker:_get_prompt()
-	actions.close(prompt_bufnr)
-	if not prompt then
-		vim.notify("Edit: no search terms", vim.log.levels.WARN)
-		return
-	end
-	vim.cmd.CtrlSF(prompt)
-end
-
 M.plugin_specs = {
 	-- fuzzy finder and list manager
 	{
@@ -79,10 +66,6 @@ M.plugin_specs = {
 							["//"] = actions.file_vsplit,
 							["--"] = actions.file_split,
 							["<c-space>"] = actions.to_fuzzy_refine,
-							["<c-e>"] = ctrlsf_search_for_term,
-						},
-						n = {
-							["e"] = ctrlsf_search_for_term,
 						},
 					},
 				},

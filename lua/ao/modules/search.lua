@@ -1,3 +1,5 @@
+local projects = require("ao.modules.projects")
+
 local function setup_ctrlsf_syntax()
 	-- Define syntax matches for the CtrlSF window
 	vim.cmd([[
@@ -33,9 +35,17 @@ local function setup_ctrlsf_syntax()
 end
 
 local function search_in_project_root()
+	local root = projects.find_buffer_root()
 	vim.ui.input({ prompt = "term: " }, function(input)
 		vim.cmd('CtrlSF "' .. input .. '"')
+		vim.cmd("CtrlSF " .. input .. " " .. root)
 	end)
+end
+
+local function ctrlsf_search_project_cursor_term()
+	local root = projects.find_buffer_root()
+	local current_word = vim.fn.expand("<cword>")
+	vim.cmd("CtrlSF " .. current_word .. " " .. root)
 end
 
 -- Function to update the search pattern highlighting
@@ -87,6 +97,12 @@ return {
 		keys = {
 
 			{ "<leader>s/", search_in_project_root, desc = "Search in project root" },
+			{
+				"<leader>s*",
+				ctrlsf_search_project_cursor_term,
+				desc = "Search project for term in CtrlSF",
+				mode = { "n", "v" },
+			},
 		},
 		config = function(_, _)
 			setup_ctrlsf()
