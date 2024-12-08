@@ -31,7 +31,7 @@ M.plugin_specs = {
 		"nvim-telescope/telescope.nvim",
 		keys = {
 			-- search
-			{ "<leader>sf", telescope_search_cwd, desc = "Search in buffer's directory" },
+			{ "<leader>sd", telescope_search_cwd, desc = "Search in buffer's directory" },
 			{ "<leader>sS", "<cmd>Telescope spell_suggest<cr>", desc = "Spelling suggestions" },
 			{ "<leader>sR", "<cmd>Telescope registers<cr>", desc = "Registers" },
 			{ "<leader>sl", "<cmd>Telescope marks<cr>", desc = "Marks" },
