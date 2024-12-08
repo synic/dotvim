@@ -8,7 +8,7 @@ return {
 				function()
 					require("avante.api").ask()
 				end,
-				mode = { "x", "v" },
+				mode = { "n", "v" },
 				desc = "avante: ask",
 			},
 			{
