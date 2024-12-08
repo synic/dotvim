@@ -9,19 +9,26 @@ return {
 			hop.setup(opts)
 
 			-- Create custom command for hopping to character/word matches
-			vim.api.nvim_create_user_command("HopEasyMotion", function()
+			vim.api.nvim_create_user_command("HopOverwinF", function()
 				local char = vim.fn.getchar()
 				-- Convert numeric char code to string
 				char = type(char) == "number" and vim.fn.nr2char(char) or char
+
+				-- Ignore whitespace characters
+				if char:match("%s") then
+					return
+				end
 
 				-- Create pattern based on input character type
 				local pattern
 				if char:match("%a") then
 					-- For letters: match words starting with that letter
-					-- Use hop's case_insensitive setting
-					pattern = "\\v" .. (opts.case_insensitive and "\\c" or "") .. "(<|_@<=)" .. char
-				elseif char:match("[%p%s]") then
-					-- For punctuation and whitespace: match them literally
+					-- Uppercase letters match exactly
+					-- Lowercase letters match case insensitive only when the setting is enabled
+					local case_flag = (opts.case_insensitive and char:match("%l")) and "\\c" or ""
+					pattern = "\\v" .. case_flag .. "(<|_@<=)" .. char
+				elseif char:match("%p") then
+					-- For punctuation: match them literally
 					pattern = [[\V]] .. vim.fn.escape(char, "\\")
 				else
 					-- For other characters: match them literally
@@ -37,7 +44,7 @@ return {
 			end, { desc = "Hop to words starting with input character" })
 		end,
 		keys = {
-			{ "<leader><leader>", "<cmd>HopEasyMotion<cr>", desc = "Hop to word", mode = { "v", "n" } },
+			{ "<leader><leader>", "<cmd>HopOverwinF<cr>", desc = "Hop to word", mode = { "v", "n" } },
 			{ ";b", "<cmd>HopWordBC<cr>", desc = "Hop to word before cursor", mode = { "v", "n" } },
 			{ ";w", "<cmd>HopWord<cr>", desc = "Hop to word in current buffer", mode = { "v", "n" } },
 			{ ";a", "<cmd>HopWordAC<cr>", desc = "Hop to word after cursor", mode = { "v", "n" } },
