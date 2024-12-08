@@ -640,16 +640,13 @@ M.plugin_specs = {
 				local pattern
 				if char:match("%a") then
 					-- For letters: match words starting with that letter (case insensitive)
-					pattern = "\\c\\<" .. char
-				elseif char:match("[%(%)]") then
-					-- For parentheses: match them literally
-					pattern = char
-				elseif char == "." then
-					-- For period: match literal period
-					pattern = "\\."
+					pattern = "\\v<" .. char
+				elseif char:match("[%p%s]") then
+					-- For punctuation and whitespace: match them literally
+					pattern = [[\V]] .. vim.fn.escape(char, "\\")
 				else
-					-- For other non-letters: escape special characters
-					pattern = char:gsub("([%^%$%(%)%%%.%[%]%*%+%-%?])", "%%%1")
+					-- For other characters: match them literally
+					pattern = char
 				end
 
 				---@diagnostic disable-next-line: missing-fields
