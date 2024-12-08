@@ -669,6 +669,7 @@ M.plugin_specs = {
 			{ ";d", "<cmd>HopLineMW<cr>", desc = "Hop to line" },
 			{ ";f", "<cmd>HopNodes<cr>", desc = "Hop to node" },
 			{ ";s", "<cmd>HopPatternMW<cr>", desc = "Hop to pattern" },
+			{ "s", "<cmd>HopPatternMW<cr>", desc = "Hop to pattern" },
 			{ ";j", "<cmd>HopVertical<cr>", desc = "Hop to location vertically" },
 		},
 	},
