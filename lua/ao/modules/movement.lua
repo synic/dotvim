@@ -1,8 +1,9 @@
+local target_keys = "asdfghjkletovxpzwciubrnym;,ASDFGHJKLETOVXPZWCIUBRNYM"
 return {
 	{
 		"smoka7/hop.nvim",
 		version = "*",
-		opts = { keys = "etovxpdygfblzhckisuran;,ABCDEFGHIJKLMNOPQRSTUVWXYZ", quit_key = "q" },
+		opts = { keys = target_keys, quit_key = "q" },
 		config = function(_, opts)
 			local hop = require("hop")
 			hop.setup(opts)
@@ -16,8 +17,9 @@ return {
 				-- Create pattern based on input character type
 				local pattern
 				if char:match("%a") then
-					-- For letters: match words starting with that letter (case insensitive)
-					pattern = "\\v<" .. char
+					-- For letters: match words starting with that letter
+					-- Use hop's case_insensitive setting
+					pattern = "\\v" .. (opts.case_insensitive and "\\c" or "") .. "(<|_@<=)" .. char
 				elseif char:match("[%p%s]") then
 					-- For punctuation and whitespace: match them literally
 					pattern = [[\V]] .. vim.fn.escape(char, "\\")
@@ -40,7 +42,7 @@ return {
 			{ ";w", "<cmd>HopWord<cr>", desc = "Hop to word in current buffer", mode = { "v", "n" } },
 			{ ";a", "<cmd>HopWordAC<cr>", desc = "Hop to word after cursor", mode = { "v", "n" } },
 			{ ";c", "<cmd>HopCamelCaseMW<cr>", desc = "Hop to camelCase word", mode = { "v", "n" } },
-			{ ";d", "<cmd>HopLineMW<cr>", desc = "Hop to line", mode = { "v", "n" } },
+			{ ";d", "<cmd>HopLine<cr>", desc = "Hop to line", mode = { "v", "n" } },
 			{ ";f", "<cmd>HopNodes<cr>", desc = "Hop to node", mode = { "v", "n" } },
 			{ ";s", "<cmd>HopPatternMW<cr>", desc = "Hop to pattern", mode = { "v", "n" } },
 			{ ";j", "<cmd>HopVertical<cr>", desc = "Hop to location vertically", mode = { "v", "n" } },
@@ -54,7 +56,7 @@ return {
 			modes = {
 				char = { enabled = false },
 			},
-			labels = "asdfghjklwertyuiopzxcvbnmABCDEFGHIJKLMNOPQRSTUVWXYZ",
+			labels = target_keys,
 		},
 		-- stylua: ignore
 		keys = {
