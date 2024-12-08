@@ -2,7 +2,7 @@ return {
 	{
 		"smoka7/hop.nvim",
 		version = "*",
-		opts = { keys = "etovxpdygfblzhckisuran;,", quit_key = "q" },
+		opts = { keys = "etovxpdygfblzhckisuran;,ABCDEFGHIJKLMNOPQRSTUVWXYZ", quit_key = "q" },
 		config = function(_, opts)
 			local hop = require("hop")
 			hop.setup(opts)
@@ -54,7 +54,7 @@ return {
 			modes = {
 				char = { enabled = false },
 			},
-			labels = "asdfghjklwertyuiopzxcvbnmABCDEFGHIJKLMNOP",
+			labels = "asdfghjklwertyuiopzxcvbnmABCDEFGHIJKLMNOPQRSTUVWXYZ",
 		},
 		-- stylua: ignore
 		keys = {
