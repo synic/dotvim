@@ -529,4 +529,18 @@ return {
 
 	-- python
 	{ "jmcantrell/vim-virtualenv", ft = "python" },
+
+	-- annotations
+	{
+		"danymat/neogen",
+		dependencies = {
+			"saadparwaiz1/cmp_luasnip",
+		},
+		opts = {
+			snippet_engine = "luasnip",
+		},
+		keys = {
+			{ "<localleader>g", "<cmd>lua require('neogen').generate()<cr>", desc = "Generate annotations" },
+		},
+	},
 }
