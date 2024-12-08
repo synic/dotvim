@@ -194,6 +194,10 @@ utils.map_keys({
 	{ "<D-v>", "+p<CR>", modes = { "" }, noremap = true, silent = true, test = vim.fn.has("macunix") },
 	{ "<D-v>", "<C-R>+", modes = { "!", "t", "v" }, noremap = true, silent = true, test = vim.fn.has("macunix") },
 
+	-- change the default key to start recording a macro from `q` to `Q`
+	{ "q", "<nop>", desc = "Disable macro recording with q" },
+	{ "Q", "q", desc = "Start macro recording" },
+
 	-- misc
 	{ "vig", "ggVG", desc = "Select whole buffer" },
 	{ "<leader><localleader>", "<localleader>", desc = "Local buffer options" },
