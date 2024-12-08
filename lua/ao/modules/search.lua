@@ -59,12 +59,14 @@ end
 local function setup_ctrlsf()
 	-- Basic CtrlSF configurations
 	vim.g.ctrlsf_backend = "rg"
-	vim.g.ctrlsf_auto_focus = {
-		at = "start",
-	}
 	vim.g.ctrlsf_auto_preview = 1
 	vim.g.ctrlsf_case_sensitive = "smart"
 	vim.g.ctrlsf_default_view_mode = "compact"
+	vim.g.better_whitespace_filetypes_blacklist = { "ctrlsf" }
+	vim.g.ctrlsf_default_view_mode = "normal"
+	vim.g.ctrlsf_default_root = "project+wf"
+	vim.g.ctrlsf_auto_close = { normal = 0, compact = 1 }
+	vim.g.ctrlsf_auto_focus = { at = "start" }
 
 	-- Set up syntax highlighting
 	setup_ctrlsf_syntax()

@@ -3,8 +3,70 @@ return {
 		"yetone/avante.nvim",
 		version = false, -- set this if you want to always pull the latest change
 		keys = {
-			{ "<leader>aa", "<cmd>AvanteAsk<cr>", mode = "n", desc = "avante: ask" },
-			{ "<leader>aa", ":<C-u>AvanteAsk<cr>", mode = { "x", "v", "s" }, desc = "avante: ask" },
+			{
+				"<leader>aa",
+				function()
+					require("avante.api").ask()
+				end,
+				mode = { "x", "v" },
+				desc = "avante: ask",
+			},
+			{
+				"<leader>ae",
+				function()
+					require("avante.api").edit()
+				end,
+				mode = { "v" },
+				desc = "avante: edit",
+			},
+			{
+				"<leader>af",
+				function()
+					require("avante.api").focus()
+				end,
+				mode = { "n" },
+				desc = "avante: focus",
+			},
+			{
+				"<leader>ar",
+				function()
+					require("avante.api").refresh()
+				end,
+				mode = { "n" },
+				desc = "avante: refresh",
+			},
+			{
+				"<leader>at",
+				"<Plug>(AvanteToggle)",
+				mode = { "n" },
+				desc = "avante: toggle",
+			},
+			{
+				"<leader>ad",
+				"<Plug>(AvanteToggleDebug)",
+				mode = { "n" },
+				desc = "avante: toggle debug",
+			},
+			{
+				"<leader>ah",
+				"<Plug>(AvanteToggleHint)",
+				mode = { "n" },
+				desc = "avante: toggle hint",
+			},
+			{
+				"<leader>as",
+				"<Plug>(AvanteToggleSuggestion)",
+				mode = { "n" },
+				desc = "avante: toggle suggestion",
+			},
+			{
+				"<leader>aR",
+				function()
+					require("avante.repo_map").show()
+				end,
+				mode = { "n" },
+				desc = "avante: display repo map",
+			},
 		},
 		opts = {
 			mappings = {

@@ -1,7 +1,7 @@
 {
   "FixCursorHold.nvim": { "branch": "master", "commit": "1900f89dc17c603eec29960f57c00bd9ae696495" },
   "LuaSnip": { "branch": "master", "commit": "33b06d72d220aa56a7ce80a0dd6f06c70cd82b9d" },
-  "avante.nvim": { "branch": "main", "commit": "4464b7f4ae26254cd506a354284a02129941e244" },
+  "avante.nvim": { "branch": "main", "commit": "57311bf8cd2f48729565d2351bcbf383b6a56907" },
   "baleia.nvim": { "branch": "main", "commit": "fb3aff021b2b64ef820d0230d2c22ebfaf71bb6a" },
   "bamboo.nvim": { "branch": "master", "commit": "d38c50257d9fb16b17050569b29d777b1f2503ee" },
   "blame.nvim": { "branch": "main", "commit": "39bb4cda9e658d053a43919b10ca52c0a4d738e1" },

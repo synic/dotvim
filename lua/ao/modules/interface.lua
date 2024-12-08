@@ -1,3 +1,4 @@
+---@diagnostic disable: inject-field
 local utils = require("ao.utils")
 local filesystem = require("ao.modules.filesystem")
 local projects = require("ao.modules.projects")
@@ -30,6 +31,10 @@ local key_categories = {
 	{ ";", group = "hop" },
 	{ "<localleader>t", group = "neotest" },
 	{ "gh", group = "hunk" },
+
+	-- Visual mode categories
+	{ "<leader>a", mode = "v", group = "ai" },
+	{ "<leader>x", mode = "v", group = "misc" },
 }
 
 local function buffer_show_path(full)
@@ -42,7 +47,7 @@ local function buffer_show_path(full)
 	local path = vim.fn.expand(pattern)
 	vim.fn.setreg("+", path)
 	vim.notify(path)
-	print(path)
+	vim.print(path)
 end
 
 local function buffer_show_full_path()
@@ -309,6 +314,7 @@ M.plugin_specs = {
 				pattern = disable_for,
 				group = indentscope_disable_group,
 				callback = function()
+					---@diagnostic disable-next-line: inject-field
 					vim.b.miniindentscope_disable = true
 				end,
 			})
@@ -380,19 +386,24 @@ M.plugin_specs = {
 								return
 							end
 							local mouse = vim.fn.getmousepos()
+							---@diagnostic disable-next-line: undefined-field
 							local clicked_menu = dutils.menu.get({ win = mouse.winid })
 							-- If clicked on a menu, invoke the corresponding click action,
 							-- else close all menus and set the cursor to the clicked window
 							if clicked_menu then
 								clicked_menu:click_at({
+									---@diagnostic disable-next-line: undefined-field
 									mouse.line,
+									---@diagnostic disable-next-line: undefined-field
 									mouse.column - 1,
 								}, nil, 1, "l")
 								return
 							end
 							dutils.menu.exec("close")
 							dutils.bar.exec("update_current_context_hl")
+							---@diagnostic disable-next-line: undefined-field
 							if vim.api.nvim_win_is_valid(mouse.winid) then
+								---@diagnostic disable-next-line: undefined-field
 								vim.api.nvim_set_current_win(mouse.winid)
 							end
 						end,
