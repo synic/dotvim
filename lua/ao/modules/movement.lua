@@ -1,0 +1,68 @@
+return {
+	{
+		"smoka7/hop.nvim",
+		version = "*",
+		opts = { keys = "etovxpdygfblzhckisuran;,", quit_key = "q" },
+		config = function(_, opts)
+			local hop = require("hop")
+			hop.setup(opts)
+
+			-- Create custom command for hopping to character/word matches
+			vim.api.nvim_create_user_command("HopEasyMotion", function()
+				local char = vim.fn.getchar()
+				-- Convert numeric char code to string
+				char = type(char) == "number" and vim.fn.nr2char(char) or char
+
+				-- Create pattern based on input character type
+				local pattern
+				if char:match("%a") then
+					-- For letters: match words starting with that letter (case insensitive)
+					pattern = "\\v<" .. char
+				elseif char:match("[%p%s]") then
+					-- For punctuation and whitespace: match them literally
+					pattern = [[\V]] .. vim.fn.escape(char, "\\")
+				else
+					-- For other characters: match them literally
+					pattern = char
+				end
+
+				---@diagnostic disable-next-line: missing-fields
+				hop.hint_patterns({
+					current_line_only = false,
+					multi_windows = true,
+					hint_position = require("hop.hint").HintPosition.BEGIN,
+				}, pattern)
+			end, { desc = "Hop to words starting with input character" })
+		end,
+		keys = {
+			{ "<leader><leader>", "<cmd>HopEasyMotion<cr>", desc = "Hop to word" },
+			{ ";b", "<cmd>HopWordBC<cr>", desc = "Hop to word before cursor" },
+			{ ";w", "<cmd>HopWord<cr>", desc = "Hop to word in current buffer" },
+			{ ";a", "<cmd>HopWordAC<cr>", desc = "Hop to word after cursor" },
+			{ ";c", "<cmd>HopCamelCaseMW<cr>", desc = "Hop to camelCase word" },
+			{ ";d", "<cmd>HopLineMW<cr>", desc = "Hop to line" },
+			{ ";f", "<cmd>HopNodes<cr>", desc = "Hop to node" },
+			{ ";s", "<cmd>HopPatternMW<cr>", desc = "Hop to pattern" },
+			{ ";j", "<cmd>HopVertical<cr>", desc = "Hop to location vertically" },
+		},
+	},
+
+	{
+		"folke/flash.nvim",
+		event = "VeryLazy",
+		opts = {
+			modes = {
+				char = { enabled = false },
+			},
+			labels = "asdfghjklwertyuiopzxcvbnmABCDEFGHIJKLMNOP",
+		},
+		-- stylua: ignore
+		keys = {
+			{ "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+			{ "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+			{ "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+			{ "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+			{ "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+		},
+	},
+}
