@@ -1,5 +1,5 @@
 vim.api.nvim_buf_set_keymap(0, "n", "g,", "", {
-	desc = "Open GitHub in browser",
+	desc = "Open changes in GitHub",
 	callback = function()
 		-- Get the remote URL
 		local handle, err = io.popen("git config --get remote.origin.url")

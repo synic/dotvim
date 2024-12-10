@@ -1,3 +1,12 @@
+--- Fix keyboard mappings.
+---
+--- Sometimes when Avante crashes, it leaves the keys mapped so things like `A` won't append at the end of the line.
+--- Very annoying.
+local function fix_mappings()
+	vim.keymap.del("n", "A")
+	vim.keymap.del("n", "a")
+end
+
 return {
 	{
 		"yetone/avante.nvim",
@@ -66,6 +75,11 @@ return {
 				end,
 				mode = { "n" },
 				desc = "avante: display repo map",
+			},
+			{
+				"<leader>ax",
+				fix_mappings,
+				desc = "fix keyboard mappings",
 			},
 		},
 		opts = {
