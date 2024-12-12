@@ -74,4 +74,17 @@ return {
 			{ "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
 		},
 	},
+
+	{
+		"aaronik/treewalker.nvim",
+		opts = {
+			highlight = true, -- default is false
+		},
+		keys = {
+			{ "<C-j>", "<cmd>Treewalker Down<cr>" },
+			{ "<C-k>", "<cmd>Treewalker Up<cr>" },
+			{ "<C-h>", "<cmd>Treewalker Left<cr>" },
+			{ "<C-l>", "<cmd>Treewalker Right<cr>" },
+		},
+	},
 }

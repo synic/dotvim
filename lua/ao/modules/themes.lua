@@ -138,6 +138,13 @@ M.plugin_specs = {
 			require("bamboo").setup({})
 		end,
 	},
+	{
+		"folke/tokyonight.nvim",
+		keys = vim.deepcopy(keys),
+		lazy = false,
+		priority = 1000,
+		opts = {},
+	},
 }
 
 return M

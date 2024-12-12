@@ -3,8 +3,8 @@
 --- Sometimes when Avante crashes, it leaves the keys mapped so things like `A` won't append at the end of the line.
 --- Very annoying.
 local function fix_mappings()
-	vim.keymap.del("n", "A")
-	vim.keymap.del("n", "a")
+	pcall(vim.keymap.del, "n", "A")
+	pcall(vim.keymap.del, "n", "a")
 end
 
 return {
@@ -83,6 +83,9 @@ return {
 			},
 		},
 		opts = {
+			window = {
+				width = 25,
+			},
 			mappings = {
 				diff = {
 					ours = "co",

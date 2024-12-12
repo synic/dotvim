@@ -4,11 +4,11 @@ local config = {
 	projects = {
 		entries = {},
 		directory = { path = os.getenv("HOME") .. "/Projects", skip = {} },
-		root_names = { ".git", ".svn", ".project_root" },
+		root_names = { ".git", ".svn", ".project_root", "mix.exs" },
 	},
 	appearance = {
 		guifont = "Hack Nerd Font Mono:h12",
-		theme = "duskfox",
+		theme = "tokyonight",
 	},
 }
 

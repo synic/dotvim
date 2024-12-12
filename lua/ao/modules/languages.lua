@@ -51,7 +51,6 @@ return {
 		opts = {
 			ensure_installed = {
 				"lua_ls",
-				"elixirls",
 				"gopls",
 				"ruff",
 				"pyright",
@@ -453,7 +452,6 @@ return {
 			local only_nonels_formatting_filetypes = {
 				"lua",
 				"typescript",
-				"elixir",
 				"javascript",
 				"go",
 				"svelte",
@@ -467,7 +465,7 @@ return {
 					ns.builtins.formatting.djhtml.with({
 						"--tabwidth=2",
 					}),
-					ns.builtins.formatting.mix,
+					-- ns.builtins.formatting.mix,
 					-- ns.builtins.formatting.surface,
 					ns.builtins.formatting.prettierd.with({
 						filetypes = { "typescript", "javascript", "templ" },
@@ -503,13 +501,13 @@ return {
 				},
 
 				on_attach = function(client, bufnr)
+					local ft = vim.bo[bufnr].filetype
 					if client.supports_method("textDocument/formatting") then
 						vim.api.nvim_clear_autocmds({ group = lsp_formatting_group, buffer = bufnr })
 						vim.api.nvim_create_autocmd("BufWritePre", {
 							group = lsp_formatting_group,
 							buffer = bufnr,
 							callback = function()
-								local ft = vim.bo[bufnr].filetype
 								vim.lsp.buf.format({
 									bufnr = bufnr,
 									filter = function(c)

@@ -72,6 +72,10 @@ function M.goto_lazy_dir()
 	vim.cmd.edit(path)
 end
 
+function M.goto_dotfiles_dir()
+	vim.cmd.edit(vim.fn.expand("~/.dotfiles"))
+end
+
 local function lualine_trunc(trunc_width, trunc_len, hide_width, no_ellipsis)
 	return function(str)
 		local win_width = vim.fn.winwidth(0)

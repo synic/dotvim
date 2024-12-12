@@ -118,6 +118,7 @@ utils.map_keys({
 	-- configuration
 	{ "<leader>cm", filesystem.goto_config_directory, desc = "Manage config" },
 	{ "<leader>cl", interface.goto_lazy_dir, desc = "Go to lazy plugins dir" },
+	{ "<leader>cd", interface.goto_dotfiles_dir, desc = "Go to dotfiles directory" },
 
 	-- copy/paste on mac
 	{ "<D-v>", "+p<CR>", modes = { "" }, noremap = true, silent = true, test = vim.fn.has("macunix") },
