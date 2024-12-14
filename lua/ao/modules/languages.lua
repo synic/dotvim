@@ -455,6 +455,7 @@ return {
 				"javascript",
 				"go",
 				"svelte",
+				"elixir",
 			}
 
 			return {
@@ -465,7 +466,7 @@ return {
 					ns.builtins.formatting.djhtml.with({
 						"--tabwidth=2",
 					}),
-					-- ns.builtins.formatting.mix,
+					ns.builtins.formatting.mix,
 					-- ns.builtins.formatting.surface,
 					ns.builtins.formatting.prettierd.with({
 						filetypes = { "typescript", "javascript", "templ" },
@@ -510,6 +511,7 @@ return {
 							callback = function()
 								vim.lsp.buf.format({
 									bufnr = bufnr,
+									timeout = 4000,
 									filter = function(c)
 										if utils.table_contains(only_nonels_formatting_filetypes, ft) then
 											return c.name == "null-ls"

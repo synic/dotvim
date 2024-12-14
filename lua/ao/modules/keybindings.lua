@@ -14,6 +14,7 @@ local key_categories = {
 	{ "<leader>e", group = "diagnostis" },
 	{ "<leader>f", group = "files" },
 	{ "<leader>g", group = "git" },
+	{ "<leader>gp", group = "pr" },
 	{ "<leader>h", group = "help" },
 	{ "<leader>l", group = "layouts" },
 	{ "<leader>p", group = "project" },

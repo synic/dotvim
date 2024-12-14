@@ -60,7 +60,7 @@ M.plugin_specs = {
 			local actions = require("telescope.actions")
 			return {
 				defaults = {
-					file_ignore_patterns = { "%_templ.go", "node_modules", ".git" },
+					file_ignore_patterns = { "%_templ.go", "node_modules", ".git", "bruno" },
 					mappings = {
 						i = {
 							["//"] = actions.file_vsplit,

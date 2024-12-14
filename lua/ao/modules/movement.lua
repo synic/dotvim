@@ -1,4 +1,13 @@
 local target_keys = "asdfghjkletovxpzwciubrnym;,ASDFGHJKLETOVXPZWCIUBRNYM"
+
+local function pick_window()
+	local win_id = require("window-picker").pick_window({ hint = "floating-big-letter" })
+
+	if win_id ~= nil then
+		vim.api.nvim_set_current_win(win_id)
+	end
+end
+
 return {
 	{
 		"smoka7/hop.nvim",
@@ -78,13 +87,22 @@ return {
 	{
 		"aaronik/treewalker.nvim",
 		opts = {
-			highlight = true, -- default is false
+			highlight = true,
 		},
 		keys = {
-			{ "<C-j>", "<cmd>Treewalker Down<cr>" },
-			{ "<C-k>", "<cmd>Treewalker Up<cr>" },
-			{ "<C-h>", "<cmd>Treewalker Left<cr>" },
-			{ "<C-l>", "<cmd>Treewalker Right<cr>" },
+			{ "<C-j>", "<cmd>Treewalker Down<cr>", mode = { "n", "v" } },
+			{ "<C-k>", "<cmd>Treewalker Up<cr>", mode = { "n", "v" } },
+			{ "<C-h>", "<cmd>Treewalker Left<cr>", mode = { "n", "v" } },
+			{ "<C-l>", "<cmd>Treewalker Right<cr>", mode = { "n", "v" } },
+		},
+	},
+	{
+		"s1n7ax/nvim-window-picker",
+		name = "window-picker",
+		version = "2.*",
+		config = true,
+		keys = {
+			{ "<leader>w<leader>", pick_window, desc = "Jump to window" },
 		},
 	},
 }

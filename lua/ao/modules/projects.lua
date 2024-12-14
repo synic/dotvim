@@ -14,13 +14,15 @@ end
 -- cwd is some other directory.
 local function setup_autochdir()
 	local chdir_aucmds = { "BufNewFile", "BufRead", "BufFilePost", "BufEnter", "VimEnter" }
-	local skip_filetypes = { "qf" }
+	local skip_filetype_patterns = { "^qf$", "^Neogit" }
 
 	vim.api.nvim_create_autocmd(chdir_aucmds, {
 		group = chdir_group,
 		callback = function(opts)
-			if utils.table_contains(skip_filetypes, vim.bo[opts.buf].filetype) then
-				return
+			for _, pattern in ipairs(skip_filetype_patterns) do
+				if vim.bo[opts.buf].filetype:find(pattern) ~= nil then
+					return
+				end
 			end
 			local root = M.find_buffer_root(opts.buf)
 			if root and root ~= "" then
