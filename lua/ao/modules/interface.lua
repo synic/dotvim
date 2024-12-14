@@ -58,7 +58,7 @@ function M.quickfix_remove_item_move_next()
 end
 
 function M.layout_set_name()
-	---@diagnostic disable: missing-fields
+	---@diagnostic disable-next-line: missing-fields
 	vim.ui.input({ prompt = "layout name: ", default = (vim.t.layout_name or "") }, function(name)
 		if name then
 			vim.t.layout_name = name
