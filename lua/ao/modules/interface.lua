@@ -2,7 +2,6 @@
 local utils = require("ao.utils")
 local projects = require("ao.modules.projects")
 local clear_winbar_group = vim.api.nvim_create_augroup("WinBarHlClearBg", { clear = true })
-local indentscope_disable_group = vim.api.nvim_create_augroup("MiniIndentScopeDisable", { clear = true })
 
 local M = {}
 
@@ -59,6 +58,7 @@ function M.quickfix_remove_item_move_next()
 end
 
 function M.layout_set_name()
+	---@diagnostic disable: missing-fields
 	vim.ui.input({ prompt = "layout name: ", default = (vim.t.layout_name or "") }, function(name)
 		if name then
 			vim.t.layout_name = name
@@ -141,44 +141,8 @@ M.plugin_specs = {
 	{
 		"tpope/vim-scriptease",
 		keys = {
-			{ "<leader>sm", "<cmd>Messages<cr>", desc = "Show notifications/messages" },
+			{ "<leader>sm", "<cmd>Messages<cr>", desc = "Messages" },
 		},
-	},
-
-	-- show indent scope
-	{
-		"echasnovski/mini.indentscope",
-		event = "VeryLazy",
-		version = false,
-		config = true,
-		init = function()
-			local disable_for = {
-				"help",
-				"alpha",
-				"dashboard",
-				"neo-tree",
-				"Trouble",
-				"trouble",
-				"lazy",
-				"mason",
-				"notify",
-				"toggleterm",
-				"lazyterm",
-			}
-			vim.api.nvim_create_autocmd("FileType", {
-				pattern = disable_for,
-				group = indentscope_disable_group,
-				callback = function()
-					---@diagnostic disable-next-line: inject-field
-					vim.b.miniindentscope_disable = true
-				end,
-			})
-
-			-- for lazy loading into an existing file
-			if utils.table_contains(disable_for, vim.bo.filetype) then
-				vim.b.miniindentscope_disable = true
-			end
-		end,
 	},
 
 	-- highlight css and other colors
@@ -431,31 +395,58 @@ M.plugin_specs = {
 			{ "<leader>:", "<cmd>lua require('snacks').scratch()<cr>", desc = "Scratch Buffers" },
 			{ "<leader>^", "<cmd>lua require('snacks').dashboard()<cr>", desc = "Dashboard" },
 		},
-		opts = {
-			dashboard = {
-				enabled = true,
-				sections = {
-					{ section = "header" },
-					{ icon = " ", title = "Keymaps", section = "keys", indent = 2, padding = 1 },
-					{ icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
-					{
-						icon = " ",
-						title = "Projects",
-						section = "projects",
-						limit = 7,
-						indent = 2,
-						padding = 1,
-						action = function(dir)
-							require("ao.modules.projects").open(dir)
-						end,
+		opts = function()
+			local disable_indent_for = {
+				"help",
+				"alpha",
+				"dashboard",
+				"neo-tree",
+				"Trouble",
+				"trouble",
+				"lazy",
+				"mason",
+				"notify",
+				"toggleterm",
+				"lazyterm",
+			}
+
+			return {
+				dashboard = {
+					enabled = true,
+					sections = {
+						{ section = "header" },
+						{ icon = " ", title = "Keymaps", section = "keys", indent = 2, padding = 1 },
+						{ icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
+						{
+							icon = " ",
+							title = "Projects",
+							section = "projects",
+							limit = 7,
+							indent = 2,
+							padding = 1,
+							action = function(dir)
+								require("ao.modules.projects").open(dir)
+							end,
+						},
+						{ section = "startup" },
 					},
-					{ section = "startup" },
 				},
-			},
-			git = { enabled = true },
-			gitbrowse = { enabled = true },
-			scratch = { enabled = true },
-		},
+				git = { enabled = true },
+				gitbrowse = { enabled = true },
+				scratch = { enabled = true },
+				indent = {
+					indent = {
+						enabled = false,
+					},
+					filter = function(buf)
+						return vim.g.snacks_indent ~= false
+							and vim.b[buf].snacks_indent ~= false
+							and vim.bo[buf].buftype == ""
+							and not utils.table_contains(disable_indent_for, vim.bo[buf].filetype)
+					end,
+				},
+			}
+		end,
 	},
 
 	-- toggle golden ratio

@@ -135,6 +135,7 @@ utils.map_keys({
 	{ "<leader>xq", "<cmd>qa!<cr>", desc = "Quit Vim" },
 	{ "<leader>xx", utils.close_all_floating_windows, desc = "Close all floating windows" },
 	{ "<leader>'", "<cmd>split<cr><cmd>term<cr><cmd>norm A<cr>", desc = "Open terminal" },
+	{ "<C-g>", "<C-\\><C-n>", modes = { "t" }, desc = "Exit terminal mode" },
 })
 
 return {
