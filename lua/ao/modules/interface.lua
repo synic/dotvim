@@ -341,6 +341,9 @@ M.plugin_specs = {
 		"nvim-lualine/lualine.nvim",
 		event = "VeryLazy",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
+		init = function()
+			vim.o.laststatus = 3
+		end,
 		opts = function()
 			local lualine_utils = require("lualine.utils.utils")
 

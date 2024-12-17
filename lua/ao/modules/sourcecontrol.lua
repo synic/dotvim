@@ -125,6 +125,32 @@ local function neogit_open()
 	neogit.open({ cwd = root })
 end
 
+-- Open GitBlame
+--
+-- This function attaches an event to the blame window to make it so that when blame is closed (either through toggle
+-- or through `q`), it puts the cursor back in the window that opened the blame, instead of just focusing whatever
+-- window is on the left of the blame.
+local function open_gitblame()
+	local current_win = vim.fn.win_getid()
+
+	if not require("blame").is_open() then
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = "blame",
+			callback = function()
+				vim.api.nvim_create_autocmd("WinClosed", {
+					pattern = tostring(vim.fn.win_getid()),
+					callback = function()
+						pcall(vim.api.nvim_set_current_win, current_win)
+					end,
+					once = true,
+				})
+			end,
+			once = true,
+		})
+	end
+	vim.cmd.BlameToggle()
+end
+
 M.plugin_specs = {
 	-- display conflicts
 	{ "akinsho/git-conflict.nvim", event = "VeryLazy", version = "*", config = true },
@@ -136,7 +162,7 @@ M.plugin_specs = {
 			date_format = "%Y.%m.%d %H:%M",
 		},
 		keys = {
-			{ "<leader>gb", "<cmd>BlameToggle<cr>", desc = "Git blame" },
+			{ "<leader>gb", open_gitblame, desc = "Git blame" },
 		},
 	},
 

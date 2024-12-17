@@ -33,7 +33,6 @@ set viminfo='20,\"50     " read/write a .viminfo file
 set history=50           " keep 50 lines of command line history
 set ruler                " show the cursor position all the time
 set nowrap               " make sure that long lines don't wrap
-set laststatus=3         " Make sure the status line is always displayed
 set splitright
 set splitbelow
 set visualbell           " use a visual bell instead of beeping

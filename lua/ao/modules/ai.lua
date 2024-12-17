@@ -1,10 +1,17 @@
 --- Fix keyboard mappings.
 ---
 --- Sometimes when Avante crashes, it leaves the keys mapped so things like `A` won't append at the end of the line.
---- Very annoying.
-local function fix_mappings()
+--- Very annoying. It also leaves extra avante windows open, which are difficult to focus and close, so automatically
+--- close all of those as well.
+local function reset_avante()
 	pcall(vim.keymap.del, "n", "A")
 	pcall(vim.keymap.del, "n", "a")
+	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+		local had_value, ft = pcall(vim.fn.getbufvar, buf, "&filetype")
+		if had_value and ft:find("^Avante") ~= nil then
+			pcall(vim.api.nvim_buf_delete, buf, { force = true })
+		end
+	end
 end
 
 return {
@@ -78,8 +85,8 @@ return {
 			},
 			{
 				"<leader>ax",
-				fix_mappings,
-				desc = "fix keyboard mappings",
+				reset_avante,
+				desc = "avante: reset",
 			},
 		},
 		opts = {
