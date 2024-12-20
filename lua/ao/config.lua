@@ -2,6 +2,7 @@ vim.o.shada = "!,'20,<50,s10,h"
 vim.opt.listchars:append("eol:↴")
 vim.opt.listchars:append("tab| ")
 vim.g.neovide_remember_window_size = true
+vim.o.winblend = 10
 
 return {
 	options = {

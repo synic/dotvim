@@ -49,6 +49,15 @@ M.plugin_specs = {
 			{ "<leader>fr", "<cmd>Telescope recent_files pick<cr>", desc = "Recent files" },
 			{ "<leader>fs", telescope_search_cwd, desc = "Search files in current dir" },
 
+			-- spellcheck
+			{
+				"<localleader>s",
+				function()
+					require("telescope.builtin").spell_suggest(require("telescope.themes").get_cursor())
+				end,
+				desc = "Spelling suggestions",
+			},
+
 			-- themes
 			{ "<leader>st", themes.colorscheme_picker, desc = "List themes" },
 

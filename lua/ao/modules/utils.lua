@@ -29,8 +29,8 @@ local plugins = {
 	{
 		"Wansmer/treesj",
 		keys = {
-			{ "gj", "<cmd>lua require('treesj').split()<cr>", desc = "Split" },
-			{ "gJ", "<cmd>lua require('treesj').join()<cr>", desc = "Join" },
+			{ "<localleader>j", "<cmd>lua require('treesj').split()<cr>", desc = "Split" },
+			{ "<localleader>J", "<cmd>lua require('treesj').join()<cr>", desc = "Join" },
 		},
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
 		opts = {

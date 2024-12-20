@@ -2,6 +2,7 @@
 local utils = require("ao.utils")
 local projects = require("ao.modules.projects")
 local clear_winbar_group = vim.api.nvim_create_augroup("WinBarHlClearBg", { clear = true })
+local indentscope_disable_group = vim.api.nvim_create_augroup("MiniIndentScopeDisable", { clear = true })
 
 local M = {}
 
@@ -38,6 +39,18 @@ end
 
 function M.zero_all_window_cursors(tabnr)
 	M.zero_window_cursors(tabnr, true)
+end
+
+-- Execute a command across all tabs
+function M.tabdo(cmd)
+	local current_tab = vim.fn.tabpagenr()
+	vim.cmd("tabdo " .. cmd)
+	vim.cmd(current_tab .. "tabnext") -- restore original tab position
+end
+
+-- Equalize windows in all tabs
+function M.equalize_all_tabs()
+	M.tabdo("wincmd =")
 end
 
 function M.quickfix_remove_item_move_next()
@@ -97,7 +110,7 @@ local function golden_ratio_toggle()
 		vim.g.golden_ratio_enabled = 0
 		vim.notify("Golden Ratio: disabled")
 		vim.g.equalalways = true
-		vim.cmd("wincmd =")
+		M.equalize_all_tabs()
 	end
 end
 
@@ -133,6 +146,42 @@ M.plugin_specs = {
 					end
 				end
 				return notify(msg, ...)
+			end
+		end,
+	},
+
+	-- show indent scope
+	{
+		"echasnovski/mini.indentscope",
+		event = "VeryLazy",
+		version = false,
+		config = true,
+		init = function()
+			local disable_for = {
+				"help",
+				"alpha",
+				"dashboard",
+				"neo-tree",
+				"Trouble",
+				"trouble",
+				"lazy",
+				"mason",
+				"notify",
+				"toggleterm",
+				"lazyterm",
+			}
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = disable_for,
+				group = indentscope_disable_group,
+				callback = function()
+					---@diagnostic disable-next-line: inject-field
+					vim.b.miniindentscope_disable = true
+				end,
+			})
+
+			-- for lazy loading into an existing file
+			if utils.table_contains(disable_for, vim.bo.filetype) then
+				vim.b.miniindentscope_disable = true
 			end
 		end,
 	},
@@ -398,58 +447,84 @@ M.plugin_specs = {
 			{ "<leader>:", "<cmd>lua require('snacks').scratch()<cr>", desc = "Scratch Buffers" },
 			{ "<leader>^", "<cmd>lua require('snacks').dashboard()<cr>", desc = "Dashboard" },
 		},
-		opts = function()
-			local disable_indent_for = {
-				"help",
-				"alpha",
-				"dashboard",
-				"neo-tree",
-				"Trouble",
-				"trouble",
-				"lazy",
-				"mason",
-				"notify",
-				"toggleterm",
-				"lazyterm",
-			}
-
-			return {
-				dashboard = {
-					enabled = true,
-					sections = {
-						{ section = "header" },
-						{ icon = " ", title = "Keymaps", section = "keys", indent = 2, padding = 1 },
-						{ icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
+		opts = {
+			dashboard = {
+				enabled = true,
+				preset = {
+					pick = nil,
+					keys = {
 						{
-							icon = " ",
-							title = "Projects",
-							section = "projects",
-							limit = 7,
-							indent = 2,
-							padding = 1,
-							action = function(dir)
-								require("ao.modules.projects").open(dir)
-							end,
+							icon = " ",
+							key = "f",
+							desc = "Find File",
+							action = ":lua Snacks.dashboard.pick('files')",
 						},
-						{ section = "startup" },
+						{ icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+						{
+							icon = " ",
+							key = "g",
+							desc = "Find Text",
+							action = ":lua Snacks.dashboard.pick('live_grep')",
+						},
+						{
+							icon = " ",
+							key = "r",
+							desc = "Recent Files",
+							action = ":lua Snacks.dashboard.pick('oldfiles')",
+						},
+						{
+							icon = " ",
+							key = "c",
+							desc = "Config",
+							action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
+						},
+						{
+							icon = " ",
+							key = "s",
+							desc = "Restore Session",
+							action = ":lua require('persistence').load({ last=true })",
+						},
+						{
+							icon = "󰒲 ",
+							key = "L",
+							desc = "Lazy",
+							action = ":Lazy",
+							enabled = package.loaded.lazy ~= nil,
+						},
+						{ icon = " ", key = "q", desc = "Quit", action = ":qa" },
 					},
+					header = [[
+███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
+████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
+██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
+██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
+██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
+╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
 				},
-				git = { enabled = true },
-				gitbrowse = { enabled = true },
-				scratch = { enabled = true },
-				indent = {
-					indent = {
-						enabled = false,
+
+				sections = {
+					{ section = "header" },
+
+					{ icon = " ", title = "Keymaps", section = "keys", indent = 2, padding = 1 },
+					{ icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
+					{
+						icon = " ",
+						title = "Projects",
+						section = "projects",
+						limit = 7,
+						indent = 2,
+						padding = 1,
+						action = function(dir)
+							require("ao.modules.projects").open(dir)
+						end,
 					},
-					filter = function(buf)
-						return vim.g.snacks_indent ~= false
-							and vim.b[buf].snacks_indent ~= false
-							and vim.bo[buf].buftype == ""
-							and not utils.table_contains(disable_indent_for, vim.bo[buf].filetype)
-					end,
+					{ section = "startup" },
 				},
-			}
-		end,
+			},
+			git = { enabled = true },
+			gitbrowse = { enabled = true },
+			scratch = { enabled = true },
+		},
 	},
 
 	-- toggle golden ratio
@@ -474,6 +549,21 @@ M.plugin_specs = {
 
 	-- automatically close inactive buffers
 	{ "chrisgrieser/nvim-early-retirement", config = true, event = { "BufAdd" } },
+
+	-- sessions
+	{
+		"folke/persistence.nvim",
+		event = "BufReadPre", -- this will only start session saving when an actual file was opened
+		keys = {
+			{ "<leader>wsr", "<cmd>lua require('persistence').load()<cr>", desc = "Session restore" },
+			{ "<leader>ws/", "<cmd>lua require('persistence').select()<cr>", desc = "Session select" },
+			{ "<leader>wsl", "<cmd>lua require('persistence').load({ last = true })<cr>", desc = "Load last session" },
+			{ "<leader>wsd", "<cmd>lua require('persistence').stop()<cr>", desc = "Stop session manager" },
+		},
+		opts = {
+			-- add any custom options here
+		},
+	},
 }
 
 return M

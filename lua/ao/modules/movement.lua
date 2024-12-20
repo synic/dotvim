@@ -8,6 +8,61 @@ local function pick_window()
 	end
 end
 
+-- Smart hop on `f`, `F`, `t`, and `T`
+--
+-- If there's only one of the target char in the direction specified, just go there (default behavior). Otherwise, use
+-- hop to label the duplicates with target labels
+local function smart_hop(opts)
+	local hop = require("hop")
+	local default_opts = setmetatable({}, { __index = require("hop.defaults") })
+	local jump_regex = require("hop.jump_regex")
+	local function check_opts(o)
+		if not o then
+			return
+		end
+
+		if vim.version.cmp({ 0, 10, 0 }, vim.version()) < 0 then
+			local hint = require("hop.hint")
+			o.hint_type = hint.HintType.OVERLAY
+		end
+	end
+
+	local function override_opts(o)
+		check_opts(o)
+		return setmetatable(o or {}, { __index = default_opts })
+	end
+	local char = vim.fn.getchar()
+
+	char = type(char) == "number" and vim.fn.nr2char(char) or char
+
+	-- Get current line and cursor position
+	local line = vim.api.nvim_get_current_line()
+	local col = vim.api.nvim_win_get_cursor(0)[2]
+
+	-- Count occurrences based on direction
+	local count
+	if opts.direction == require("hop.hint").HintDirection.AFTER_CURSOR then
+		local after_cursor = line:sub(col + 2)
+		count = select(2, after_cursor:gsub(vim.pesc(char), ""))
+	else
+		local before_cursor = line:sub(1, col + 1)
+		count = select(2, before_cursor:gsub(vim.pesc(char), ""))
+	end
+
+	if count <= 1 then
+		-- Use native motion for 0 or 1 occurrence
+		vim.cmd("normal! " .. opts.motion .. char)
+	else
+		opts = override_opts({
+			direction = opts.direction,
+			current_line_only = true,
+			hint_offset = opts.hint_offset,
+		})
+		-- Use hop for multiple occurrences
+		hop.hint_with_regex(jump_regex.regex_by_case_searching(char, true, opts), opts)
+	end
+end
+
 return {
 	{
 		"smoka7/hop.nvim",
@@ -62,6 +117,54 @@ return {
 			{ ";f", "<cmd>HopNodes<cr>", desc = "Hop to node", mode = { "v", "n" } },
 			{ ";s", "<cmd>HopPatternMW<cr>", desc = "Hop to pattern", mode = { "v", "n" } },
 			{ ";j", "<cmd>HopVertical<cr>", desc = "Hop to location vertically", mode = { "v", "n" } },
+			{
+				"f",
+				function()
+					smart_hop({
+						direction = require("hop.hint").HintDirection.AFTER_CURSOR,
+						motion = "f",
+						hint_offset = 0,
+					})
+				end,
+				desc = "Smart hop char after cursor",
+				mode = { "n", "v" },
+			},
+			{
+				"F",
+				function()
+					smart_hop({
+						direction = require("hop.hint").HintDirection.BEFORE_CURSOR,
+						motion = "F",
+						hint_offset = 0,
+					})
+				end,
+				desc = "Smart hop char before cursor",
+				mode = { "n", "v" },
+			},
+			{
+				"t",
+				function()
+					smart_hop({
+						direction = require("hop.hint").HintDirection.AFTER_CURSOR,
+						motion = "t",
+						hint_offset = -1,
+					})
+				end,
+				desc = "Smart hop before char after cursor",
+				mode = { "n", "v" },
+			},
+			{
+				"T",
+				function()
+					smart_hop({
+						direction = require("hop.hint").HintDirection.BEFORE_CURSOR,
+						motion = "T",
+						hint_offset = 1,
+					})
+				end,
+				desc = "Smart hop before char before cursor",
+				mode = { "n", "v" },
+			},
 		},
 	},
 

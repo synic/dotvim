@@ -23,6 +23,7 @@ local key_categories = {
 	{ "<leader>t", group = "toggles" },
 	{ "<leader>w", group = "windows" },
 	{ "<leader>wm", group = "move" },
+	{ "<leader>ws", group = "session" },
 	{ "<leader>x", group = "misc" },
 	{ ";", group = "hop" },
 	{ "<localleader>t", group = "neotest" },
@@ -115,6 +116,12 @@ utils.map_keys({
 	{ "<leader>qc", "<cmd>cclose<cr>", desc = "Close quickfix" },
 	{ "g;", "<cmd>cn<cr>", desc = "Next quickfix item" },
 	{ "<leader>q<space>", interface.quickfix_remove_item_move_next, desc = "Remove quickfix item and move next" },
+
+	-- better movement
+	{ "j", "v:count == 0 ? 'gj' : 'j'", modes = { "n", "x" }, desc = "Down", expr = true, silent = true },
+	{ "<Down>", "v:count == 0 ? 'gj' : 'j'", modes = { "n", "x" }, desc = "Down", expr = true, silent = true },
+	{ "k", "v:count == 0 ? 'gk' : 'k'", modes = { "n", "x" }, desc = "Up", expr = true, silent = true },
+	{ "<Up>", "v:count == 0 ? 'gk' : 'k'", modes = { "n", "x" }, desc = "Up", expr = true, silent = true },
 
 	-- configuration
 	{ "<leader>cm", filesystem.goto_config_directory, desc = "Manage config" },

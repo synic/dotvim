@@ -341,8 +341,7 @@ return {
 		lazy = false,
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter-textobjects",
-			{ "windwp/nvim-ts-autotag", config = true },
-			{ "nvim-treesitter/nvim-treesitter-context", config = true },
+			{ "windwp/nvim-ts-autotag" },
 		},
 		opts = {
 			highlight = {
@@ -436,6 +435,18 @@ return {
 		end,
 	},
 
+	{
+		"windwp/nvim-ts-autotag",
+		lazy = true,
+		opts = {
+			opts = {
+				enable_close = false,
+				enable_rename = true,
+				enable_close_on_slash = true,
+			},
+		},
+	},
+
 	-- diagnostics and formatting
 	{
 		"nvimtools/none-ls.nvim",
@@ -455,7 +466,7 @@ return {
 				"javascript",
 				"go",
 				"svelte",
-				"elixir",
+				-- "elixir",
 			}
 
 			return {
@@ -466,7 +477,7 @@ return {
 					ns.builtins.formatting.djhtml.with({
 						"--tabwidth=2",
 					}),
-					ns.builtins.formatting.mix,
+					-- ns.builtins.formatting.mix,
 					-- ns.builtins.formatting.surface,
 					ns.builtins.formatting.prettierd.with({
 						filetypes = { "typescript", "javascript", "templ" },
@@ -483,9 +494,9 @@ return {
 						extra_args = { "-s", "2", "-u", "1", "-w", "120" },
 					}),
 					ns.builtins.formatting.dart_format,
-					ns.builtins.formatting.rustywind.with({
-						filetypes = { "typescript", "javascript", "css", "templ", "html", "htmldjango" },
-					}),
+					-- ns.builtins.formatting.rustywind.with({
+					-- 	filetypes = { "typescript", "javascript", "css", "templ", "html", "htmldjango", "elixir" },
+					-- }),
 
 					require("none-ls.formatting.trim_whitespace"),
 
@@ -499,6 +510,10 @@ return {
 					ns.builtins.diagnostics.hadolint, -- Dockerfile
 					ns.builtins.diagnostics.markdownlint_cli2,
 					ns.builtins.diagnostics.buf, -- protobuf
+					ns.builtins.diagnostics.codespell,
+
+					-- completion
+					ns.builtins.completion.spell,
 				},
 
 				on_attach = function(client, bufnr)

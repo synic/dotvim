@@ -175,6 +175,12 @@ snippet live "LiveView module"
     end
   end
 
+snippet varout
+  <%= ${1} %>
+
+snippet var
+  <% ${1} %>
+
 snippet livecomp "LiveComponent module"
   defmodule ${1:ModuleName}Component do
     use ${2:MyAppWeb}, :live_component
