@@ -13,16 +13,28 @@ end
 -- If there's only one of the target char in the direction specified, just go there (default behavior). Otherwise, use
 -- hop to label the duplicates with target labels
 local function smart_hop(opts)
+	-- If there's a count, use default vim behavior
+	if vim.v.count > 0 then
+		local char = vim.fn.getchar()
+		char = type(char) == "number" and vim.fn.nr2char(char) or char
+		vim.cmd("normal! " .. vim.v.count .. opts.motion .. char)
+		return
+	end
+
+	-- Store if we're in operator-pending mode
+	local is_operator = vim.fn.mode(1):match("[vo]")
+
 	local hop = require("hop")
+	local hint = require("hop.hint")
 	local default_opts = setmetatable({}, { __index = require("hop.defaults") })
 	local jump_regex = require("hop.jump_regex")
+
 	local function check_opts(o)
 		if not o then
 			return
 		end
 
 		if vim.version.cmp({ 0, 10, 0 }, vim.version()) < 0 then
-			local hint = require("hop.hint")
 			o.hint_type = hint.HintType.OVERLAY
 		end
 	end
@@ -41,7 +53,7 @@ local function smart_hop(opts)
 
 	-- Count occurrences based on direction
 	local count
-	if opts.direction == require("hop.hint").HintDirection.AFTER_CURSOR then
+	if opts.direction == hint.HintDirection.AFTER_CURSOR then
 		local after_cursor = line:sub(col + 2)
 		count = select(2, after_cursor:gsub(vim.pesc(char), ""))
 	else
@@ -51,13 +63,33 @@ local function smart_hop(opts)
 
 	if count <= 1 then
 		-- Use native motion for 0 or 1 occurrence
-		vim.cmd("normal! " .. opts.motion .. char)
+		vim.cmd("normal! " .. (is_operator and '"' .. vim.v.register or "") .. opts.motion .. char)
 	else
 		opts = override_opts({
 			direction = opts.direction,
 			current_line_only = true,
 			hint_offset = opts.hint_offset,
 		})
+		if is_operator then
+			-- For operators, we need to set the register and operator type
+			local reg = vim.v.register
+			local op = vim.v.operator
+			hop.hint_with_regex_opts = {
+				callback = function(pos)
+					-- Apply the operator from current position to target
+					local target_line = pos.line + 1
+					local target_col = pos.column + 1
+					local cmd = string.format(
+						"normal! %s%s%dl%dh",
+						reg ~= "" and '"' .. reg or "",
+						op,
+						target_line - vim.fn.line("."),
+						target_col - vim.fn.col(".")
+					)
+					vim.cmd(cmd)
+				end,
+			}
+		end
 		-- Use hop for multiple occurrences
 		hop.hint_with_regex(jump_regex.regex_by_case_searching(char, true, opts), opts)
 	end
@@ -127,7 +159,7 @@ return {
 					})
 				end,
 				desc = "Smart hop char after cursor",
-				mode = { "n", "v" },
+				mode = { "n", "v", "o" },
 			},
 			{
 				"F",
@@ -139,7 +171,7 @@ return {
 					})
 				end,
 				desc = "Smart hop char before cursor",
-				mode = { "n", "v" },
+				mode = { "n", "v", "o" },
 			},
 			{
 				"t",
@@ -151,7 +183,7 @@ return {
 					})
 				end,
 				desc = "Smart hop before char after cursor",
-				mode = { "n", "v" },
+				mode = { "n", "v", "o" },
 			},
 			{
 				"T",
@@ -163,7 +195,7 @@ return {
 					})
 				end,
 				desc = "Smart hop before char before cursor",
-				mode = { "n", "v" },
+				mode = { "n", "v", "o" },
 			},
 		},
 	},
