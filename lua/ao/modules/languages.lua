@@ -351,6 +351,9 @@ M.plugin_specs = {
 			"nvim-treesitter/nvim-treesitter-context",
 			"windwp/nvim-ts-autotag",
 		},
+		keys = {
+			{ "<leader>t.", "<cmd>TSContextToggle<cr>", desc = "Toggle treesitter context" },
+		},
 		opts = {
 			highlight = {
 				enable = true,

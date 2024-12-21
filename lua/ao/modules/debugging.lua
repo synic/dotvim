@@ -14,14 +14,6 @@ return {
 		},
 	},
 
-	-- ability to toggle diagnostics
-	{
-		"WhoIsSethDaniel/toggle-lsp-diagnostics.nvim",
-		keys = {
-			{ "<leader>ta", "<cmd>ToggleDiag<cr>", desc = "Lsp diagnostics" },
-		},
-	},
-
 	-- Debug Adapter Protocol plugin
 	{
 		"mfussenegger/nvim-dap",

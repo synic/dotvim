@@ -10,6 +10,17 @@ return {
 			local luasnip = require("luasnip")
 
 			return {
+				enabled = function()
+					-- Disable completion when inside a snippet
+					if luasnip.in_snippet() then
+						return false
+					end
+					local disabled = false
+					disabled = disabled or (vim.api.nvim_get_option_value("buftype", { buf = 0 }) == "prompt")
+					disabled = disabled or (vim.fn.reg_recording() ~= "")
+					disabled = disabled or (vim.fn.reg_executing() ~= "")
+					return not disabled
+				end,
 				completion = { completeopt = "menu,menuone,noinsert" },
 				snippet = {
 					expand = function(args)
@@ -37,23 +48,7 @@ return {
 					["<c-p>"] = cmp.mapping.select_prev_item(),
 					["<c-j>"] = cmp.mapping.select_next_item(),
 					["<c-k>"] = cmp.mapping.select_prev_item(),
-					["<c-space>"] = cmp.mapping(function()
-						cmp.complete({
-							config = {
-								sources = {
-									{
-										name = "buffer",
-										option = {
-											get_bufnrs = function()
-												return vim.api.nvim_list_bufs()
-											end,
-										},
-									},
-									{ name = "emoji" },
-								},
-							},
-						})
-					end),
+					["<c-space>"] = cmp.mapping.complete(),
 					["<c-f>"] = cmp.mapping.scroll_docs(4),
 					["<c-e>"] = cmp.mapping.close(),
 					["<c-g>"] = cmp.mapping.abort(),
@@ -86,10 +81,20 @@ return {
 					end, { "i", "s" }),
 				}),
 				sources = cmp.config.sources({
-					{ name = "nvim_lsp" }, -- lsp completion
 					{ name = "lazydev", group_index = 0 },
-					{ name = "luasnip" }, -- snippets
-					{ name = "path" }, -- paths (filesystem)
+					{ name = "luasnip", group_index = 1, priority = 4 },
+					{ name = "nvim_lsp", group_index = 1, priority = 4 },
+					{ name = "path", group_index = 1, priority = 2 },
+					{ name = "emoji", group_index = 1, priority = 1 },
+					{
+						name = "buffer",
+						group_index = 2,
+						option = {
+							get_bufnrs = function()
+								return vim.api.nvim_list_bufs()
+							end,
+						},
+					},
 				}),
 				formatting = {
 					format = lspkind.cmp_format({

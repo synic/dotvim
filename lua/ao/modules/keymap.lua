@@ -94,6 +94,13 @@ utils.map_keys({
 	{ "<leader>tc", "<cmd>let &cuc = !&cuc<cr>", desc = "Toggle cursor column display" },
 	{ "<leader>ti", "<cmd>lua vim.opt.list = not vim.opt.list:get()<cr>", desc = "Toggle indent guide" },
 	{ "<leader>tw", "<cmd>lua vim.opt.list = not vim.opt.list:get()<cr>", desc = "Toggle indent guide" },
+	{
+		"<leader>ta",
+		function()
+			vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+		end,
+		desc = "LSP diagnostics",
+	},
 
 	-- buffers
 	{ "<leader><tab>", "<cmd>b#<cr>", desc = "Previous buffer" },
