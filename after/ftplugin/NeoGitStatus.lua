@@ -55,6 +55,21 @@ vim.api.nvim_buf_set_keymap(0, "n", ",g", "", {
 	callback = open_changes_in_github,
 })
 
-vim.defer_fn(function()
-	vim.cmd.normal("2")
-end, 200)
+-- Initial setup
+vim.cmd.normal("2")
+local root = vim.fs.root(0, ".git")
+if root ~= nil then
+	vim.notify("NeoGit: changing to directory: " .. root)
+	vim.cmd.cd(root)
+end
+
+-- Create buffer-local autocmd for focus events
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+	buffer = 0,
+	callback = function()
+		local git_root = vim.fs.root(0, ".git")
+		if git_root ~= nil then
+			vim.cmd.cd(git_root)
+		end
+	end,
+})

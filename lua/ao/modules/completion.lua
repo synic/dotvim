@@ -37,9 +37,25 @@ return {
 					["<c-p>"] = cmp.mapping.select_prev_item(),
 					["<c-j>"] = cmp.mapping.select_next_item(),
 					["<c-k>"] = cmp.mapping.select_prev_item(),
-					["<c-b>"] = cmp.mapping.scroll_docs(-4),
+					["<c-space>"] = cmp.mapping(function()
+						cmp.complete({
+							config = {
+								sources = {
+									{
+										name = "buffer",
+										option = {
+											get_bufnrs = function()
+												return vim.api.nvim_list_bufs()
+											end,
+										},
+									},
+									{ name = "emoji" },
+								},
+							},
+						})
+					end),
 					["<c-f>"] = cmp.mapping.scroll_docs(4),
-					["<c-space>"] = cmp.mapping.complete(),
+					-- ["<c-space>"] = cmp.mapping.complete(),
 					["<c-e>"] = cmp.mapping.close(),
 					["<c-g>"] = cmp.mapping.abort(),
 					["<cr>"] = cmp.mapping.confirm({ select = true }),
@@ -72,22 +88,9 @@ return {
 				}),
 				sources = cmp.config.sources({
 					{ name = "nvim_lsp" }, -- lsp completion
-					{ name = "lazydev", grou_index = 0 },
-					{ name = "path" }, -- paths (filesystem)
+					{ name = "lazydev", group_index = 0 },
 					{ name = "luasnip" }, -- snippets
-					{
-						name = "buffer", -- completion from open buffers
-						option = {
-							get_bufnrs = function()
-								-- return visible buffers only
-								local bufs = {}
-								for _, win in ipairs(vim.api.nvim_list_wins()) do
-									bufs[vim.api.nvim_win_get_buf(win)] = true
-								end
-								return vim.tbl_keys(bufs)
-							end,
-						},
-					},
+					{ name = "path" }, -- paths (filesystem)
 				}),
 				formatting = {
 					format = lspkind.cmp_format({
@@ -105,6 +108,7 @@ return {
 			"saadparwaiz1/cmp_luasnip",
 			"hrsh7th/cmp-path",
 			"L3MON4D3/LuaSnip",
+			"hrsh7th/cmp-emoji",
 		},
 	},
 }

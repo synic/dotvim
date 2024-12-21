@@ -63,7 +63,35 @@ local function smart_hop(opts)
 
 	if count <= 1 then
 		-- Use native motion for 0 or 1 occurrence
-		vim.cmd("normal! " .. (is_operator and '"' .. vim.v.register or "") .. opts.motion .. char)
+		local mode = vim.fn.mode(1)
+		if mode == "no" and vim.v.operator == "v" then
+			-- We're in operator-pending mode from the 'v' command
+			-- Start a new visual selection from current position to target
+			local cmd = "normal! v" .. opts.motion .. char
+			vim.cmd(cmd)
+		elseif mode == "no" then
+			-- In operator-pending mode, just execute the motion
+			-- since the operator is already pending
+			local cmd = "normal! " .. opts.motion .. char .. ""
+			if opts.motion == "t" then
+				-- Add an additional 'l' for 't' motion to include correct range
+				cmd = cmd .. "l"
+			elseif opts.motion == "T" then
+				-- Add an additional 'h' for 'T' motion
+				cmd = cmd .. "h"
+			elseif opts.motion == "f" then
+				-- Add an additional 'l' for 'f' motion to include target char
+				cmd = cmd .. "l"
+			elseif opts.motion == "F" then
+				-- Add an additional 'h' for 'F' motion to include target char
+				cmd = cmd .. "h"
+			end
+			vim.cmd(cmd)
+		else
+			-- In normal mode, just use the motion directly
+			local cmd = "normal! " .. opts.motion .. char
+			vim.cmd(cmd)
+		end
 	else
 		opts = override_opts({
 			direction = opts.direction,

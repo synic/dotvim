@@ -3,7 +3,53 @@ local utils = require("ao.utils")
 local lsp_formatting_group = vim.api.nvim_create_augroup("LspFormatting", {})
 local flags = { allow_incremental_sync = true, debounce_text_changes = 200 }
 
-local function lsp_on_attach(_, bufnr)
+local M = {}
+
+local function goto_definition(split_cmd)
+	local handled = false
+	vim.lsp.buf.definition({
+		reuse_win = false,
+		on_list = function(options)
+			if handled then
+				return
+			end
+
+			handled = true
+
+			if #options.items == 0 then
+				return
+			end
+
+			-- Create a set of unique definitions
+			local unique_defs = {}
+			for _, item in ipairs(options.items) do
+				local key = string.format("%s:%d", item.filename, item.lnum)
+				unique_defs[key] = item
+			end
+
+			-- Count unique definitions
+			local unique_count = 0
+			for _ in pairs(unique_defs) do
+				unique_count = unique_count + 1
+			end
+
+			if split_cmd then
+				vim.cmd(split_cmd)
+			end
+
+			if unique_count == 1 then
+				-- Only one unique definition, go to it directly
+				local first = options.items[1]
+				vim.cmd(string.format("e +%d %s", first.lnum, first.filename))
+			else
+				-- Multiple different definitions, show telescope
+				require("telescope.builtin").lsp_definitions()
+			end
+		end,
+	})
+end
+
+M.lsp_on_attach = function(_, bufnr)
 	local telescope = require("telescope.builtin")
 	local ft = vim.bo[bufnr].filetype
 
@@ -15,10 +61,31 @@ local function lsp_on_attach(_, bufnr)
 		{ "<localleader>$", "<cmd>LspInfo<cr>", desc = "LSP Info", buffer = bufnr },
 		{ "=", vim.lsp.buf.format, desc = "Format selection", buffer = bufnr, modes = { "v" } },
 
-		{ "gd", telescope.lsp_definitions, desc = "Definition(s)", buffer = bufnr },
+		{
+			"gd",
+			function()
+				goto_definition()
+			end,
+			desc = "Definition(s)",
+			buffer = bufnr,
+		},
 		{ "gD", vim.lsp.buf.declaration, desc = "Declaration(s)", buffer = bufnr },
-		{ "g/", "<cmd>vsplit<cr><cmd>Telescope lsp_definitions<cr>", desc = "Goto def in vsplit", buffer = bufnr },
-		{ "g-", "<cmd>split<cr><cmd>Telescope lsp_definitions<cr>", desc = "Goto def in hsplit", buffer = bufnr },
+		{
+			"g/",
+			function()
+				goto_definition("vsplit")
+			end,
+			desc = "Goto def in vsplit",
+			buffer = bufnr,
+		},
+		{
+			"g-",
+			function()
+				goto_definition("split")
+			end,
+			desc = "Goto def in hsplit",
+			buffer = bufnr,
+		},
 		{ "gr", telescope.lsp_references, desc = "Reference(s)", buffer = bufnr },
 		{ "gI", telescope.lsp_implementations, desc = "Implementation(s)", buffer = bufnr },
 		{ "g.", telescope.lsp_document_symbols, desc = "Document symbols", buffer = bufnr },
@@ -34,7 +101,7 @@ local function lsp_on_attach(_, bufnr)
 	end
 end
 
-return {
+M.plugin_specs = {
 	-- configure mason packages with LSP
 	{
 		"williamboman/mason.nvim",
@@ -49,15 +116,7 @@ return {
 		dependencies = { "hrsh7th/cmp-nvim-lsp" },
 		event = "VeryLazy",
 		opts = {
-			ensure_installed = {
-				"lua_ls",
-				"gopls",
-				"ruff",
-				"pyright",
-				"vimls",
-				"bashls",
-				"emmet_language_server",
-			},
+			ensure_installed = { "lua_ls", "vimls", "bashls" },
 			automatic_installation = true,
 		},
 		init = function()
@@ -73,7 +132,7 @@ return {
 				["lua_ls"] = function()
 					lsp.lua_ls.setup({
 						capabilities = capabilities,
-						on_attach = lsp_on_attach,
+						on_attach = M.lsp_on_attach,
 						flags = flags,
 						settings = {
 							Lua = {
@@ -92,7 +151,7 @@ return {
 					lsp.htmx.setup({
 						flags = flags,
 						capabilities = capabilities,
-						on_attach = lsp_on_attach,
+						on_attach = M.lsp_on_attach,
 						filetypes = { "html", "templ", "htmldjango" },
 					})
 				end,
@@ -100,7 +159,7 @@ return {
 				["tailwindcss"] = function()
 					lsp.tailwindcss.setup({
 						flags = flags,
-						on_attach = lsp_on_attach,
+						on_attach = M.lsp_on_attach,
 						capabilities = capabilities,
 						filetypes = {
 							"templ",
@@ -120,7 +179,7 @@ return {
 					lsp.rust_analyzer.setup({
 						flags = flags,
 						capabilities = capabilities,
-						on_attach = lsp_on_attach,
+						on_attach = M.lsp_on_attach,
 						settings = {
 							["rust-analyzer"] = {
 								cargo = {
@@ -145,7 +204,7 @@ return {
 				["templ"] = function()
 					lsp.templ.setup({
 						capabilities = capabilities,
-						on_attach = lsp_on_attach,
+						on_attach = M.lsp_on_attach,
 						flags = flags,
 						filetypes = { "templ" },
 					})
@@ -154,7 +213,7 @@ return {
 				["ts_ls"] = function()
 					lsp.ts_ls.setup({
 						capabilities = capabilities,
-						on_attach = lsp_on_attach,
+						on_attach = M.lsp_on_attach,
 						flags = flags,
 						filetypes = { "templ", "javascript", "typescript", "html" },
 					})
@@ -164,7 +223,7 @@ return {
 					lsp.gopls.setup({
 						flags = flags,
 						capabilities = capabilities,
-						on_attach = lsp_on_attach,
+						on_attach = M.lsp_on_attach,
 						settings = {
 							gopls = {
 								buildFlags = { "-tags=debug,release,mage,tools" },
@@ -182,7 +241,7 @@ return {
 					lsp.pyright.setup({
 						flags = flags,
 						capabilities = capabilities,
-						on_attach = lsp_on_attach,
+						on_attach = M.lsp_on_attach,
 						settings = {
 							python = {
 								-- analysis = {
@@ -197,7 +256,7 @@ return {
 					lsp.basedpyright.setup({
 						flags = flags,
 						capabilities = capabilities,
-						on_attach = lsp_on_attach,
+						on_attach = M.lsp_on_attach,
 						settings = {
 							python = {
 								typeCheckingMode = "off",
@@ -246,7 +305,7 @@ return {
 					server_name = server_name == "tsserver" and "ts_ls" or server_name
 					require("lspconfig")[server_name].setup({
 						capabilities = capabilities,
-						on_attach = lsp_on_attach,
+						on_attach = M.lsp_on_attach,
 						flags = flags,
 					})
 				end,
@@ -272,7 +331,7 @@ return {
 		"pmizio/typescript-tools.nvim",
 		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
 		opts = {
-			on_attach = lsp_on_attach,
+			on_attach = M.lsp_on_attach,
 		},
 	},
 
@@ -296,7 +355,7 @@ return {
 			servers = {
 				dartls = {
 					setup = {
-						on_attach = lsp_on_attach,
+						on_attach = M.lsp_on_attach,
 						flags = flags,
 						cmd = { "dart", "language-server", "--protocol=lsp" },
 					},
@@ -341,7 +400,8 @@ return {
 		lazy = false,
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter-textobjects",
-			{ "windwp/nvim-ts-autotag" },
+			"nvim-treesitter/nvim-treesitter-context",
+			"windwp/nvim-ts-autotag",
 		},
 		opts = {
 			highlight = {
@@ -511,9 +571,6 @@ return {
 					ns.builtins.diagnostics.markdownlint_cli2,
 					ns.builtins.diagnostics.buf, -- protobuf
 					ns.builtins.diagnostics.codespell,
-
-					-- completion
-					ns.builtins.completion.spell,
 				},
 
 				on_attach = function(client, bufnr)
@@ -558,4 +615,46 @@ return {
 			{ "<localleader>g", "<cmd>lua require('neogen').generate()<cr>", desc = "Generate annotations" },
 		},
 	},
+
+	-- elixir
+	{
+		"elixir-tools/elixir-tools.nvim",
+		version = "*",
+		event = { "VeryLazy" },
+		config = function()
+			local elixir = require("elixir")
+			local elixirls = require("elixir.elixirls")
+
+			elixir.setup({
+				nextls = {
+					enable = true,
+					init_options = {
+						mix_env = "dev",
+						mix_target = "host",
+						experimental = {
+							completions = {
+								enable = true, -- control if completions are enabled. defaults to false
+							},
+						},
+					},
+					on_attach = M.lsp_on_attach,
+				},
+				elixirls = {
+					enable = true,
+					settings = elixirls.settings({
+						dialyzerEnabled = false,
+						enableTestLenses = true,
+					}),
+				},
+				projectionist = {
+					enable = true,
+				},
+			})
+		end,
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+	},
 }
+
+return M

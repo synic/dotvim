@@ -197,11 +197,7 @@ function M.find_path_root(path)
 		return root
 	end
 
-	root = vim.fs.find(config.options.projects.root_names, { path = path, upward = true })[1]
-
-	if root ~= nil then
-		root = vim.fs.dirname(root)
-	end
+	root = vim.fs.root(0, config.options.projects.root_names)
 
 	root_cache[path] = root or -1
 	return root

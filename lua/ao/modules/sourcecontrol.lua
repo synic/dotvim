@@ -101,15 +101,7 @@ end
 -- another tab, nothing will happen. NeoGit is already open, even if you can't see it.
 local function neogit_open()
 	local neogit = require("neogit")
-	local handle = io.popen("git rev-parse --show-toplevel")
-
-	if not handle then
-		vim.notify("Not in a git repository", vim.log.levels.WARN)
-		return
-	end
-
-	local root = handle:read("*l")
-	handle:close()
+	local root = vim.fs.root(0, { ".git" })
 
 	if not root then
 		vim.notify("Could not determine git root", vim.log.levels.WARN)
