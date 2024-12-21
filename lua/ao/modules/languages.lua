@@ -5,50 +5,6 @@ local flags = { allow_incremental_sync = true, debounce_text_changes = 200 }
 
 local M = {}
 
-local function goto_definition(split_cmd)
-	local handled = false
-	vim.lsp.buf.definition({
-		reuse_win = false,
-		on_list = function(options)
-			if handled then
-				return
-			end
-
-			handled = true
-
-			if #options.items == 0 then
-				return
-			end
-
-			-- Create a set of unique definitions
-			local unique_defs = {}
-			for _, item in ipairs(options.items) do
-				local key = string.format("%s:%d", item.filename, item.lnum)
-				unique_defs[key] = item
-			end
-
-			-- Count unique definitions
-			local unique_count = 0
-			for _ in pairs(unique_defs) do
-				unique_count = unique_count + 1
-			end
-
-			if split_cmd then
-				vim.cmd(split_cmd)
-			end
-
-			if unique_count == 1 then
-				-- Only one unique definition, go to it directly
-				local first = options.items[1]
-				vim.cmd(string.format("e +%d %s", first.lnum, first.filename))
-			else
-				-- Multiple different definitions, show telescope
-				require("telescope.builtin").lsp_definitions()
-			end
-		end,
-	})
-end
-
 M.lsp_on_attach = function(_, bufnr)
 	local telescope = require("telescope.builtin")
 	local ft = vim.bo[bufnr].filetype
@@ -61,31 +17,10 @@ M.lsp_on_attach = function(_, bufnr)
 		{ "<localleader>$", "<cmd>LspInfo<cr>", desc = "LSP Info", buffer = bufnr },
 		{ "=", vim.lsp.buf.format, desc = "Format selection", buffer = bufnr, modes = { "v" } },
 
-		{
-			"gd",
-			function()
-				goto_definition()
-			end,
-			desc = "Definition(s)",
-			buffer = bufnr,
-		},
+		{ "gd", telescope.lsp_definitions, desc = "Definition(s)", buffer = bufnr },
 		{ "gD", vim.lsp.buf.declaration, desc = "Declaration(s)", buffer = bufnr },
-		{
-			"g/",
-			function()
-				goto_definition("vsplit")
-			end,
-			desc = "Goto def in vsplit",
-			buffer = bufnr,
-		},
-		{
-			"g-",
-			function()
-				goto_definition("split")
-			end,
-			desc = "Goto def in hsplit",
-			buffer = bufnr,
-		},
+		{ "g/", "<cmd>vsplit<cr><cmd>Telescope lsp_definitions<cr>", desc = "Goto def in vsplit", buffer = bufnr },
+		{ "g-", "<cmd>split<cr><cmd>Telescope lsp_definitions<cr>", desc = "Goto def in hsplit", buffer = bufnr },
 		{ "gr", telescope.lsp_references, desc = "Reference(s)", buffer = bufnr },
 		{ "gI", telescope.lsp_implementations, desc = "Implementation(s)", buffer = bufnr },
 		{ "g.", telescope.lsp_document_symbols, desc = "Document symbols", buffer = bufnr },
@@ -153,6 +88,19 @@ M.plugin_specs = {
 						capabilities = capabilities,
 						on_attach = M.lsp_on_attach,
 						filetypes = { "html", "templ", "htmldjango" },
+					})
+				end,
+
+				["nextls"] = function()
+					lsp.nextls.setup({
+						flags = flags,
+						capabilities = capabilities,
+						on_attach = M.lsp_on_attach,
+						init_options = {
+							experimental = {
+								completions = { enable = true },
+							},
+						},
 					})
 				end,
 
@@ -613,46 +561,6 @@ M.plugin_specs = {
 		},
 		keys = {
 			{ "<localleader>g", "<cmd>lua require('neogen').generate()<cr>", desc = "Generate annotations" },
-		},
-	},
-
-	-- elixir
-	{
-		"elixir-tools/elixir-tools.nvim",
-		version = "*",
-		event = { "VeryLazy" },
-		config = function()
-			local elixir = require("elixir")
-			local elixirls = require("elixir.elixirls")
-
-			elixir.setup({
-				nextls = {
-					enable = true,
-					init_options = {
-						mix_env = "dev",
-						mix_target = "host",
-						experimental = {
-							completions = {
-								enable = true, -- control if completions are enabled. defaults to false
-							},
-						},
-					},
-					on_attach = M.lsp_on_attach,
-				},
-				elixirls = {
-					enable = true,
-					settings = elixirls.settings({
-						dialyzerEnabled = false,
-						enableTestLenses = true,
-					}),
-				},
-				projectionist = {
-					enable = true,
-				},
-			})
-		end,
-		dependencies = {
-			"nvim-lua/plenary.nvim",
 		},
 	},
 }
