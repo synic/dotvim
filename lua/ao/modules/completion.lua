@@ -10,17 +10,6 @@ return {
 			local luasnip = require("luasnip")
 
 			return {
-				enabled = function()
-					-- Disable completion when inside a snippet
-					if luasnip.in_snippet() then
-						return false
-					end
-					local disabled = false
-					disabled = disabled or (vim.api.nvim_get_option_value("buftype", { buf = 0 }) == "prompt")
-					disabled = disabled or (vim.fn.reg_recording() ~= "")
-					disabled = disabled or (vim.fn.reg_executing() ~= "")
-					return not disabled
-				end,
 				completion = { completeopt = "menu,menuone,noinsert" },
 				snippet = {
 					expand = function(args)
@@ -44,11 +33,16 @@ return {
 					ghost_text = true,
 				},
 				mapping = cmp.mapping.preset.insert({
-					["<c-n>"] = cmp.mapping.select_next_item(),
-					["<c-p>"] = cmp.mapping.select_prev_item(),
 					["<c-j>"] = cmp.mapping.select_next_item(),
 					["<c-k>"] = cmp.mapping.select_prev_item(),
 					["<c-space>"] = cmp.mapping.complete(),
+					["<c-l>"] = cmp.mapping.complete({
+						config = {
+							sources = {
+								{ name = "luasnip" },
+							},
+						},
+					}),
 					["<c-f>"] = cmp.mapping.scroll_docs(4),
 					["<c-e>"] = cmp.mapping.close(),
 					["<c-g>"] = cmp.mapping.abort(),
@@ -60,20 +54,22 @@ return {
 					["<tab>"] = cmp.mapping(function(fallback)
 						local col = vim.fn.col(".") - 1
 
-						if cmp.visible() then
-							cmp.select_next_item()
-						elseif luasnip.expand_or_locally_jumpable() then
+						if luasnip.expand_or_locally_jumpable() then
 							luasnip.expand_or_jump()
 						elseif col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
 							fallback()
 						else
-							cmp.complete()
+							cmp.complete({
+								config = {
+									sources = {
+										{ name = "luasnip" },
+									},
+								},
+							})
 						end
 					end, { "i", "s" }),
 					["<s-tab>"] = cmp.mapping(function(fallback)
-						if cmp.visible() then
-							cmp.select_prev_item()
-						elseif luasnip.locally_jumpable(-1) then
+						if luasnip.locally_jumpable(-1) then
 							luasnip.jump(-1)
 						else
 							fallback()
@@ -82,7 +78,6 @@ return {
 				}),
 				sources = cmp.config.sources({
 					{ name = "lazydev", group_index = 0 },
-					{ name = "luasnip", group_index = 1, priority = 4 },
 					{ name = "nvim_lsp", group_index = 1, priority = 4 },
 					{ name = "path", group_index = 1, priority = 2 },
 					{ name = "emoji", group_index = 1, priority = 1 },

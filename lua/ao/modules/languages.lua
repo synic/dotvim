@@ -1,3 +1,4 @@
+local config = require("ao.config")
 local utils = require("ao.utils")
 
 local lsp_formatting_group = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -11,7 +12,7 @@ M.lsp_on_attach = function(_, bufnr)
 
 	utils.map_keys({
 		{ "<localleader>r", vim.lsp.buf.rename, desc = "Rename symbol", buffer = bufnr },
-		{ "<localleader>,", vim.lsp.buf.code_action, desc = "Code actions", buffer = bufnr },
+		{ "<localleader>,", vim.lsp.buf.code_action, desc = "Code actions", buffer = bufnr, modes = { "n", "v" } },
 		{ "<localleader>=", vim.lsp.buf.format, desc = "Format document", buffer = bufnr, modes = { "n", "v" } },
 		{ "<localleader>^", "<cmd>LspRestart<cr>", desc = "Restart LSP", buffer = bufnr },
 		{ "<localleader>$", "<cmd>LspInfo<cr>", desc = "LSP Info", buffer = bufnr },
@@ -21,8 +22,8 @@ M.lsp_on_attach = function(_, bufnr)
 		{ "gD", vim.lsp.buf.declaration, desc = "Declaration(s)", buffer = bufnr },
 		{ "g/", "<cmd>vsplit<cr><cmd>Telescope lsp_definitions<cr>", desc = "Goto def in vsplit", buffer = bufnr },
 		{ "g-", "<cmd>split<cr><cmd>Telescope lsp_definitions<cr>", desc = "Goto def in hsplit", buffer = bufnr },
-		{ "gr", telescope.lsp_references, desc = "Reference(s)", buffer = bufnr },
-		{ "gI", telescope.lsp_implementations, desc = "Implementation(s)", buffer = bufnr },
+		{ "grr", telescope.lsp_references, desc = "Reference(s)", buffer = bufnr },
+		{ "gri", telescope.lsp_implementations, desc = "Implementation(s)", buffer = bufnr },
 		{ "g.", telescope.lsp_document_symbols, desc = "Document symbols", buffer = bufnr },
 		{ "gW", telescope.lsp_dynamic_workspace_symbols, desc = "Workspace symbols", buffer = bufnr },
 		{ "K", vim.lsp.buf.hover, desc = "Hover", buffer = bufnr },
@@ -40,18 +41,38 @@ M.plugin_specs = {
 	-- configure mason packages with LSP
 	{
 		"williamboman/mason.nvim",
-		config = true,
+		opts = {
+			registries = {
+				"file:~/Projects/mason-registry",
+			},
+		},
 		lazy = false, -- mason does not like to be lazy loaded
 		keys = {
 			{ "<leader>cM", "<cmd>Mason<cr>", desc = "Mason" },
 		},
 	},
+
+	{
+		"synic/refactorex.nvim",
+		ft = "elixir",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+		-- dir = "/Users/synic/Projects/refactorex.nvim",
+		config = true,
+	},
+
 	{
 		"williamboman/mason-lspconfig.nvim",
-		dependencies = { "hrsh7th/cmp-nvim-lsp" },
+		dependencies = {
+			"hrsh7th/cmp-nvim-lsp",
+		},
 		event = "VeryLazy",
 		opts = {
-			ensure_installed = { "lua_ls", "vimls", "bashls" },
+			ensure_installed = vim.list_extend(
+				config.options.mason.ensure_installed_base,
+				config.options.mason.ensure_installed
+			),
 			automatic_installation = true,
 		},
 		init = function()
@@ -61,12 +82,10 @@ M.plugin_specs = {
 			local lsp = require("lspconfig")
 			local m = require("mason-lspconfig")
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
 			opts.handlers = {
 				["lua_ls"] = function()
 					lsp.lua_ls.setup({
-						capabilities = capabilities,
 						on_attach = M.lsp_on_attach,
 						flags = flags,
 						settings = {
@@ -85,16 +104,22 @@ M.plugin_specs = {
 				["htmx"] = function()
 					lsp.htmx.setup({
 						flags = flags,
-						capabilities = capabilities,
 						on_attach = M.lsp_on_attach,
 						filetypes = { "html", "templ", "htmldjango" },
+					})
+				end,
+
+				["refactorex"] = function()
+					lsp.refactorex.setup({
+						flags = flags,
+						on_attach = M.lsp_on_attach,
+						filetypes = { "elixir" },
 					})
 				end,
 
 				["nextls"] = function()
 					lsp.nextls.setup({
 						flags = flags,
-						capabilities = capabilities,
 						on_attach = M.lsp_on_attach,
 						init_options = {
 							experimental = {
@@ -108,7 +133,6 @@ M.plugin_specs = {
 					lsp.tailwindcss.setup({
 						flags = flags,
 						on_attach = M.lsp_on_attach,
-						capabilities = capabilities,
 						filetypes = {
 							"templ",
 							"astro",
@@ -126,7 +150,6 @@ M.plugin_specs = {
 				["rust_analyzer"] = function()
 					lsp.rust_analyzer.setup({
 						flags = flags,
-						capabilities = capabilities,
 						on_attach = M.lsp_on_attach,
 						settings = {
 							["rust-analyzer"] = {
@@ -151,7 +174,6 @@ M.plugin_specs = {
 
 				["templ"] = function()
 					lsp.templ.setup({
-						capabilities = capabilities,
 						on_attach = M.lsp_on_attach,
 						flags = flags,
 						filetypes = { "templ" },
@@ -160,7 +182,6 @@ M.plugin_specs = {
 
 				["ts_ls"] = function()
 					lsp.ts_ls.setup({
-						capabilities = capabilities,
 						on_attach = M.lsp_on_attach,
 						flags = flags,
 						filetypes = { "templ", "javascript", "typescript", "html" },
@@ -170,7 +191,6 @@ M.plugin_specs = {
 				["gopls"] = function()
 					lsp.gopls.setup({
 						flags = flags,
-						capabilities = capabilities,
 						on_attach = M.lsp_on_attach,
 						settings = {
 							gopls = {
@@ -178,7 +198,6 @@ M.plugin_specs = {
 								completeUnimported = true,
 								analyses = {
 									unusedparams = true,
-									fieldalignment = true,
 								},
 							},
 						},
@@ -188,7 +207,6 @@ M.plugin_specs = {
 				["pyright"] = function()
 					lsp.pyright.setup({
 						flags = flags,
-						capabilities = capabilities,
 						on_attach = M.lsp_on_attach,
 						settings = {
 							python = {
@@ -203,7 +221,6 @@ M.plugin_specs = {
 				["basedpyright"] = function()
 					lsp.basedpyright.setup({
 						flags = flags,
-						capabilities = capabilities,
 						on_attach = M.lsp_on_attach,
 						settings = {
 							python = {
@@ -252,7 +269,6 @@ M.plugin_specs = {
 				function(server_name)
 					server_name = server_name == "tsserver" and "ts_ls" or server_name
 					require("lspconfig")[server_name].setup({
-						capabilities = capabilities,
 						on_attach = M.lsp_on_attach,
 						flags = flags,
 					})
@@ -364,10 +380,10 @@ M.plugin_specs = {
 				disable = { "dart", "htmldjango" },
 			},
 			auto_install = true,
-			ensure_installed = {
-				"lua",
-				"vimdoc",
-			},
+			ensure_installed = vim.list_extend(
+				config.options.treesitter.ensure_installed_base,
+				config.options.treesitter.ensure_installed
+			),
 			incremental_selection = {
 				enable = true,
 				keymaps = {
@@ -477,7 +493,6 @@ M.plugin_specs = {
 				"javascript",
 				"go",
 				"svelte",
-				-- "elixir",
 			}
 
 			return {
@@ -488,8 +503,6 @@ M.plugin_specs = {
 					ns.builtins.formatting.djhtml.with({
 						"--tabwidth=2",
 					}),
-					-- ns.builtins.formatting.mix,
-					-- ns.builtins.formatting.surface,
 					ns.builtins.formatting.prettierd.with({
 						filetypes = { "typescript", "javascript", "templ" },
 					}),
@@ -506,7 +519,7 @@ M.plugin_specs = {
 					}),
 					ns.builtins.formatting.dart_format,
 					-- ns.builtins.formatting.rustywind.with({
-					-- 	filetypes = { "typescript", "javascript", "css", "templ", "html", "htmldjango", "elixir" },
+					-- 	filetypes = { "typescript", "javascript", "css", "templ", "html", "htmldjango" },
 					-- }),
 
 					require("none-ls.formatting.trim_whitespace"),
@@ -521,7 +534,6 @@ M.plugin_specs = {
 					ns.builtins.diagnostics.hadolint, -- Dockerfile
 					ns.builtins.diagnostics.markdownlint_cli2,
 					ns.builtins.diagnostics.buf, -- protobuf
-					ns.builtins.diagnostics.codespell,
 				},
 
 				on_attach = function(client, bufnr)

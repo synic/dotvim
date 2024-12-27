@@ -1,4 +1,5 @@
 ---@diagnostic disable: inject-field
+local config = require("ao.config")
 local utils = require("ao.utils")
 local projects = require("ao.modules.projects")
 local clear_winbar_group = vim.api.nvim_create_augroup("WinBarHlClearBg", { clear = true })
@@ -516,6 +517,20 @@ M.plugin_specs = {
 						padding = 1,
 						action = function(dir)
 							require("ao.modules.projects").open(dir)
+						end,
+						dirs = function()
+							local cwd = config.options.projects.directory.path or "."
+							local project_entries = projects.list({ cwd = cwd })
+							local dirs = {}
+
+							for _, entry in ipairs(project_entries) do
+								if type(entry) == "table" then
+									entry = entry.path
+								end
+								dirs[#dirs + 1] = entry
+							end
+
+							return dirs
 						end,
 					},
 					{ section = "startup" },

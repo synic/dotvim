@@ -31,6 +31,16 @@ return {
 			theme = "gruvbox-material",
 		},
 
+		treesitter = {
+			ensure_installed_base = { "lua", "vimdoc" },
+			ensure_installed = {},
+		},
+
+		mason = {
+			ensure_installed_base = { "lua_ls", "vimls", "bashls" },
+			ensure_installed = {},
+		},
+
 		lazy = {
 			install = { install_missing = false },
 			change_detection = {

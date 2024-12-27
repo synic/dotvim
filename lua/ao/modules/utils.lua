@@ -23,7 +23,26 @@ utils.map_keys({
 
 local plugins = {
 	-- surround plugin
-	{ "kylechui/nvim-surround", version = "*", event = "VeryLazy", config = true },
+	{
+		"kylechui/nvim-surround",
+		version = "*",
+		event = "VeryLazy",
+
+		opts = {
+			surrounds = {
+				["%"] = {
+					add = function()
+						if vim.bo.filetype == "elixir" then
+							return {
+								"%{",
+								"}",
+							}
+						end
+					end,
+				},
+			},
+		},
+	},
 
 	-- joining and splitting
 	{
