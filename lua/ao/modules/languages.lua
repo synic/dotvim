@@ -41,11 +41,7 @@ M.plugin_specs = {
 	-- configure mason packages with LSP
 	{
 		"williamboman/mason.nvim",
-		opts = {
-			registries = {
-				"file:~/Projects/mason-registry",
-			},
-		},
+		config = true,
 		lazy = false, -- mason does not like to be lazy loaded
 		keys = {
 			{ "<leader>cM", "<cmd>Mason<cr>", desc = "Mason" },
@@ -55,10 +51,7 @@ M.plugin_specs = {
 	{
 		"synic/refactorex.nvim",
 		ft = "elixir",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-		},
-		-- dir = "/Users/synic/Projects/refactorex.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
 		config = true,
 	},
 
@@ -106,14 +99,6 @@ M.plugin_specs = {
 						flags = flags,
 						on_attach = M.lsp_on_attach,
 						filetypes = { "html", "templ", "htmldjango" },
-					})
-				end,
-
-				["refactorex"] = function()
-					lsp.refactorex.setup({
-						flags = flags,
-						on_attach = M.lsp_on_attach,
-						filetypes = { "elixir" },
 					})
 				end,
 
@@ -204,32 +189,6 @@ M.plugin_specs = {
 					})
 				end,
 
-				["pyright"] = function()
-					lsp.pyright.setup({
-						flags = flags,
-						on_attach = M.lsp_on_attach,
-						settings = {
-							python = {
-								-- analysis = {
-								-- 	typeCheckingMode = "off",
-								-- },
-							},
-						},
-					})
-				end,
-
-				["basedpyright"] = function()
-					lsp.basedpyright.setup({
-						flags = flags,
-						on_attach = M.lsp_on_attach,
-						settings = {
-							python = {
-								typeCheckingMode = "off",
-							},
-						},
-					})
-				end,
-
 				["emmet_language_server"] = function()
 					local c = vim.lsp.protocol.make_client_capabilities()
 					c.textDocument.completion.completionItem.snippetSupport = true
@@ -267,7 +226,7 @@ M.plugin_specs = {
 
 				-- generic setup function for servers without explicit configuration
 				function(server_name)
-					server_name = server_name == "tsserver" and "ts_ls" or server_name
+					server_name = server_name == "tsserver" and "ts_ls" or server_name -- fix weird tsserver naming situation
 					require("lspconfig")[server_name].setup({
 						on_attach = M.lsp_on_attach,
 						flags = flags,

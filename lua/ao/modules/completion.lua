@@ -43,6 +43,13 @@ return {
 							},
 						},
 					}),
+					["jk"] = cmp.mapping(function(fallback)
+						if luasnip.expand_or_locally_jumpable() then
+							luasnip.expand_or_jump()
+						else
+							fallback()
+						end
+					end, { "i", "s" }),
 					["<c-f>"] = cmp.mapping.scroll_docs(4),
 					["<c-e>"] = cmp.mapping.close(),
 					["<c-g>"] = cmp.mapping.abort(),
