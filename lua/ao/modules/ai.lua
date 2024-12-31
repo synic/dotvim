@@ -17,7 +17,7 @@ end
 return {
 	{
 		"yetone/avante.nvim",
-		version = false, -- set this if you want to always pull the latest change
+		commit = "dde0358",
 		keys = {
 			{
 				"<leader>aa",

@@ -2,43 +2,45 @@ local config = require("ao.config")
 local utils = require("ao.utils")
 
 local lsp_formatting_group = vim.api.nvim_create_augroup("LspFormatting", {})
-local flags = { allow_incremental_sync = true, debounce_text_changes = 200 }
 
 local M = {}
 
-M.lsp_on_attach = function(_, bufnr)
-	local telescope = require("telescope.builtin")
-	local ft = vim.bo[bufnr].filetype
+vim.api.nvim_create_autocmd("LspAttach", {
+	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+	callback = function(ev)
+		local telescope = require("telescope.builtin")
+		local bufnr = ev.buf
+		local ft = vim.bo[bufnr].filetype
 
-	utils.map_keys({
-		{ "<localleader>r", vim.lsp.buf.rename, desc = "Rename symbol", buffer = bufnr },
-		{ "<localleader>,", vim.lsp.buf.code_action, desc = "Code actions", buffer = bufnr, modes = { "n", "v" } },
-		{ "<localleader>=", vim.lsp.buf.format, desc = "Format document", buffer = bufnr, modes = { "n", "v" } },
-		{ "<localleader>^", "<cmd>LspRestart<cr>", desc = "Restart LSP", buffer = bufnr },
-		{ "<localleader>$", "<cmd>LspInfo<cr>", desc = "LSP Info", buffer = bufnr },
-		{ "=", vim.lsp.buf.format, desc = "Format selection", buffer = bufnr, modes = { "v" } },
-
-		{ "gd", telescope.lsp_definitions, desc = "Definition(s)", buffer = bufnr },
-		{ "gD", vim.lsp.buf.declaration, desc = "Declaration(s)", buffer = bufnr },
-		{ "g/", "<cmd>vsplit<cr><cmd>Telescope lsp_definitions<cr>", desc = "Goto def in vsplit", buffer = bufnr },
-		{ "g-", "<cmd>split<cr><cmd>Telescope lsp_definitions<cr>", desc = "Goto def in hsplit", buffer = bufnr },
-		{ "grr", telescope.lsp_references, desc = "Reference(s)", buffer = bufnr },
-		{ "gri", telescope.lsp_implementations, desc = "Implementation(s)", buffer = bufnr },
-		{ "g.", telescope.lsp_document_symbols, desc = "Document symbols", buffer = bufnr },
-		{ "gW", telescope.lsp_dynamic_workspace_symbols, desc = "Workspace symbols", buffer = bufnr },
-		{ "K", vim.lsp.buf.hover, desc = "Hover", buffer = bufnr },
-	})
-
-	if ft == "typescript" then
 		utils.map_keys({
-			{ "<localleader>o", "<cmd>TSToolsOrganizeImports", desc = "Organize imports" },
-			{ "<localleader>f", "<cmd>TSToolsRenameFile<cr>", desc = "Rename file" },
+			{ "<localleader>r", vim.lsp.buf.rename, desc = "Rename symbol", buffer = bufnr },
+			{ "<localleader>,", vim.lsp.buf.code_action, desc = "Code actions", buffer = bufnr, modes = { "n", "v" } },
+			{ "<localleader>=", vim.lsp.buf.format, desc = "Format document", buffer = bufnr, modes = { "n", "v" } },
+			{ "<localleader>^", "<cmd>LspRestart<cr>", desc = "Restart LSP", buffer = bufnr },
+			{ "<localleader>$", "<cmd>LspInfo<cr>", desc = "LSP Info", buffer = bufnr },
+			{ "=", vim.lsp.buf.format, desc = "Format selection", buffer = bufnr, modes = { "v" } },
+
+			{ "gd", telescope.lsp_definitions, desc = "Definition(s)", buffer = bufnr },
+			{ "gD", vim.lsp.buf.declaration, desc = "Declaration(s)", buffer = bufnr },
+			{ "g/", "<cmd>vsplit<cr><cmd>Telescope lsp_definitions<cr>", desc = "Goto def in vsplit", buffer = bufnr },
+			{ "g-", "<cmd>split<cr><cmd>Telescope lsp_definitions<cr>", desc = "Goto def in hsplit", buffer = bufnr },
+			{ "grr", telescope.lsp_references, desc = "Reference(s)", buffer = bufnr },
+			{ "gri", telescope.lsp_implementations, desc = "Implementation(s)", buffer = bufnr },
+			{ "g.", telescope.lsp_document_symbols, desc = "Document symbols", buffer = bufnr },
+			{ "gW", telescope.lsp_dynamic_workspace_symbols, desc = "Workspace symbols", buffer = bufnr },
+			{ "K", vim.lsp.buf.hover, desc = "Hover", buffer = bufnr },
 		})
-	end
-end
+
+		if ft == "typescript" then
+			utils.map_keys({
+				{ "<localleader>o", "<cmd>TSToolsOrganizeImports", desc = "Organize imports" },
+				{ "<localleader>f", "<cmd>TSToolsRenameFile<cr>", desc = "Rename file" },
+			})
+		end
+	end,
+})
 
 M.plugin_specs = {
-	-- configure mason packages with LSP
 	{
 		"williamboman/mason.nvim",
 		config = true,
@@ -51,15 +53,21 @@ M.plugin_specs = {
 	{
 		"synic/refactorex.nvim",
 		ft = "elixir",
-		dependencies = { "nvim-lua/plenary.nvim" },
 		config = true,
 	},
 
+	-- {
+	-- 	"gp-pereira/refactorex",
+	-- 	ft = "elixir",
+	-- 	dir = "/Users/synic/Projects/refactorex",
+	-- 	config = function(plugin)
+	-- 		vim.opt.rtp:append(plugin.dir .. "/extensions/neovim")
+	-- 		require("refactorex").setup()
+	-- 	end,
+	-- },
+
 	{
 		"williamboman/mason-lspconfig.nvim",
-		dependencies = {
-			"hrsh7th/cmp-nvim-lsp",
-		},
 		event = "VeryLazy",
 		opts = {
 			ensure_installed = vim.list_extend(
@@ -72,15 +80,12 @@ M.plugin_specs = {
 			vim.filetype.add({ extension = { templ = "templ" } })
 		end,
 		config = function(_, opts)
-			local lsp = require("lspconfig")
-			local m = require("mason-lspconfig")
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
+			local lspconfig = require("lspconfig")
+			local mason_lspconfig = require("mason-lspconfig")
 
 			opts.handlers = {
 				["lua_ls"] = function()
-					lsp.lua_ls.setup({
-						on_attach = M.lsp_on_attach,
-						flags = flags,
+					lspconfig.lua_ls.setup({
 						settings = {
 							Lua = {
 								runtime = {
@@ -95,17 +100,13 @@ M.plugin_specs = {
 				end,
 
 				["htmx"] = function()
-					lsp.htmx.setup({
-						flags = flags,
-						on_attach = M.lsp_on_attach,
+					lspconfig.htmx.setup({
 						filetypes = { "html", "templ", "htmldjango" },
 					})
 				end,
 
 				["nextls"] = function()
-					lsp.nextls.setup({
-						flags = flags,
-						on_attach = M.lsp_on_attach,
+					lspconfig.nextls.setup({
 						init_options = {
 							experimental = {
 								completions = { enable = true },
@@ -115,9 +116,7 @@ M.plugin_specs = {
 				end,
 
 				["tailwindcss"] = function()
-					lsp.tailwindcss.setup({
-						flags = flags,
-						on_attach = M.lsp_on_attach,
+					lspconfig.tailwindcss.setup({
 						filetypes = {
 							"templ",
 							"astro",
@@ -133,9 +132,7 @@ M.plugin_specs = {
 				end,
 
 				["rust_analyzer"] = function()
-					lsp.rust_analyzer.setup({
-						flags = flags,
-						on_attach = M.lsp_on_attach,
+					lspconfig.rust_analyzer.setup({
 						settings = {
 							["rust-analyzer"] = {
 								cargo = {
@@ -158,25 +155,19 @@ M.plugin_specs = {
 				end,
 
 				["templ"] = function()
-					lsp.templ.setup({
-						on_attach = M.lsp_on_attach,
-						flags = flags,
+					lspconfig.templ.setup({
 						filetypes = { "templ" },
 					})
 				end,
 
 				["ts_ls"] = function()
-					lsp.ts_ls.setup({
-						on_attach = M.lsp_on_attach,
-						flags = flags,
+					lspconfig.ts_ls.setup({
 						filetypes = { "templ", "javascript", "typescript", "html" },
 					})
 				end,
 
 				["gopls"] = function()
-					lsp.gopls.setup({
-						flags = flags,
-						on_attach = M.lsp_on_attach,
+					lspconfig.gopls.setup({
 						settings = {
 							gopls = {
 								buildFlags = { "-tags=debug,release,mage,tools" },
@@ -190,11 +181,7 @@ M.plugin_specs = {
 				end,
 
 				["emmet_language_server"] = function()
-					local c = vim.lsp.protocol.make_client_capabilities()
-					c.textDocument.completion.completionItem.snippetSupport = true
-					lsp.emmet_language_server.setup({
-						-- on_attach = on_attach,
-						capabilities = capabilities,
+					lspconfig.emmet_language_server.setup({
 						filetypes = {
 							"css",
 							"eruby",
@@ -227,14 +214,11 @@ M.plugin_specs = {
 				-- generic setup function for servers without explicit configuration
 				function(server_name)
 					server_name = server_name == "tsserver" and "ts_ls" or server_name -- fix weird tsserver naming situation
-					require("lspconfig")[server_name].setup({
-						on_attach = M.lsp_on_attach,
-						flags = flags,
-					})
+					require("lspconfig")[server_name].setup({})
 				end,
 			}
 
-			m.setup(opts)
+			mason_lspconfig.setup(opts)
 		end,
 	},
 
@@ -253,15 +237,16 @@ M.plugin_specs = {
 	{
 		"pmizio/typescript-tools.nvim",
 		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-		opts = {
-			on_attach = M.lsp_on_attach,
-		},
+		config = true,
 	},
 
 	-- lsp
 	{
 		"neovim/nvim-lspconfig",
-		dependencies = { "hrsh7th/nvim-cmp", "williamboman/mason-lspconfig.nvim" },
+		dependencies = {
+			"hrsh7th/nvim-cmp",
+			"williamboman/mason-lspconfig.nvim",
+		},
 		event = "VeryLazy",
 		opts = {
 			diagnostic = {
@@ -275,22 +260,12 @@ M.plugin_specs = {
 				},
 				severity_sort = true,
 			},
-			servers = {
-				dartls = {
-					setup = {
-						on_attach = M.lsp_on_attach,
-						flags = flags,
-						cmd = { "dart", "language-server", "--protocol=lsp" },
-					},
-				},
-			},
 		},
 		config = function(_, opts)
-			local lsp = require("lspconfig")
-			local defaults = lsp.util.default_config
+			local lspconfig = require("lspconfig")
+			local defaults = lspconfig.util.default_config
 
 			vim.diagnostic.config(opts.diagnostic)
-			lsp.dartls.setup(opts.servers.dartls.setup)
 
 			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 				side_padding = 1,
@@ -311,6 +286,8 @@ M.plugin_specs = {
 
 			defaults.capabilities =
 				vim.tbl_deep_extend("force", defaults.capabilities, require("cmp_nvim_lsp").default_capabilities())
+			-- defaults.capabilities =
+			-- 	vim.tbl_deep_extend("force", defaults.capabilities, require("blink.cmp").get_lsp_capabilities())
 		end,
 	},
 
@@ -443,7 +420,7 @@ M.plugin_specs = {
 		},
 		event = "VeryLazy",
 		opts = function()
-			local ns = require("null-ls")
+			local null_ls = require("null-ls")
 
 			-- only use none-ls for formatting these filetypes; the rest can use any formatter
 			local only_nonels_formatting_filetypes = {
@@ -457,26 +434,26 @@ M.plugin_specs = {
 			return {
 				sources = {
 					-- formatting
-					ns.builtins.formatting.stylua,
-					ns.builtins.formatting.shfmt,
-					ns.builtins.formatting.djhtml.with({
+					null_ls.builtins.formatting.stylua,
+					null_ls.builtins.formatting.shfmt,
+					null_ls.builtins.formatting.djhtml.with({
 						"--tabwidth=2",
 					}),
-					ns.builtins.formatting.prettierd.with({
+					null_ls.builtins.formatting.prettierd.with({
 						filetypes = { "typescript", "javascript", "templ" },
 					}),
-					ns.builtins.formatting.prettier.with({
+					null_ls.builtins.formatting.prettier.with({
 						filetypes = { "svelte" },
 					}),
-					ns.builtins.formatting.gofmt,
-					ns.builtins.formatting.goimports_reviser,
-					ns.builtins.formatting.golines,
-					ns.builtins.formatting.isort,
-					ns.builtins.formatting.black,
-					ns.builtins.formatting.pg_format.with({
+					null_ls.builtins.formatting.gofmt,
+					null_ls.builtins.formatting.goimports_reviser,
+					null_ls.builtins.formatting.golines,
+					null_ls.builtins.formatting.isort,
+					null_ls.builtins.formatting.black,
+					null_ls.builtins.formatting.pg_format.with({
 						extra_args = { "-s", "2", "-u", "1", "-w", "120" },
 					}),
-					ns.builtins.formatting.dart_format,
+					null_ls.builtins.formatting.dart_format,
 					-- ns.builtins.formatting.rustywind.with({
 					-- 	filetypes = { "typescript", "javascript", "css", "templ", "html", "htmldjango" },
 					-- }),
@@ -484,15 +461,16 @@ M.plugin_specs = {
 					require("none-ls.formatting.trim_whitespace"),
 
 					-- diagnostics
-					ns.builtins.diagnostics.gitlint,
+					null_ls.builtins.diagnostics.gitlint,
 					-- ns.builtins.diagnostics.mypy,
-					ns.builtins.diagnostics.trail_space.with({
+					null_ls.builtins.diagnostics.trail_space.with({
 						disabled_filetypes = { "ctrlsf" },
 					}),
-					ns.builtins.diagnostics.yamllint,
-					ns.builtins.diagnostics.hadolint, -- Dockerfile
-					ns.builtins.diagnostics.markdownlint_cli2,
-					ns.builtins.diagnostics.buf, -- protobuf
+					null_ls.builtins.diagnostics.yamllint,
+					null_ls.builtins.diagnostics.credo,
+					null_ls.builtins.diagnostics.hadolint, -- Dockerfile
+					null_ls.builtins.diagnostics.markdownlint_cli2,
+					null_ls.builtins.diagnostics.buf, -- protobuf
 				},
 
 				on_attach = function(client, bufnr)

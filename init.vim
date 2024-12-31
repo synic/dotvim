@@ -52,7 +52,7 @@ set completeopt=menu,menuone,noselect
 set shortmess+=I
 set encoding=utf-8
 set scrolloff=15
-set iskeyword-=_
+" set iskeyword-=_
 set cursorline
 set listchars=tab:\|\ ,eol:↵
 

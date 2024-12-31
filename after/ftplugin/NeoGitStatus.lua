@@ -59,7 +59,7 @@ vim.api.nvim_buf_set_keymap(0, "n", ",g", "", {
 vim.cmd.normal("2")
 local root = vim.fs.root(0, ".git")
 if root ~= nil then
-	vim.notify("NeoGit: changing to directory: " .. root)
+	vim.notify("Neogit: changing to directory: " .. root)
 	vim.cmd.cd(root)
 end
 

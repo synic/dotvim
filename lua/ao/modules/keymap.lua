@@ -149,7 +149,17 @@ utils.map_keys({
 	{ "<leader>xq", "<cmd>qa!<cr>", desc = "Quit Vim" },
 	{ "<leader>xx", utils.close_all_floating_windows, desc = "Close all floating windows" },
 	{ "<leader>'", "<cmd>split<cr><cmd>term<cr><cmd>norm A<cr>", desc = "Open terminal" },
-	{ "<C-g>", "<C-\\><C-n>", modes = { "t" }, desc = "Exit terminal mode" },
+	{
+		"<c-g>",
+		function()
+			local keys = vim.api.nvim_replace_termcodes("<C-g>", true, true, true)
+			vim.api.nvim_feedkeys(keys, "nx", false)
+			local filepath = vim.fn.fnamemodify(vim.fn.expand("%"), ":.")
+			vim.fn.setreg("+", filepath)
+		end,
+		modes = { "n" },
+		desc = "Show buffer information and copy filepath",
+	},
 })
 
 return {

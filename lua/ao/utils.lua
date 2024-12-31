@@ -4,6 +4,7 @@ local init_group = vim.api.nvim_create_augroup("UtilsOnLoad", { clear = true })
 local M = {}
 
 function M.get_help()
+	---@diagnostic disable-next-line: missing-fields
 	vim.ui.input({ prompt = "enter search term" }, function(input)
 		if input == nil then
 			return
