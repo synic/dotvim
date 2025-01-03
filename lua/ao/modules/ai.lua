@@ -17,7 +17,6 @@ end
 return {
 	{
 		"yetone/avante.nvim",
-		commit = "dde0358",
 		keys = {
 			{
 				"<leader>aa",

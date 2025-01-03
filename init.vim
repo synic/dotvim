@@ -5,7 +5,7 @@
 "                             \ V /  | || |  | |                             "
 "                              \_/  |___|_|  |_|                             "
 "                                                                            "
-"                 Adam Olsen's (aka synic) vim configuration.                "
+"                          synic's vim configuration.                        "
 "                                                                            "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
