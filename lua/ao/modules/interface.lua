@@ -582,6 +582,18 @@ M.plugin_specs = {
 			-- add any custom options here
 		},
 	},
+	{
+		"jiaoshijie/undotree",
+		dependencies = "nvim-lua/plenary.nvim",
+		opts = {
+			window = {
+				winblend = 10,
+			},
+		},
+		keys = {
+			{ "<leader>u", "<cmd>lua require('undotree').toggle()<cr>", desc = "Undo Tree" },
+		},
+	},
 }
 
 return M

@@ -123,42 +123,77 @@ local function dirpicker_pick_project(cb)
 	local cwd = config.options.projects.directory.path or "."
 	local width = 0.37
 	if vim.o.columns < 130 then
-		width = 0.50
+		width = 0.60
 	end
 
 	local projects = M.list({ cwd = cwd })
-	local height = #projects + 5 -- number of projects, plus padding and borders, plus input box
+	local height = #projects + 2
 
 	if height > 25 then
 		height = 25
 	end
 
-	require("telescope").extensions.dirpicker.dirpicker({
-		cwd = cwd,
-		enable_preview = false,
-		layout_config = { width = width, height = height },
-		prompt_title = "Projects",
-		mappings = {
-			i = {
-				["//"] = function(_, path)
-					vim.cmd.vsplit(path)
-					M.open(path)
-				end,
-				["--"] = function(_, path)
-					vim.cmd.split(path)
-					M.open(path)
-				end,
-				["<c-e>"] = function(_, path)
-					vim.cmd("edit! " .. path)
-					M.set(path)
-				end,
-			},
+	local max_name_length = 0
+	for _, entry in ipairs(projects) do
+		local name = type(entry) == "table" and entry.name or vim.fn.fnamemodify(entry, ":t")
+		max_name_length = math.max(max_name_length, #name)
+	end
+
+	local entries = {}
+	local padding = max_name_length + 4
+	for _, entry in ipairs(projects) do
+		local path = entry
+		local name = entry
+		if type(entry) == "table" then
+			path = entry.path
+			name = entry.name
+		else
+			name = vim.fn.fnamemodify(entry, ":t")
+		end
+
+		-- Use both color codes for display and RS character for parsing
+		local display = string.format("%-" .. padding .. "s\x1E\x1b[90m%s\x1b[0m", name, path)
+		entries[#entries + 1] = display
+	end
+
+	require("fzf-lua").fzf_exec(entries, {
+		winopts = {
+			height = height,
+			width = width,
 		},
-		cmd = function(_)
-			return projects
-		end,
-		on_select = cb,
+		actions = {
+			["default"] = function(selected, _)
+				local path = selected[1]:match("\x1E(.*)$")
+				cb(path)
+			end,
+		},
 	})
+	-- require("telescope").extensions.dirpicker.dirpicker({
+	-- 	cwd = cwd,
+	-- 	enable_preview = false,
+	-- 	layout_config = { width = width, height = height },
+	-- 	prompt_title = "Projects",
+	-- 	mappings = {
+	-- 		i = {
+	-- 			["//"] = function(_, path)
+	-- 				vim.cmd.vsplit(path)
+	-- 				M.open(path)
+	-- 			end,
+	-- 			["--"] = function(_, path)
+	-- 				vim.cmd.split(path)
+	-- 				M.open(path)
+	-- 			end,
+	-- 			["<c-e>"] = function(_, path)
+	-- 				vim.cmd("edit! " .. path)
+	-- 				M.set(path)
+	-- 			end,
+	-- 		},
+	-- 	},
+	-- 	cmd = function(_)
+	-- 		return projects
+	-- 	end,
+	-- 	on_select = cb,
+	-- })
 end
 
 function telescope_pick_project()
@@ -173,7 +208,7 @@ local function telescope_switch_project()
 	telescope_pick_project()
 end
 
-local function telescope_new_tab_with_project()
+local function new_tab_with_project()
 	dirpicker_pick_project(function(dir)
 		vim.cmd.tabnew()
 		M.open(dir)
@@ -320,7 +355,7 @@ M.plugin_specs = {
 		"synic/telescope-dirpicker.nvim",
 		dependencies = { "telescope.nvim" },
 		keys = {
-			{ "<leader>lt", telescope_new_tab_with_project, desc = "New layout with project" },
+			{ "<leader>lt", new_tab_with_project, desc = "New layout with project" },
 			{
 				"<leader>*",
 				telescope_search_project_cursor_term,

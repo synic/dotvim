@@ -8,7 +8,6 @@ vim.o.winblend = 10
 vim.api.nvim_create_autocmd("TermOpen", {
 	pattern = "*",
 	callback = function()
-		vim.notify("Type <C-g> to exit terminal input mode")
 		vim.opt_local.number = false
 		vim.opt_local.relativenumber = false
 		vim.opt_local.signcolumn = "no"
