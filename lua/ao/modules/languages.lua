@@ -467,7 +467,6 @@ M.plugin_specs = {
 						disabled_filetypes = { "ctrlsf" },
 					}),
 					null_ls.builtins.diagnostics.yamllint,
-					null_ls.builtins.diagnostics.credo,
 					null_ls.builtins.diagnostics.hadolint, -- Dockerfile
 					null_ls.builtins.diagnostics.markdownlint_cli2,
 					null_ls.builtins.diagnostics.buf, -- protobuf

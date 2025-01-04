@@ -123,6 +123,7 @@ M.plugin_specs = {
 
 			if has_flash then
 				local function flash_jump(prompt_bufnr)
+					---@diagnostic disable-next-line: missing-fields
 					flash.jump({
 						pattern = "^",
 						label = { after = { 0, 0 } },

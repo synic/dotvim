@@ -36,14 +36,8 @@ return {
 					["<c-j>"] = cmp.mapping.select_next_item(),
 					["<c-k>"] = cmp.mapping.select_prev_item(),
 					["<c-space>"] = cmp.mapping.complete(),
-					["<c-l>"] = cmp.mapping.complete({
-						config = {
-							sources = {
-								{ name = "luasnip" },
-							},
-						},
-					}),
-					["jk"] = cmp.mapping(function(fallback)
+					["<c-l>"] = cmp.mapping.complete({ config = { sources = { { name = "luasnip" } } } }),
+					["<c-y>"] = cmp.mapping(function(fallback)
 						if luasnip.expand_or_locally_jumpable() then
 							luasnip.expand_or_jump()
 						else

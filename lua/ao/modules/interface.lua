@@ -164,6 +164,7 @@ M.plugin_specs = {
 				"dashboard",
 				"neo-tree",
 				"Trouble",
+				"Avante",
 				"trouble",
 				"lazy",
 				"mason",

@@ -244,14 +244,16 @@ function M.find_path_root(path)
 		return root
 	end
 
-	root = vim.fs.root(0, config.options.projects.root_names)
-
+	root = vim.fs.root(path, config.options.projects.root_names)
 	root_cache[path] = root or -1
+
 	return root
 end
 
-function M.find_buffer_root(bufnr)
-	return M.find_path_root(utils.get_buffer_cwd(bufnr))
+function M.find_buffer_root(buf)
+	buf = buf or 0
+	local cwd = vim.bo[buf].filetype == "oil" and require("oil").get_current_dir(buf) or utils.get_buffer_cwd(buf)
+	return M.find_path_root(cwd)
 end
 
 function M.get_dir(tabnr)
