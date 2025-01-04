@@ -6,11 +6,15 @@ local root_cache = {}
 local chdir_group = vim.api.nvim_create_augroup("ProjectAutoChdir", { clear = true })
 local frecency_data = {}
 local frecency_file = vim.fn.stdpath("data") .. "/project_frecency.json"
+local telescope_pick_project
+local telescope_find_project_files
 
 local function load_frecency()
 	local file = io.open(frecency_file, "r")
 	if file then
+		---@diagnostic disable-next-line: undefined-field
 		local content = file:read("*all")
+		---@diagnostic disable-next-line: undefined-field
 		file:close()
 		local ok, data = pcall(vim.json.decode, content)
 		if ok then
@@ -23,7 +27,9 @@ local function save_frecency()
 	vim.schedule(function()
 		local file = io.open(frecency_file, "w")
 		if file then
+			---@diagnostic disable-next-line: undefined-field
 			file:write(vim.json.encode(frecency_data))
+			---@diagnostic disable-next-line: undefined-field
 			file:close()
 		end
 	end)
@@ -109,7 +115,7 @@ local function telescope_git_files()
 		builtin.git_files({ cwd = root })
 	else
 		vim.notify("Project: no project selected", vim.log.levels.INFO)
-		M.telescope_pick_project()
+		telescope_pick_project()
 	end
 end
 
@@ -132,6 +138,22 @@ local function dirpicker_pick_project(cb)
 		enable_preview = false,
 		layout_config = { width = width, height = height },
 		prompt_title = "Projects",
+		mappings = {
+			i = {
+				["//"] = function(_, path)
+					vim.cmd.vsplit(path)
+					M.open(path)
+				end,
+				["--"] = function(_, path)
+					vim.cmd.split(path)
+					M.open(path)
+				end,
+				["<c-e>"] = function(_, path)
+					vim.cmd("edit! " .. path)
+					M.set(path)
+				end,
+			},
+		},
 		cmd = function(_)
 			return projects
 		end,
@@ -139,12 +161,14 @@ local function dirpicker_pick_project(cb)
 	})
 end
 
-local function telescope_pick_project()
+function telescope_pick_project()
 	dirpicker_pick_project(M.open)
 end
 
 local function telescope_switch_project()
+	---@diagnostic disable-next-line: inject-field
 	vim.t.project_dir = nil
+	---@diagnostic disable-next-line: inject-field
 	vim.t.layout_name = nil
 	telescope_pick_project()
 end
@@ -172,7 +196,7 @@ local function telescope_search_project()
 	builtin.live_grep({ cwd = (M.find_buffer_root() or ".") })
 end
 
-local function telescope_find_project_files()
+function telescope_find_project_files()
 	local builtin = require("telescope.builtin")
 
 	local root = M.find_buffer_root()
@@ -271,7 +295,9 @@ end
 
 function M.set(dir)
 	print("Project: opening", dir)
+	---@diagnostic disable-next-line: inject-field
 	vim.t.project_dir = dir
+	---@diagnostic disable-next-line: inject-field
 	vim.t.layout_name = vim.fn.fnamemodify(dir, ":t")
 	vim.cmd.redrawtabline()
 end

@@ -162,6 +162,7 @@ M.plugin_specs = {
 				"help",
 				"alpha",
 				"dashboard",
+				"snacks_dashboard",
 				"neo-tree",
 				"Trouble",
 				"Avante",
@@ -172,6 +173,12 @@ M.plugin_specs = {
 				"toggleterm",
 				"lazyterm",
 			}
+
+			-- for lazy loading into an existing file
+			if utils.table_contains(disable_for, vim.bo.filetype) or vim.api.nvim_buf_get_name(0) == "" then
+				vim.b.miniindentscope_disable = true
+			end
+
 			vim.api.nvim_create_autocmd("FileType", {
 				pattern = disable_for,
 				group = indentscope_disable_group,
@@ -180,11 +187,6 @@ M.plugin_specs = {
 					vim.b.miniindentscope_disable = true
 				end,
 			})
-
-			-- for lazy loading into an existing file
-			if utils.table_contains(disable_for, vim.bo.filetype) then
-				vim.b.miniindentscope_disable = true
-			end
 		end,
 	},
 
