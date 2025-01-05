@@ -8,7 +8,6 @@ local M = {}
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 	callback = function(ev)
-		local telescope = require("telescope.builtin")
 		local bufnr = ev.buf
 		local ft = vim.bo[bufnr].filetype
 
@@ -20,14 +19,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			{ "<localleader>$", "<cmd>LspInfo<cr>", desc = "LSP Info", buffer = bufnr },
 			{ "=", vim.lsp.buf.format, desc = "Format selection", buffer = bufnr, modes = { "v" } },
 
-			{ "gd", telescope.lsp_definitions, desc = "Definition(s)", buffer = bufnr },
-			{ "gD", vim.lsp.buf.declaration, desc = "Declaration(s)", buffer = bufnr },
-			{ "g/", "<cmd>vsplit<cr><cmd>Telescope lsp_definitions<cr>", desc = "Goto def in vsplit", buffer = bufnr },
-			{ "g-", "<cmd>split<cr><cmd>Telescope lsp_definitions<cr>", desc = "Goto def in hsplit", buffer = bufnr },
-			{ "grr", telescope.lsp_references, desc = "Reference(s)", buffer = bufnr },
-			{ "gri", telescope.lsp_implementations, desc = "Implementation(s)", buffer = bufnr },
-			{ "g.", telescope.lsp_document_symbols, desc = "Document symbols", buffer = bufnr },
-			{ "gW", telescope.lsp_dynamic_workspace_symbols, desc = "Workspace symbols", buffer = bufnr },
+			{ "gd", "<cmd>FzfLua lsp_definitions<cr>", desc = "Definition(s)", buffer = bufnr },
+			{ "gD", "<cmd>FzfLua lsp_declarations<cr>", desc = "Declaration(s)", buffer = bufnr },
+			{ "g/", "<cmd>vsplit<cr><cmd>FzfLua lsp_definitions<cr>", desc = "Goto def in vsplit", buffer = bufnr },
+			{ "g-", "<cmd>split<cr><cmd>FzfLua lsp_definitions<cr>", desc = "Goto def in hsplit", buffer = bufnr },
+			{ "grr", "<cmd>FzfLua lsp_references<cr>", desc = "Reference(s)", buffer = bufnr },
+			{ "gri", "<cmd>FzfLua lsp_implementations<cr>", desc = "Implementation(s)", buffer = bufnr },
+			{ "g.", "<cmd>FzfLua lsp_document_symbols<cr>", desc = "Document symbols", buffer = bufnr },
+			{ "gW", "<cmd>FzfLua lsp_workspace_symbols<cr>", desc = "Workspace symbols", buffer = bufnr },
 			{ "K", vim.lsp.buf.hover, desc = "Hover", buffer = bufnr },
 		})
 

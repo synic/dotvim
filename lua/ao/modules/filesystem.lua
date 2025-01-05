@@ -17,8 +17,8 @@ local function browse_directory(type, precmd)
 		end
 
 		if type == "current" then
-			-- oil is a bit strange, if you pass no arguments, it does not open in `vim.uv.cwd()` like telescope. It always
-			-- opens in the current buffer's directory. If you pass a path, it won't select the current buffer's file
+			-- oil is a bit strange, if you pass no arguments, it does not open in `vim.uv.cwd()` like telescope/fzf-lua. It
+			-- always opens in the current buffer's directory. If you pass a path, it won't select the current buffer's file
 			-- automatically.
 			vim.cmd.Oil()
 		else

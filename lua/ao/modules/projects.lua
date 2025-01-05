@@ -6,8 +6,8 @@ local root_cache = {}
 local chdir_group = vim.api.nvim_create_augroup("ProjectAutoChdir", { clear = true })
 local frecency_data = {}
 local frecency_file = vim.fn.stdpath("data") .. "/project_frecency.json"
-local telescope_pick_project
-local telescope_find_project_files
+local pick_project
+local find_project_files
 
 local function load_frecency()
 	local file = io.open(frecency_file, "r")
@@ -99,34 +99,20 @@ local function setup_project_hotkeys()
 	utils.map_keys(keys)
 end
 
-local function telescope_search_project_cursor_term()
-	local builtin = require("telescope.builtin")
-	local current_word = vim.fn.expand("<cword>")
-	local root = M.find_buffer_root()
-
-	builtin.grep_string({ cwd = (root or "."), search = current_word })
-end
-
-local function telescope_git_files()
-	local builtin = require("telescope.builtin")
-
+local function git_files()
 	local root = M.find_buffer_root()
 	if root and root ~= "" then
-		builtin.git_files({ cwd = root })
+		require("fzf-lua")["git_files"]({ cwd = root })
 	else
 		vim.notify("Project: no project selected", vim.log.levels.INFO)
-		telescope_pick_project()
+		pick_project()
 	end
 end
 
 local function dirpicker_pick_project(cb)
 	local cwd = config.options.projects.directory.path or "."
-	local width = 0.37
-	if vim.o.columns < 130 then
-		width = 0.60
-	end
-
 	local projects = M.list({ cwd = cwd })
+	local width = 0
 	local height = #projects + 2
 
 	if height > 25 then
@@ -135,24 +121,22 @@ local function dirpicker_pick_project(cb)
 
 	local max_name_length = 0
 	for _, entry in ipairs(projects) do
-		local name = type(entry) == "table" and entry.name or vim.fn.fnamemodify(entry, ":t")
-		max_name_length = math.max(max_name_length, #name)
+		max_name_length = math.max(max_name_length, #entry.name)
+		local total_length = #entry.name + #entry.path + 20
+		if total_length > width then
+			width = total_length
+		end
 	end
 
-	local entries = {}
-	local padding = max_name_length + 4
-	for _, entry in ipairs(projects) do
-		local path = entry
-		local name = entry
-		if type(entry) == "table" then
-			path = entry.path
-			name = entry.name
-		else
-			name = vim.fn.fnamemodify(entry, ":t")
-		end
+	if width > 150 then
+		width = 150
+	end
 
-		-- Use both color codes for display and RS character for parsing
-		local display = string.format("%-" .. padding .. "s\x1E\x1b[90m%s\x1b[0m", name, path)
+	local padding = max_name_length + 15
+	local entries = {}
+
+	for _, entry in ipairs(projects) do
+		local display = string.format("%-" .. padding .. "s\x1b[90m\x1E%s\x1E\x1b[0m", entry.name, entry.path)
 		entries[#entries + 1] = display
 	end
 
@@ -160,52 +144,38 @@ local function dirpicker_pick_project(cb)
 		winopts = {
 			height = height,
 			width = width,
+			row = math.floor((vim.o.lines - height) / 2 / 1.2),
+			col = math.floor((vim.o.columns - width) / 2),
 		},
 		actions = {
 			["default"] = function(selected, _)
-				local path = selected[1]:match("\x1E(.*)$")
+				local path = selected[1]:match("\x1E(.*)\x1E")
+				cb(path)
+			end,
+			["ctrl-s"] = function(selected, _)
+				local path = selected[1]:match("\x1E(.*)\x1E")
+				vim.cmd.split(path)
+				cb(path)
+			end,
+			["ctrl-v"] = function(selected, _)
+				local path = selected[1]:match("\x1E(.*)\x1E")
+				vim.cmd.vsplit(path)
 				cb(path)
 			end,
 		},
 	})
-	-- require("telescope").extensions.dirpicker.dirpicker({
-	-- 	cwd = cwd,
-	-- 	enable_preview = false,
-	-- 	layout_config = { width = width, height = height },
-	-- 	prompt_title = "Projects",
-	-- 	mappings = {
-	-- 		i = {
-	-- 			["//"] = function(_, path)
-	-- 				vim.cmd.vsplit(path)
-	-- 				M.open(path)
-	-- 			end,
-	-- 			["--"] = function(_, path)
-	-- 				vim.cmd.split(path)
-	-- 				M.open(path)
-	-- 			end,
-	-- 			["<c-e>"] = function(_, path)
-	-- 				vim.cmd("edit! " .. path)
-	-- 				M.set(path)
-	-- 			end,
-	-- 		},
-	-- 	},
-	-- 	cmd = function(_)
-	-- 		return projects
-	-- 	end,
-	-- 	on_select = cb,
-	-- })
 end
 
-function telescope_pick_project()
+function pick_project()
 	dirpicker_pick_project(M.open)
 end
 
-local function telescope_switch_project()
+local function switch_project()
 	---@diagnostic disable-next-line: inject-field
 	vim.t.project_dir = nil
 	---@diagnostic disable-next-line: inject-field
 	vim.t.layout_name = nil
-	telescope_pick_project()
+	pick_project()
 end
 
 local function new_tab_with_project()
@@ -215,34 +185,31 @@ local function new_tab_with_project()
 	end)
 end
 
-local function telescope_goto_project()
+local function goto_project()
 	vim.cmd.Oil(vim.fn.getcwd(-1, 0))
 end
 
-local function telescope_set_project()
+local function set_project()
 	local root = M.find_buffer_root()
 	if root and root ~= "" then
 		M.set(root)
 	end
 end
 
-local function telescope_search_project()
-	local builtin = require("telescope.builtin")
-	builtin.live_grep({ cwd = (M.find_buffer_root() or ".") })
+local function grep_project()
+	require("fzf-lua")["live_grep"]({ cwd = (M.find_buffer_root() or ".") })
 end
 
-function telescope_find_project_files()
-	local builtin = require("telescope.builtin")
-
+function find_project_files()
 	local root = M.find_buffer_root()
 	if root and root ~= "" then
 		if not vim.t.project_dir then
 			M.set(root)
 		end
-		builtin.find_files({ cwd = root })
+		require("fzf-lua")["files"]({ cwd = root })
 	else
 		vim.notify("Project: no project selected", vim.log.levels.INFO)
-		telescope_pick_project()
+		pick_project()
 	end
 end
 
@@ -251,7 +218,6 @@ function M.list(opts)
 	local items, projects = {}, {}
 	local dirs = vim.split(vim.fn.glob(opts.cwd .. "/*"), "\n", { trimempty = true })
 
-	-- Add configured entries to items list instead of projects directly
 	for _, entry in ipairs(config.options.projects.entries) do
 		items[#items + 1] = entry
 	end
@@ -263,7 +229,7 @@ function M.list(opts)
 				if not vim.tbl_contains(config.options.projects.directory.skip, vim.fn.fnamemodify(dir, ":t")) then
 					for _, check_file in ipairs(config.options.projects.root_names) do
 						if vim.fn.filereadable(dir .. "/" .. check_file) then
-							items[#items + 1] = dir
+							items[#items + 1] = { path = dir, name = vim.fn.fnamemodify(dir, ":t") }
 							break
 						end
 					end
@@ -343,36 +309,24 @@ function M.open(dir)
 	end
 
 	update_frecency(dir)
-	require("telescope.builtin").find_files({ cwd = dir })
+	require("fzf-lua")["files"]({ cwd = dir })
 end
+
+M.plugin_specs = {}
 
 utils.map_keys({
 	{ "<leader>p-", goto_project_directory, desc = "Go to project directory" },
+	{ "<leader>lt", new_tab_with_project, desc = "New layout with project" },
+	{ "<leader>*", "<cmd>FzfLua grep_cword<cr>", desc = "Search project for term", modes = { "n", "v" } },
+	{ "<leader>sp", grep_project, desc = "Search project for text" },
+	{ "<leader>p/", grep_project, desc = "Search project for text" },
+	{ "<leader>pf", find_project_files, desc = "Find project file" },
+	{ "<leader>pg", git_files, desc = "Find git files" },
+	{ "<leader>pp", pick_project, desc = "Pick project" },
+	{ "<leader>pP", switch_project, desc = "Switch project" },
+	{ "<leader>ph", goto_project, desc = "Go to project home" },
+	{ "<leader>pS", set_project, desc = "Set project home" },
 })
-
-M.plugin_specs = {
-	{
-		"synic/telescope-dirpicker.nvim",
-		dependencies = { "telescope.nvim" },
-		keys = {
-			{ "<leader>lt", new_tab_with_project, desc = "New layout with project" },
-			{
-				"<leader>*",
-				telescope_search_project_cursor_term,
-				desc = "Search project for term",
-				mode = { "n", "v" },
-			},
-			{ "<leader>sp", telescope_search_project, desc = "Search project for text" },
-			{ "<leader>p/", telescope_search_project, desc = "Search project for text" },
-			{ "<leader>pf", telescope_find_project_files, desc = "Find project file" },
-			{ "<leader>pg", telescope_git_files, desc = "Find git files" },
-			{ "<leader>pp", telescope_pick_project, desc = "Pick project" },
-			{ "<leader>pP", telescope_switch_project, desc = "Switch project" },
-			{ "<leader>ph", telescope_goto_project, desc = "Go to project home" },
-			{ "<leader>pS", telescope_set_project, desc = "Set project home" },
-		},
-	},
-}
 
 load_frecency()
 setup_autochdir()

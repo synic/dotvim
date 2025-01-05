@@ -36,23 +36,15 @@ local function on_colorcheme_load(pattern, cb)
 end
 
 local function colorscheme_picker()
-	local target = vim.fn.getcompletion
-
-	-- only show themes that were installed via lazy (and habamax because it isn't terrible)
-	---@diagnostic disable-next-line: duplicate-set-field
-	vim.fn.getcompletion = function()
-		return vim.tbl_filter(function(color)
-			return color == "habamax" or not vim.tbl_contains(config.options.default_colorschemes, color)
-			---@diagnostic disable-next-line: redundant-parameter
-		end, target("", "color"))
-	end
-
-	vim.cmd.Telescope("colorscheme")
-	vim.fn.getcompletion = target
+	local patterns = vim.tbl_map(function(cs)
+		return "^" .. cs .. "$"
+	end, config.options.lazy.default_cololorschemes)
+	require("fzf-lua")["colorschemes"]({ ignore_patterns = patterns })
 end
 
 local keys = {
 	{ "<leader>st", colorscheme_picker, desc = "List themes" },
+	{ "<leader>sT", "<cmd>FzfLua awesome_colorschemes<cr>", desc = "Colorscheme manager" },
 }
 
 M.plugin_specs = {
