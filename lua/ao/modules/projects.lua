@@ -6,8 +6,8 @@ local root_cache = {}
 local chdir_group = vim.api.nvim_create_augroup("ProjectAutoChdir", { clear = true })
 local frecency_data = {}
 local frecency_file = vim.fn.stdpath("data") .. "/project_frecency.json"
-local telescope_pick_project
-local telescope_find_project_files
+local pick_project
+local find_project_files
 
 local function load_frecency()
 	local file = io.open(frecency_file, "r")
@@ -99,7 +99,7 @@ local function setup_project_hotkeys()
 	utils.map_keys(keys)
 end
 
-local function telescope_search_project_cursor_term()
+local function search_project_cursor_term()
 	local builtin = require("telescope.builtin")
 	local current_word = vim.fn.expand("<cword>")
 	local root = M.find_buffer_root()
@@ -107,7 +107,7 @@ local function telescope_search_project_cursor_term()
 	builtin.grep_string({ cwd = (root or "."), search = current_word })
 end
 
-local function telescope_git_files()
+local function git_files()
 	local builtin = require("telescope.builtin")
 
 	local root = M.find_buffer_root()
@@ -115,45 +115,76 @@ local function telescope_git_files()
 		builtin.git_files({ cwd = root })
 	else
 		vim.notify("Project: no project selected", vim.log.levels.INFO)
-		telescope_pick_project()
+		pick_project()
 	end
 end
 
 local function dirpicker_pick_project(cb)
 	local cwd = config.options.projects.directory.path or "."
-	local width = 0.37
-	if vim.o.columns < 130 then
-		width = 0.50
-	end
-
 	local projects = M.list({ cwd = cwd })
-	local height = #projects + 5 -- number of projects, plus padding and borders, plus input box
 
-	if height > 25 then
-		height = 25
+	local width = 0
+	for _, project in ipairs(projects) do
+		local line_length = 45 + #project.path
+		if line_length > width then
+			width = line_length
+		end
 	end
+
+	width = math.min(width, 110)
+
+	local height = math.min(#projects + 5, 25)
+
+	local state = require("telescope.actions.state")
+	local actions = require("telescope.actions")
 
 	require("telescope").extensions.dirpicker.dirpicker({
 		cwd = cwd,
 		enable_preview = false,
 		layout_config = { width = width, height = height },
 		prompt_title = "Projects",
-		mappings = {
-			i = {
-				["//"] = function(_, path)
-					vim.cmd.vsplit(path)
-					M.open(path)
-				end,
-				["--"] = function(_, path)
-					vim.cmd.split(path)
-					M.open(path)
-				end,
-				["<c-e>"] = function(_, path)
-					vim.cmd("edit! " .. path)
-					M.set(path)
-				end,
-			},
-		},
+		displayer = { separator = "    ", name_width = 35 },
+		attach_default_mappings = false,
+		attach_mappings = function(prompt_bufnr, map)
+			map("i", "//", function()
+				local entry = state.get_selected_entry()
+				actions.close(prompt_bufnr)
+				vim.cmd.vsplit(entry.value)
+				M.open(entry.value)
+			end, { desc = "Open in vertical split" })
+			map("i", "--", function()
+				local entry = state.get_selected_entry()
+				actions.close(prompt_bufnr)
+				vim.cmd.split(entry.value)
+				M.open(entry.value)
+			end, { desc = "Open in horizontal split" })
+			map("i", "<c-e>", function()
+				local entry = state.get_selected_entry()
+				actions.close(prompt_bufnr)
+				vim.cmd("edit! " .. entry.value)
+				M.set(entry.value)
+			end, { desc = "Open in file browser" })
+			map("i", "<c-v>", function()
+				local entry = state.get_selected_entry()
+				actions.close(prompt_bufnr)
+				vim.cmd("vsplit! " .. entry.value)
+				M.set(entry.value)
+			end, { desc = "File browser in vsplit" })
+			map("i", "<c-s>", function()
+				local entry = state.get_selected_entry()
+				actions.close(prompt_bufnr)
+				vim.cmd("split! " .. entry.value)
+				M.set(entry.value)
+			end, { desc = "File browser in split" })
+			map("i", "<c-p>", function()
+				local entry = state.get_selected_entry()
+				actions.close(prompt_bufnr)
+				M.set(entry.value)
+				vim.notify("Project: set current layout project to " .. entry.name)
+			end, { desc = "Set layout project" })
+
+			return true
+		end,
 		cmd = function(_)
 			return projects
 		end,
@@ -161,42 +192,42 @@ local function dirpicker_pick_project(cb)
 	})
 end
 
-function telescope_pick_project()
+function pick_project()
 	dirpicker_pick_project(M.open)
 end
 
-local function telescope_switch_project()
+local function switch_project()
 	---@diagnostic disable-next-line: inject-field
 	vim.t.project_dir = nil
 	---@diagnostic disable-next-line: inject-field
 	vim.t.layout_name = nil
-	telescope_pick_project()
+	pick_project()
 end
 
-local function telescope_new_tab_with_project()
+local function new_tab_with_project()
 	dirpicker_pick_project(function(dir)
 		vim.cmd.tabnew()
 		M.open(dir)
 	end)
 end
 
-local function telescope_goto_project()
+local function goto_project()
 	vim.cmd.Oil(vim.fn.getcwd(-1, 0))
 end
 
-local function telescope_set_project()
+local function set_project()
 	local root = M.find_buffer_root()
 	if root and root ~= "" then
 		M.set(root)
 	end
 end
 
-local function telescope_search_project()
+local function search_project()
 	local builtin = require("telescope.builtin")
 	builtin.live_grep({ cwd = (M.find_buffer_root() or ".") })
 end
 
-function telescope_find_project_files()
+function find_project_files()
 	local builtin = require("telescope.builtin")
 
 	local root = M.find_buffer_root()
@@ -207,7 +238,7 @@ function telescope_find_project_files()
 		builtin.find_files({ cwd = root })
 	else
 		vim.notify("Project: no project selected", vim.log.levels.INFO)
-		telescope_pick_project()
+		pick_project()
 	end
 end
 
@@ -228,7 +259,7 @@ function M.list(opts)
 				if not vim.tbl_contains(config.options.projects.directory.skip, vim.fn.fnamemodify(dir, ":t")) then
 					for _, check_file in ipairs(config.options.projects.root_names) do
 						if vim.fn.filereadable(dir .. "/" .. check_file) then
-							items[#items + 1] = dir
+							items[#items + 1] = { name = vim.fn.fnamemodify(dir, ":t"), path = dir }
 							break
 						end
 					end
@@ -238,12 +269,10 @@ function M.list(opts)
 	end
 
 	table.sort(items, function(p1, p2)
-		local path1 = type(p1) == "table" and p1.path or p1
-		local path2 = type(p2) == "table" and p2.path or p2
-		local score1 = get_frecency_score(path1)
-		local score2 = get_frecency_score(path2)
+		local score1 = get_frecency_score(p1.path)
+		local score2 = get_frecency_score(p2.path)
 		if score1 == score2 then
-			return string.lower(path1) > string.lower(path2)
+			return string.lower(p1.path) > string.lower(p2.path)
 		end
 		return score1 > score2
 	end)
@@ -320,21 +349,21 @@ M.plugin_specs = {
 		"synic/telescope-dirpicker.nvim",
 		dependencies = { "telescope.nvim" },
 		keys = {
-			{ "<leader>lt", telescope_new_tab_with_project, desc = "New layout with project" },
+			{ "<leader>lt", new_tab_with_project, desc = "New layout with project" },
 			{
 				"<leader>*",
-				telescope_search_project_cursor_term,
+				search_project_cursor_term,
 				desc = "Search project for term",
 				mode = { "n", "v" },
 			},
-			{ "<leader>sp", telescope_search_project, desc = "Search project for text" },
-			{ "<leader>p/", telescope_search_project, desc = "Search project for text" },
-			{ "<leader>pf", telescope_find_project_files, desc = "Find project file" },
-			{ "<leader>pg", telescope_git_files, desc = "Find git files" },
-			{ "<leader>pp", telescope_pick_project, desc = "Pick project" },
-			{ "<leader>pP", telescope_switch_project, desc = "Switch project" },
-			{ "<leader>ph", telescope_goto_project, desc = "Go to project home" },
-			{ "<leader>pS", telescope_set_project, desc = "Set project home" },
+			{ "<leader>sp", search_project, desc = "Search project for text" },
+			{ "<leader>p/", search_project, desc = "Search project for text" },
+			{ "<leader>pf", find_project_files, desc = "Find project file" },
+			{ "<leader>pg", git_files, desc = "Find git files" },
+			{ "<leader>pp", pick_project, desc = "Pick project" },
+			{ "<leader>pP", switch_project, desc = "Switch project" },
+			{ "<leader>ph", goto_project, desc = "Go to project home" },
+			{ "<leader>pS", set_project, desc = "Set project home" },
 		},
 	},
 }

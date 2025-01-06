@@ -51,7 +51,6 @@ return {
 				enabled = false,
 				notify = false,
 			},
-			default_cololorschemes = {},
 		},
 	},
 }
