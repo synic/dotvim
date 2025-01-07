@@ -112,6 +112,7 @@ utils.map_keys({
 
 	-- help
 	{ "<leader>hh", "<cmd>lua require('ao.utils').get_help()<cr>", desc = "Show help" },
+	{ "<leader>hc", "<cmd>execute 'help ' .. expand('<cword>')<cr>", desc = "Help for word under cursor" },
 	{ "<leader>?", "<cmd>lua require('ao.utils').get_help()<cr>", desc = "Show help" },
 
 	-- quickfix
