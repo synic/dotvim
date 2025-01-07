@@ -55,16 +55,6 @@ M.plugin_specs = {
 		config = true,
 	},
 
-	-- {
-	-- 	"gp-pereira/refactorex",
-	-- 	ft = "elixir",
-	-- 	dir = "/Users/synic/Projects/refactorex",
-	-- 	config = function(plugin)
-	-- 		vim.opt.rtp:append(plugin.dir .. "/extensions/neovim")
-	-- 		require("refactorex").setup()
-	-- 	end,
-	-- },
-
 	{
 		"williamboman/mason-lspconfig.nvim",
 		event = "VeryLazy",
