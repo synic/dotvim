@@ -2,36 +2,42 @@ local utils = require("ao.utils")
 local filesystem = require("ao.modules.filesystem")
 local interface = require("ao.modules.interface")
 
-local key_categories = {
-	{ "<leader>-", group = "split" },
-	{ "<leader>/", group = "vsplit" },
-	{ "<leader>a", group = "ai" },
-	{ "<leader>b", group = "buffers" },
-	{ "<leader>c", group = "configuration" },
-	{ "<leader>cp", group = "plugins" },
-	{ "<leader>d", group = "debug" },
-	{ "<leader>dt", group = "testing" },
-	{ "<leader>e", group = "diagnostis" },
-	{ "<leader>f", group = "files" },
-	{ "<leader>g", group = "git" },
-	{ "<leader>gp", group = "pr" },
-	{ "<leader>h", group = "help" },
-	{ "<leader>l", group = "layouts" },
-	{ "<leader>p", group = "project" },
-	{ "<leader>q", group = "quickfix" },
-	{ "<leader>s", group = "search" },
-	{ "<leader>t", group = "toggles" },
-	{ "<leader>w", group = "windows" },
-	{ "<leader>wm", group = "move" },
-	{ "<leader>ws", group = "session" },
-	{ "<leader>x", group = "misc" },
-	{ ";", group = "hop" },
-	{ "<localleader>t", group = "neotest" },
-	{ "gh", group = "hunk" },
+--- Basic Keymaps
+---
+--- Plugin specific keymaps are defined on their plugin spec
 
-	-- Visual mode categories
-	{ "<leader>a", mode = "v", group = "ai" },
-	{ "<leader>x", mode = "v", group = "misc" },
+local M = {
+	key_categories = {
+		{ "<leader>-", group = "split" },
+		{ "<leader>/", group = "vsplit" },
+		{ "<leader>a", group = "ai" },
+		{ "<leader>b", group = "buffers" },
+		{ "<leader>c", group = "configuration" },
+		{ "<leader>cp", group = "plugins" },
+		{ "<leader>d", group = "debug" },
+		{ "<leader>dt", group = "testing" },
+		{ "<leader>e", group = "diagnostis" },
+		{ "<leader>f", group = "files" },
+		{ "<leader>g", group = "git" },
+		{ "<leader>gp", group = "pr" },
+		{ "<leader>h", group = "help" },
+		{ "<leader>l", group = "layouts" },
+		{ "<leader>p", group = "project" },
+		{ "<leader>q", group = "quickfix" },
+		{ "<leader>s", group = "search" },
+		{ "<leader>t", group = "toggles" },
+		{ "<leader>w", group = "windows" },
+		{ "<leader>wm", group = "move" },
+		{ "<leader>ws", group = "session" },
+		{ "<leader>x", group = "misc" },
+		{ ";", group = "hop" },
+		{ "<localleader>t", group = "neotest" },
+		{ "gh", group = "hunk" },
+
+		-- Visual mode categories
+		{ "<leader>a", mode = "v", group = "ai" },
+		{ "<leader>x", mode = "v", group = "misc" },
+	},
 }
 
 utils.map_keys({
@@ -146,7 +152,6 @@ utils.map_keys({
 
 	-- misc
 	{ "vig", "ggVG", desc = "Select whole buffer" },
-	{ "<leader><localleader>", "<localleader>", desc = "Local buffer options" },
 	{ "<leader>xq", "<cmd>qa!<cr>", desc = "Quit Vim" },
 	{ "<leader>xx", utils.close_all_floating_windows, desc = "Close all floating windows" },
 	{ "<leader>'", "<cmd>split<cr><cmd>term<cr><cmd>norm A<cr>", desc = "Open terminal" },
@@ -163,23 +168,4 @@ utils.map_keys({
 	},
 })
 
-return {
-	{
-		"folke/which-key.nvim",
-		event = "VeryLazy",
-		init = function()
-			vim.o.timeout = true
-			vim.o.timeoutlen = 700
-		end,
-		opts = {
-			preset = "modern",
-			plugins = { spelling = true },
-			icons = { mappings = false },
-		},
-		config = function(_, opts)
-			local wk = require("which-key")
-			wk.setup(opts)
-			wk.add(key_categories)
-		end,
-	},
-}
+return M

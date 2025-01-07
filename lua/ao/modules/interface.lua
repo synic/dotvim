@@ -2,6 +2,7 @@
 local config = require("ao.config")
 local utils = require("ao.utils")
 local projects = require("ao.modules.projects")
+
 local clear_winbar_group = vim.api.nvim_create_augroup("WinBarHlClearBg", { clear = true })
 local indentscope_disable_group = vim.api.nvim_create_augroup("MiniIndentScopeDisable", { clear = true })
 
@@ -581,6 +582,25 @@ M.plugin_specs = {
 		opts = {
 			-- add any custom options here
 		},
+	},
+	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		init = function()
+			vim.o.timeout = true
+			vim.o.timeoutlen = 700
+		end,
+		opts = {
+			preset = "modern",
+			plugins = { spelling = true },
+			icons = { mappings = false },
+		},
+		config = function(_, opts)
+			local wk = require("which-key")
+			local keymap = require("ao.keymap")
+			wk.setup(opts)
+			wk.add(keymap.key_categories)
+		end,
 	},
 }
 
