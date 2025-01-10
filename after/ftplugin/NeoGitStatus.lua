@@ -50,10 +50,7 @@ local function open_changes_in_github()
 	end
 end
 
-vim.api.nvim_buf_set_keymap(0, "n", ",g", "", {
-	desc = "Open changes in GitHub",
-	callback = open_changes_in_github,
-})
+vim.keymap.set("n", "<localleader>g", open_changes_in_github, { desc = "Open changes in github", buffer = true })
 
 -- Initial setup
 vim.cmd.normal("2")

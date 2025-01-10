@@ -602,6 +602,13 @@ M.plugin_specs = {
 			wk.add(keymap.key_categories)
 		end,
 	},
+
+	-- better quickfix list
+	{
+		"stevearc/quicker.nvim",
+		ft = "qf",
+		opts = {},
+	},
 }
 
 return M

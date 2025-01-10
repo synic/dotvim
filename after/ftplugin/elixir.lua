@@ -17,5 +17,5 @@ local function force_format()
 end
 
 utils.map_keys({
-	{ "=", force_format, desc = "Format file", modes = { "n" } },
+	{ "=", force_format, desc = "Format file", modes = { "n" }, buffer = true },
 })
