@@ -51,6 +51,7 @@ M.plugin_specs = {
 
 	{
 		"synic/refactorex.nvim",
+		-- dir = "~/Projects/refactorex.nvim/",
 		ft = "elixir",
 		config = true,
 	},
@@ -163,6 +164,15 @@ M.plugin_specs = {
 								completeUnimported = true,
 								analyses = {
 									unusedparams = true,
+								},
+								hints = {
+									rangeVariableTypes = true,
+									parameterNames = true,
+									constantValues = true,
+									assignVariableTypes = true,
+									compositeLiteralFields = true,
+									compositeLiteralTypes = true,
+									functionTypeParameters = true,
 								},
 							},
 						},
@@ -295,6 +305,9 @@ M.plugin_specs = {
 		keys = {
 			{ "<leader>t.", "<cmd>TSContextToggle<cr>", desc = "Toggle treesitter context" },
 		},
+		init = function()
+			vim.hl = vim.highlight -- treesitter workaround
+		end,
 		opts = {
 			highlight = {
 				enable = true,
