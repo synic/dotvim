@@ -128,7 +128,6 @@ utils.map_keys({
 	{ "<leader>qn", "<cmd>cn<cr>", desc = "Next quickfix item" },
 	{ "<leader>qp", "<cmd>cp<cr>", desc = "Previous quickfix item" }, -- overridden in trouble.nvim
 	{ "<leader>qc", "<cmd>cclose<cr>", desc = "Close quickfix" },
-	{ "g;", "<cmd>cn<cr>", desc = "Next quickfix item" },
 	{ "<leader>q<space>", interface.quickfix_remove_item_move_next, desc = "Remove quickfix item and move next" },
 
 	-- better movement

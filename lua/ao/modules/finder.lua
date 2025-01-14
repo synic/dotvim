@@ -18,11 +18,21 @@ local tabs_entry_formatter = function(tabnr, _, _, _, is_current)
 end
 
 local function search_cwd()
-	require("telescope.builtin").live_grep({ cwd = utils.get_buffer_cwd() })
+	require("telescope.builtin").live_grep({ cwd = utils.get_buffer_cwd(), debounce = 100 })
 end
 
 local function find_files_cwd()
 	require("telescope.builtin").find_files({ cwd = utils.get_buffer_cwd() })
+end
+
+local function open_directory_for_entry(prompt_bufnr, precmd)
+	local entry = require("telescope.actions.state").get_selected_entry()
+	require("telescope.actions").close(prompt_bufnr)
+
+	local fn = vim.fn.isdirectory(entry.value) == 1 and entry.value or vim.fn.fnamemodify(entry.value, ":h")
+
+	vim.cmd[precmd]()
+	vim.cmd.Oil(fn)
 end
 
 M.plugin_specs = {
@@ -67,6 +77,7 @@ M.plugin_specs = {
 		cmd = "Telescope",
 		opts = function()
 			local actions = require("telescope.actions")
+			local layout = require("telescope.actions.layout")
 			local state = require("telescope.actions.state")
 			local builtin = require("telescope.builtin")
 			local config = require("telescope.config")
@@ -108,11 +119,18 @@ M.plugin_specs = {
 						i = {
 							["//"] = actions.file_vsplit,
 							["--"] = actions.file_split,
+							["/-"] = function(prompt_bufnr)
+								open_directory_for_entry(prompt_bufnr, "vsplit")
+							end,
+							["-/"] = function(prompt_bufnr)
+								open_directory_for_entry(prompt_bufnr, "split")
+							end,
 							-- reverse these two, it just feels more natural for tab to mark and then move the cursor down instead
 							-- of up
 							["<tab>"] = actions.toggle_selection + actions.move_selection_better,
 							["<s-tab>"] = actions.toggle_selection + actions.move_selection_worse,
 							["<c-s>"] = flash_jump,
+							["<m-t>"] = layout.toggle_preview,
 							["<m-k>"] = actions.preview_scrolling_up,
 							["<m-j>"] = actions.preview_scrolling_down,
 							["<m-h>"] = actions.preview_scrolling_left,
@@ -126,9 +144,16 @@ M.plugin_specs = {
 						n = {
 							["//"] = actions.file_vsplit,
 							["--"] = actions.file_split,
+							["/-"] = function(prompt_bufnr)
+								open_directory_for_entry(prompt_bufnr, "vsplit")
+							end,
+							["-/"] = function(prompt_bufnr)
+								open_directory_for_entry(prompt_bufnr, "split")
+							end,
 							["s"] = flash_jump,
 							["<tab>"] = actions.toggle_selection + actions.move_selection_better,
 							["<s-tab>"] = actions.toggle_selection + actions.move_selection_worse,
+							["<m-t>"] = layout.toggle_preview,
 							["<c-u>"] = actions.nop,
 							["<c-d>"] = actions.nop,
 							["<c-f>"] = actions.nop,
@@ -203,7 +228,7 @@ M.plugin_specs = {
 									local picker = state.get_current_picker(prompt_bufnr)
 									local prompt = picker:_get_prompt()
 									actions.close(prompt_bufnr)
-									builtin.live_grep({ cwd = picker.cwd, default_text = prompt })
+									builtin.live_grep({ cwd = picker.cwd, default_text = prompt, debounce = 100 })
 								end,
 							},
 						},
@@ -235,7 +260,7 @@ M.plugin_specs = {
 
 									actions.close(prompt_bufnr)
 									---@diagnostic disable-next-line: assign-type-mismatch
-									builtin.live_grep({ cwd = picker.cwd, default_text = prompt })
+									builtin.live_grep({ cwd = picker.cwd, default_text = prompt, debounce = 100 })
 								end,
 
 								-- switch to find_files

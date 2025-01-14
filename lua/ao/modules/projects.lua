@@ -224,7 +224,7 @@ end
 
 local function search_project()
 	local builtin = require("telescope.builtin")
-	builtin.live_grep({ cwd = (M.find_buffer_root() or ".") })
+	builtin.live_grep({ cwd = (M.find_buffer_root() or "."), debounce = 100 })
 end
 
 function find_project_files()

@@ -25,9 +25,8 @@ filetype plugin indent on
 let mapleader="\<space>" " must be double quotes, don't change
 let maplocalleader=','
 set backspace=2          " allow backspacing over everything in insert mode
-set cindent
 set smartindent
-set noautoindent
+set autoindent
 set nobackup             " don't keep a backup file
 set viminfo='20,\"50     " read/write a .viminfo file
 set history=50           " keep 50 lines of command line history
