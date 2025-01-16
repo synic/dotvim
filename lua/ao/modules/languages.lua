@@ -8,6 +8,7 @@ local M = {}
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 	callback = function(ev)
+		local picker = require("snacks").picker
 		local bufnr = ev.buf
 		local ft = vim.bo[bufnr].filetype
 
@@ -19,14 +20,23 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			{ "<localleader>$", "<cmd>LspInfo<cr>", desc = "LSP Info", buffer = bufnr },
 			{ "=", vim.lsp.buf.format, desc = "Format selection", buffer = bufnr, modes = { "v" } },
 
-			{ "gd", "<cmd>Telescope lsp_definitions<cr>", desc = "Definition(s)", buffer = bufnr },
+			{ "gd", picker.lsp_definitions, desc = "Definition(s)", buffer = bufnr },
 			{ "gD", vim.lsp.buf.declaration, desc = "Declaration(s)", buffer = bufnr },
-			{ "g/", "<cmd>vsplit<cr><cmd>Telescope lsp_definitions<cr>", desc = "Goto def in vsplit", buffer = bufnr },
-			{ "g-", "<cmd>split<cr><cmd>Telescope lsp_definitions<cr>", desc = "Goto def in hsplit", buffer = bufnr },
-			{ "grr", "<cmd>Telescope lsp_references<cr>", desc = "Reference(s)", buffer = bufnr },
-			{ "gri", "<cmd>Telescope lsp_implementations<cr>", desc = "Implementation(s)", buffer = bufnr },
-			{ "g.", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Document symbols", buffer = bufnr },
-			{ "gW", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", desc = "Workspace symbols", buffer = bufnr },
+			{
+				"g/",
+				"<cmd>vsplit<cr><cmd>lua require('snacks').picker.lsp_definitions()<cr>",
+				desc = "Goto def in vsplit",
+				buffer = bufnr,
+			},
+			{
+				"g-",
+				"<cmd>split<cr><cmd>lua require('snacks').picker.lsp_definitions()<cr>",
+				desc = "Goto def in hsplit",
+				buffer = bufnr,
+			},
+			{ "grr", picker.lsp_references, desc = "Reference(s)", buffer = bufnr },
+			{ "gri", picker.lsp_implementations, desc = "Implementation(s)", buffer = bufnr },
+			{ "g.", picker.lsp_symbols, desc = "Document symbols", buffer = bufnr },
 			{ "K", vim.lsp.buf.hover, desc = "Hover", buffer = bufnr },
 		})
 

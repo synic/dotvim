@@ -1,4 +1,3 @@
-local config = require("ao.config")
 local setup_colors_group = vim.api.nvim_create_augroup("AoSetupColors", { clear = true })
 
 local M = {}
@@ -36,7 +35,7 @@ local function on_colorcheme_load(pattern, cb)
 end
 
 local function colorscheme_picker()
-	require("telescope.builtin").colorscheme({ ignore_builtins = true })
+	require("snacks").picker.colorschemes()
 end
 
 local keys = {

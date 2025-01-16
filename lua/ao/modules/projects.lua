@@ -100,19 +100,21 @@ local function setup_project_hotkeys()
 end
 
 local function search_project_cursor_term()
-	local builtin = require("telescope.builtin")
+	local picker = require("snacks").picker
 	local current_word = vim.fn.expand("<cword>")
 	local root = M.find_buffer_root()
 
-	builtin.grep_string({ cwd = (root or "."), search = current_word })
+	---@diagnostic disable-next-line: missing-fields
+	picker.grep({ cwd = (root or "."), search = current_word })
 end
 
 local function git_files()
-	local builtin = require("telescope.builtin")
+	local picker = require("snacks").picker
 
 	local root = M.find_buffer_root()
 	if root and root ~= "" then
-		builtin.git_files({ cwd = root })
+		---@diagnostic disable-next-line: missing-fields
+		picker.git_files({ cwd = (root or ".") })
 	else
 		vim.notify("Project: no project selected", vim.log.levels.INFO)
 		pick_project()
@@ -120,75 +122,101 @@ local function git_files()
 end
 
 local function dirpicker_pick_project(cb)
+	local snacks = require("snacks")
+	local layouts = require("snacks.picker.config.layouts")
+
 	local cwd = config.options.projects.directory.path or "."
 	local projects = M.list({ cwd = cwd })
 
 	local width = 0
-	for _, project in ipairs(projects) do
-		local line_length = 45 + #project.path
-		if line_length > width then
-			width = line_length
+	local height = math.min(#projects + 5, 25)
+
+	local max_name_length = 0
+	for _, entry in ipairs(projects) do
+		entry.text = entry.name .. entry.path
+		max_name_length = math.max(max_name_length, #entry.name)
+		local total_length = #entry.text + 20
+		if total_length > width then
+			width = total_length
 		end
 	end
 
-	width = math.min(width, 110)
+	width = math.min(width, 150)
+	local padding = max_name_length + 15
 
-	local height = math.min(#projects + 5, 25)
-
-	local state = require("telescope.actions.state")
-	local actions = require("telescope.actions")
-
-	require("telescope").extensions.dirpicker.dirpicker({
-		cwd = cwd,
-		enable_preview = false,
-		layout_config = { width = width, height = height },
-		prompt_title = "Projects",
-		displayer = { separator = "    ", name_width = 35 },
-		attach_default_mappings = false,
-		attach_mappings = function(prompt_bufnr, map)
-			map("i", "//", function()
-				local entry = state.get_selected_entry()
-				actions.close(prompt_bufnr)
-				vim.cmd.vsplit(entry.value)
-				M.open(entry.value)
-			end, { desc = "Open in vertical split" })
-			map("i", "--", function()
-				local entry = state.get_selected_entry()
-				actions.close(prompt_bufnr)
-				vim.cmd.split(entry.value)
-				M.open(entry.value)
-			end, { desc = "Open in horizontal split" })
-			map("i", "<c-e>", function()
-				local entry = state.get_selected_entry()
-				actions.close(prompt_bufnr)
-				vim.cmd("edit! " .. entry.value)
-				M.set(entry.value)
-			end, { desc = "Open in file browser" })
-			map("i", "<c-v>", function()
-				local entry = state.get_selected_entry()
-				actions.close(prompt_bufnr)
-				vim.cmd("vsplit! " .. entry.value)
-				M.set(entry.value)
-			end, { desc = "File browser in vsplit" })
-			map("i", "<c-s>", function()
-				local entry = state.get_selected_entry()
-				actions.close(prompt_bufnr)
-				vim.cmd("split! " .. entry.value)
-				M.set(entry.value)
-			end, { desc = "File browser in split" })
-			map("i", "<c-p>", function()
-				local entry = state.get_selected_entry()
-				actions.close(prompt_bufnr)
+	snacks.picker.pick({
+		items = projects,
+		format = function(item, _)
+			local ret = {}
+			ret[#ret + 1] = { item.name, "SnacksFileLabel" }
+			ret[#ret + 1] = { string.rep(" ", padding - #item.name), virtual = true }
+			ret[#ret + 1] = { item.path, "SnacksPickerComment" }
+			return ret
+		end,
+		layout = vim.tbl_deep_extend("force", layouts.telescope, {
+			layout = {
+				width = width,
+				height = height,
+				min_width = width,
+				min_height = height,
+				{
+					box = "vertical",
+					{ win = "list", title = " Projects ", title_pos = "center", border = "rounded" },
+					{ win = "input", height = 1, border = "rounded", title = "{source} {live}", title_pos = "center" },
+				},
+			},
+			preview = false,
+		}),
+		confirm = function(picker, entry)
+			picker:close()
+			if entry then
+				cb(entry.path)
+			end
+		end,
+		actions = {
+			open_in_vsplit = function(picker, entry)
+				picker:close()
+				vim.cmd.vsplit(entry.path)
+				M.open(entry.path)
+			end,
+			open_in_split = function(picker, entry)
+				picker:close()
+				vim.cmd.split(entry.path)
+				M.open(entry.path)
+			end,
+			browse = function(picker, entry)
+				picker:close()
+				vim.cmd("edit! " .. entry.path)
+				M.set(entry.path)
+			end,
+			browse_in_vsplit = function(picker, entry)
+				picker:close()
+				vim.cmd("vsplit! " .. entry.path)
+				M.set(entry.path)
+			end,
+			browse_in_split = function(picker, entry)
+				picker:close()
+				vim.cmd("split! " .. entry.path)
+				M.set(entry.path)
+			end,
+			set_layout = function(picker, entry)
+				picker:close()
 				M.set(entry.value)
 				vim.notify("Project: set current layout project to " .. entry.name)
-			end, { desc = "Set layout project" })
-
-			return true
-		end,
-		cmd = function(_)
-			return projects
-		end,
-		on_select = cb,
+			end,
+		},
+		win = {
+			input = {
+				keys = {
+					["//"] = { "open_in_vsplit", desc = "Open in vertical split", mode = { "i" } },
+					["--"] = { "open_in_split", desc = "Open in horiontal split", mode = { "i" } },
+					["<c-e>"] = { "browse", desc = "Open in file browser", mode = { "i" } },
+					["<c-v>"] = { "browse_in_vsplit", desc = "File browser in split", mode = { "i" } },
+					["<c-s>"] = { "browse_in_split", desc = "File browser in split", mode = { "i" } },
+					["<c-p>"] = { "set_layout", desc = "Set layout project", mode = { "i" } },
+				},
+			},
+		},
 	})
 end
 
@@ -223,19 +251,20 @@ local function set_project()
 end
 
 local function search_project()
-	local builtin = require("telescope.builtin")
-	builtin.live_grep({ cwd = (M.find_buffer_root() or "."), debounce = 100 })
+	---@diagnostic disable-next-line: missing-fields
+	require("snacks").picker.grep({ cwd = (M.find_buffer_root() or ".") })
 end
 
 function find_project_files()
-	local builtin = require("telescope.builtin")
+	local snacks = require("snacks")
 
 	local root = M.find_buffer_root()
 	if root and root ~= "" then
 		if not vim.t.project_dir then
 			M.set(root)
 		end
-		builtin.find_files({ cwd = root })
+		---@diagnostic disable-next-line: missing-fields
+		snacks.picker.files({ cwd = root })
 	else
 		vim.notify("Project: no project selected", vim.log.levels.INFO)
 		pick_project()
@@ -337,36 +366,30 @@ function M.open(dir)
 	end
 
 	update_frecency(dir)
-	require("telescope.builtin").find_files({ cwd = dir })
+	---@diagnostic disable-next-line: missing-fields
+	require("snacks").picker.files({ cwd = dir })
 end
 
 utils.map_keys({
 	{ "<leader>p-", goto_project_directory, desc = "Go to project directory" },
+	{ "<leader>lt", new_tab_with_project, desc = "New layout with project" },
+	{
+		"<leader>*",
+		search_project_cursor_term,
+		desc = "Search project for term",
+		modes = { "n", "v" },
+	},
+	{ "<leader>sp", search_project, desc = "Search project for text" },
+	{ "<leader>p/", search_project, desc = "Search project for text" },
+	{ "<leader>pf", find_project_files, desc = "Find project file" },
+	{ "<leader>pg", git_files, desc = "Find git files" },
+	{ "<leader>pp", pick_project, desc = "Pick project" },
+	{ "<leader>pP", switch_project, desc = "Switch project" },
+	{ "<leader>ph", goto_project, desc = "Go to project home" },
+	{ "<leader>pS", set_project, desc = "Set project home" },
 })
 
-M.plugin_specs = {
-	{
-		"synic/telescope-dirpicker.nvim",
-		dependencies = { "telescope.nvim" },
-		keys = {
-			{ "<leader>lt", new_tab_with_project, desc = "New layout with project" },
-			{
-				"<leader>*",
-				search_project_cursor_term,
-				desc = "Search project for term",
-				mode = { "n", "v" },
-			},
-			{ "<leader>sp", search_project, desc = "Search project for text" },
-			{ "<leader>p/", search_project, desc = "Search project for text" },
-			{ "<leader>pf", find_project_files, desc = "Find project file" },
-			{ "<leader>pg", git_files, desc = "Find git files" },
-			{ "<leader>pp", pick_project, desc = "Pick project" },
-			{ "<leader>pP", switch_project, desc = "Switch project" },
-			{ "<leader>ph", goto_project, desc = "Go to project home" },
-			{ "<leader>pS", set_project, desc = "Set project home" },
-		},
-	},
-}
+M.plugin_specs = {}
 
 load_frecency()
 setup_autochdir()
