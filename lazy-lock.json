@@ -59,7 +59,7 @@
   "persistence.nvim": { "branch": "main", "commit": "f6aad7dde7fcf54148ccfc5f622c6d5badd0cc3d" },
   "plenary.nvim": { "branch": "master", "commit": "3707cdb1e43f5cea73afb6037e6494e7ce847a66" },
   "quicker.nvim": { "branch": "master", "commit": "049def718213d3cdf49fdf29835aded09b3e54a3" },
-  "refactorex.nvim": { "branch": "main", "commit": "f13ba71e64e30a50b245926658b669a70b4fe79b" },
+  "refactorex.nvim": { "branch": "main", "commit": "2a1102b506b289f45eed91c45e4ed27c3ec3c23e" },
   "render-markdown.nvim": { "branch": "main", "commit": "ad055861d17afe058bd835e82292e14a64b51b1d" },
   "snacks.nvim": { "branch": "main", "commit": "cd58a14e20fdcd810b55e8aee535486a3ad8719f" },
   "tabby.nvim": { "branch": "main", "commit": "c119c91f3ada1a7c62ca2d10685ac8a3e2928fb8" },

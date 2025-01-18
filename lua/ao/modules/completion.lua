@@ -6,6 +6,7 @@ return {
 		dependencies = {
 			"L3MON4D3/LuaSnip",
 			"moyiz/blink-emoji.nvim",
+			"folke/lazydev.nvim",
 		},
 		tag = "v0.10.0",
 
@@ -66,6 +67,12 @@ return {
 
 			sources = {
 				providers = {
+					lazydev = {
+						name = "LazyDev",
+						module = "lazydev.integrations.blink",
+						-- make lazydev completions top priority (see `:h blink.cmp`)
+						score_offset = 100,
+					},
 					emoji = {
 						module = "blink-emoji",
 						name = "Emoji",
@@ -73,7 +80,7 @@ return {
 						opts = { insert = true },
 					},
 				},
-				default = { "lsp", "path", "snippets", "buffer", "emoji" },
+				default = { "lazydev", "lsp", "path", "snippets", "buffer", "emoji" },
 				cmdline = {},
 			},
 		},
