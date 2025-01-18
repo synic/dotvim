@@ -1,6 +1,12 @@
+---@alias HopOpts { keys: string, quit_key: string, case_insensitive: boolean }
+---@alias TreewalkerOpts { highlight: boolean }
+
+---@type string
 local target_keys = "asdfghjkletovxpzwciubrnym;,ASDFGHJKLETOVXPZWCIUBRNYM"
 
+---@return nil
 local function pick_window()
+	---@type number|nil
 	local win_id = require("window-picker").pick_window({ hint = "floating-big-letter" })
 
 	if win_id ~= nil then
@@ -8,43 +14,41 @@ local function pick_window()
 	end
 end
 
+---@type LazyPluginSpec[]
 return {
 	{
 		"smoka7/hop.nvim",
 		version = "*",
+		---@type HopOpts
 		opts = { keys = target_keys, quit_key = "q" },
+		---@param _ any
+		---@param opts HopOpts
 		config = function(_, opts)
+			---@type table
 			local hop = require("hop")
 			hop.setup(opts)
 
-			-- Create custom command for hopping to character/word matches
 			vim.api.nvim_create_user_command("HopOverwinF", function()
+				---@type number|string
 				local char = vim.fn.getchar()
-				-- Convert numeric char code to string
 				char = type(char) == "number" and vim.fn.nr2char(char) or char
 
-				-- Ignore whitespace characters
 				if char:match("%s") then
 					return
 				end
 
-				-- Create pattern based on input character type
+				---@type string
 				local pattern
 				if char:match("%a") then
-					-- For letters: match words starting with that letter
-					-- Uppercase letters match exactly
-					-- Lowercase letters match case insensitive only when the setting is enabled
+					---@type string
 					local case_flag = (opts.case_insensitive and char:match("%l")) and "\\c" or ""
 					pattern = "\\v" .. case_flag .. "(<|_@<=)" .. char
 				elseif char:match("%p") then
-					-- For punctuation: match them literally
 					pattern = [[\V]] .. vim.fn.escape(char, "\\")
 				else
-					-- For other characters: match them literally
 					pattern = char
 				end
 
-				---@diagnostic disable-next-line: missing-fields
 				hop.hint_patterns({
 					current_line_only = false,
 					multi_windows = true,
@@ -68,24 +72,60 @@ return {
 	{
 		"folke/flash.nvim",
 		event = "VeryLazy",
+		---@type Flash.Config
 		opts = {
 			modes = {
 				char = { enabled = false },
 			},
 			labels = target_keys,
 		},
-		-- stylua: ignore
 		keys = {
-			{ "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-			{ "<leader>S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-			{ "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-			{ "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-			{ "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+			{
+				"s",
+				mode = { "n", "x", "o" },
+				function()
+					require("flash").jump()
+				end,
+				desc = "Flash",
+			},
+			{
+				"<leader>S",
+				mode = { "n", "x", "o" },
+				function()
+					require("flash").treesitter()
+				end,
+				desc = "Flash Treesitter",
+			},
+			{
+				"r",
+				mode = "o",
+				function()
+					require("flash").remote()
+				end,
+				desc = "Remote Flash",
+			},
+			{
+				"R",
+				mode = { "o", "x" },
+				function()
+					require("flash").treesitter_search()
+				end,
+				desc = "Treesitter Search",
+			},
+			{
+				"<c-s>",
+				mode = { "c" },
+				function()
+					require("flash").toggle()
+				end,
+				desc = "Toggle Flash Search",
+			},
 		},
 	},
 
 	{
 		"aaronik/treewalker.nvim",
+		---@type TreewalkerOpts
 		opts = {
 			highlight = true,
 		},

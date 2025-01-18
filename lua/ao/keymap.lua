@@ -6,6 +6,8 @@ local interface = require("ao.modules.interface")
 ---
 --- Plugin specific keymaps are defined on their plugin spec
 
+---@type wk["Spec"]
+---@diagnostic disable-next-line: missing-fields
 local M = {
 	key_categories = {
 		{ "<leader>-", group = "split" },
@@ -131,10 +133,10 @@ utils.map_keys({
 	{ "<leader>q<space>", interface.quickfix_remove_item_move_next, desc = "Remove quickfix item and move next" },
 
 	-- better movement
-	{ "j", "v:count == 0 ? 'gj' : 'j'", modes = { "n", "x" }, desc = "Down", expr = true, silent = true },
-	{ "<Down>", "v:count == 0 ? 'gj' : 'j'", modes = { "n", "x" }, desc = "Down", expr = true, silent = true },
-	{ "k", "v:count == 0 ? 'gk' : 'k'", modes = { "n", "x" }, desc = "Up", expr = true, silent = true },
-	{ "<Up>", "v:count == 0 ? 'gk' : 'k'", modes = { "n", "x" }, desc = "Up", expr = true, silent = true },
+	{ "j", "v:count == 0 ? 'gj' : 'j'", mode = { "n", "x" }, desc = "Down", expr = true, silent = true },
+	{ "<Down>", "v:count == 0 ? 'gj' : 'j'", mode = { "n", "x" }, desc = "Down", expr = true, silent = true },
+	{ "k", "v:count == 0 ? 'gk' : 'k'", mode = { "n", "x" }, desc = "Up", expr = true, silent = true },
+	{ "<Up>", "v:count == 0 ? 'gk' : 'k'", mode = { "n", "x" }, desc = "Up", expr = true, silent = true },
 
 	-- configuration
 	{ "<leader>cm", filesystem.goto_config_directory, desc = "Manage config" },
@@ -142,8 +144,8 @@ utils.map_keys({
 	{ "<leader>cd", interface.goto_dotfiles_dir, desc = "Go to dotfiles directory" },
 
 	-- copy/paste on mac
-	{ "<D-v>", "+p<CR>", modes = { "" }, noremap = true, silent = true, test = vim.fn.has("macunix") },
-	{ "<D-v>", "<C-R>+", modes = { "!", "t", "v" }, noremap = true, silent = true, test = vim.fn.has("macunix") },
+	{ "<D-v>", "+p<CR>", mode = { "" }, noremap = true, silent = true, test = vim.fn.has("macunix") },
+	{ "<D-v>", "<C-R>+", mode = { "!", "t", "v" }, noremap = true, silent = true, test = vim.fn.has("macunix") },
 
 	-- change the default key to start recording a macro from `q` to `Q`
 	{ "q", "<nop>", desc = "Disable macro recording with q" },
@@ -162,7 +164,7 @@ utils.map_keys({
 			local filepath = vim.fn.fnamemodify(vim.fn.expand("%"), ":.")
 			vim.fn.setreg("+", filepath)
 		end,
-		modes = { "n" },
+		mode = { "n" },
 		desc = "Show buffer information and copy filepath",
 	},
 })

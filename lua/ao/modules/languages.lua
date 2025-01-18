@@ -14,11 +14,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		utils.map_keys({
 			{ "<localleader>r", vim.lsp.buf.rename, desc = "Rename symbol", buffer = bufnr },
-			{ "<localleader>,", vim.lsp.buf.code_action, desc = "Code actions", buffer = bufnr, modes = { "n", "v" } },
-			{ "<localleader>=", vim.lsp.buf.format, desc = "Format document", buffer = bufnr, modes = { "n", "v" } },
+			{ "<localleader>,", vim.lsp.buf.code_action, desc = "Code actions", buffer = bufnr, mode = { "n", "v" } },
+			{ "<localleader>=", vim.lsp.buf.format, desc = "Format document", buffer = bufnr, mode = { "n", "v" } },
 			{ "<localleader>^", "<cmd>LspRestart<cr>", desc = "Restart LSP", buffer = bufnr },
 			{ "<localleader>$", "<cmd>LspInfo<cr>", desc = "LSP Info", buffer = bufnr },
-			{ "=", vim.lsp.buf.format, desc = "Format selection", buffer = bufnr, modes = { "v" } },
+			{ "=", vim.lsp.buf.format, desc = "Format selection", buffer = bufnr, mode = { "v" } },
 
 			{ "gd", picker.lsp_definitions, desc = "Definition(s)", buffer = bufnr },
 			{ "gD", vim.lsp.buf.declaration, desc = "Declaration(s)", buffer = bufnr },
@@ -233,11 +233,12 @@ M.plugin_specs = {
 	-- neovim development
 	{
 		"folke/lazydev.nvim",
-		dependencies = { "Bilal2453/luvit-meta" },
 		ft = "lua",
 		opts = {
 			library = {
-				"luvit-meta/library",
+				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+				{ path = "snacks.nvim", words = { "Snacks" } },
+				{ path = "lazy.nvim", words = { "LazyVim" } },
 			},
 		},
 	},

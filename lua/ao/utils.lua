@@ -1,8 +1,12 @@
+---@alias KeymapOpts { buffer?: boolean, desc?: string, expr?: boolean, modes?: string[], silent?: boolean, test?: boolean }
+---@alias Keymap { [1]: string, [2]: string|function, desc?: string, buffer?: boolean, expr?: boolean, mode?: string[], silent?: boolean, test?: boolean|number }
+
 local uv = vim.uv or vim.loop
 local init_group = vim.api.nvim_create_augroup("UtilsOnLoad", { clear = true })
 
 local M = {}
 
+---@return nil
 function M.get_help()
 	---@diagnostic disable-next-line: missing-fields
 	vim.ui.input({ prompt = "enter search term" }, function(input)
@@ -13,6 +17,7 @@ function M.get_help()
 	end)
 end
 
+---@return nil
 function M.close_all_floating_windows()
 	for _, win in ipairs(vim.api.nvim_list_wins()) do
 		local config = vim.api.nvim_win_get_config(win)
@@ -22,17 +27,19 @@ function M.close_all_floating_windows()
 	end
 end
 
+---@param keymap Keymap[]
+---@return nil
 function M.map_keys(keymap)
 	for _, key_data in ipairs(keymap) do
-		local modes = key_data.modes or { "n" }
+		local mode = key_data.mode or { "n" }
 		local should_apply = true
 
 		if key_data.test ~= nil then
-			should_apply = key_data.test
+			should_apply = key_data.test ~= 0 and key_data.test ~= nil
 			key_data.test = nil
 		end
 
-		key_data.modes = nil
+		key_data.mode = nil
 
 		if should_apply then
 			local left = key_data[1]
@@ -41,22 +48,30 @@ function M.map_keys(keymap)
 			key_data[1] = nil
 			key_data[2] = nil
 
-			for _, mode in ipairs(modes) do
-				vim.keymap.set(mode, left, right, key_data)
+			for _, m in ipairs(mode) do
+				vim.keymap.set(m, left, right, key_data)
 			end
 		end
 	end
 end
 
+---@param str string
+---@return string
 function M.basename(str)
+	---@diagnostic disable-next-line: redundant-return-value
 	return string.gsub(str, "(.*/)(.*)", "%2")
 end
 
+---@param ... string
+---@return string
 function M.join_paths(...)
 	local result = table.concat({ ... }, "/")
 	return result
 end
 
+---@param table1 table
+---@param table2 table
+---@return table
 function M.table_concat(table1, table2)
 	for i = 1, #table2 do
 		table1[#table1 + 1] = table2[i]
@@ -64,6 +79,9 @@ function M.table_concat(table1, table2)
 	return table1
 end
 
+---@param tbl table
+---@param value any
+---@return boolean
 function M.table_contains(tbl, value)
 	for i = 1, #tbl do
 		if tbl[i] == value then

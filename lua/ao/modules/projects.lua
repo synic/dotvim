@@ -6,7 +6,20 @@ local utils = require("ao.utils")
 ---@field path string
 ---@field text? string
 
+---@class ProjectFrecencyData
+---@field count number
+---@field last_opened number
+
 ---@class ProjectModule
+---@field plugin_specs LazySpec[]
+---@field list fun(opts: { cwd: string }): Project[]
+---@field find_path_root fun(path: string|nil): string|nil
+---@field find_buffer_root fun(buf?: number): string|nil
+---@field get_dir fun(tabnr?: number): string|nil
+---@field get_name fun(tabnr?: number): string|nil
+---@field set fun(dir: string): nil
+---@field open fun(dir: string): nil
+
 local M = {}
 
 ---@type table<string, string|number|nil>
@@ -14,7 +27,7 @@ local root_cache = {}
 
 local chdir_group = vim.api.nvim_create_augroup("ProjectAutoChdir", { clear = true })
 
----@type table<string, { count: number, last_opened: number }>
+---@type table<string, ProjectFrecencyData>
 local frecency_data = {}
 local frecency_file = vim.fn.stdpath("data") .. "/project_frecency.json"
 local pick_project
@@ -415,12 +428,7 @@ end
 utils.map_keys({
 	{ "<leader>p-", goto_project_directory, desc = "Go to project directory" },
 	{ "<leader>lt", new_tab_with_project, desc = "New layout with project" },
-	{
-		"<leader>*",
-		search_project_cursor_term,
-		desc = "Search project for term",
-		modes = { "n", "v" },
-	},
+	{ "<leader>*", search_project_cursor_term, desc = "Search project for term", mode = { "n", "v" } },
 	{ "<leader>sp", search_project, desc = "Search project for text" },
 	{ "<leader>p/", search_project, desc = "Search project for text" },
 	{ "<leader>pf", find_project_files, desc = "Find project file" },

@@ -19,8 +19,12 @@ local disable_scope_filetypes = {
 	"lazyterm",
 }
 
+---@class Interface
+---@field plugin_specs LazySpec[]
 local M = {}
 
+---@param full? boolean
+---@return nil
 function M.buffer_show_path(full)
 	local pattern = "%p"
 
@@ -34,12 +38,16 @@ function M.buffer_show_path(full)
 	vim.print(path)
 end
 
+---@return nil
 function M.buffer_show_full_path()
 	M.buffer_show_path(true)
 end
 
 -- excluding the current window, move all cursors to 0 position on their current line
 -- for all windows in the current tab
+---@param tabnr? integer
+---@param exclude_current? boolean
+---@return nil
 function M.zero_window_cursors(tabnr, exclude_current)
 	local current = vim.fn.winnr()
 
@@ -52,11 +60,15 @@ function M.zero_window_cursors(tabnr, exclude_current)
 	vim.cmd(current .. "windo normal! m'")
 end
 
+---@param tabnr? integer
+---@return nil
 function M.zero_all_window_cursors(tabnr)
 	M.zero_window_cursors(tabnr, true)
 end
 
 -- Execute a command across all tabs
+---@param cmd string
+---@return nil
 function M.tabdo(cmd)
 	local current_tab = vim.fn.tabpagenr()
 	vim.cmd("tabdo " .. cmd)
@@ -64,10 +76,12 @@ function M.tabdo(cmd)
 end
 
 -- Equalize windows in all tabs
+---@return nil
 function M.equalize_all_tabs()
 	M.tabdo("wincmd =")
 end
 
+---@return nil
 function M.quickfix_remove_item_move_next()
 	vim.cmd.copen()
 	local curqfidx = vim.fn.line(".")
@@ -85,6 +99,7 @@ function M.quickfix_remove_item_move_next()
 	vim.cmd("cc" .. new_idx)
 end
 
+---@return nil
 function M.layout_set_name()
 	---@diagnostic disable-next-line: missing-fields
 	vim.ui.input({ prompt = "layout name: ", default = (vim.t.layout_name or "") }, function(name)
@@ -95,15 +110,22 @@ function M.layout_set_name()
 	end)
 end
 
+---@return nil
 function M.goto_lazy_dir()
 	local path = vim.fn.resolve(vim.fn.stdpath("data") .. "/" .. "lazy")
 	vim.cmd.edit(path)
 end
 
+---@return nil
 function M.goto_dotfiles_dir()
 	vim.cmd.edit(vim.fn.expand("~/.dotfiles"))
 end
 
+---@param trunc_width? integer
+---@param trunc_len? integer
+---@param hide_width? integer
+---@param no_ellipsis? boolean
+---@return fun(str: string): string
 local function lualine_trunc(trunc_width, trunc_len, hide_width, no_ellipsis)
 	return function(str)
 		local win_width = vim.fn.winwidth(0)
@@ -116,6 +138,7 @@ local function lualine_trunc(trunc_width, trunc_len, hide_width, no_ellipsis)
 	end
 end
 
+---@return nil
 local function golden_ratio_toggle()
 	vim.cmd.GoldenRatioToggle()
 	if vim.g.golden_ratio_enabled == 0 then
@@ -129,6 +152,8 @@ local function golden_ratio_toggle()
 	end
 end
 
+---@param tabnr integer
+---@return string|nil
 function M.get_tab_name(tabnr)
 	return projects.get_name(tabnr)
 end
@@ -171,6 +196,7 @@ M.plugin_specs = {
 		keys = {
 			{ "<localleader>.", "<cmd>lua require('dropbar.api').pick()<cr>", desc = "Breadcrumb picker" },
 		},
+		---@return dropbar_configs_t
 		opts = function()
 			local dutils = require("dropbar.utils")
 			local preview = false
@@ -349,6 +375,7 @@ M.plugin_specs = {
 		init = function()
 			vim.o.laststatus = 3
 		end,
+		---@return table<string, any> # LualineConfig
 		opts = function()
 			local lualine_utils = require("lualine.utils.utils")
 
@@ -407,6 +434,7 @@ M.plugin_specs = {
 				desc = "Show notification history",
 			},
 		},
+		---@type snacks.Config
 		opts = {
 			indent = {
 				indent = { enabled = false },
@@ -467,6 +495,8 @@ M.plugin_specs = {
 			vim.o.timeout = true
 			vim.o.timeoutlen = 700
 		end,
+		---@type wk["Opts"]
+		---@diagnostic disable-next-line: missing-fields
 		opts = {
 			preset = "modern",
 			plugins = { spelling = true },
@@ -484,7 +514,7 @@ M.plugin_specs = {
 	{
 		"stevearc/quicker.nvim",
 		ft = "qf",
-		opts = {},
+		config = true,
 	},
 }
 

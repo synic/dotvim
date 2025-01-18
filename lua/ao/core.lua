@@ -1,10 +1,13 @@
 local utils = require("ao.utils")
 local config = require("ao.config")
+---@type integer
 local after_load_augroup = vim.api.nvim_create_augroup("AoVimAfterLoad", { clear = true })
 local M = {}
 
+---@type uv
 local uv = vim.uv or vim.loop
 
+---@return Lazy, boolean
 function M.install_plugin_manager()
 	local was_installed = false
 	local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -41,6 +44,7 @@ local function load_theme(theme)
 	return was_set
 end
 
+---@return table[]
 function M.load_plugin_specs()
 	local plugins = {}
 	local path = vim.fn.stdpath("config") .. "/lua/ao/modules"
@@ -60,6 +64,9 @@ function M.load_plugin_specs()
 	return plugins
 end
 
+---@param opts table
+---@param startup_callback_fn? fun(): nil
+---@return nil
 function M.setup(opts, startup_callback_fn)
 	config.options = vim.tbl_deep_extend("force", config.options, opts)
 	if config.options.appearance.guifont then
@@ -84,7 +91,7 @@ function M.setup(opts, startup_callback_fn)
 				startup_callback_fn()
 			end
 
-			if config.theme and not theme_load_status then
+			if config.options.appearance.theme and not theme_load_status then
 				require("lazy.core.loader").colorscheme(config.options.appearance.theme)
 				vim.schedule(function()
 					vim.cmd.colorscheme(config.options.appearance.theme)

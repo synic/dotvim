@@ -53,14 +53,14 @@ local function gitsigns_on_attach(bufnr)
 			"<cmd>Gitsigns stage_hunk<CR>",
 			desc = "Stage hunk",
 			buffer = bufnr,
-			modes = { "n", "v" },
+			mode = { "n", "v" },
 		},
 		{
 			"ghr",
 			"<cmd>Gitsigns reset_hunk<CR>",
 			desc = "Reset hunk",
 			buffer = bufnr,
-			modes = { "n", "v" },
+			mode = { "n", "v" },
 		},
 		{ "ghS", gs.stage_buffer, desc = "Stage buffer", buffer = bufnr },
 		{ "ghu", gs.undo_stage_hunk, desc = "Undo stage Hunk", buffer = bufnr },
@@ -88,7 +88,7 @@ local function gitsigns_on_attach(bufnr)
 			"<cmd><C-U>Gitsigns select_hunk<cr>",
 			desc = "Select hunk",
 			buffer = bufnr,
-			modes = { "o", "x" },
+			mode = { "o", "x" },
 		},
 	})
 end
