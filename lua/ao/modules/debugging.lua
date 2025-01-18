@@ -57,24 +57,6 @@ return {
 		end,
 	},
 
-	{
-		"rachartier/tiny-inline-diagnostic.nvim",
-		event = "VeryLazy",
-		priority = 1000, -- needs to be loaded in first
-		opts = {
-			options = {
-				multilines = {
-					enabled = true,
-					always_show = true,
-				},
-			},
-		},
-		config = function(_, opts)
-			vim.diagnostic.config({ virtual_text = false })
-			require("tiny-inline-diagnostic").setup(opts)
-		end,
-	},
-
 	-- UI for DAP
 	{
 		"rcarriga/nvim-dap-ui",

@@ -47,7 +47,11 @@ return {
 			{ "<leader>sq", "<cmd>lua require('snacks').picker.qflist()<cr>", desc = "Search quickfix" },
 		},
 		opts = {
+			---@type snacks.picker.Config
 			picker = {
+				main = {
+					current = true,
+				},
 				layout = {
 					reverse = true,
 					layout = {

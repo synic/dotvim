@@ -1,10 +1,15 @@
 local utils = require("ao.utils")
 local config = require("ao.config")
----@type integer
+
+---@class PluginSpec
+---@field plugin_specs LazySpec[]|fun():LazySpec[]
+---@field [string] any  -- Allow any additional functions/fields
+
+---@alias PluginModule LazySpec[]|PluginSpec
+
 local after_load_augroup = vim.api.nvim_create_augroup("AoVimAfterLoad", { clear = true })
 local M = {}
 
----@type uv
 local uv = vim.uv or vim.loop
 
 ---@return Lazy, boolean
@@ -44,19 +49,22 @@ local function load_theme(theme)
 	return was_set
 end
 
----@return table[]
+---@return LazySpec[]
 function M.load_plugin_specs()
+	---@type LazySpec[]
 	local plugins = {}
 	local path = vim.fn.stdpath("config") .. "/lua/ao/modules"
 	local items = vim.split(vim.fn.glob(vim.fn.resolve(path .. "/*.lua")), "\n", { trimempty = true })
 
 	for _, item in ipairs(items) do
+		---@type PluginModule
 		local m = require("ao.modules." .. vim.fn.fnamemodify(item, ":t:r"))
 		local v = m.plugin_specs
 
 		if v == nil then
 			plugins = utils.table_concat(plugins, m)
 		else
+			---@diagnostic disable-next-line: param-type-mismatch
 			plugins = utils.table_concat(plugins, (type(v) == "function" and v() or v))
 		end
 	end

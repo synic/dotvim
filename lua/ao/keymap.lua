@@ -6,7 +6,7 @@ local interface = require("ao.modules.interface")
 ---
 --- Plugin specific keymaps are defined on their plugin spec
 
----@type wk["Spec"]
+---@type wk.Spec
 ---@diagnostic disable-next-line: missing-fields
 local M = {
 	key_categories = {

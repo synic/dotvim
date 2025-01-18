@@ -19,8 +19,7 @@ local disable_scope_filetypes = {
 	"lazyterm",
 }
 
----@class Interface
----@field plugin_specs LazySpec[]
+---@type PluginModule
 local M = {}
 
 ---@param full? boolean
@@ -447,7 +446,12 @@ M.plugin_specs = {
 				end,
 			},
 			scope = {},
-			notifier = { top_down = false },
+			---@type snacks.notifier.Config
+			---@diagnostic disable-next-line: missing-fields
+			notifier = {
+				top_down = false,
+				width = { min = 50, max = 50 },
+			},
 			git = { enabled = true },
 			gitbrowse = { enabled = true },
 			scratch = { enabled = true },
