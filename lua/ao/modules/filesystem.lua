@@ -4,12 +4,6 @@ local projects = require("ao.modules.projects")
 local oil_setup_keys_group = vim.api.nvim_create_augroup("OilSetupKeys", { clear = true })
 local M = {}
 
-vim.g.netrw_liststyle = 0
-vim.g.netrw_keepdir = 0
-vim.g.netrw_banner = 0
-vim.g.netrw_list_hide = (vim.fn["netrw_gitignore#Hide"]()) .. [[,\(^\|\s\s\)\zs\.\S\+]]
-vim.g.netrw_browse_split = 0
-
 M.browse_directory = function(type, precmd)
 	return function()
 		if precmd then
