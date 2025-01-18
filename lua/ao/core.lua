@@ -8,6 +8,7 @@ local uv = vim.uv or vim.loop
 function M.install_plugin_manager()
 	local was_installed = false
 	local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+	---@diagnostic disable-next-line: undefined-field
 	if not uv.fs_stat(lazypath) then
 		vim.fn.system({
 			"git",
@@ -27,6 +28,8 @@ function M.install_plugin_manager()
 	return lazy, was_installed
 end
 
+---@param theme string
+---@return boolean
 local function load_theme(theme)
 	require("lazy.core.loader").colorscheme(theme)
 	local was_set = pcall(vim.cmd.colorscheme, theme)
@@ -34,6 +37,7 @@ local function load_theme(theme)
 		vim.notify("Unable to load colorscheme " .. theme, vim.log.levels.ERROR)
 	end
 
+	---@diagnostic disable-next-line: return-type-mismatch
 	return was_set
 end
 

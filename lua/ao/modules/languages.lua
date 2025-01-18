@@ -533,9 +533,10 @@ M.plugin_specs = {
 		config = function(_, opts)
 			local snacks = require("snacks")
 			snacks.setup(opts)
-			vim.api.nvim_set_hl(0, "LspProgressGrey", { fg = "#666666", blend = 40 })
-			vim.api.nvim_set_hl(0, "LspProgressGreyBold", { fg = "#666666", blend = 40, bold = true })
-			local max_width = 50
+
+			vim.api.nvim_set_hl(0, "LspProgressGrey", { fg = "#333333" })
+			vim.api.nvim_set_hl(0, "LspProgressGreyBold", { fg = "#333333", bold = true })
+			local max_width = 40
 
 			---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
 			local progress = vim.defaulttable()
@@ -585,13 +586,19 @@ M.plugin_specs = {
 						id = "lsp_progress",
 						title = client.name,
 						timeout = 1200,
-						opts = function(notif)
-							if notif.win then
-								notif.win.redraw = function(self)
-									---@diagnostic disable-next-line: need-check-nil
-									vim.api.nvim__redraw({ win = self.win, valid = false, flush = true, cursor = false })
-								end
+						focusable = false,
+						level = 0,
+						style = function(buf, notif, ctx)
+							notif.win.opts.focusable = false
+							notif.win.opts.wo.winblend = 70
+							local title = vim.trim(notif.icon .. " " .. (notif.title or ""))
+							if title ~= "" then
+								ctx.opts.title = { { " " .. title .. " ", ctx.hl.title } }
+								ctx.opts.title_pos = "center"
 							end
+							vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.split(notif.msg, "\n"))
+						end,
+						opts = function(notif)
 							---@diagnostic disable-next-line: missing-fields
 							notif.hl = {
 								icon = "LspProgressGreyBold",

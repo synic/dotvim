@@ -1,14 +1,26 @@
 local config = require("ao.config")
 local utils = require("ao.utils")
 
+---@class Project
+---@field name string
+---@field path string
+---@field text? string
+
+---@class ProjectModule
 local M = {}
+
+---@type table<string, string|number|nil>
 local root_cache = {}
+
 local chdir_group = vim.api.nvim_create_augroup("ProjectAutoChdir", { clear = true })
+
+---@type table<string, { count: number, last_opened: number }>
 local frecency_data = {}
 local frecency_file = vim.fn.stdpath("data") .. "/project_frecency.json"
 local pick_project
 local find_project_files
 
+---@return nil
 local function load_frecency()
 	local file = io.open(frecency_file, "r")
 	if file then
@@ -23,6 +35,7 @@ local function load_frecency()
 	end
 end
 
+---@return nil
 local function save_frecency()
 	vim.schedule(function()
 		local file = io.open(frecency_file, "w")
@@ -35,6 +48,8 @@ local function save_frecency()
 	end)
 end
 
+---@param dir string
+---@return nil
 local function update_frecency(dir)
 	frecency_data[dir] = frecency_data[dir] or { count = 0, last_opened = 0 }
 	frecency_data[dir].count = frecency_data[dir].count + 1
@@ -42,6 +57,8 @@ local function update_frecency(dir)
 	save_frecency()
 end
 
+---@param dir string
+---@return number
 local function get_frecency_score(dir)
 	if not frecency_data[dir] then
 		return 0
@@ -50,6 +67,9 @@ local function get_frecency_score(dir)
 	return frecency_data[dir].count * time_factor
 end
 
+---@param str string
+---@param start string
+---@return boolean
 function string.starts_with(str, start)
 	return string.sub(str, 1, string.len(start)) == start
 end
@@ -57,6 +77,7 @@ end
 -- would rather not use this function and instead just use `:tcd` per tab, however, there are various plugins that
 -- have issue with the file not being in the same location as the cwd (stylua, for example, has trouble saving if the
 -- cwd is some other directory.
+---@return nil
 local function setup_autochdir()
 	local chdir_aucmds = { "BufNewFile", "BufRead", "BufFilePost", "BufEnter", "VimEnter" }
 	local skip_filetype_patterns = { "^qf$", "^Neogit" }
@@ -77,11 +98,13 @@ local function setup_autochdir()
 	})
 end
 
+---@return nil
 local function goto_project_directory()
 	local dir = config.options.projects.directory or "."
 	vim.cmd.edit(dir)
 end
 
+---@return nil
 local function setup_project_hotkeys()
 	local keys = {}
 	for key, dir in pairs(config.options.projects.bookmarks) do
@@ -99,6 +122,7 @@ local function setup_project_hotkeys()
 	utils.map_keys(keys)
 end
 
+---@return nil
 local function search_project_cursor_term()
 	local picker = require("snacks").picker
 	local current_word = vim.fn.expand("<cword>")
@@ -108,6 +132,7 @@ local function search_project_cursor_term()
 	picker.grep({ cwd = (root or "."), search = current_word })
 end
 
+---@return nil
 local function git_files()
 	local picker = require("snacks").picker
 
@@ -121,6 +146,8 @@ local function git_files()
 	end
 end
 
+---@param cb fun(path: string): nil
+---@return nil
 local function dirpicker_pick_project(cb)
 	local snacks = require("snacks")
 	local layouts = require("snacks.picker.config.layouts")
@@ -271,6 +298,8 @@ function find_project_files()
 	end
 end
 
+---@param opts { cwd: string }
+---@return Project[]
 function M.list(opts)
 	local path = require("plenary.path")
 	local items, projects = {}, {}
@@ -313,6 +342,8 @@ function M.list(opts)
 	return projects
 end
 
+---@param path string|nil
+---@return string|nil
 function M.find_path_root(path)
 	if not path or path == "" then
 		return nil
@@ -323,6 +354,7 @@ function M.find_path_root(path)
 		if root == -1 then
 			return nil
 		end
+		---@diagnostic disable-next-line: return-type-mismatch
 		return root
 	end
 
@@ -332,17 +364,23 @@ function M.find_path_root(path)
 	return root
 end
 
+---@param buf number|nil
+---@return string|nil
 function M.find_buffer_root(buf)
 	buf = buf or 0
 	local cwd = vim.bo[buf].filetype == "oil" and require("oil").get_current_dir(buf) or utils.get_buffer_cwd(buf)
 	return M.find_path_root(cwd)
 end
 
+---@param tabnr number|nil
+---@return string|nil
 function M.get_dir(tabnr)
 	local path = M.find_path_root(vim.fn.getcwd(-1, tabnr or 0))
 	return path
 end
 
+---@param tabnr number|nil
+---@return string|nil
 function M.get_name(tabnr)
 	local name = vim.fn.gettabvar(tabnr or 0, "layout_name")
 	if name and name ~= "" then
@@ -351,6 +389,8 @@ function M.get_name(tabnr)
 	return nil
 end
 
+---@param dir string
+---@return nil
 function M.set(dir)
 	print("Project: opening", dir)
 	---@diagnostic disable-next-line: inject-field
@@ -360,6 +400,8 @@ function M.set(dir)
 	vim.cmd.redrawtabline()
 end
 
+---@param dir string
+---@return nil
 function M.open(dir)
 	if not vim.t.project_dir then
 		M.set(dir)
