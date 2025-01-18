@@ -44,7 +44,6 @@
   "none-ls.nvim": { "branch": "main", "commit": "af318216b744f2fe2d5afa6febb01f455ae61d6c" },
   "nordic.nvim": { "branch": "main", "commit": "78387ba46fe72c7f137b4efdafd424dea526d52c" },
   "nui.nvim": { "branch": "main", "commit": "53e907ffe5eedebdca1cd503b00aa8692068ca46" },
-  "nvim-cmp": { "branch": "main", "commit": "8c82d0bd31299dbff7f8e780f5e06d2283de9678" },
   "nvim-dap": { "branch": "master", "commit": "99807078c5089ed30e0547aa4b52c5867933f426" },
   "nvim-dap-ui": { "branch": "master", "commit": "727c032a8f63899baccb42a1c26f27687e62fc5e" },
   "nvim-early-retirement": { "branch": "main", "commit": "9ae6fcc933fc865ddf2728460194b67985e06e27" },

@@ -1,3 +1,4 @@
+---@type PluginModule
 return {
 	{
 		"kristijanhusak/vim-dadbod-ui",

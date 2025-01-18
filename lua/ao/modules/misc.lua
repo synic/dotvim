@@ -21,6 +21,7 @@ utils.map_keys({
 	{ "<leader>wM", zoom_toggle, desc = "Zoom window" },
 })
 
+---@type PluginModule
 local plugins = {
 	-- surround plugin
 	{

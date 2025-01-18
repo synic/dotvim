@@ -14,6 +14,7 @@ local function open_summary()
 	end
 end
 
+---@type PluginModule
 return {
 	{
 		"nvim-neotest/neotest",

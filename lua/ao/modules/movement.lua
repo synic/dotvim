@@ -14,7 +14,7 @@ local function pick_window()
 	end
 end
 
----@type LazyPluginSpec[]
+---@type PluginModule
 return {
 	{
 		"smoka7/hop.nvim",

@@ -5,6 +5,7 @@ local lsp_formatting_group = vim.api.nvim_create_augroup("LspFormatting", {})
 vim.api.nvim_set_hl(0, "LspProgressGrey", { fg = "#6b8fd1", blend = 40 })
 vim.api.nvim_set_hl(0, "LspProgressGreyBold", { fg = "#6b8fd1", bold = true, blend = 40 })
 
+---@type PluginModule
 local M = {}
 
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -242,6 +243,7 @@ M.plugin_specs = {
 				{ path = "snacks.nvim", words = { "Snacks" } },
 				{ path = "lazy.nvim", words = { "LazyVim" } },
 				{ path = "which-key.nvim", words = { "WhichKey" } },
+				{ path = "blink.cmp", words = { "Blink" } },
 			},
 		},
 	},

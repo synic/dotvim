@@ -2,6 +2,8 @@ local utils = require("ao.utils")
 local projects = require("ao.modules.projects")
 
 local oil_setup_keys_group = vim.api.nvim_create_augroup("OilSetupKeys", { clear = true })
+
+---@type PluginModule
 local M = {}
 
 M.browse_directory = function(type, precmd)

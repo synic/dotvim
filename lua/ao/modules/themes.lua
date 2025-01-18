@@ -1,5 +1,9 @@
+---@alias ColorSchemeCallback fun()
+---@alias ColorSchemeEvent {match: string}
+---
 local setup_colors_group = vim.api.nvim_create_augroup("AoSetupColors", { clear = true })
 
+---@type PluginModule
 local M = {}
 
 vim.api.nvim_create_autocmd("ColorScheme", {
@@ -21,6 +25,9 @@ local function set_whitespace_colors()
 	vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#444444" })
 end
 
+---@param pattern string Pattern to match colorscheme name against
+---@param cb ColorSchemeCallback Callback to run when colorscheme loads
+---@return nil
 local function on_colorcheme_load(pattern, cb)
 	cb()
 	vim.api.nvim_create_autocmd("ColorScheme", {
@@ -97,7 +104,8 @@ M.plugin_specs = {
 		config = function(_, opts)
 			local nordic = require("nordic")
 			nordic.setup(opts)
-			nordic.load()
+			---@diagnostic disable-next-line: missing-fields
+			nordic.load({})
 
 			on_colorcheme_load("^nordic", function()
 				set_whitespace_colors()

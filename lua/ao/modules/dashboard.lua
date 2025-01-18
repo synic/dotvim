@@ -9,8 +9,8 @@ local header = [[
 local config = require("ao.config")
 local projects = require("ao.modules.projects")
 
+---@type PluginModule
 return {
-
 	{
 		"folke/snacks.nvim",
 		event = "VeryLazy",

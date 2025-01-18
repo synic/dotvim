@@ -10,6 +10,8 @@ local function find_files_cwd()
 	---@diagnostic disable-next-line: missing-fields
 	require("snacks").picker.files({ cwd = utils.get_buffer_cwd() })
 end
+
+---@type PluginModule
 return {
 	{
 		"folke/snacks.nvim",

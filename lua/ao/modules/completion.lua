@@ -1,3 +1,4 @@
+---@type PluginModule
 return {
 	{
 		"saghen/blink.cmp",
@@ -13,11 +14,12 @@ return {
 		opts = {
 			keymap = {
 				preset = "enter",
-				["<Up>"] = { "select_prev", "fallback" },
-				["<Down>"] = { "select_next", "fallback" },
+
+				["<up>"] = { "select_prev", "fallback" },
+				["<down>"] = { "select_next", "fallback" },
 				["<c-k>"] = { "select_prev", "fallback" },
 				["<c-j>"] = { "select_next", "fallback" },
-				["<C-space>"] = {
+				["<c-space>"] = {
 					function(cmp)
 						cmp.show({ providers = { "snippets" } })
 					end,

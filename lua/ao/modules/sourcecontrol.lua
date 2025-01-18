@@ -1,4 +1,6 @@
 local utils = require("ao.utils")
+
+---@type PluginModule
 local M = {}
 
 local function show_git_branch()

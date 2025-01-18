@@ -1,3 +1,4 @@
+---@type PluginModule
 return {
 	-- show diagnostics in gutter and quick fix list
 	{
