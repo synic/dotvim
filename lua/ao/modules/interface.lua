@@ -175,9 +175,14 @@ M.plugin_specs = {
 			local dutils = require("dropbar.utils")
 			local preview = false
 			local ignore = { "gitcommit" }
+			local include = { "oil" }
 			return {
 				bar = {
 					enable = function(buf, win)
+						if utils.table_contains(include, vim.bo[buf].filetype) then
+							return true
+						end
+
 						return vim.fn.win_gettype(win) == ""
 							and vim.wo[win].winbar == ""
 							and vim.bo[buf].bt == ""
@@ -453,6 +458,8 @@ M.plugin_specs = {
 		},
 		config = true,
 	},
+
+	-- key discoverability
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",

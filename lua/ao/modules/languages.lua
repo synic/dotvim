@@ -61,7 +61,6 @@ M.plugin_specs = {
 
 	{
 		"synic/refactorex.nvim",
-		-- dir = "~/Projects/refactorex.nvim/",
 		ft = "elixir",
 		config = true,
 	},
@@ -411,39 +410,6 @@ M.plugin_specs = {
 	},
 
 	{
-		"echasnovski/mini.ai",
-		event = "VeryLazy",
-		version = false,
-		opts = function()
-			local ai = require("mini.ai")
-			return {
-				n_lines = 500,
-				custom_textobjects = {
-					o = ai.gen_spec.treesitter({ -- code block
-						a = { "@block.outer", "@conditional.outer", "@loop.outer" },
-						i = { "@block.inner", "@conditional.inner", "@loop.inner" },
-					}),
-					f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }), -- function
-					c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }), -- class
-					t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- tags
-					d = { "%f[%d]%d+" }, -- digits
-					e = { -- Word with case
-						{
-							"%u[%l%d]+%f[^%l%d]",
-							"%f[%S][%l%d]+%f[^%l%d]",
-							"%f[%P][%l%d]+%f[^%l%d]",
-							"^[%l%d]+%f[^%l%d]",
-						},
-						"^().*()$",
-					},
-					u = ai.gen_spec.function_call(), -- u for "Usage"
-					U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }), -- without dot in function name
-				},
-			}
-		end,
-	},
-
-	{
 		"windwp/nvim-ts-autotag",
 		lazy = true,
 		opts = {
@@ -565,16 +531,69 @@ M.plugin_specs = {
 		"folke/snacks.nvim",
 		event = "LspAttach",
 		config = function(_, opts)
-			require("snacks").setup(opts)
+			local snacks = require("snacks")
+			snacks.setup(opts)
+			vim.api.nvim_set_hl(0, "LspProgressGrey", { fg = "#666666", blend = 40 })
+			local max_width = 50
+
+			---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
+			local progress = vim.defaulttable()
 			vim.api.nvim_create_autocmd("LspProgress", {
 				---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
 				callback = function(ev)
+					local client = vim.lsp.get_client_by_id(ev.data.client_id)
+					local value = ev.data.params.value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
+					if not client or type(value) ~= "table" then
+						return
+					end
+					local p = progress[client.id]
+
+					for i = 1, #p + 1 do
+						if i == #p + 1 or p[i].token == ev.data.params.token then
+							p[i] = {
+								token = ev.data.params.token,
+								msg = ("%3d%% %s%s"):format(
+									value.kind == "end" and 100 or value.percentage or 100,
+									value.title or "",
+									value.message and (" **%s**"):format(value.message) or ""
+								),
+								done = value.kind == "end",
+							}
+							break
+						end
+					end
+
+					local msg = {} ---@type string[]
+					progress[client.id] = vim.tbl_filter(function(v)
+						local line = v.msg
+						if #line > max_width then
+							local cutoff = max_width - 3
+							while cutoff > 1 and line:sub(cutoff, cutoff) ~= " " do
+								cutoff = cutoff - 1
+							end
+							line = line:sub(1, cutoff) .. "..."
+							line = line .. string.rep(" ", max_width - #line)
+						else
+							line = line .. string.rep(" ", max_width - #line)
+						end
+						return table.insert(msg, line) or not v.done
+					end, p)
+
 					local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
-					vim.notify(vim.lsp.status(), "info", {
+					vim.notify(table.concat(msg, "\n"), "info", {
 						id = "lsp_progress",
-						title = "LSP Progress",
+						title = client.name,
+						timeout = 1200,
 						opts = function(notif)
-							notif.icon = ev.data.params.value.kind == "end" and " "
+							---@diagnostic disable-next-line: missing-fields
+							notif.hl = {
+								icon = "LspProgressGrey",
+								title = "LspProgressGrey",
+								border = "LspProgressGrey",
+								footer = "LspProgressGrey",
+								msg = "LspProgressGrey",
+							}
+							notif.icon = #progress[client.id] == 0 and " "
 								or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
 						end,
 					})
