@@ -534,6 +534,7 @@ M.plugin_specs = {
 			local snacks = require("snacks")
 			snacks.setup(opts)
 			vim.api.nvim_set_hl(0, "LspProgressGrey", { fg = "#666666", blend = 40 })
+			vim.api.nvim_set_hl(0, "LspProgressGreyBold", { fg = "#666666", blend = 40, bold = true })
 			local max_width = 50
 
 			---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
@@ -555,7 +556,7 @@ M.plugin_specs = {
 								msg = ("%3d%% %s%s"):format(
 									value.kind == "end" and 100 or value.percentage or 100,
 									value.title or "",
-									value.message and (" **%s**"):format(value.message) or ""
+									value.message and (" %s"):format(value.message) or ""
 								),
 								done = value.kind == "end",
 							}
@@ -585,10 +586,16 @@ M.plugin_specs = {
 						title = client.name,
 						timeout = 1200,
 						opts = function(notif)
+							if notif.win then
+								notif.win.redraw = function(self)
+									---@diagnostic disable-next-line: need-check-nil
+									vim.api.nvim__redraw({ win = self.win, valid = false, flush = true, cursor = false })
+								end
+							end
 							---@diagnostic disable-next-line: missing-fields
 							notif.hl = {
-								icon = "LspProgressGrey",
-								title = "LspProgressGrey",
+								icon = "LspProgressGreyBold",
+								title = "LspProgressGreyBold",
 								border = "LspProgressGrey",
 								footer = "LspProgressGrey",
 								msg = "LspProgressGrey",
