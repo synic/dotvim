@@ -45,8 +45,9 @@ return {
 			-- themes
 			{ "<leader>st", theme.colorscheme_picker, desc = "List themes" },
 
-			-- misq
+			-- misc
 			{ "<leader>sq", "<cmd>lua require('snacks').picker.qflist()<cr>", desc = "Search quickfix" },
+			{ "<leader>su", "<cmd>lua require('snacks').picker.undo()<cr>", desc = "Undo tree" },
 		},
 		opts = {
 			---@type snacks.picker.Config

@@ -29,6 +29,7 @@ vim.opt.listchars:append("eol:↴")
 vim.opt.listchars:append("tab| ")
 vim.g.neovide_remember_window_size = true
 vim.o.winblend = 10
+vim.o.undofile = true
 
 -- Create the autocmd group and command
 ---@type integer

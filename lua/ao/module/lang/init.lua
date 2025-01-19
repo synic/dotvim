@@ -10,8 +10,11 @@ for _, item in ipairs(items) do
 	if not item:match("init.lua$") then
 		local m = require("ao.module.lang." .. vim.fn.fnamemodify(item, ":t:r"))
 		local v = m.plugin_specs
-		M = tbl.concat(M, m)
-		if v ~= nil then
+		if v == nil then
+			---@diagnostic disable-next-line: param-type-mismatch
+			M.plugin_specs = tbl.concat(M.plugin_specs, m)
+		else
+			---@diagnostic disable-next-line: param-type-mismatch
 			M.plugin_specs = tbl.concat(M.plugin_specs, v)
 		end
 	end

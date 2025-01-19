@@ -26,7 +26,7 @@ return {
 						cmp.show({ providers = { "snippets" } })
 					end,
 				},
-				["<tab>"] = { "select_next", "fallback" },
+				["<tab>"] = { "select_and_accept", "fallback" },
 				["<s-tab>"] = { "select_prev", "fallback" },
 
 				["<c-y>"] = {

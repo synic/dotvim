@@ -364,6 +364,31 @@ M.plugin_specs = {
 			}
 		end,
 	},
+
+	-- {
+	-- 	"j-hui/fidget.nvim",
+	-- 	opts = {
+	-- 		progress = {
+	-- 			suppress_on_insert = true,
+	-- 			ignore_done_already = false,
+	-- 			ignore_empty_message = true,
+	-- 			display = {
+	-- 				group_style = "LspProgressGrey",
+	-- 				icon_style = "LspProgressGrey",
+	-- 				done_style = "LspProgressGrey",
+	-- 				done_ttl = 1,
+	-- 				render_limit = 1,
+	-- 			},
+	-- 		},
+	-- 		notification = {
+	-- 			window = {
+	-- 				normal_hl = "LspProgressGrey",
+	-- 				max_width = 100,
+	-- 				max_height = 3,
+	-- 			},
+	-- 		},
+	-- 	},
+	-- },
 }
 
 return M

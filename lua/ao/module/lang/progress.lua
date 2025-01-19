@@ -1,6 +1,21 @@
 local M = {
 	progress_attached = false,
+	update_delay_ms = 300,
 }
+
+local last_update = 0
+vim.api.nvim_set_hl(0, "LspProgressGrey", { fg = "#7a89b8", blend = 40 })
+vim.api.nvim_set_hl(0, "LspProgressGreyBold", { fg = "#7a89b8", bold = true, blend = 40 })
+
+local function is_blocking()
+	local mode = vim.api.nvim_get_mode()
+	for _, m in ipairs({ "ic", "ix", "c", "no", "r%?", "rm" }) do
+		if mode.mode:find(m) == 1 then
+			return true
+		end
+	end
+	return mode.blocking
+end
 
 M.attach_progress = function()
 	if M.progress_attached then
@@ -16,9 +31,16 @@ M.attach_progress = function()
 
 	---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
 	local progress = vim.defaulttable()
+
 	vim.api.nvim_create_autocmd("LspProgress", {
 		---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
 		callback = function(ev)
+			local current_time = vim.uv.now()
+			if is_blocking() or (current_time - last_update) < M.update_delay_ms then
+				return
+			end
+			last_update = current_time
+
 			local client = vim.lsp.get_client_by_id(ev.data.client_id)
 			local value = ev.data.params.value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
 			if not client or type(value) ~= "table" then
@@ -58,7 +80,15 @@ M.attach_progress = function()
 			end, p)
 
 			local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
-			vim.notify(table.concat(msg, "\n"), "info", {
+
+			local last_three = {}
+			for i = math.max(1, #msg - 2), #msg do
+				if not vim.tbl_contains(last_three, msg[i]) then
+					table.insert(last_three, msg[i])
+				end
+			end
+
+			vim.notify(table.concat(last_three, "\n"), "info", {
 				id = "lsp_progress",
 				title = client.name,
 				timeout = 1200,
@@ -80,32 +110,5 @@ M.attach_progress = function()
 		end,
 	})
 end
-
-M._plugin_specs = { -- currently disabled
-	{
-		"j-hui/fidget.nvim",
-		opts = {
-			progress = {
-				suppress_on_insert = true,
-				ignore_done_already = false,
-				ignore_empty_message = true,
-				display = {
-					group_style = "LspProgressGrey",
-					icon_style = "LspProgressGrey",
-					done_style = "LspProgressGrey",
-					done_ttl = 1,
-					render_limit = 1,
-				},
-			},
-			notification = {
-				window = {
-					normal_hl = "LspProgressGrey",
-					max_width = 100,
-					max_height = 3,
-				},
-			},
-		},
-	},
-}
 
 return M
