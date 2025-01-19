@@ -1,5 +1,6 @@
 local config = require("ao.config")
-local utils = require("ao.utils")
+local fs = require("ao.core.fs")
+local key = require("ao.core.key")
 
 ---@class Project
 ---@field name string
@@ -132,7 +133,7 @@ local function setup_project_hotkeys()
 		}
 	end
 
-	utils.map_keys(keys)
+	key.map(keys)
 end
 
 ---@return nil
@@ -381,15 +382,14 @@ end
 ---@return string|nil
 function M.find_buffer_root(buf)
 	buf = buf or 0
-	local cwd = vim.bo[buf].filetype == "oil" and require("oil").get_current_dir(buf) or utils.get_buffer_cwd(buf)
+	local cwd = vim.bo[buf].filetype == "oil" and require("oil").get_current_dir(buf) or fs.get_buffer_cwd(buf)
 	return M.find_path_root(cwd)
 end
 
 ---@param tabnr number|nil
 ---@return string|nil
 function M.get_dir(tabnr)
-	local path = M.find_path_root(vim.fn.getcwd(-1, tabnr or 0))
-	return path
+	return M.find_path_root(vim.fn.getcwd(-1, tabnr or 0))
 end
 
 ---@param tabnr number|nil
@@ -425,7 +425,7 @@ function M.open(dir)
 	require("snacks").picker.files({ cwd = dir })
 end
 
-utils.map_keys({
+key.map({
 	{ "<leader>p-", goto_project_directory, desc = "Go to project directory" },
 	{ "<leader>lt", new_tab_with_project, desc = "New layout with project" },
 	{ "<leader>*", search_project_cursor_term, desc = "Search project for term", mode = { "n", "v" } },

@@ -1,6 +1,7 @@
-local utils = require("ao.utils")
-local filesystem = require("ao.modules.filesystem")
-local interface = require("ao.modules.interface")
+local key = require("ao.core.key")
+local fs = require("ao.module.fs")
+local ui = require("ao.module.ui")
+local win = require("ao.core.win")
 
 --- Basic Keymaps
 ---
@@ -42,7 +43,7 @@ local M = {
 	},
 }
 
-utils.map_keys({
+key.map({
 	-- windows
 	{ "<leader>wk", "<cmd>wincmd k<cr>", desc = "Go up" },
 	{ "<leader>wj", "<cmd>wincmd j<cr>", desc = "Go down" },
@@ -65,8 +66,8 @@ utils.map_keys({
 	{ "<leader>wml", "<cmd>wincmd L<cr>", desc = "Move window right" },
 	{ "<leader>wR", "<cmd>wincmd R<cr>", desc = "Rotate windows" },
 	{ "<leader>wT", "<cmd>wincmd T<cr>", desc = "Move to new layout" },
-	{ "<leader>w;", interface.zero_window_cursors, desc = "Move cursor to 0 in all but the current window" },
-	{ "<leader>w;", interface.zero_all_window_cursors, desc = "Move cursor to 0 in all windows" },
+	{ "<leader>w;", ui.zero_window_cursors, desc = "Move cursor to 0 in all but the current window" },
+	{ "<leader>w;", ui.zero_all_window_cursors, desc = "Move cursor to 0 in all windows" },
 	{ "<leader>w1", "<cmd>1windo norm! m'<cr>", desc = "Goto window #1" },
 	{ "<leader>w2", "<cmd>2windo norm! m'<cr>", desc = "Goto window #2" },
 	{ "<leader>w3", "<cmd>3windo norm! m'<cr>", desc = "Goto window #3" },
@@ -92,7 +93,7 @@ utils.map_keys({
 	{ "<leader>ln", "<cmd>tabnext<cr>", desc = "Next layout" },
 	{ "<leader>lp", "<cmd>tabprev<cr>", desc = "Previous layout" },
 	{ "<leader>l<tab>", "g<Tab>", desc = "Go to last layout" },
-	{ "<leader>lN", interface.layout_set_name, desc = "Set layout name" },
+	{ "<leader>lN", ui.layout_set_name, desc = "Set layout name" },
 
 	-- toggles
 	{ "<leader>th", "<cmd>let &hls = !&hls<cr>", desc = "Toggle search highlights" },
@@ -114,14 +115,14 @@ utils.map_keys({
 	{ "<leader><tab>", "<cmd>b#<cr>", desc = "Previous buffer" },
 	{ "<leader>b<tab>", "<cmd>b#<cr>", desc = "Previous buffer" },
 	{ "<leader>bd", "<cmd>bdelete!<cr>", desc = "Close current window and quit buffer" },
-	{ "<leader>bp", interface.buffer_show_path, desc = "Show buffer path" },
-	{ "<leader>bP", interface.buffer_show_full_path, desc = "Show full buffer path" },
+	{ "<leader>bp", ui.buffer_show_path, desc = "Show buffer path" },
+	{ "<leader>bP", ui.buffer_show_full_path, desc = "Show full buffer path" },
 	{ "<leader>bn", "<cmd>enew<cr>", desc = "New buffer" },
 
 	-- help
-	{ "<leader>hh", "<cmd>lua require('ao.utils').get_help()<cr>", desc = "Show help" },
+	{ "<leader>hh", function() get_help() end, desc = "Show help" },
 	{ "<leader>hc", "<cmd>execute 'help ' .. expand('<cword>')<cr>", desc = "Help for word under cursor" },
-	{ "<leader>?", "<cmd>lua require('ao.utils').get_help()<cr>", desc = "Show help" },
+	{ "<leader>?", function() get_help() end, desc = "Show help" },
 
 	-- quickfix
 	{ "<leader>qq", "<cmd>copen<cr>", desc = "Open quickfix" }, -- overridden in trouble.nvim
@@ -130,7 +131,7 @@ utils.map_keys({
 	{ "<leader>qn", "<cmd>cn<cr>", desc = "Next quickfix item" },
 	{ "<leader>qp", "<cmd>cp<cr>", desc = "Previous quickfix item" }, -- overridden in trouble.nvim
 	{ "<leader>qc", "<cmd>cclose<cr>", desc = "Close quickfix" },
-	{ "<leader>q<space>", interface.quickfix_remove_item_move_next, desc = "Remove quickfix item and move next" },
+	{ "<leader>q<space>", ui.quickfix_remove_item_move_next, desc = "Remove quickfix item and move next" },
 
 	-- better movement
 	{ "j", "v:count == 0 ? 'gj' : 'j'", mode = { "n", "x" }, desc = "Down", expr = true, silent = true },
@@ -139,9 +140,9 @@ utils.map_keys({
 	{ "<Up>", "v:count == 0 ? 'gk' : 'k'", mode = { "n", "x" }, desc = "Up", expr = true, silent = true },
 
 	-- configuration
-	{ "<leader>cm", filesystem.goto_config_directory, desc = "Manage config" },
-	{ "<leader>cl", interface.goto_lazy_dir, desc = "Go to lazy plugins dir" },
-	{ "<leader>cd", interface.goto_dotfiles_dir, desc = "Go to dotfiles directory" },
+	{ "<leader>cm", fs.goto_config_directory, desc = "Manage config" },
+	{ "<leader>cl", ui.goto_lazy_dir, desc = "Go to lazy plugins dir" },
+	{ "<leader>cd", ui.goto_dotfiles_dir, desc = "Go to dotfiles directory" },
 
 	-- copy/paste on mac
 	{ "<D-v>", "+p<CR>", mode = { "" }, noremap = true, silent = true, test = vim.fn.has("macunix") },
@@ -154,7 +155,7 @@ utils.map_keys({
 	-- misc
 	{ "vig", "ggVG", desc = "Select whole buffer" },
 	{ "<leader>xq", "<cmd>qa!<cr>", desc = "Quit Vim" },
-	{ "<leader>xx", utils.close_all_floating_windows, desc = "Close all floating windows" },
+	{ "<leader>xx", win.close_all_floating_windows, desc = "Close all floating windows" },
 	{ "<leader>'", "<cmd>split<cr><cmd>term<cr><cmd>norm A<cr>", desc = "Open terminal" },
 	{
 		"<c-g>",
@@ -168,5 +169,16 @@ utils.map_keys({
 		desc = "Show buffer information and copy filepath",
 	},
 })
+
+---@return nil
+function get_help()
+	---@diagnostic disable-next-line: missing-fields
+	vim.ui.input({ prompt = "enter search term" }, function(input)
+		if input == nil then
+			return
+		end
+		vim.cmd("help " .. input)
+	end)
+end
 
 return M

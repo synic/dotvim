@@ -7,7 +7,7 @@ local header = [[
 ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]]
 
 local config = require("ao.config")
-local projects = require("ao.modules.projects")
+local proj = require("ao.module.proj")
 
 ---@type PluginModule
 return {
@@ -78,11 +78,11 @@ return {
 						indent = 2,
 						padding = 1,
 						action = function(dir)
-							require("ao.modules.projects").open(dir)
+							proj.open(dir)
 						end,
 						dirs = function()
 							local cwd = config.options.projects.directory.path or "."
-							local project_entries = projects.list({ cwd = cwd })
+							local project_entries = proj.list({ cwd = cwd })
 							local dirs = {}
 
 							for _, entry in ipairs(project_entries) do

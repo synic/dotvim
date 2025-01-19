@@ -1,14 +1,14 @@
-local utils = require("ao.utils")
-local themes = require("ao.modules.themes")
+local fs = require("ao.core.fs")
+local theme = require("ao.module.theme")
 
 local function search_cwd()
 	---@diagnostic disable-next-line: missing-fields
-	require("snacks").picker.grep({ cwd = utils.get_buffer_cwd() })
+	require("snacks").picker.grep({ cwd = fs.get_buffer_cwd() })
 end
 
 local function find_files_cwd()
 	---@diagnostic disable-next-line: missing-fields
-	require("snacks").picker.files({ cwd = utils.get_buffer_cwd() })
+	require("snacks").picker.files({ cwd = fs.get_buffer_cwd() })
 end
 
 ---@type PluginModule
@@ -43,7 +43,7 @@ return {
 			{ "<leader>fs", search_cwd, desc = "Search files in current dir" },
 
 			-- themes
-			{ "<leader>st", themes.colorscheme_picker, desc = "List themes" },
+			{ "<leader>st", theme.colorscheme_picker, desc = "List themes" },
 
 			-- misq
 			{ "<leader>sq", "<cmd>lua require('snacks').picker.qflist()<cr>", desc = "Search quickfix" },

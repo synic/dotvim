@@ -1,4 +1,4 @@
-local utils = require("ao.utils")
+local key = require("ao.core.key")
 local default_height = vim.fn.winheight(0)
 
 local function toggle_height()
@@ -20,7 +20,7 @@ local function set_cursor_to_line()
 	vim.api.nvim_win_set_cursor(0, { vim.fn.line("."), 0 })
 end
 
-utils.map_keys({
+key.map({
 	{ "<localleader>q", "<cmd>cclose<cr>", desc = "Close quickfix", buffer = true },
 	{ "<localleader>l", toggle_height, desc = "Toggle larger view", buffer = true },
 	{ "<localleader>,", set_cursor_to_line, desc = "Set cursor to current line", buffer = true },

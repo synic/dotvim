@@ -1,4 +1,5 @@
-local utils = require("ao.utils")
+local fs = require("ao.core.fs")
+local key = require("ao.core.key")
 local uv = vim.uv or vim.loop
 
 local function zoom_toggle()
@@ -14,7 +15,7 @@ local function zoom_toggle()
 end
 
 -- set up keys
-utils.map_keys({
+key.map({
 	{ "<leader>cp", "<cmd>Lazy<cr>", desc = "Plugin manager" },
 	{ "<leader>cPu", "<cmd>Lazy update<cr>", desc = "Update plugins" },
 	{ "<leader>cPs", "<cmd>Lazy sync<cr>", desc = "Sync plugins" },
@@ -118,7 +119,7 @@ local plugins = {
 -- if wakatime is installed/enabled but the configuration file doesn't exist,
 -- it becomes very annoying. Only try to enable it if the config file is already present.
 local wakatime_config = { "wakatime/vim-wakatime", event = "VeryLazy" }
-local wakatime_config_path = utils.join_paths(os.getenv("HOME"), ".wakatime.cfg")
+local wakatime_config_path = fs.join(os.getenv("HOME"), ".wakatime.cfg")
 
 if uv.fs_stat(wakatime_config_path) then
 	plugins[#plugins + 1] = wakatime_config

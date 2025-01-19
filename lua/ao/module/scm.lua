@@ -1,4 +1,4 @@
-local utils = require("ao.utils")
+local key = require("ao.core.key")
 
 ---@type PluginModule
 local M = {}
@@ -15,7 +15,7 @@ local function show_git_branch()
 	print(branch)
 end
 
-utils.map_keys({
+key.map({
 	{ "<leader>g?", show_git_branch, desc = "Show current branch" },
 })
 
@@ -47,7 +47,7 @@ end
 local function gitsigns_on_attach(bufnr)
 	local gs = package.loaded.gitsigns
 
-	utils.map_keys({
+	key.map({
 		{ "]h", gs.next_hunk, desc = "Next hunk", buffer = bufnr },
 		{ "[h", gs.prev_hunk, desc = "Prev hunk", buffer = bufnr },
 		{

@@ -1,6 +1,6 @@
 -- @diagnostic disable: inject-field
-local utils = require("ao.utils")
-local projects = require("ao.modules.projects")
+local tbl = require("ao.core.tbl")
+local proj = require("ao.module.proj")
 
 local clear_winbar_group = vim.api.nvim_create_augroup("WinBarHlClearBg", { clear = true })
 local disable_scope_filetypes = {
@@ -154,7 +154,7 @@ end
 ---@param tabnr integer
 ---@return string|nil
 function M.get_tab_name(tabnr)
-	return projects.get_name(tabnr)
+	return proj.get_name(tabnr)
 end
 
 M.plugin_specs = {
@@ -204,14 +204,14 @@ M.plugin_specs = {
 			return {
 				bar = {
 					enable = function(buf, win)
-						if utils.table_contains(include, vim.bo[buf].filetype) then
+						if tbl.contains(include, vim.bo[buf].filetype) then
 							return true
 						end
 
 						return vim.fn.win_gettype(win) == ""
 							and vim.wo[win].winbar == ""
 							and vim.bo[buf].bt == ""
-							and not utils.table_contains(ignore, vim.bo[buf].ft)
+							and not tbl.contains(ignore, vim.bo[buf].ft)
 							and (
 								vim.bo[buf].ft == "markdown"
 								or (
@@ -383,7 +383,7 @@ M.plugin_specs = {
 					return ""
 				end
 
-				local path = projects.find_buffer_root()
+				local path = proj.find_buffer_root()
 				return lualine_utils.stl_escape(vim.fs.basename(path or ""))
 			end
 
@@ -421,7 +421,7 @@ M.plugin_specs = {
 
 	-- snacks
 	{
-		"folke/snacks.nvim",
+		"synic/snacks.nvim",
 		event = "VeryLazy",
 		keys = {
 			{ "<leader>gB", "<cmd>lua require('snacks').gitbrowse()<cr>", desc = "Open github in browser" },
@@ -441,7 +441,7 @@ M.plugin_specs = {
 				filter = function(buf)
 					return vim.g.snacks_indent ~= false
 						and vim.b[buf].snacks_indent ~= false
-						and not utils.table_contains(disable_scope_filetypes, vim.bo[buf].filetype)
+						and not tbl.contains(disable_scope_filetypes, vim.bo[buf].filetype)
 						and vim.bo[buf].buftype == ""
 				end,
 			},

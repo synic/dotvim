@@ -1,5 +1,4 @@
-local utils = require("ao.utils")
-local projects = require("ao.modules.projects")
+local proj = require("ao.module.proj")
 
 local oil_setup_keys_group = vim.api.nvim_create_augroup("OilSetupKeys", { clear = true })
 
@@ -18,13 +17,11 @@ M.browse_directory = function(type, precmd)
 			-- automatically.
 			vim.cmd.Oil()
 		else
-			local pathname = projects.find_buffer_root()
+			local pathname = proj.find_buffer_root()
 			vim.cmd.Oil((pathname or "."))
 		end
 	end
 end
-
-utils.map_keys({})
 
 local function oil_rename()
 	local oil = require("oil")
@@ -102,7 +99,7 @@ local function oil_touch()
 end
 
 function M.goto_config_directory()
-	require("ao.modules.projects").open(vim.fn.stdpath("config"))
+	proj.open(vim.fn.stdpath("config"))
 end
 
 M.plugin_specs = {

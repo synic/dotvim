@@ -1,4 +1,3 @@
-local utils = require("ao.utils")
 local config = require("ao.config")
 
 ---@class PluginSpec
@@ -51,21 +50,23 @@ end
 
 ---@return LazySpec[]
 function M.load_plugin_specs()
+	local tbl = require("ao.core.tbl")
+
 	---@type LazySpec[]
 	local plugins = {}
-	local path = vim.fn.stdpath("config") .. "/lua/ao/modules"
+	local path = vim.fn.stdpath("config") .. "/lua/ao/module"
 	local items = vim.split(vim.fn.glob(vim.fn.resolve(path .. "/*.lua")), "\n", { trimempty = true })
 
 	for _, item in ipairs(items) do
 		---@type PluginModule
-		local m = require("ao.modules." .. vim.fn.fnamemodify(item, ":t:r"))
+		local m = require("ao.module." .. vim.fn.fnamemodify(item, ":t:r"))
 		local v = m.plugin_specs
 
 		if v == nil then
-			plugins = utils.table_concat(plugins, m)
+			plugins = tbl.concat(plugins, m)
 		else
 			---@diagnostic disable-next-line: param-type-mismatch
-			plugins = utils.table_concat(plugins, (type(v) == "function" and v() or v))
+			plugins = tbl.concat(plugins, (type(v) == "function" and v() or v))
 		end
 	end
 
@@ -76,6 +77,8 @@ end
 ---@param startup_callback_fn? fun(): nil
 ---@return nil
 function M.setup(opts, startup_callback_fn)
+	local win = require("ao.core.win")
+
 	config.options = vim.tbl_deep_extend("force", config.options, opts)
 	if config.options.appearance.guifont then
 		vim.o.guifont = config.options.appearance.guifont
@@ -108,7 +111,7 @@ function M.setup(opts, startup_callback_fn)
 		end,
 	})
 
-	utils.close_all_floating_windows()
+	win.close_all_floating_windows()
 end
 
 return M

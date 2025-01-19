@@ -1,4 +1,4 @@
-local utils = require("ao.utils")
+local key = require("ao.core.key")
 local opt = vim.opt_local
 
 opt.expandtab = true
@@ -16,6 +16,6 @@ local function force_format()
 	vim.cmd.LspRestart()
 end
 
-utils.map_keys({
+key.map({
 	{ "=", force_format, desc = "Format file", mode = { "n" }, buffer = true },
 })
