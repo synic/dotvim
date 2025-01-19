@@ -7,6 +7,7 @@ return {
 			"L3MON4D3/LuaSnip",
 			"moyiz/blink-emoji.nvim",
 			"folke/lazydev.nvim",
+			"edte/blink-go-import.nvim",
 		},
 		tag = "v0.10.0",
 
@@ -25,6 +26,8 @@ return {
 						cmp.show({ providers = { "snippets" } })
 					end,
 				},
+				["<tab>"] = { "select_next", "fallback" },
+				["<s-tab>"] = { "select_prev", "fallback" },
 
 				["<c-y>"] = {
 					function(cmp)
@@ -38,8 +41,10 @@ return {
 					"fallback",
 				},
 			},
+			enabled = function()
+				return vim.bo.buftype ~= "prompt" and vim.b.completion ~= false
+			end,
 			snippets = { preset = "luasnip" },
-
 			completion = {
 				menu = {
 					auto_show = true,
@@ -58,19 +63,27 @@ return {
 						winhighlight = "CursorLine:CursorLine,Normal:Normal",
 					},
 				},
-			},
 
+				list = {
+					selection = {
+						preselect = function(ctx)
+							return ctx.mode ~= "cmdline"
+						end,
+						auto_insert = function(ctx)
+							return ctx.mode ~= "cmdline"
+						end,
+					},
+				},
+			},
 			appearance = {
 				use_nvim_cmp_as_default = true,
 				nerd_font_variant = "mono",
 			},
-
 			sources = {
 				providers = {
 					lazydev = {
 						name = "LazyDev",
 						module = "lazydev.integrations.blink",
-						-- make lazydev completions top priority (see `:h blink.cmp`)
 						score_offset = 100,
 					},
 					emoji = {
@@ -79,9 +92,12 @@ return {
 						score_offset = 15,
 						opts = { insert = true },
 					},
+					go_pkgs = {
+						module = "blink-go-import",
+						name = "pkgs",
+					},
 				},
-				default = { "lazydev", "lsp", "path", "snippets", "buffer", "emoji" },
-				cmdline = {},
+				default = { "lazydev", "lsp", "path", "snippets", "buffer", "emoji", "go_pkgs" },
 			},
 		},
 		opts_extend = { "sources.default" },

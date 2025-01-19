@@ -1,4 +1,4 @@
-local fs = require("ao.core.fs")
+local fs = require("ao.fs")
 local theme = require("ao.module.theme")
 
 local function search_cwd()

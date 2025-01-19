@@ -1,5 +1,5 @@
 -- @diagnostic disable: inject-field
-local tbl = require("ao.core.tbl")
+local tbl = require("ao.tbl")
 local proj = require("ao.module.proj")
 
 local clear_winbar_group = vim.api.nvim_create_augroup("WinBarHlClearBg", { clear = true })
@@ -421,7 +421,7 @@ M.plugin_specs = {
 
 	-- snacks
 	{
-		"synic/snacks.nvim",
+		"folke/snacks.nvim",
 		event = "VeryLazy",
 		keys = {
 			{ "<leader>gB", "<cmd>lua require('snacks').gitbrowse()<cr>", desc = "Open github in browser" },
@@ -510,7 +510,7 @@ M.plugin_specs = {
 			local wk = require("which-key")
 			local keymap = require("ao.keymap")
 			wk.setup(opts)
-			wk.add(keymap.key_categories)
+			wk.add(keymap.categories)
 		end,
 	},
 

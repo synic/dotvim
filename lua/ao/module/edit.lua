@@ -1,5 +1,5 @@
-local fs = require("ao.core.fs")
-local key = require("ao.core.key")
+local fs = require("ao.fs")
+local keymap = require("ao.keymap")
 local uv = vim.uv or vim.loop
 
 local function zoom_toggle()
@@ -15,7 +15,7 @@ local function zoom_toggle()
 end
 
 -- set up keys
-key.map({
+keymap.add({
 	{ "<leader>cp", "<cmd>Lazy<cr>", desc = "Plugin manager" },
 	{ "<leader>cPu", "<cmd>Lazy update<cr>", desc = "Update plugins" },
 	{ "<leader>cPs", "<cmd>Lazy sync<cr>", desc = "Sync plugins" },
@@ -113,6 +113,18 @@ local plugins = {
 			file_types = { "markdown", "Avante" },
 		},
 		ft = { "markdown", "Avante" },
+	},
+
+	-- annotations
+	{
+		"danymat/neogen",
+		dependencies = { "saadparwaiz1/cmp_luasnip" },
+		opts = {
+			snippet_engine = "luasnip",
+		},
+		keys = {
+			{ "<localleader>g", "<cmd>lua require('neogen').generate()<cr>", desc = "Generate annotations" },
+		},
 	},
 }
 

@@ -1,6 +1,6 @@
 local config = require("ao.config")
-local fs = require("ao.core.fs")
-local key = require("ao.core.key")
+local fs = require("ao.fs")
+local keymap = require("ao.keymap")
 
 ---@class Project
 ---@field name string
@@ -133,7 +133,7 @@ local function setup_project_hotkeys()
 		}
 	end
 
-	key.map(keys)
+	keymap.add(keys)
 end
 
 ---@return nil
@@ -425,7 +425,7 @@ function M.open(dir)
 	require("snacks").picker.files({ cwd = dir })
 end
 
-key.map({
+keymap.add({
 	{ "<leader>p-", goto_project_directory, desc = "Go to project directory" },
 	{ "<leader>lt", new_tab_with_project, desc = "New layout with project" },
 	{ "<leader>*", search_project_cursor_term, desc = "Search project for term", mode = { "n", "v" } },

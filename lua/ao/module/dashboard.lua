@@ -86,10 +86,7 @@ return {
 							local dirs = {}
 
 							for _, entry in ipairs(project_entries) do
-								if type(entry) == "table" then
-									entry = entry.path
-								end
-								dirs[#dirs + 1] = entry
+								dirs[#dirs + 1] = entry.path
 							end
 
 							return dirs
