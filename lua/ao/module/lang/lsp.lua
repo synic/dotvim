@@ -1,10 +1,7 @@
 local keymap = require("ao.keymap")
 local tbl = require("ao.tbl")
-local config = require("ao.config")
 
 local lsp_formatting_group = vim.api.nvim_create_augroup("LspFormatting", {})
-vim.api.nvim_set_hl(0, "LspProgressGrey", { fg = "#7a89b8", blend = 40 })
-vim.api.nvim_set_hl(0, "LspProgressGreyBold", { fg = "#7a89b8", bold = true, blend = 40 })
 
 ---@type PluginModule
 local M = {}
@@ -53,8 +50,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
-M.get_plugins = function(servers, handlers, nonels)
-	local langs = tbl.unique(config.options.languages, config.options.extra_languages)
+M.get_plugins = function(langs, servers, handlers, nonels)
 	table.insert(handlers, function(server_name)
 		server_name = server_name == "tsserver" and "ts_ls" or server_name -- fix weird tsserver naming situation
 		require("lspconfig")[server_name].setup({})
@@ -201,17 +197,8 @@ M.get_plugins = function(servers, handlers, nonels)
 					ignore_done_already = false,
 					ignore_empty_message = true,
 					display = {
-						group_style = "LspProgressGrey",
-						icon_style = "LspProgressGrey",
-						done_style = "LspProgressGrey",
-						done_ttl = 1,
-						render_limit = 1,
-					},
-				},
-				notification = {
-					window = {
-						normal_hl = "LspProgressGrey",
-						max_height = 3,
+						done_ttl = 0.8,
+						render_limit = 5,
 					},
 				},
 			},

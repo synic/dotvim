@@ -9,35 +9,46 @@ local treesitter = {}
 local handlers = {}
 local servers = {}
 local nonels = {}
+local langs = {}
 
 for _, lang in ipairs(to_import) do
-	local ok, m = pcall(require, "ao.module.lang." .. lang)
+	table.insert(langs, lang)
 
-	if not ok then
-		vim.notify("unable to initialize language: " .. lang)
-	else
-		if m.plugins then
-			plugins = tbl.concat(plugins, m.plugins)
-		end
+	if vim.fn.filereadable(vim.fn.stdpath("config") .. "/ao/module/lang/" .. lang .. ".lua") then
+		local ok, m = pcall(require, "ao.module.lang." .. lang)
 
-		if m.treesitter then
-			treesitter = tbl.concat(treesitter, m.treesitter)
-		end
-
-		if m.handlers then
-			handlers = vim.tbl_extend("force", handlers, m.handlers)
-
-			for server, _ in pairs(m.handlers) do
-				table.insert(servers, server)
+		if not ok then
+			vim.notify("unable to initialize language: " .. lang)
+		else
+			if m.plugins then
+				plugins = tbl.concat(plugins, m.plugins)
 			end
-		end
 
-		if m.servers then
-			servers = tbl.concat(servers, m.servers)
-		end
+			if m.treesitter then
+				treesitter = tbl.concat(treesitter, m.treesitter)
+			end
 
-		if m.nonels then
-			nonels = tbl.concat(nonels, m.nonels)
+			if m.handlers then
+				handlers = vim.tbl_extend("force", handlers, m.handlers)
+
+				for server, _ in pairs(m.handlers) do
+					table.insert(servers, server)
+				end
+			end
+
+			if m.servers then
+				servers = tbl.concat(servers, m.servers)
+			end
+
+			if m.nonels then
+				nonels = tbl.concat(nonels, m.nonels)
+			end
+
+			if m.langs then
+				for _, l in ipairs(m.langs) do
+					table.insert(langs, l)
+				end
+			end
 		end
 	end
 end
@@ -45,7 +56,7 @@ end
 plugins = tbl.concat(
 	plugins,
 	require("ao.module.lang.treesitter").get_plugins(tbl.unique(treesitter)),
-	require("ao.module.lang.lsp").get_plugins(tbl.unique(servers), handlers, tbl.unique(nonels))
+	require("ao.module.lang.lsp").get_plugins(tbl.unique(langs), tbl.unique(servers), handlers, tbl.unique(nonels))
 )
 
 return { plugins = plugins }

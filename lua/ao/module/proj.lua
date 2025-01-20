@@ -93,6 +93,9 @@ end
 -- cwd is some other directory.
 ---@return nil
 local function setup_autochdir()
+	if true then
+		return
+	end
 	local chdir_aucmds = { "BufNewFile", "BufRead", "BufFilePost", "BufEnter", "VimEnter" }
 	local skip_filetype_patterns = { "^qf$", "^Neogit" }
 
@@ -106,7 +109,7 @@ local function setup_autochdir()
 			end
 			local root = M.find_buffer_root(opts.buf)
 			if root and root ~= "" then
-				vim.cmd.cd(root)
+				vim.cmd.lcd(root)
 			end
 		end,
 	})
@@ -411,6 +414,7 @@ function M.set(dir)
 	---@diagnostic disable-next-line: inject-field
 	vim.t.layout_name = vim.fn.fnamemodify(dir, ":t")
 	vim.cmd.redrawtabline()
+	vim.cmd.tcd(dir)
 end
 
 ---@param dir string
