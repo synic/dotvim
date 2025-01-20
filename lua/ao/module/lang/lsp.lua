@@ -188,6 +188,7 @@ M.get_plugins = function(langs, servers, handlers, nonels)
 			end,
 		},
 
+		-- to show lsp progress
 		{
 			"j-hui/fidget.nvim",
 			event = "LspAttach",
@@ -197,8 +198,40 @@ M.get_plugins = function(langs, servers, handlers, nonels)
 					ignore_done_already = false,
 					ignore_empty_message = true,
 					display = {
-						done_ttl = 0.8,
-						render_limit = 5,
+						done_ttl = 1,
+						skip_history = false,
+						format_message = function(msg)
+							local message = msg.message
+
+							if not message then
+								message = msg.done and "Completed" or "In progress..."
+							end
+							if msg.percentage ~= nil then
+								message = string.format("%s (%.0f%%)", message, msg.percentage)
+							end
+
+							-- hack to supress long messages nextls sometimes outputs
+							if msg.lsp_client.config.name == "nextls" then
+								message = message:gsub("for folder", "for")
+								message = message:gsub("[%w%-%._/\\]+/([%w%-%._]+)[%p]?", "%1")
+								message = message:gsub("\\[%w%-%._/\\]+\\([%w%-%._]+)[%p]?", "%1")
+							end
+
+							return message
+						end,
+						format_annote = function(msg)
+							local annote = msg.title
+
+							if not annote then
+								return nil
+							end
+
+							-- hack to supress long messages nextls sometimes outputs
+							if msg.lsp_client.config.name == "nextls" and msg.done then
+								return ""
+							end
+							return annote
+						end,
 					},
 				},
 			},

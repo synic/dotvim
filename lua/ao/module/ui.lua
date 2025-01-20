@@ -2,6 +2,7 @@
 local tbl = require("ao.tbl")
 local proj = require("ao.module.proj")
 
+local notification_width = 70
 local clear_winbar_group = vim.api.nvim_create_augroup("WinBarHlClearBg", { clear = true })
 local disable_scope_filetypes = {
 	"help",
@@ -450,7 +451,7 @@ M.plugins = {
 			---@diagnostic disable-next-line: missing-fields
 			notifier = {
 				top_down = false,
-				width = { min = 50, max = 50 },
+				width = { min = notification_width, max = notification_width },
 				margin = { top = 0, right = 1, bottom = 1 },
 			},
 			git = { enabled = true },

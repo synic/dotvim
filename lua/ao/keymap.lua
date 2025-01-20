@@ -83,7 +83,7 @@ M.setup_basic_keymap = function()
 		{ "<leader>w9", "<cmd>9windo norm! m'<cr>", desc = "Goto window #9" },
 
 		-- layouts/tabs
-		{ "<leader>l.", "<cmd>tabnew<cr>", desc = "New layout" },
+		{ "<leader>ln", "<cmd>tabnew<cr>", desc = "New layout" },
 		{ "<leader>l1", "1gt", desc = "Go to layout #1" },
 		{ "<leader>l2", "2gt", desc = "Go to layout #2" },
 		{ "<leader>l3", "3gt", desc = "Go to layout #3" },
@@ -94,8 +94,8 @@ M.setup_basic_keymap = function()
 		{ "<leader>l8", "8gt", desc = "Go to layout #8" },
 		{ "<leader>l9", "9gt", desc = "Go to layout #9" },
 		{ "<leader>lc", "<cmd>tabclose<cr>", desc = "Close layout" },
-		{ "<leader>ln", "<cmd>tabnext<cr>", desc = "Next layout" },
-		{ "<leader>lp", "<cmd>tabprev<cr>", desc = "Previous layout" },
+		{ "<leader>lj", "<cmd>tabnext<cr>", desc = "Next layout" },
+		{ "<leader>lk", "<cmd>tabprev<cr>", desc = "Previous layout" },
 		{ "<leader>l<tab>", "g<Tab>", desc = "Go to last layout" },
 		{ "<leader>lN", require("ao.module.ui").layout_set_name, desc = "Set layout name" },
 

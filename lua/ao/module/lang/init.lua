@@ -43,12 +43,6 @@ for _, lang in ipairs(to_import) do
 			if m.nonels then
 				nonels = tbl.concat(nonels, m.nonels)
 			end
-
-			if m.langs then
-				for _, l in ipairs(m.langs) do
-					table.insert(langs, l)
-				end
-			end
 		end
 	end
 end

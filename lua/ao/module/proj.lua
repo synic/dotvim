@@ -179,7 +179,7 @@ local function dirpicker_pick_project(cb)
 	for _, entry in ipairs(projects) do
 		entry.text = entry.name .. entry.path
 		max_name_length = math.max(max_name_length, #entry.name)
-		local total_length = #entry.text + 20
+		local total_length = #entry.text + 22
 		if total_length > width then
 			width = total_length
 		end
@@ -191,7 +191,11 @@ local function dirpicker_pick_project(cb)
 	snacks.picker.pick({
 		items = projects,
 		format = function(item, _)
+			local icon, hl = snacks.util.icon(item.path, "directory")
+			local padded_icon = icon .. " "
+
 			local ret = {}
+			ret[#ret + 1] = { padded_icon, hl, virtual = true }
 			ret[#ret + 1] = { item.name, "SnacksFileLabel" }
 			ret[#ret + 1] = { string.rep(" ", padding - #item.name), virtual = true }
 			ret[#ret + 1] = { item.path, "SnacksPickerComment" }
