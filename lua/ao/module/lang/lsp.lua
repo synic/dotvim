@@ -54,6 +54,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 M.get_plugins = function(servers, handlers, nonels)
 	table.insert(handlers, function(server_name)
+		server_name = server_name == "tsserver" and "ts_ls" or server_name -- fix weird tsserver naming situation
 		require("lspconfig")[server_name].setup({})
 	end)
 	return {
