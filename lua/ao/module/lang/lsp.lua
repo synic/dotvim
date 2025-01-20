@@ -1,5 +1,6 @@
 local keymap = require("ao.keymap")
 local tbl = require("ao.tbl")
+local config = require("ao.config")
 
 local lsp_formatting_group = vim.api.nvim_create_augroup("LspFormatting", {})
 vim.api.nvim_set_hl(0, "LspProgressGrey", { fg = "#7a89b8", blend = 40 })
@@ -53,6 +54,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 M.get_plugins = function(servers, handlers, nonels)
+	local langs = tbl.unique(config.options.languages, config.options.extra_languages)
 	table.insert(handlers, function(server_name)
 		server_name = server_name == "tsserver" and "ts_ls" or server_name -- fix weird tsserver naming situation
 		require("lspconfig")[server_name].setup({})
@@ -69,7 +71,8 @@ M.get_plugins = function(servers, handlers, nonels)
 
 		{
 			"williamboman/mason-lspconfig.nvim",
-			event = "VeryLazy",
+			ft = langs,
+			cmd = "Mason",
 			opts = {
 				ensure_installed = servers,
 				automatic_installation = true,
@@ -84,7 +87,8 @@ M.get_plugins = function(servers, handlers, nonels)
 				"saghen/blink.cmp",
 				"williamboman/mason-lspconfig.nvim",
 			},
-			event = "VeryLazy",
+			ft = langs,
+			cmd = "Mason",
 			opts = {
 				diagnostic = {
 					underline = true,
@@ -133,7 +137,7 @@ M.get_plugins = function(servers, handlers, nonels)
 				"davidmh/cspell.nvim",
 				"nvimtools/none-ls-extras.nvim",
 			},
-			event = "VeryLazy",
+			ft = langs,
 			opts = function()
 				local null_ls = require("null-ls")
 
@@ -187,8 +191,10 @@ M.get_plugins = function(servers, handlers, nonels)
 				}
 			end,
 		},
+
 		{
 			"j-hui/fidget.nvim",
+			event = "LspAttach",
 			opts = {
 				progress = {
 					suppress_on_insert = true,
