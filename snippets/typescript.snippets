@@ -1,6 +1,6 @@
 extends javascript
 
-snippet nestresolver "NestJS GraphQL Resolver"
+snippet ;nestresolver "NestJS GraphQL Resolver"
 	import { Resolver } from '@nestjs/graphql';
 
 	@Resolver()
@@ -8,7 +8,7 @@ snippet nestresolver "NestJS GraphQL Resolver"
 	  ${2: // resolver methods go here}
 	}
 
-snippet nestservice "NestJS Injectable"
+snippet ;nestservice "NestJS Injectable"
 	import { Injectable } from '@nestjs/common';
 
 	@Injectable()
@@ -16,7 +16,7 @@ snippet nestservice "NestJS Injectable"
 	  ${2: // service methods go here}
 	}
 
-snippet nestmodule "NestJS Module"
+snippet ;nestmodule "NestJS Module"
 	import { Module } from '@nestjs/common';
 
 	@Module({
@@ -24,7 +24,7 @@ snippet nestmodule "NestJS Module"
 	})
 	export class ${1:Name}Module {}
 
-snippet nestcommand "NestJS Management Command"
+snippet ;nestcommand "NestJS Management Command"
 	import { Command, CommandArguments, _cli } from '@squareboat/nest-console';
 
 	import { ManagementCommand } from '@defiq/common/management';
@@ -38,7 +38,7 @@ snippet nestcommand "NestJS Management Command"
 		}
 	}
 
-snippet nestenumgql "NestJS GraphQL Enum"
+snippet ;nestenumgql "NestJS GraphQL Enum"
 	import { registerEnumType } from '@nestjs/graphql';
 
 	export enum ${1:Name} {
@@ -47,7 +47,7 @@ snippet nestenumgql "NestJS GraphQL Enum"
 
 	registerEnumType(${1:Name}, { name: '${1:Name}' });
 
-snippet nestconfig "NestJS Configuration File"
+snippet ;nestconfig "NestJS Configuration File"
 	import { registerAs } from '@nestjs/config';
 
 	export default registerAs('${1:Name}', () => ({

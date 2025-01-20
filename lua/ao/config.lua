@@ -9,25 +9,16 @@
 ---@field guifont string
 ---@field theme string
 
----@class TreesitterConfig
----@field ensure_installed_base string[]
----@field ensure_installed string[]
-
----@class MasonConfig
----@field ensure_installed_base string[]
----@field ensure_installed string[]
-
 ---@class LazyConfig
 ---@field install { install_missing: boolean }
 ---@field change_detection { enabled: boolean, notify: boolean }
 
 ---@class Config
----@field options { projects: ProjectConfig, appearance: AppearanceConfig, treesitter: TreesitterConfig, mason: MasonConfig, lazy: LazyConfig }
+---@field options { projects: ProjectConfig, appearance: AppearanceConfig, languages: string[], extra_languages: string[], lazy: LazyConfig }
 
 vim.o.shada = "!,'20,<50,s10,h"
 vim.opt.listchars:append("eol:↴")
 vim.opt.listchars:append("tab| ")
-vim.g.neovide_remember_window_size = true
 vim.o.winblend = 10
 vim.o.undofile = true
 
@@ -60,15 +51,8 @@ return {
 			theme = "gruvbox-material",
 		},
 
-		treesitter = {
-			ensure_installed_base = { "lua", "vimdoc" },
-			ensure_installed = {},
-		},
-
-		mason = {
-			ensure_installed_base = { "lua_ls", "vimls", "bashls" },
-			ensure_installed = {},
-		},
+		languages = { "lua", "vim", "bash", "markdown", "git", "json" },
+		extra_languages = {},
 
 		lazy = {
 			install = { install_missing = false },

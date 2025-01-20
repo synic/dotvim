@@ -1,7 +1,7 @@
 local config = require("ao.config")
 
 ---@class PluginSpec
----@field plugin_specs LazySpec[]|fun():LazySpec[]
+---@field plugins LazySpec[]|fun():LazySpec[]
 ---@field [string] any  -- Allow any additional functions/fields
 
 ---@alias PluginModule LazySpec[]|PluginSpec
@@ -49,7 +49,7 @@ local function load_theme(theme)
 end
 
 ---@return LazySpec[]
-function M.load_plugin_specs()
+function M.load_plugins()
 	local tbl = require("ao.tbl")
 
 	---@type LazySpec[]
@@ -61,7 +61,7 @@ function M.load_plugin_specs()
 		if vim.fn.filereadable(item .. "/" .. "init.lua") or item:match("%.lua$") then
 			---@type PluginModule
 			local m = require("ao.module." .. vim.fn.fnamemodify(item, ":t:r"))
-			local v = m.plugin_specs
+			local v = m.plugins
 
 			if v == nil then
 				plugins = tbl.concat(plugins, m)
@@ -86,7 +86,7 @@ function M.setup(opts, startup_callback_fn)
 
 	local lazy, installed = M.install_plugin_manager()
 
-	lazy.setup(M.load_plugin_specs(), config.options.lazy)
+	lazy.setup(M.load_plugins(), config.options.lazy)
 	lazy.install({ wait = installed, show = installed })
 
 	local theme_load_status = false

@@ -157,7 +157,7 @@ function M.get_tab_name(tabnr)
 	return proj.get_name(tabnr)
 end
 
-M.plugin_specs = {
+M.plugins = {
 	-- extensible core UI hooks
 	{ "stevearc/dressing.nvim", config = true, event = "VeryLazy" },
 
@@ -451,6 +451,7 @@ M.plugin_specs = {
 			notifier = {
 				top_down = false,
 				width = { min = 50, max = 50 },
+				margin = { top = 0, right = 1, bottom = 1 },
 			},
 			git = { enabled = true },
 			gitbrowse = { enabled = true },

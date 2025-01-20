@@ -49,7 +49,7 @@ local keys = {
 	{ "<leader>st", colorscheme_picker, desc = "List themes" },
 }
 
-M.plugin_specs = {
+M.plugins = {
 	{
 		"sainnhe/gruvbox-material",
 		keys = vim.deepcopy(keys),

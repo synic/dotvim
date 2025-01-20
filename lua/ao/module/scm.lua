@@ -145,7 +145,7 @@ local function open_gitblame()
 	vim.cmd.BlameToggle()
 end
 
-M.plugin_specs = {
+M.plugins = {
 	-- display conflicts
 	{ "akinsho/git-conflict.nvim", event = "VeryLazy", version = "*", config = true },
 

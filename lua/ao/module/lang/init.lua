@@ -1,23 +1,51 @@
 local tbl = require("ao.tbl")
+local config = require("ao.config")
 
----@type PluginModule
-local M = { plugin_specs = {} }
+local to_import = tbl.unique(config.options.languages, config.options.extra_languages)
 
-local path = vim.fn.stdpath("config") .. "/lua/ao/module/lang"
-local items = vim.split(vim.fn.glob(vim.fn.resolve(path .. "/*.lua")), "\n", { trimempty = true })
+---@type LazySpec[]
+local plugins = {}
+local treesitter = {}
+local handlers = {}
+local servers = {}
+local nonels = {}
 
-for _, item in ipairs(items) do
-	if not item:match("init.lua$") then
-		local m = require("ao.module.lang." .. vim.fn.fnamemodify(item, ":t:r"))
-		local v = m.plugin_specs
-		if v == nil then
-			---@diagnostic disable-next-line: param-type-mismatch
-			M.plugin_specs = tbl.concat(M.plugin_specs, m)
-		else
-			---@diagnostic disable-next-line: param-type-mismatch
-			M.plugin_specs = tbl.concat(M.plugin_specs, v)
+for _, lang in ipairs(to_import) do
+	local ok, m = pcall(require, "ao.module.lang." .. lang)
+
+	if not ok then
+		vim.notify("unable to initialize language: " .. lang)
+	else
+		if m.plugins then
+			plugins = tbl.concat(plugins, m.plugins)
+		end
+
+		if m.treesitter then
+			treesitter = tbl.concat(treesitter, m.treesitter)
+		end
+
+		if m.handlers then
+			handlers = vim.tbl_extend("force", handlers, m.handlers)
+
+			for server, _ in pairs(m.handlers) do
+				table.insert(servers, server)
+			end
+		end
+
+		if m.servers then
+			servers = tbl.concat(servers, m.servers)
+		end
+
+		if m.nonels then
+			nonels = tbl.concat(nonels, m.nonels)
 		end
 	end
 end
 
-return M
+plugins = tbl.concat(
+	plugins,
+	require("ao.module.lang.treesitter").get_plugins(tbl.unique(treesitter)),
+	require("ao.module.lang.lsp").get_plugins(tbl.unique(servers), handlers, tbl.unique(nonels))
+)
+
+return { plugins = plugins }

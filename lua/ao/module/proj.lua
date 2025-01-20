@@ -12,7 +12,7 @@ local keymap = require("ao.keymap")
 ---@field last_opened number
 
 ---@class ProjectModule
----@field plugin_specs LazySpec[]
+---@field plugins LazySpec[]
 ---@field list fun(opts: { cwd: string }): Project[]
 ---@field find_path_root fun(path: string|nil): string|nil
 ---@field find_buffer_root fun(buf?: number): string|nil
@@ -439,7 +439,7 @@ keymap.add({
 	{ "<leader>pS", set_project, desc = "Set project home" },
 })
 
-M.plugin_specs = {}
+M.plugins = {}
 
 load_frecency()
 setup_autochdir()

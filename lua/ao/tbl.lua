@@ -1,13 +1,15 @@
 local M = {}
 
----@param table1 table
----@param table2 table
+---@param tbl table
+---@param ... table
 ---@return table
-function M.concat(table1, table2)
-	for i = 1, #table2 do
-		table1[#table1 + 1] = table2[i]
+function M.concat(tbl, ...)
+	for _, source in ipairs({ ... }) do
+		for i = 1, #source do
+			tbl[#tbl + 1] = source[i]
+		end
 	end
-	return table1
+	return tbl
 end
 
 ---@param tbl table
@@ -20,6 +22,22 @@ function M.contains(tbl, value)
 		end
 	end
 	return false
+end
+
+---@param ... table
+---@return table
+function M.unique(...)
+	local seen = {}
+	local result = {}
+	for _, tbl in ipairs({ ... }) do
+		for _, v in ipairs(tbl) do
+			if not seen[v] then
+				seen[v] = true
+				table.insert(result, v)
+			end
+		end
+	end
+	return result
 end
 
 return M

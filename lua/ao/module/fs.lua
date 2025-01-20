@@ -102,7 +102,7 @@ function M.goto_config_directory()
 	proj.open(vim.fn.stdpath("config"))
 end
 
-M.plugin_specs = {
+M.plugins = {
 	-- dired like filemanager
 	{
 		"stevearc/oil.nvim",
