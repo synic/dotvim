@@ -193,6 +193,11 @@ M.get_plugins = function(langs, servers, handlers, nonels)
 			"j-hui/fidget.nvim",
 			event = "LspAttach",
 			opts = {
+				notification = {
+					window = {
+						winblend = 20,
+					},
+				},
 				progress = {
 					suppress_on_insert = true,
 					ignore_done_already = false,

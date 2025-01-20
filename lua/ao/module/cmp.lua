@@ -22,30 +22,12 @@ return {
 		opts = {
 			keymap = {
 				preset = "enter",
-
 				["<up>"] = { "select_prev", "fallback" },
 				["<down>"] = { "select_next", "fallback" },
 				["<c-k>"] = { "select_prev", "fallback" },
 				["<c-j>"] = { "select_next", "fallback" },
-				["<c-space>"] = {
-					function(cmp)
-						cmp.show({ providers = { "snippets" } })
-					end,
-				},
 				["<tab>"] = { "select_and_accept", "fallback" },
 				["<s-tab>"] = { "select_prev", "fallback" },
-
-				["<c-y>"] = {
-					function(cmp)
-						if cmp.snippet_active() then
-							return cmp.accept()
-						else
-							return cmp.select_and_accept()
-						end
-					end,
-					"snippet_forward",
-					"fallback",
-				},
 			},
 			enabled = function()
 				return not tbl.contains(disabled_buftypes, vim.bo.buftype)
@@ -61,7 +43,6 @@ return {
 					winhighlight = "CursorLine:CursorLine,Normal:Normal",
 					winblend = 10,
 				},
-
 				documentation = {
 					auto_show = true,
 					window = {
@@ -71,7 +52,6 @@ return {
 						winhighlight = "CursorLine:CursorLine,Normal:Normal",
 					},
 				},
-
 				list = {
 					selection = {
 						preselect = function(ctx)
