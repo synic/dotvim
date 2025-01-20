@@ -2,6 +2,8 @@ local keymap = require("ao.keymap")
 local tbl = require("ao.tbl")
 
 local lsp_formatting_group = vim.api.nvim_create_augroup("LspFormatting", {})
+vim.api.nvim_set_hl(0, "LspProgressGrey", { fg = "#7a89b8", blend = 40 })
+vim.api.nvim_set_hl(0, "LspProgressGreyBold", { fg = "#7a89b8", bold = true, blend = 40 })
 
 ---@type PluginModule
 local M = {}
@@ -9,8 +11,6 @@ local M = {}
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 	callback = function(ev)
-		require("ao.module.lang.progress")
-
 		local picker = require("snacks").picker
 		local buf = ev.buf
 		local ft = vim.bo[buf].filetype
@@ -185,6 +185,29 @@ M.get_plugins = function(servers, handlers, nonels)
 					end,
 				}
 			end,
+		},
+		{
+			"j-hui/fidget.nvim",
+			opts = {
+				progress = {
+					suppress_on_insert = true,
+					ignore_done_already = false,
+					ignore_empty_message = true,
+					display = {
+						group_style = "LspProgressGrey",
+						icon_style = "LspProgressGrey",
+						done_style = "LspProgressGrey",
+						done_ttl = 1,
+						render_limit = 1,
+					},
+				},
+				notification = {
+					window = {
+						normal_hl = "LspProgressGrey",
+						max_height = 3,
+					},
+				},
+			},
 		},
 	}
 end

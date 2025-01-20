@@ -1,6 +1,7 @@
 return {
 	treesitter = { "lua" },
 	nonels = { "formatting.stylua" },
+	servers = { "lua_ls" },
 	plugins = {
 		-- neovim development
 		{
