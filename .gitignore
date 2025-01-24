@@ -22,5 +22,8 @@ plugin/packer_compiled.lua
 # python
 .mypy_cache
 
+# elixir
+.elixir-tools/
+
 # local config
 lua/local_config.lua

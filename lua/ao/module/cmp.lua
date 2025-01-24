@@ -17,7 +17,12 @@ return {
 			local luasnip = require("luasnip")
 			-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
 			cmp.setup.cmdline({ "/", "?" }, {
-				mapping = cmp.mapping.preset.cmdline(),
+				mapping = cmp.mapping.preset.cmdline({
+					["<c-j>"] = cmp.mapping.select_next_item(),
+					["<c-k>"] = cmp.mapping.select_prev_item(),
+					["<down>"] = cmp.mapping.select_next_item(),
+					["<up>"] = cmp.mapping.select_prev_item(),
+				}),
 				sources = {
 					{ name = "buffer" },
 				},
@@ -43,6 +48,10 @@ return {
 							default()
 						end,
 					},
+					["<c-j>"] = cmp.mapping.select_next_item(),
+					["<c-k>"] = cmp.mapping.select_prev_item(),
+					["<down>"] = cmp.mapping.select_next_item(),
+					["<up>"] = cmp.mapping.select_prev_item(),
 				}),
 				---@diagnostic disable-next-line: missing-fields
 				formatting = {
