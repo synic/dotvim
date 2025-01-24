@@ -2,7 +2,7 @@ vim.filetype.add({ extension = { templ = "templ" } })
 
 return {
 	treesitter = { "templ" },
-	handlers = {
+	servers = {
 		["templ"] = function()
 			require("lspconfig").templ.setup({
 				filetypes = { "templ" },

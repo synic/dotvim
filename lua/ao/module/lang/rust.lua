@@ -1,6 +1,6 @@
 return {
 	treesitter = { "rust" },
-	handlers = {
+	servers = {
 		["rust_analyzer"] = function()
 			require("lspconfig").rust_analyzer.setup({
 				settings = {

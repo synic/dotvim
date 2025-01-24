@@ -1,6 +1,6 @@
 return {
 	treesitter = { "elixir", "heex" },
-	handlers = {
+	servers = {
 		["nextls"] = function()
 			require("lspconfig").nextls.setup({
 				init_options = {

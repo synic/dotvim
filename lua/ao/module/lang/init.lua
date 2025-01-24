@@ -28,11 +28,13 @@ for _, lang in ipairs(to_import) do
 				treesitter = tbl.concat(treesitter, m.treesitter)
 			end
 
-			if m.handlers then
-				handlers = vim.tbl_extend("force", handlers, m.handlers)
-
-				for server, _ in pairs(m.handlers) do
-					table.insert(servers, server)
+			if m.servers then
+				for server, handler in pairs(m.servers) do
+					if type(server) == "number" then
+						table.insert(servers, handler)
+					else
+						handlers[server] = handler
+					end
 				end
 			end
 

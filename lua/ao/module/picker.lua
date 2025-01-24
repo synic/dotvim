@@ -122,6 +122,20 @@ return {
 						},
 					},
 				},
+				formatters = {
+					text = {
+						ft = nil, ---@type string? filetype for highlighting
+					},
+					file = {
+						filename_first = false,
+						truncate = 200,
+						filename_only = false,
+					},
+					selected = {
+						show_always = false,
+						unselected = true,
+					},
+				},
 				sources = {
 					files = {
 						hidden = true,

@@ -22,6 +22,13 @@ vim.opt.listchars:append("tab| ")
 vim.o.winblend = 10
 vim.o.undofile = true
 
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "qf",
+	callback = function()
+		vim.cmd("wincmd J")
+	end,
+})
+
 -- Create the autocmd group and command
 ---@type integer
 vim.api.nvim_create_autocmd("TermOpen", {

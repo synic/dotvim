@@ -92,7 +92,12 @@ function M.quickfix_remove_item_move_next()
 	end
 
 	table.remove(qfall, curqfidx)
+
 	vim.fn.setqflist(qfall, "r")
+
+	if #qfall == 0 then
+		return
+	end
 
 	local new_idx = curqfidx < #qfall and curqfidx or math.max(curqfidx - 1, 1)
 	vim.api.nvim_win_set_cursor(vim.fn.win_getid(), { new_idx, 0 })
@@ -515,13 +520,13 @@ M.plugins = {
 			wk.add(keymap.categories)
 		end,
 	},
-
-	-- better quickfix list
-	{
-		"stevearc/quicker.nvim",
-		ft = "qf",
-		config = true,
-	},
+	-- {
+	-- 	"stevearc/quicker.nvim",
+	-- 	ft = "qf",
+	-- 	---@module "quicker"
+	-- 	---@type quicker.SetupOptions
+	-- 	opts = {},
+	-- },
 }
 
 return M

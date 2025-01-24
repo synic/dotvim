@@ -1,6 +1,6 @@
 return {
 	treesitter = { "html", "css", "javascript", "typescript" },
-	handlers = {
+	servers = {
 		["emmet_language_server"] = function()
 			require("lspconfig").emmet_language_server.setup({
 				filetypes = {

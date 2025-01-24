@@ -1,6 +1,6 @@
 return {
 	treesitter = { "css" },
-	handlers = {
+	servers = {
 		["tailwindcss"] = function()
 			require("lspconfig").tailwindcss.setup({
 				filetypes = {
