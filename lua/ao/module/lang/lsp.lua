@@ -2,6 +2,7 @@ local keymap = require("ao.keymap")
 local tbl = require("ao.tbl")
 
 local lsp_formatting_group = vim.api.nvim_create_augroup("LspFormatting", {})
+local md_namespace = vim.api.nvim_create_namespace("synic/lsp_float")
 
 ---@type PluginModule
 local M = {}
@@ -12,19 +13,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		local picker = require("snacks").picker
 		local buf = ev.buf
 		local ft = vim.bo[buf].filetype
-
-		local function hover()
-			local width = math.floor(vim.o.columns * 0.8)
-			local height = math.floor(vim.o.lines * 0.3)
-
-			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-				border = "rounded",
-				max_width = width,
-				max_height = height,
-			})
-
-			vim.lsp.buf.hover()
-		end
 
 		keymap.add({
 			{ "<localleader>r", vim.lsp.buf.rename, desc = "Rename symbol", buffer = buf },
@@ -51,7 +39,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			{ "grr", picker.lsp_references, desc = "Reference(s)", buffer = buf },
 			{ "gri", picker.lsp_implementations, desc = "Implementation(s)", buffer = buf },
 			{ "g.", picker.lsp_symbols, desc = "Document symbols", buffer = buf },
-			{ "K", hover, desc = "Hover", buffer = buf },
+			{ "K", vim.lsp.buf.hover, desc = "Hover", buffer = buf },
 		})
 
 		if ft == "typescript" then
@@ -115,19 +103,13 @@ M.get_plugins = function(langs, servers, handlers, nonels)
 			config = function(_, opts)
 				local lspconfig = require("lspconfig")
 				local defaults = lspconfig.util.default_config
+				local methods = vim.lsp.protocol.Methods
 
 				vim.diagnostic.config(opts.diagnostic)
 
-				vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-					side_padding = 1,
-					border = "rounded",
-					winhighlight = "CursorLine:CursorLine,Normal:Normal",
-				})
-				vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-					side_padding = 1,
-					border = "rounded",
-					winhighlight = "CursorLine:CursorLine,Normal:Normal",
-				})
+				vim.lsp.handlers[methods.textDocument_hover] = M.enhanced_float_handler(vim.lsp.handlers.hover)
+				vim.lsp.handlers[methods.textDocument_signatureHelp] =
+					M.enhanced_float_handler(vim.lsp.handlers.signature_help)
 
 				local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 				for type, icon in pairs(signs) do
@@ -257,6 +239,73 @@ M.get_plugins = function(langs, servers, handlers, nonels)
 			},
 		},
 	}
+end
+
+M.enhanced_float_handler = function(handler)
+	return function(err, result, ctx, config)
+		local buf, win = handler(
+			err,
+			result,
+			ctx,
+			vim.tbl_deep_extend("force", config or {}, {
+				border = "rounded",
+				max_width = math.floor(vim.o.columns * (vim.o.columns > 300 and 0.5 or 0.8)),
+			})
+		)
+
+		if not buf or not win then
+			return
+		end
+
+		vim.wo[win].concealcursor = "n"
+		vim.wo[win].wrap = true
+		vim.wo[win].linebreak = true
+
+		for l, line in ipairs(vim.api.nvim_buf_get_lines(buf, 0, -1, false)) do
+			for pattern, hl_group in pairs({
+				["|%S-|"] = "@text.reference",
+				["@%S+"] = "@parameter",
+				["^%s*(Parameters:)"] = "@text.title",
+				["^%s*(Return:)"] = "@text.title",
+				["^%s*(See also:)"] = "@text.title",
+				["{%S-}"] = "@parameter",
+			}) do
+				local from = 1 ---@type integer?
+				while from do
+					local to
+					from, to = line:find(pattern, from)
+					if from then
+						vim.api.nvim_buf_set_extmark(buf, md_namespace, l - 1, from - 1, {
+							end_col = to,
+							hl_group = hl_group,
+						})
+					end
+					from = to and to + 1 or nil
+				end
+			end
+		end
+
+		if not vim.b[buf].markdown_keys then
+			vim.keymap.set("n", "K", function()
+				local url = (vim.fn.expand("<cword>") --[[@as string]]):match("|(%S-)|")
+				if url then
+					return vim.cmd.help(url)
+				end
+
+				local col = vim.api.nvim_win_get_cursor(0)[2] + 1
+				local from, to
+				from, to, url = vim.api.nvim_get_current_line():find("%[.-%]%((%S-)%)")
+				if from and col >= from and col <= to then
+					vim.system({ "open", url }, nil, function(res)
+						if res.code ~= 0 then
+							vim.notify("Failed to open URL" .. url, vim.log.levels.ERROR)
+						end
+					end)
+				end
+			end, { buffer = buf, silent = true })
+			vim.b[buf].markdown_keys = true
+		end
+	end
 end
 
 return M
