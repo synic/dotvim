@@ -13,6 +13,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		local buf = ev.buf
 		local ft = vim.bo[buf].filetype
 
+		local function hover()
+			local width = math.floor(vim.o.columns * 0.8)
+			local height = math.floor(vim.o.lines * 0.3)
+
+			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+				border = "rounded",
+				max_width = width,
+				max_height = height,
+			})
+
+			vim.lsp.buf.hover()
+		end
+
 		keymap.add({
 			{ "<localleader>r", vim.lsp.buf.rename, desc = "Rename symbol", buffer = buf },
 			{ "<localleader>,", vim.lsp.buf.code_action, desc = "Code actions", buffer = buf, mode = { "n", "v" } },
@@ -38,7 +51,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			{ "grr", picker.lsp_references, desc = "Reference(s)", buffer = buf },
 			{ "gri", picker.lsp_implementations, desc = "Implementation(s)", buffer = buf },
 			{ "g.", picker.lsp_symbols, desc = "Document symbols", buffer = buf },
-			{ "K", vim.lsp.buf.hover, desc = "Hover", buffer = buf },
+			{ "K", hover, desc = "Hover", buffer = buf },
 		})
 
 		if ft == "typescript" then

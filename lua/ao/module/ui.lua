@@ -458,6 +458,13 @@ M.plugins = {
 				top_down = false,
 				width = { min = notification_width, max = notification_width },
 				margin = { top = 0, right = 1, bottom = 1 },
+				filter = function(notif)
+					if notif.msg == "No information available" then
+						return false
+					end
+
+					return true
+				end,
 			},
 			git = { enabled = true },
 			gitbrowse = { enabled = true },
