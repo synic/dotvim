@@ -95,10 +95,23 @@ local function oil_touch()
 
 		vim.cmd.normal("O" .. name)
 		vim.cmd.write()
+
+		-- If the name doesn't end with /, it's not a directory
+		if not name:match("/$") then
+			vim.ui.select({ "Yes", "No" }, {
+				prompt = "Add file to git?",
+			}, function(choice)
+				if choice == "Yes" then
+					local full_path = dir .. name
+					vim.fn.system({ "git", "add", full_path })
+				end
+			end)
+		end
 	end)
 end
 
 function M.goto_config_directory()
+	---@diagnostic disable-next-line: param-type-mismatch
 	proj.open(vim.fn.stdpath("config"))
 end
 

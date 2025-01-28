@@ -4,21 +4,6 @@ local proj = require("ao.module.proj")
 
 local notification_width = 70
 local clear_winbar_group = vim.api.nvim_create_augroup("WinBarHlClearBg", { clear = true })
-local disable_scope_filetypes = {
-	"help",
-	"alpha",
-	"dashboard",
-	"snacks_dashboard",
-	"neo-tree",
-	"Trouble",
-	"Avante",
-	"trouble",
-	"lazy",
-	"mason",
-	"notify",
-	"toggleterm",
-	"lazyterm",
-}
 
 ---@type PluginModule
 local M = {}
@@ -109,6 +94,7 @@ function M.layout_set_name()
 	---@diagnostic disable-next-line: missing-fields
 	vim.ui.input({ prompt = "layout name: ", default = (vim.t.layout_name or "") }, function(name)
 		if name then
+			---@diagnostic disable-next-line: inject-field
 			vim.t.layout_name = name
 			vim.cmd.redrawtabline()
 		end
@@ -147,11 +133,14 @@ end
 local function golden_ratio_toggle()
 	vim.cmd.GoldenRatioToggle()
 	if vim.g.golden_ratio_enabled == 0 then
+		---@diagnostic disable-next-line: inject-field
 		vim.g.golden_ratio_enabled = 1
 		vim.notify("Golden Ratio: enabled")
 	else
+		---@diagnostic disable-next-line: inject-field
 		vim.g.golden_ratio_enabled = 0
 		vim.notify("Golden Ratio: disabled")
+		---@diagnostic disable-next-line: inject-field
 		vim.g.equalalways = true
 		M.equalize_all_tabs()
 	end
@@ -304,6 +293,7 @@ M.plugins = {
 				local function _clear_bg(name)
 					local hl = vim.api.nvim_get_hl(0, { name = name, link = false })
 					if hl.bg or hl.ctermbg then
+						---@diagnostic disable-next-line: inject-field
 						hl.bg = nil
 						---@diagnostic disable-next-line: undefined-field, inject-field
 						hl.ctermbg = nil
@@ -439,37 +429,61 @@ M.plugins = {
 				desc = "Show notification history",
 			},
 		},
-		---@type snacks.Config
-		opts = {
-			indent = {
-				indent = { enabled = false },
-				scope = { char = "╎", only_current = true },
-				filter = function(buf)
-					return vim.g.snacks_indent ~= false
-						and vim.b[buf].snacks_indent ~= false
-						and not tbl.contains(disable_scope_filetypes, vim.bo[buf].filetype)
-						and vim.bo[buf].buftype == ""
-				end,
-			},
-			scope = {},
-			---@type snacks.notifier.Config
-			---@diagnostic disable-next-line: missing-fields
-			notifier = {
-				top_down = false,
-				width = { min = notification_width, max = notification_width },
-				margin = { top = 0, right = 1, bottom = 1 },
-				filter = function(notif)
-					if notif.msg == "No information available" then
-						return false
-					end
+		opts = function(_, opts)
+			local disable_scope_filetypes = {
+				"help",
+				"alpha",
+				"dashboard",
+				"snacks_dashboard",
+				"neo-tree",
+				"Trouble",
+				"Avante",
+				"trouble",
+				"lazy",
+				"mason",
+				"notify",
+				"toggleterm",
+				"lazyterm",
+			}
 
-					return true
-				end,
-			},
-			git = { enabled = true },
-			gitbrowse = { enabled = true },
-			scratch = { enabled = true },
-		},
+			local notifier_ignore_messages = {
+				"No information available",
+				"[oil] could not find adapter for buffer '://'",
+				"Could not find oil adapter for scheme '://'",
+			}
+			---@type snacks.Config
+			return vim.tbl_deep_extend("force", {
+				indent = {
+					indent = { enabled = false },
+					scope = { char = "╎", only_current = true },
+					filter = function(buf)
+						---@diagnostic disable-next-line: undefined-field
+						return vim.g.snacks_indent ~= false
+							and vim.b[buf].snacks_indent ~= false
+							and not tbl.contains(disable_scope_filetypes, vim.bo[buf].filetype)
+							and vim.bo[buf].buftype == ""
+					end,
+				},
+				scope = {},
+				---@type snacks.notifier.Config
+				---@diagnostic disable-next-line: missing-fields
+				notifier = {
+					top_down = false,
+					width = { min = notification_width, max = notification_width },
+					margin = { top = 0, right = 1, bottom = 1 },
+					filter = function(notif)
+						if tbl.contains(notifier_ignore_messages, notif.msg) then
+							return false
+						end
+
+						return true
+					end,
+				},
+				git = { enabled = true },
+				gitbrowse = { enabled = true },
+				scratch = { enabled = true },
+			}, opts)
+		end,
 	},
 
 	-- toggle golden ratio
@@ -479,6 +493,7 @@ M.plugins = {
 			{ "<leader>tg", golden_ratio_toggle, desc = "Golden Ratio" },
 		},
 		init = function()
+			---@diagnostic disable-next-line: inject-field
 			vim.g.golden_ratio_enabled = 0
 		end,
 		config = function()

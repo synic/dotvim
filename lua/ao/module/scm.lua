@@ -97,9 +97,8 @@ end
 
 -- Open Neogit
 --
--- This function goes through all the buffers and closes any that are
--- the neogit status buffer, and _then_ opens Neogit. This is because if you
--- open neogit on one tab, and leave it open, and then try to open neogit again on
+-- This function goes through all the buffers and closes any that are the neogit status buffer, and _then_ opens
+-- Neogit. This is because if you open neogit on one tab, and leave it open, and then try to open neogit again on
 -- another tab, nothing will happen. Neogit is already open, even if you can't see it.
 local function neogit_open()
 	local neogit = require("neogit")

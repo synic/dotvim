@@ -88,14 +88,7 @@ function string.starts_with(str, start)
 	return string.sub(str, 1, string.len(start)) == start
 end
 
--- would rather not use this function and instead just use `:tcd` per tab, however, there are various plugins that
--- have issue with the file not being in the same location as the cwd (stylua, for example, has trouble saving if the
--- cwd is some other directory.
----@return nil
 local function setup_autochdir()
-	if true then
-		return
-	end
 	local chdir_aucmds = { "BufNewFile", "BufRead", "BufFilePost", "BufEnter", "VimEnter" }
 	local skip_filetype_patterns = { "^qf$", "^Neogit" }
 

@@ -49,139 +49,142 @@ return {
 			{ "<leader>sq", "<cmd>lua require('snacks').picker.qflist()<cr>", desc = "Search quickfix" },
 			{ "<leader>su", "<cmd>lua require('snacks').picker.undo()<cr>", desc = "Undo tree" },
 		},
-		opts = {
-			---@type snacks.picker.Config
-			picker = {
-				main = {
-					current = true,
-				},
-				layout = {
-					reverse = true,
+		opts = function(_, opts)
+			local snacks = require("snacks")
+			local layouts = require("snacks.picker.config.layouts")
+			return vim.tbl_deep_extend("force", {
+				---@type snacks.picker.Config
+				picker = {
+					main = {
+						current = true,
+					},
 					layout = {
-						box = "horizontal",
-						backdrop = false,
-						width = 0.8,
-						height = 0.9,
-						border = "none",
-						{
-							box = "vertical",
-							{ win = "list", title = " Results ", title_pos = "center", border = "rounded" },
+						reverse = true,
+						layout = {
+							box = "horizontal",
+							backdrop = false,
+							width = 0.8,
+							height = 0.9,
+							border = "none",
 							{
-								win = "input",
-								height = 1,
+								box = "vertical",
+								{ win = "list", title = " Results ", title_pos = "center", border = "rounded" },
+								{
+									win = "input",
+									height = 1,
+									border = "rounded",
+									title = "{title} {live} {flags}",
+									title_pos = "center",
+								},
+							},
+							{
+								win = "preview",
+								title = "{preview:Preview}",
+								width = 0.45,
 								border = "rounded",
-								title = "{source} {live}",
 								title_pos = "center",
 							},
 						},
-						{
-							win = "preview",
-							width = 0.45,
-							border = "rounded",
-							title = " Preview ",
-							title_pos = "center",
+					},
+					actions = {
+						flash_jump = function(picker)
+							local has_flash, flash = pcall(require, "flash")
+
+							if has_flash then
+								---@diagnostic disable-next-line: missing-fields
+								flash.jump({
+									pattern = "^",
+									label = { after = { 0, 0 } },
+									search = {
+										mode = "search",
+										exclude = {
+											function(win)
+												return vim.bo[vim.api.nvim_win_get_buf(win)].filetype
+													~= "snacks_picker_list"
+											end,
+										},
+									},
+									action = function(match)
+										local list = picker.list
+										vim.api.nvim_win_set_cursor(list.win.win, { match.pos[1], 0 })
+										local idx = list:row2idx(match.pos[1])
+										list:_move(idx, true, true)
+									end,
+								})
+							else
+								vim.notify("flash.nvim not installed", vim.log.levels.WARN)
+							end
+						end,
+					},
+					win = {
+						input = {
+							keys = {
+								["//"] = { "edit_vsplit", desc = "Edit in vertical split", mode = { "i" } },
+								["--"] = { "edit_split", desc = "Edit in horizontal split", mode = { "i" } },
+								["<a-s>"] = { "flash_jump", desc = "Jump to entry", mode = { "i" } },
+							},
 						},
 					},
-				},
-				actions = {
-					flash_jump = function(picker)
-						local has_flash, flash = pcall(require, "flash")
+					formatters = {
+						text = {
+							ft = nil, ---@type string? filetype for highlighting
+						},
+						file = {
+							filename_first = false,
+							truncate = 200,
+							filename_only = false,
+						},
+						selected = {
+							show_always = false,
+							unselected = true,
+						},
+					},
+					sources = {
+						files = {
+							hidden = true,
+							actions = {
+								switch_to_grep = function(picker, _)
+									local pattern = picker.input.filter.pattern or picker.input.filter.search
+									local cwd = picker.input.filter.cwd
 
-						if has_flash then
-							---@diagnostic disable-next-line: missing-fields
-							flash.jump({
-								pattern = "^",
-								label = { after = { 0, 0 } },
-								search = {
-									mode = "search",
-									exclude = {
-										function(win)
-											return vim.bo[vim.api.nvim_win_get_buf(win)].filetype
-												~= "snacks_picker_list"
-										end,
+									picker:close()
+
+									---@diagnostic disable-next-line: missing-fields
+									snacks.picker.grep({ cwd = cwd, search = pattern })
+								end,
+							},
+							win = {
+								input = {
+									keys = {
+										["<a-r>"] = { "switch_to_grep", desc = "Switch to grep", mode = { "i", "n" } },
 									},
 								},
-								action = function(match)
-									local list = picker.list
-									vim.api.nvim_win_set_cursor(list.win.win, { match.pos[1], 0 })
-									local idx = list:row2idx(match.pos[1])
-									list:_move(idx, true, true)
+							},
+						},
+						select = { layout = layouts.select },
+						grep = {
+							actions = {
+								switch_to_files = function(picker, _)
+									local pattern = picker.input.filter.search or picker.input.filter.pattern
+									local cwd = picker.input.filter.cwd
+
+									picker:close()
+
+									---@diagnostic disable-next-line: missing-fields
+									snacks.picker.files({ cwd = cwd, pattern = pattern })
 								end,
-							})
-						else
-							vim.notify("flash.nvim not installed", vim.log.levels.WARN)
-						end
-					end,
-				},
-				win = {
-					input = {
-						keys = {
-							["//"] = { "edit_vsplit", desc = "Edit in vertical split", mode = { "i" } },
-							["--"] = { "edit_split", desc = "Edit in horizontal split", mode = { "i" } },
-							["<a-s>"] = { "flash_jump", desc = "Jump to entry", mode = { "i" } },
-						},
-					},
-				},
-				formatters = {
-					text = {
-						ft = nil, ---@type string? filetype for highlighting
-					},
-					file = {
-						filename_first = false,
-						truncate = 200,
-						filename_only = false,
-					},
-					selected = {
-						show_always = false,
-						unselected = true,
-					},
-				},
-				sources = {
-					files = {
-						hidden = true,
-						actions = {
-							switch_to_grep = function(picker, _)
-								local snacks = require("snacks")
-								local pattern = picker.input.filter.pattern or picker.input.filter.search
-								local cwd = picker.input.filter.cwd
-
-								picker:close()
-
-								---@diagnostic disable-next-line: missing-fields
-								snacks.picker.grep({ cwd = cwd, search = pattern })
-							end,
-						},
-						win = {
-							input = {
-								keys = {
-									["<a-r>"] = { "switch_to_grep", desc = "Switch to grep", mode = { "i", "n" } },
-								},
 							},
-						},
-					},
-					grep = {
-						actions = {
-							switch_to_files = function(picker, _)
-								local snacks = require("snacks")
-								local pattern = picker.input.filter.search or picker.input.filter.pattern
-								local cwd = picker.input.filter.cwd
-
-								picker:close()
-
-								---@diagnostic disable-next-line: missing-fields
-								snacks.picker.files({ cwd = cwd, pattern = pattern })
-							end,
-						},
-						win = {
-							input = {
-								keys = {
-									["<a-r>"] = { "switch_to_files", desc = "Switch to files", mode = { "i", "n" } },
+							win = {
+								input = {
+									keys = {
+										["<a-r>"] = { "switch_to_files", desc = "Switch to files", mode = { "i", "n" } },
+									},
 								},
 							},
 						},
 					},
 				},
-			},
-		},
+			}, opts)
+		end,
 	},
 }
