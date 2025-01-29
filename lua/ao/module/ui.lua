@@ -367,9 +367,6 @@ M.plugins = {
 		"nvim-lualine/lualine.nvim",
 		event = "VeryLazy",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
-		init = function()
-			vim.g.laststatus = 2
-		end,
 		---@return table<string, any> # LualineConfig
 		opts = function()
 			local lualine_utils = require("lualine.utils.utils")
@@ -387,8 +384,7 @@ M.plugins = {
 				options = {
 					component_separators = "|",
 					section_separators = { left = "", right = "" },
-					disabled_buftypes = { "nofile" },
-					disabled_filetypes = { "AvanteInput", "AvanteSelectedFiles", "Avante" },
+					globalstatus = true, -- sets laststatus=3
 				},
 				sections = {
 					lualine_b = {
