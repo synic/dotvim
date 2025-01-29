@@ -44,6 +44,7 @@ set nowritebackup
 set nobackup
 set noswapfile
 set autoread
+set laststatus=2
 set nocursorbind
 set noscrollbind
 set hidden

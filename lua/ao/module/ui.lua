@@ -368,7 +368,7 @@ M.plugins = {
 		event = "VeryLazy",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		init = function()
-			vim.o.laststatus = 3
+			vim.g.laststatus = 2
 		end,
 		---@return table<string, any> # LualineConfig
 		opts = function()
@@ -387,6 +387,8 @@ M.plugins = {
 				options = {
 					component_separators = "|",
 					section_separators = { left = "", right = "" },
+					disabled_buftypes = { "nofile" },
+					disabled_filetypes = { "AvanteInput", "AvanteSelectedFiles", "Avante" },
 				},
 				sections = {
 					lualine_b = {
@@ -542,13 +544,6 @@ M.plugins = {
 			wk.add(keymap.categories)
 		end,
 	},
-	-- {
-	-- 	"stevearc/quicker.nvim",
-	-- 	ft = "qf",
-	-- 	---@module "quicker"
-	-- 	---@type quicker.SetupOptions
-	-- 	opts = {},
-	-- },
 }
 
 return M

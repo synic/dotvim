@@ -89,7 +89,7 @@ local function oil_touch()
 
 		local p = path:new(dir .. name)
 		if p:exists() then
-			vim.notify("File exists: " .. path.filename, vim.log.levels.WARN)
+			vim.notify("File exists: " .. dir .. name, vim.log.levels.WARN)
 			return
 		end
 

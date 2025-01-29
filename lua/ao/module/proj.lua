@@ -305,7 +305,7 @@ function find_project_files()
 			M.set(root)
 		end
 		---@diagnostic disable-next-line: missing-fields
-		snacks.picker.files({ cwd = root })
+		snacks.picker.smart({ cwd = root })
 	else
 		vim.notify("Project: no project selected", vim.log.levels.INFO)
 		pick_project()
@@ -423,7 +423,7 @@ function M.open(dir)
 
 	update_frecency(dir)
 	---@diagnostic disable-next-line: missing-fields
-	require("snacks").picker.files({ cwd = dir })
+	require("snacks").picker.smart({ cwd = dir })
 end
 
 keymap.add({

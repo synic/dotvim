@@ -8,8 +8,15 @@ end
 
 local function find_files_cwd()
 	---@diagnostic disable-next-line: missing-fields
-	require("snacks").picker.files({ cwd = fs.get_buffer_cwd() })
+	require("snacks").picker.smart({ cwd = fs.get_buffer_cwd() })
 end
+
+vim.api.nvim_create_user_command("Pick", function(args)
+	require("snacks").picker[args.args]()
+end, {
+	nargs = 1,
+	desc = "Snacks Picker",
+})
 
 ---@type PluginModule
 return {
@@ -58,34 +65,8 @@ return {
 					main = {
 						current = true,
 					},
-					layout = {
-						reverse = true,
-						layout = {
-							box = "horizontal",
-							backdrop = false,
-							width = 0.8,
-							height = 0.9,
-							border = "none",
-							{
-								box = "vertical",
-								{ win = "list", title = " Results ", title_pos = "center", border = "rounded" },
-								{
-									win = "input",
-									height = 1,
-									border = "rounded",
-									title = "{title} {live} {flags}",
-									title_pos = "center",
-								},
-							},
-							{
-								win = "preview",
-								title = "{preview:Preview}",
-								width = 0.45,
-								border = "rounded",
-								title_pos = "center",
-							},
-						},
-					},
+					layout = layouts.telescope,
+					ui_select = false, -- dressing.nvim does a good implementation, so use that
 					actions = {
 						flash_jump = function(picker)
 							local has_flash, flash = pcall(require, "flash")
@@ -140,7 +121,7 @@ return {
 						},
 					},
 					sources = {
-						files = {
+						smart = {
 							hidden = true,
 							actions = {
 								switch_to_grep = function(picker, _)
@@ -161,7 +142,6 @@ return {
 								},
 							},
 						},
-						select = { layout = layouts.select },
 						grep = {
 							actions = {
 								switch_to_files = function(picker, _)
@@ -171,7 +151,7 @@ return {
 									picker:close()
 
 									---@diagnostic disable-next-line: missing-fields
-									snacks.picker.files({ cwd = cwd, pattern = pattern })
+									snacks.picker.smart({ cwd = cwd, pattern = pattern })
 								end,
 							},
 							win = {
