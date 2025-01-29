@@ -58,15 +58,11 @@ return {
 		},
 		opts = function(_, opts)
 			local snacks = require("snacks")
-			local layouts = require("snacks.picker.config.layouts")
 			return vim.tbl_deep_extend("force", {
 				---@type snacks.picker.Config
 				picker = {
-					main = {
-						current = true,
-					},
-					layout = layouts.telescope,
-					ui_select = false, -- dressing.nvim does a good implementation, so use that
+					main = { current = true },
+					ui_select = true,
 					actions = {
 						flash_jump = function(picker)
 							local has_flash, flash = pcall(require, "flash")

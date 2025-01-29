@@ -154,7 +154,7 @@ end
 
 M.plugins = {
 	-- extensible core UI hooks
-	{ "stevearc/dressing.nvim", config = true, event = "VeryLazy" },
+	-- { "stevearc/dressing.nvim", config = true, event = "VeryLazy" },
 
 	-- various interface and vim scripting utilities
 	{
