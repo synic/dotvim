@@ -8,7 +8,7 @@ end
 
 local function find_files_cwd()
 	---@diagnostic disable-next-line: missing-fields
-	require("snacks").picker.smart({ cwd = fs.get_buffer_cwd() })
+	require("snacks").picker.files({ cwd = fs.get_buffer_cwd() })
 end
 
 vim.api.nvim_create_user_command("Pick", function(args)
@@ -117,7 +117,7 @@ return {
 						},
 					},
 					sources = {
-						smart = {
+						files = {
 							hidden = true,
 							actions = {
 								switch_to_grep = function(picker, _)
@@ -147,7 +147,7 @@ return {
 									picker:close()
 
 									---@diagnostic disable-next-line: missing-fields
-									snacks.picker.smart({ cwd = cwd, pattern = pattern })
+									snacks.picker.files({ cwd = cwd, pattern = pattern })
 								end,
 							},
 							win = {

@@ -153,9 +153,6 @@ function M.get_tab_name(tabnr)
 end
 
 M.plugins = {
-	-- extensible core UI hooks
-	-- { "stevearc/dressing.nvim", config = true, event = "VeryLazy" },
-
 	-- various interface and vim scripting utilities
 	{
 		"tpope/vim-scriptease",
@@ -435,6 +432,7 @@ M.plugins = {
 				"snacks_dashboard",
 				"neo-tree",
 				"Trouble",
+				"snacks_picker_list",
 				"Avante",
 				"trouble",
 				"lazy",
