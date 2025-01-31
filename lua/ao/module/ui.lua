@@ -153,6 +153,13 @@ function M.get_tab_name(tabnr)
 end
 
 M.plugins = {
+	{
+		"stevearc/dressing.nvim",
+		event = "VeryLazy",
+		opts = {
+			select = { enabled = false },
+		},
+	},
 	-- various interface and vim scripting utilities
 	{
 		"tpope/vim-scriptease",

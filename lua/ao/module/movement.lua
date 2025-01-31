@@ -4,16 +4,6 @@
 ---@type string
 local target_keys = "asdfghjkletovxpzwciubrnym;,ASDFGHJKLETOVXPZWCIUBRNYM"
 
----@return nil
-local function pick_window()
-	---@type number|nil
-	local win_id = require("window-picker").pick_window({ hint = "floating-big-letter" })
-
-	if win_id ~= nil then
-		vim.api.nvim_set_current_win(win_id)
-	end
-end
-
 ---@type PluginModule
 return {
 	{
@@ -134,15 +124,6 @@ return {
 			{ "<C-k>", "<cmd>Treewalker Up<cr>", mode = { "n", "v" } },
 			{ "<C-h>", "<cmd>Treewalker Left<cr>", mode = { "n", "v" } },
 			{ "<C-l>", "<cmd>Treewalker Right<cr>", mode = { "n", "v" } },
-		},
-	},
-	{
-		"s1n7ax/nvim-window-picker",
-		name = "window-picker",
-		version = "2.*",
-		config = true,
-		keys = {
-			{ "<leader>w<leader>", pick_window, desc = "Jump to window" },
 		},
 	},
 }

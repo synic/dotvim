@@ -11,6 +11,22 @@ local function find_files_cwd()
 	require("snacks").picker.files({ cwd = fs.get_buffer_cwd() })
 end
 
+local function pick_window()
+	local win_id = require("snacks").picker.util.pick_win()
+
+	if win_id ~= nil then
+		vim.api.nvim_set_current_win(win_id)
+	end
+end
+
+local function pick_window_close()
+	local win_id = require("snacks").picker.util.pick_win()
+
+	if win_id ~= nil then
+		vim.api.nvim_win_close(win_id, false)
+	end
+end
+
 vim.api.nvim_create_user_command("Pick", function(args)
 	require("snacks").picker[args.args]()
 end, {
@@ -45,6 +61,10 @@ return {
 			-- themes
 			{ "<leader>st", theme.colorscheme_picker, desc = "List themes" },
 
+			-- windows
+			{ "<leader>w<leader>", pick_window, desc = "Jump to window" },
+			{ "<leader>wC", pick_window_close, desc = "Pick window to close" },
+
 			-- misc
 			{ "<leader>sq", "<cmd>lua require('snacks').picker.qflist()<cr>", desc = "Search quickfix" },
 			{ "<leader>su", "<cmd>lua require('snacks').picker.undo()<cr>", desc = "Undo tree" },
@@ -54,6 +74,7 @@ return {
 
 			return vim.tbl_deep_extend("force", {
 				---@type snacks.picker.Config
+				---@diagnostic disable-next-line: missing-fields
 				picker = {
 					main = { current = true },
 					layout = { preset = "telescope" },
