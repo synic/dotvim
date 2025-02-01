@@ -28,7 +28,7 @@ end
 
 local function view_prev_item()
 	local current_win = vim.fn.win_getid()
-	vim.cmd.pn()
+	vim.cmd.cp()
 	pcall(vim.api.nvim_set_current_win, current_win)
 end
 

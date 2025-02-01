@@ -56,9 +56,6 @@ set scrolloff=15
 set cursorline
 set listchars=tab:\|\ ,eol:↵
 
-" enable comprehensive session saving
-set sessionoptions+=winpos,globals,localoptions,options
-
 " display bufnr:filetype (dos,unix,mac) in status line
 set statusline=%<%n:%f%h%m%r%=\ %{&ff}\ %l,%c%V\ %P
 

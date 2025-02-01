@@ -23,28 +23,6 @@ M.browse_directory = function(type, precmd)
 	end
 end
 
-local function oil_rename()
-	local oil = require("oil")
-	local entry = oil.get_cursor_entry()
-
-	if entry ~= nil then
-		vim.ui.input({ prompt = "Rename: ", default = entry.name }, function(name)
-			if name == nil then
-				return
-			end
-
-			vim.cmd.normal("C" .. name)
-			vim.cmd.write()
-		end)
-	end
-end
-
-local function oil_delete()
-	local mode = vim.fn.mode()
-	vim.cmd.visual(mode == "v" and "d" or "dd")
-	vim.cmd.write()
-end
-
 local function oil_setup_navigation_keys(echo)
 	if vim.b.ao_oil_navigation_keys_enabled then
 		vim.keymap.set("n", "h", function()
@@ -66,6 +44,31 @@ end
 local function oil_toggle_navigation_keys()
 	vim.b.ao_oil_navigation_keys_enabled = not vim.b.ao_oil_navigation_keys_enabled
 	oil_setup_navigation_keys(true)
+end
+
+function M.goto_config_directory()
+	---@diagnostic disable-next-line: param-type-mismatch
+	proj.open(vim.fn.stdpath("config"))
+end
+
+local function oil_add_to_git()
+	local oil = require("oil")
+	local entry = oil.get_cursor_entry()
+	if entry ~= nil then
+		local full_path = oil.get_current_dir() .. "/" .. entry.parsed_name
+		vim.fn.system({ "git", "add", full_path })
+		vim.notify("Added file to git: " .. entry.parsed_name)
+	end
+end
+
+local function oil_goto_file(name)
+	local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+	for i, line in ipairs(lines) do
+		if line:match(vim.pesc(name) .. "$") then
+			vim.api.nvim_win_set_cursor(0, { i, 0 })
+			break
+		end
+	end
 end
 
 local function oil_touch()
@@ -96,7 +99,6 @@ local function oil_touch()
 		vim.cmd.normal("O" .. name)
 		vim.cmd.write()
 
-		-- If the name doesn't end with /, it's not a directory
 		if not name:match("/$") then
 			vim.ui.select({ "Yes", "No" }, {
 				prompt = "Add file to git?",
@@ -105,14 +107,10 @@ local function oil_touch()
 					local full_path = dir .. name
 					vim.fn.system({ "git", "add", full_path })
 				end
+				oil_goto_file(name)
 			end)
 		end
 	end)
-end
-
-function M.goto_config_directory()
-	---@diagnostic disable-next-line: param-type-mismatch
-	proj.open(vim.fn.stdpath("config"))
 end
 
 M.plugins = {
@@ -139,6 +137,7 @@ M.plugins = {
 					{ "icon", add_padding = false },
 				},
 				skip_confirm_for_simple_edits = true,
+				watch_for_changes = true,
 				lsp_file_methods = {
 					autosave_changes = true,
 				},
@@ -160,13 +159,12 @@ M.plugins = {
 					["<c-r>"] = "actions.refresh",
 					["<c-h>"] = "actions.select_split",
 					["<c-v>"] = "actions.select_vsplit",
+					["ga"] = { desc = "Oil: Add to git", callback = oil_add_to_git },
 					["gs"] = "actions.change_sort",
 					["gx"] = "actions.open_external",
-					["gk"] = { desc = "Toggle navigation keys", callback = oil_toggle_navigation_keys },
+					["gn"] = { desc = "Oil: Create file", callback = oil_touch },
+					["gk"] = { desc = "Oil: Toggle navigation keys", callback = oil_toggle_navigation_keys },
 					["gR"] = "actions.refresh",
-					["gr"] = { desc = "Rename", callback = oil_rename },
-					["gn"] = { desc = "Create new file", callback = oil_touch },
-					["gd"] = { desc = "Delete", callback = oil_delete },
 					["g\\"] = "actions.toggle_trash",
 					["g."] = "actions.toggle_hidden",
 					["`"] = "actions.tcd",
@@ -176,6 +174,17 @@ M.plugins = {
 				use_default_keymaps = false,
 				constrain_cursor = "name",
 			}
+		end,
+		config = function(_, opts)
+			-- properly name oil actions to they are more visible in which-key
+			local actions = require("oil.actions")
+			for _, action in pairs(actions) do
+				if type(action) == "table" and action.desc ~= nil then
+					action.desc = "Oil: " .. action.desc
+				end
+			end
+
+			require("oil").setup(opts)
 		end,
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		init = function()

@@ -51,9 +51,11 @@ return {
 			{ "<leader>bb", "<cmd>lua require('snacks').picker.buffers()<cr>", desc = "Show buffers" },
 
 			-- files
+			{ "<leader>fe", "<cmd>lua require('snacks').picker.explorer()<cr>", desc = "File explorer" },
 			{ "<leader>ff", find_files_cwd, desc = "Find files" },
 			{ "<leader>fr", "<cmd>lua require('snacks').picker.recent()<cr>", desc = "Recent files" },
 			{ "<leader>fs", search_cwd, desc = "Search files in current dir" },
+			{ "<leader>,", "<cmd>lua require('snacks').picker.smart()<cr>", desc = "Smart Picker" },
 
 			-- spelling suggestions
 			{ "<leader>ss", "<cmd>lua require('snacks').picker.spelling()<cr>", desc = "Spelling suggestions" },

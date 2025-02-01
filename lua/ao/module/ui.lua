@@ -388,7 +388,6 @@ M.plugins = {
 				options = {
 					component_separators = "|",
 					section_separators = { left = "", right = "" },
-					globalstatus = true, -- sets laststatus=3
 				},
 				sections = {
 					lualine_b = {
@@ -521,7 +520,23 @@ M.plugins = {
 			{ "<leader>wsl", "<cmd>lua require('persistence').load({ last = true })<cr>", desc = "Load last session" },
 			{ "<leader>wsd", "<cmd>lua require('persistence').stop()<cr>", desc = "Stop session manager" },
 		},
-		config = true,
+		config = function(_, opts)
+			-- stylua: ignore start
+			vim.opt.sessionoptions:append({
+				"buffers",      -- hidden and unloaded buffers
+				"folds",        -- manually created folds
+				"globals",      -- global variables that start with an uppercase letter and contain at least one lowercase letter
+				"help",         -- the help window
+				"localoptions", -- options and mappings local to a window or buffer
+				"options",      -- all options and mappings
+				"tabpages",     -- all tab pages
+				"terminal",     -- include terminal windows
+				"winpos",       -- position of the whole Vim window
+				"winsize",      -- window sizes
+			})
+			-- stylua: ignore end
+			require("persistence").setup(opts)
+		end,
 	},
 
 	-- key discoverability

@@ -14,6 +14,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		local buf = ev.buf
 		local ft = vim.bo[buf].filetype
 
+		if ft == "oil" then
+			return
+		end
+
 		keymap.add({
 			{ "<localleader>r", vim.lsp.buf.rename, desc = "Rename symbol", buffer = buf },
 			{ "<localleader>,", vim.lsp.buf.code_action, desc = "Code actions", buffer = buf, mode = { "n", "v" } },

@@ -6,7 +6,7 @@ local config = require("ao.config")
 
 ---@alias PluginModule LazySpec[]|PluginSpec
 
-local after_load_augroup = vim.api.nvim_create_augroup("AoVimAfterLoad", { clear = true })
+local after_load_augroup = vim.api.nvim_create_augroup("VimAfterLoad", { clear = true })
 local M = {}
 
 local uv = vim.uv or vim.loop

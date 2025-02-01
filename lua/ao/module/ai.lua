@@ -1,14 +1,18 @@
+local laststatus_augroup = vim.api.nvim_create_augroup("AvanteLastStatusChanger", { clear = true })
+
 --- Fix keyboard mappings.
 ---
 --- Sometimes when Avante crashes, it leaves the keys mapped so things like `A` won't append at the end of the line.
 --- Very annoying. It also leaves extra avante windows open, which are difficult to focus and close, so automatically
 --- close all of those as well.
 local function reset_avante()
+	local avante = require("avante")
+	local sidebar = avante.get()
 	pcall(vim.keymap.del, "n", "A")
 	pcall(vim.keymap.del, "n", "a")
 	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
 		local had_value, ft = pcall(vim.fn.getbufvar, buf, "&filetype")
-		if had_value and ft:find("^Avante") ~= nil then
+		if had_value and ft:find("^Avante") ~= nil or (sidebar and sidebar:in_code_win()) then
 			pcall(vim.api.nvim_buf_delete, buf, { force = true })
 		end
 	end
@@ -118,7 +122,7 @@ return {
 					insert = "<c-c><c-c>",
 				},
 				sidebar = {
-					apply_all = "a",
+					apply_all = "A",
 					apply_cursor = "a",
 					switch_windows = "<tab>",
 					reverse_switch_windows = "<s-tab>",
@@ -149,5 +153,27 @@ return {
 			},
 			"MeanderingProgrammer/render-markdown.nvim",
 		},
+		config = function(_, opts)
+			local avante = require("avante")
+			local laststatus = vim.o.laststatus
+
+			vim.api.nvim_create_autocmd("BufEnter", {
+				group = laststatus_augroup,
+				callback = function()
+					local ft = vim.bo.filetype
+					local sidebar = avante.get()
+
+					if ft:match("^Avante") or (sidebar ~= nil and sidebar:in_code_win()) then
+						vim.o.laststatus = 3
+					else
+						if vim.o.laststatus ~= laststatus then
+							vim.o.laststatus = laststatus
+						end
+					end
+				end,
+			})
+
+			avante.setup(opts)
+		end,
 	},
 }

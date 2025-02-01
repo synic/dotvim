@@ -106,7 +106,7 @@ M.setup_basic_keymap = function()
 		{ "<leader>tt", "<cmd>let &stal = !&stal<cr>", desc = "Toggle tab display" },
 		{ "<leader>tc", "<cmd>let &cuc = !&cuc<cr>", desc = "Toggle cursor column display" },
 		{ "<leader>ti", "<cmd>lua vim.opt.list = not vim.opt.list:get()<cr>", desc = "Toggle indent guide" },
-		{ "<leader>tw", "<cmd>lua vim.opt.list = not vim.opt.list:get()<cr>", desc = "Toggle indent guide" },
+		{ "<leader>tw", "<cmd>let &wrap = !&wrap<cr>", desc = "Toggle wrap" },
 		{
 			"<leader>ta",
 			function()

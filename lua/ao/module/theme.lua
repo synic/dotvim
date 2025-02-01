@@ -1,7 +1,7 @@
 ---@alias ColorSchemeCallback fun()
 ---@alias ColorSchemeEvent {match: string}
 ---
-local setup_colors_group = vim.api.nvim_create_augroup("AoSetupColors", { clear = true })
+local setup_colors_group = vim.api.nvim_create_augroup("SetupColors", { clear = true })
 
 ---@type PluginModule
 local M = {}
