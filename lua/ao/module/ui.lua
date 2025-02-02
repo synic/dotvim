@@ -522,18 +522,15 @@ M.plugins = {
 		},
 		config = function(_, opts)
 			-- stylua: ignore start
-			vim.opt.sessionoptions:append({
+			vim.opt.sessionoptions = {
 				"buffers",      -- hidden and unloaded buffers
 				"folds",        -- manually created folds
-				"globals",      -- global variables that start with an uppercase letter and contain at least one lowercase letter
 				"help",         -- the help window
-				"localoptions", -- options and mappings local to a window or buffer
-				"options",      -- all options and mappings
 				"tabpages",     -- all tab pages
-				"terminal",     -- include terminal windows
+				"terminal",     -- terminal windows
 				"winpos",       -- position of the whole Vim window
 				"winsize",      -- window sizes
-			})
+			}
 			-- stylua: ignore end
 			require("persistence").setup(opts)
 		end,
