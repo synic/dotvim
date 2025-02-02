@@ -9,7 +9,6 @@ local clear_winbar_group = vim.api.nvim_create_augroup("WinBarHlClearBg", { clea
 local M = {}
 
 ---@param full? boolean
----@return nil
 function M.buffer_show_path(full)
 	local pattern = "%p"
 
@@ -23,7 +22,6 @@ function M.buffer_show_path(full)
 	vim.print(path)
 end
 
----@return nil
 function M.buffer_show_full_path()
 	M.buffer_show_path(true)
 end
@@ -32,7 +30,6 @@ end
 -- for all windows in the current tab
 ---@param tabnr? integer
 ---@param exclude_current? boolean
----@return nil
 function M.zero_window_cursors(tabnr, exclude_current)
 	local current = vim.fn.winnr()
 
@@ -46,14 +43,12 @@ function M.zero_window_cursors(tabnr, exclude_current)
 end
 
 ---@param tabnr? integer
----@return nil
 function M.zero_all_window_cursors(tabnr)
 	M.zero_window_cursors(tabnr, true)
 end
 
 -- Execute a command across all tabs
 ---@param cmd string
----@return nil
 function M.tabdo(cmd)
 	local current_tab = vim.fn.tabpagenr()
 	vim.cmd("tabdo " .. cmd)
@@ -61,12 +56,10 @@ function M.tabdo(cmd)
 end
 
 -- Equalize windows in all tabs
----@return nil
 function M.equalize_all_tabs()
 	M.tabdo("wincmd =")
 end
 
----@return nil
 function M.quickfix_remove_item_move_next()
 	vim.cmd.copen()
 	local curqfidx = vim.fn.line(".")
@@ -89,7 +82,6 @@ function M.quickfix_remove_item_move_next()
 	vim.cmd("cc" .. new_idx)
 end
 
----@return nil
 function M.layout_set_name()
 	---@diagnostic disable-next-line: missing-fields
 	vim.ui.input({ prompt = "layout name: ", default = (vim.t.layout_name or "") }, function(name)
@@ -101,13 +93,17 @@ function M.layout_set_name()
 	end)
 end
 
----@return nil
 function M.goto_lazy_dir()
 	local path = vim.fn.resolve(vim.fn.stdpath("data") .. "/" .. "lazy")
-	vim.cmd.edit(path)
+	local ok, _ = pcall(require, "snacks")
+
+	if ok then
+		require("ao.module.picker").dir_picker(path, "Plugins")
+	else
+		vim.cmd.edit(path)
+	end
 end
 
----@return nil
 function M.goto_dotfiles_dir()
 	vim.cmd.edit(vim.fn.expand("~/.dotfiles"))
 end
@@ -129,7 +125,6 @@ local function lualine_trunc(trunc_width, trunc_len, hide_width, no_ellipsis)
 	end
 end
 
----@return nil
 local function golden_ratio_toggle()
 	vim.cmd.GoldenRatioToggle()
 	if vim.g.golden_ratio_enabled == 0 then
@@ -290,10 +285,8 @@ M.plugins = {
 		end,
 		config = function(_, opts)
 			---Set WinBar & WinBarNC background to Normal background
-			---@return nil
 			local function clear_winbar_bg()
 				---@param name string
-				---@return nil
 				local function _clear_bg(name)
 					local hl = vim.api.nvim_get_hl(0, { name = name, link = false })
 					if hl.bg or hl.ctermbg then

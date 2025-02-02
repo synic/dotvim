@@ -17,6 +17,7 @@ M.categories = {
 	{ "<leader>b", group = "buffers" },
 	{ "<leader>c", group = "configuration" },
 	{ "<leader>cp", group = "plugins" },
+	{ "<leader>cP", group = "lazy" },
 	{ "<leader>d", group = "debug" },
 	{ "<leader>dt", group = "testing" },
 	{ "<leader>e", group = "diagnostis" },

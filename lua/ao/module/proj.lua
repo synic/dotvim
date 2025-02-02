@@ -34,7 +34,6 @@ local frecency_file = vim.fn.stdpath("data") .. "/project_frecency.json"
 local pick_project
 local find_project_files
 
----@return nil
 local function load_frecency()
 	local file = io.open(frecency_file, "r")
 	if file then
@@ -49,7 +48,6 @@ local function load_frecency()
 	end
 end
 
----@return nil
 local function save_frecency()
 	vim.schedule(function()
 		local file = io.open(frecency_file, "w")
@@ -63,7 +61,6 @@ local function save_frecency()
 end
 
 ---@param dir string
----@return nil
 local function update_frecency(dir)
 	frecency_data[dir] = frecency_data[dir] or { count = 0, last_opened = 0 }
 	frecency_data[dir].count = frecency_data[dir].count + 1
@@ -159,106 +156,10 @@ end
 ---@param cb fun(path: string): nil
 ---@return nil
 local function dirpicker_pick_project(cb)
-	local snacks = require("snacks")
-	local layouts = require("snacks.picker.config.layouts")
-
 	local cwd = config.options.projects.directory.path or "."
 	local projects = M.list({ cwd = cwd })
 
-	local width = 0
-	local height = math.min(#projects + 5, 25)
-
-	local max_name_length = 0
-	for _, entry in ipairs(projects) do
-		entry.text = entry.name .. entry.path
-		max_name_length = math.max(max_name_length, #entry.name)
-		local total_length = #entry.text + 22
-		if total_length > width then
-			width = total_length
-		end
-	end
-
-	width = math.min(width, 150)
-	local padding = max_name_length + 15
-
-	snacks.picker.pick({
-		items = projects,
-		format = function(item, _)
-			local icon, hl = snacks.util.icon(item.path, "directory")
-			local padded_icon = icon .. " "
-
-			local ret = {}
-			ret[#ret + 1] = { padded_icon, hl, virtual = true }
-			ret[#ret + 1] = { item.name, "SnacksFileLabel" }
-			ret[#ret + 1] = { string.rep(" ", padding - #item.name), virtual = true }
-			ret[#ret + 1] = { item.path, "SnacksPickerComment" }
-			return ret
-		end,
-		layout = vim.tbl_deep_extend("force", layouts.telescope, {
-			layout = {
-				width = width,
-				height = height,
-				min_width = width,
-				min_height = height,
-				{
-					box = "vertical",
-					{ win = "list", title = " Projects ", title_pos = "center", border = "rounded" },
-					{ win = "input", height = 1, border = "rounded", title = "{source} {live}", title_pos = "center" },
-				},
-			},
-			preview = false,
-		}),
-		confirm = function(picker, entry)
-			picker:close()
-			if entry then
-				cb(entry.path)
-			end
-		end,
-		actions = {
-			open_in_vsplit = function(picker, entry)
-				picker:close()
-				vim.cmd.vsplit(entry.path)
-				M.open(entry.path)
-			end,
-			open_in_split = function(picker, entry)
-				picker:close()
-				vim.cmd.split(entry.path)
-				M.open(entry.path)
-			end,
-			browse = function(picker, entry)
-				picker:close()
-				vim.cmd("edit! " .. entry.path)
-				M.set(entry.path)
-			end,
-			browse_in_vsplit = function(picker, entry)
-				picker:close()
-				vim.cmd("vsplit! " .. entry.path)
-				M.set(entry.path)
-			end,
-			browse_in_split = function(picker, entry)
-				picker:close()
-				vim.cmd("split! " .. entry.path)
-				M.set(entry.path)
-			end,
-			set_layout = function(picker, entry)
-				picker:close()
-				M.set(entry.value)
-				vim.notify("Project: set current layout project to " .. entry.name)
-			end,
-		},
-		win = {
-			input = {
-				keys = {
-					["//"] = { "open_in_vsplit", desc = "Open in vertical split", mode = { "i" } },
-					["--"] = { "open_in_split", desc = "Open in horiontal split", mode = { "i" } },
-					["<c-e>"] = { "browse", desc = "Open in file browser", mode = { "i" } },
-					["<c-v>"] = { "browse_in_vsplit", desc = "File browser in split", mode = { "i" } },
-					["<c-s>"] = { "browse_in_split", desc = "File browser in split", mode = { "i" } },
-					["<c-p>"] = { "set_layout", desc = "Set layout project", mode = { "i" } },
-				},
-			},
-		},
-	})
+	require("ao.module.picker").dir_picker(projects, "Projects", cb)
 end
 
 function pick_project()
@@ -296,8 +197,9 @@ local function search_project()
 	require("snacks").picker.grep({ cwd = (M.find_buffer_root() or ".") })
 end
 
-function find_project_files()
+function find_project_files(picker)
 	local snacks = require("snacks")
+	picker = picker or "files"
 
 	local root = M.find_buffer_root()
 	if root and root ~= "" then
@@ -305,11 +207,15 @@ function find_project_files()
 			M.set(root)
 		end
 		---@diagnostic disable-next-line: missing-fields
-		snacks.picker.files({ cwd = root })
+		snacks.picker[picker]({ cwd = root })
 	else
 		vim.notify("Project: no project selected", vim.log.levels.INFO)
 		pick_project()
 	end
+end
+
+local function find_project_files_smart()
+	find_project_files("smart")
 end
 
 ---@param opts { cwd: string }
@@ -432,7 +338,7 @@ keymap.add({
 	{ "<leader>*", search_project_cursor_term, desc = "Search project for term", mode = { "n", "v" } },
 	{ "<leader>sp", search_project, desc = "Search project for text" },
 	{ "<leader>p/", search_project, desc = "Search project for text" },
-	{ "<leader>pf", find_project_files, desc = "Find project file" },
+	{ "<leader>pf", find_project_files_smart, desc = "Find project file" },
 	{ "<leader>pg", git_files, desc = "Find git files" },
 	{ "<leader>pp", pick_project, desc = "Pick project" },
 	{ "<leader>pP", switch_project, desc = "Switch project" },
