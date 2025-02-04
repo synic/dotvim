@@ -13,7 +13,7 @@ local function find_files_cwd()
 end
 
 local function pick_window()
-	local win_id = require("snacks").picker.util.pick_win()
+	local win_id = require("snacks").picker.util.pick_win({ main = vim.api.nvim_get_current_win() })
 
 	if win_id ~= nil then
 		vim.api.nvim_set_current_win(win_id)
@@ -21,7 +21,7 @@ local function pick_window()
 end
 
 local function pick_window_close()
-	local win_id = require("snacks").picker.util.pick_win()
+	local win_id = require("snacks").picker.util.pick_win({ main = vim.api.nvim_get_current_win() })
 
 	if win_id ~= nil then
 		vim.api.nvim_win_close(win_id, false)
@@ -88,11 +88,12 @@ M.dir_picker = function(dir, prompt, cb)
 		items = entries,
 		format = function(item, _)
 			local icon, hl = snacks.util.icon(item.path, "directory")
-			local padded_icon = icon .. " "
 
+			local padded_icon = icon:sub(-1) == " " and icon or icon .. " "
 			local ret = {}
 			ret[#ret + 1] = { padded_icon, hl, virtual = true }
-			ret[#ret + 1] = { item.name, "SnacksPickerFile" }
+			ret[#ret + 1] = { ":", "SnacksPickerDelim" }
+			ret[#ret + 1] = { item.name, "SnacksPickerDirectory" }
 			ret[#ret + 1] = { string.rep(" ", padding - #item.name), virtual = true }
 			ret[#ret + 1] = { item.path, "SnacksPickerComment" }
 			return ret
@@ -181,7 +182,7 @@ M.plugins = {
 			{ "<leader>sd", search_cwd, desc = "Search in buffer's directory" },
 			{ "<leader>sR", "<cmd>lua require('snacks').picker.registers()<cr>", desc = "Registers" },
 			{ "<leader>sl", "<cmd>lua require('snacks').picker.marks()<cr>", desc = "Marks" },
-			{ "<leader>sB", "<cmd>lua require('snacks').picker.pickers()<cr>", desc = "List pickers" },
+			{ "<leader>sP", "<cmd>lua require('snacks').picker.pickers()<cr>", desc = "List pickers" },
 			{ "<leader>sb", "<cmd>lua require('snacks').picker.lines()<cr>", desc = "Search buffer" },
 			{ "<leader>.", "<cmd>lua require('snacks').picker.resume()<cr>", desc = "Resume last search" },
 
@@ -208,6 +209,7 @@ M.plugins = {
 			-- misc
 			{ "<leader>sq", "<cmd>lua require('snacks').picker.qflist()<cr>", desc = "Search quickfix" },
 			{ "<leader>su", pick_undo, desc = "Undo tree" },
+			{ "<leader>sh", "<cmd>lua require('snacks').picker.highlights()<cr>", desc = "Undo tree" },
 		},
 		opts = function(_, opts)
 			local snacks = require("snacks")

@@ -44,6 +44,8 @@ function M.git_get_current_branch()
 	return nil
 end
 
+local function create_gist_from_selection() end
+
 local function gitsigns_on_attach(bufnr)
 	local gs = package.loaded.gitsigns
 

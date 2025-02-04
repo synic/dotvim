@@ -321,11 +321,10 @@ M.plugins = {
 		config = function()
 			local theme = {
 				fill = "TabLineFill",
-				head = "TabLine",
+				head = "TabLineSel",
 				current_tab = "TabLineSel",
 				tab = "TabLine",
-				win = "TabLine",
-				tail = "TabLine",
+				tail = "TabLineSel",
 			}
 
 			require("tabby.tabline").set(function(line)

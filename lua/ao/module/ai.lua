@@ -157,18 +157,17 @@ return {
 			local avante = require("avante")
 			local laststatus = vim.o.laststatus
 
-			vim.api.nvim_create_autocmd("BufEnter", {
+			vim.api.nvim_create_autocmd("WinEnter", {
 				group = laststatus_augroup,
 				callback = function()
-					local ft = vim.bo.filetype
 					local sidebar = avante.get()
 
-					if ft:match("^Avante") or (sidebar ~= nil and sidebar:in_code_win()) then
+					-- I like laststatus=2, but avante looks like crap with that, so set laststatus=3 when it is open, and set
+					-- it back when it's not
+					if sidebar ~= nil and sidebar:is_open() then
 						vim.o.laststatus = 3
 					else
-						if vim.o.laststatus ~= laststatus then
-							vim.o.laststatus = laststatus
-						end
+						vim.o.laststatus = laststatus
 					end
 				end,
 			})

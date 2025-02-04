@@ -9,6 +9,8 @@ return {
 					"javascript",
 					"typescript",
 					"react",
+					"elixir",
+					"heex",
 					"css",
 					"html",
 					"htmldjango",

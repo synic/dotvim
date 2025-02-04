@@ -33,6 +33,7 @@ for _, lang in ipairs(to_import) do
 					if type(server) == "number" then
 						table.insert(servers, handler)
 					else
+						table.insert(servers, server)
 						handlers[server] = handler
 					end
 				end
