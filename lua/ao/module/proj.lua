@@ -105,31 +105,11 @@ local function setup_autochdir()
 	})
 end
 
----@return nil
 local function goto_project_directory()
 	local dir = config.options.projects.directory or "."
 	vim.cmd.edit(dir)
 end
 
----@return nil
-local function setup_project_hotkeys()
-	local keys = {}
-	for key, dir in pairs(config.options.projects.bookmarks) do
-		local name = vim.fn.fnamemodify(dir, ":t")
-		keys[#keys + 1] = {
-			"<leader>p" .. key,
-			function()
-				vim.cmd.tabnew()
-				M.open(dir)
-			end,
-			desc = "Open project " .. name,
-		}
-	end
-
-	keymap.add(keys)
-end
-
----@return nil
 local function search_project_cursor_term()
 	local picker = require("snacks").picker
 	local current_word = vim.fn.expand("<cword>")
@@ -139,7 +119,6 @@ local function search_project_cursor_term()
 	picker.grep({ cwd = (root or "."), search = current_word })
 end
 
----@return nil
 local function git_files()
 	local picker = require("snacks").picker
 
@@ -153,8 +132,7 @@ local function git_files()
 	end
 end
 
----@param cb fun(path: string): nil
----@return nil
+---@param cb? fun(path: string, name: string|nil): nil|nil
 local function dirpicker_pick_project(cb)
 	local cwd = config.options.projects.directory.path or "."
 	local projects = M.list({ cwd = cwd })
@@ -163,7 +141,7 @@ local function dirpicker_pick_project(cb)
 end
 
 function pick_project()
-	dirpicker_pick_project(M.open)
+	dirpicker_pick_project()
 end
 
 local function switch_project()
@@ -175,9 +153,9 @@ local function switch_project()
 end
 
 local function new_tab_with_project()
-	dirpicker_pick_project(function(dir)
+	dirpicker_pick_project(function(dir, name)
 		vim.cmd.tabnew()
-		M.open(dir)
+		M.open(dir, name)
 	end)
 end
 
@@ -309,22 +287,21 @@ function M.get_name(tabnr)
 end
 
 ---@param dir string
----@return nil
-function M.set(dir)
+function M.set(dir, name)
 	print("Project: opening", dir)
 	---@diagnostic disable-next-line: inject-field
 	vim.t.project_dir = dir
 	---@diagnostic disable-next-line: inject-field
-	vim.t.layout_name = vim.fn.fnamemodify(dir, ":t")
+	vim.t.layout_name = name or vim.fn.fnamemodify(dir, ":t")
 	vim.cmd.redrawtabline()
 	vim.cmd.tcd(dir)
 end
 
 ---@param dir string
----@return nil
-function M.open(dir)
+---@param name string|nil
+function M.open(dir, name)
 	if not vim.t.project_dir then
-		M.set(dir)
+		M.set(dir, name)
 	end
 
 	update_frecency(dir)
@@ -350,6 +327,5 @@ M.plugins = {}
 
 load_frecency()
 setup_autochdir()
-setup_project_hotkeys()
 
 return M

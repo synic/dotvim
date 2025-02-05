@@ -52,7 +52,9 @@ return {
 							icon = " ",
 							key = "s",
 							desc = "Restore Session",
-							action = ":lua require('persistence').load({ last=true })",
+							action = function()
+								require("ao.module.session").restore_session()
+							end,
 						},
 						{
 							icon = "󰒲 ",

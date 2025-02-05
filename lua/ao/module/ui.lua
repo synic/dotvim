@@ -502,32 +502,6 @@ M.plugins = {
 	-- automatically close inactive buffers
 	{ "chrisgrieser/nvim-early-retirement", config = true, event = { "BufAdd" } },
 
-	-- sessions
-	{
-		"folke/persistence.nvim",
-		event = "BufReadPre",
-		keys = {
-			{ "<leader>wsr", "<cmd>lua require('persistence').load()<cr>", desc = "Session restore" },
-			{ "<leader>ws/", "<cmd>lua require('persistence').select()<cr>", desc = "Session select" },
-			{ "<leader>wsl", "<cmd>lua require('persistence').load({ last = true })<cr>", desc = "Load last session" },
-			{ "<leader>wsd", "<cmd>lua require('persistence').stop()<cr>", desc = "Stop session manager" },
-		},
-		config = function(_, opts)
-			-- stylua: ignore start
-			vim.opt.sessionoptions = {
-				"buffers",      -- hidden and unloaded buffers
-				"folds",        -- manually created folds
-				"help",         -- the help window
-				"tabpages",     -- all tab pages
-				"terminal",     -- terminal windows
-				"winpos",       -- position of the whole Vim window
-				"winsize",      -- window sizes
-			}
-			-- stylua: ignore end
-			require("persistence").setup(opts)
-		end,
-	},
-
 	-- key discoverability
 	{
 		"folke/which-key.nvim",

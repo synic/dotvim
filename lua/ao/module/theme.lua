@@ -119,36 +119,25 @@ M.plugins = {
 				vim.api.nvim_set_hl(0, "Delimiter", { fg = "#9c9aa2" })
 				vim.api.nvim_set_hl(0, "FloatBorder", { link = "Comment" })
 				vim.api.nvim_set_hl(0, "WinSeparator", { link = "Comment" })
-				vim.api.nvim_set_hl(0, "TabLineSel", {
-					fg = "#383E4D",
-					bold = true,
-					bg = "#A3BE8C",
-					underline = false,
-				})
-				vim.api.nvim_set_hl(0, "TabLine", {
-					fg = "#BBC3D4",
-					bold = true,
-					bg = "#2E3440",
-					underline = false,
-				})
-				vim.api.nvim_set_hl(0, "TabLineFill", {
-					fg = "#383E4D",
-					bold = true,
-					bg = "#191D24",
-					underline = false,
-				})
-				vim.api.nvim_set_hl(0, "SnacksPickerPickWin", {
-					fg = "#383E4D",
-					bold = true,
-					bg = "#EFD49F",
-					underline = false,
-				})
-				vim.api.nvim_set_hl(0, "SnacksPickerPickWinCurrent", {
-					fg = "#383E4D",
-					bold = true,
-					bg = "#A3BE8C",
-					underline = false,
-				})
+				vim.api.nvim_set_hl(0, "TabLineSel", { fg = "#383E4D", bold = true, bg = "#A3BE8C", underline = false })
+				vim.api.nvim_set_hl(
+					0,
+					"TabLineFill",
+					{ fg = "#242933", bold = true, bg = "#242933", underline = false }
+				)
+				vim.api.nvim_set_hl(0, "TabLine", { bg = "#383E4D", bold = true, fg = "#BBC3D4", underline = false })
+				vim.api.nvim_set_hl(
+					0,
+					"SnacksPickerPickWin",
+					{ fg = "#383E4D", bold = true, bg = "#EFD49F", underline = false }
+				)
+				vim.api.nvim_set_hl(
+					0,
+					"SnacksPickerPickWinCurrent",
+					{ fg = "#383E4D", bold = true, bg = "#A3BE8C", underline = false }
+				)
+
+				vim.api.nvim_set_hl(0, "Comment", { cterm = { italic = true }, fg = "#616E88", italic = true })
 			end)
 		end,
 	},

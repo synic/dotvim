@@ -119,9 +119,9 @@ M.dir_picker = function(dir, prompt, cb)
 			picker:close()
 			if entry then
 				if cb then
-					cb(entry.path)
+					cb(entry.path, entry.name)
 				else
-					proj.open(entry.path)
+					proj.open(entry.path, entry.name)
 				end
 			end
 		end,
