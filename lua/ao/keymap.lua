@@ -11,8 +11,6 @@ local M = {}
 ---@type WhichKey.Spec
 ---@diagnostic disable-next-line: missing-fields
 M.categories = {
-	{ "<leader>-", group = "split" },
-	{ "<leader>/", group = "vsplit" },
 	{ "<leader>a", group = "ai" },
 	{ "<leader>b", group = "buffers" },
 	{ "<leader>c", group = "configuration" },
@@ -52,8 +50,6 @@ M.setup_basic_keymap = function()
 		{ "<leader>wl", "<cmd>wincmd l<cr>", desc = "Go right" },
 		{ "<leader>w/", "<cmd>vs<cr>", desc = "Split vertically" },
 		{ "<leader>w-", "<cmd>sp<cr>", desc = "Split horizontally" },
-		{ "<leader>/w", "<cmd>vs<cr>", desc = "Split window vertically" },
-		{ "<leader>-w", "<cmd>sp<cr>", desc = "Split window horizontally" },
 		{ "<leader>wc", "<cmd>close<cr>", desc = "Close window" },
 		{ "<leader>wd", "<cmd>q<cr>", desc = "Quit window" },
 		{ "<leader>w=", "<C-w>=", desc = "Equalize windows" },

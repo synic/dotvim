@@ -120,10 +120,8 @@ M.plugins = {
 		keys = {
 			{ "-", M.browse_directory("current"), desc = "Browse current directory" },
 			{ "_", M.browse_directory("project"), desc = "Browse current project" },
-			{ "<leader>/-", M.browse_directory("current", "vsplit"), desc = "Browse current directory in vsplit" },
-			{ "<leader>/_", M.browse_directory("project", "vsplit"), desc = "Browse current project in vsplit" },
-			{ "<leader>--", M.browse_directory("current", "split"), desc = "Browse current directory in split" },
-			{ "<leader>-_", M.browse_directory("project", "split"), desc = "Browse current project in split" },
+			{ "<leader>wb", M.browse_directory("current", "vsplit"), desc = "Browse current directory in vsplit" },
+			{ "<leader>wB", M.browse_directory("project", "vsplit"), desc = "Browse current project in vsplit" },
 		},
 		-- if you lazy load oil, things will be weird if you open a directory from the command line, even if you use the
 		-- `VeryLazy` event, so do not lazy load.

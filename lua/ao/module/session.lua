@@ -6,6 +6,7 @@ local extra_session_file = session_dir .. "/main_sessionx.vim"
 vim.api.nvim_create_autocmd("VimLeavePre", {
 	group = vim.api.nvim_create_augroup("SessionSave", { clear = true }),
 	callback = function()
+		require("ao.module.ai").reset_avante()
 		if vim.fn.isdirectory(session_dir) == 0 then
 			vim.fn.mkdir(session_dir, "p")
 		end

@@ -1,3 +1,4 @@
+local M = {}
 local laststatus_augroup = vim.api.nvim_create_augroup("AvanteLastStatusChanger", { clear = true })
 
 --- Fix keyboard mappings.
@@ -5,7 +6,7 @@ local laststatus_augroup = vim.api.nvim_create_augroup("AvanteLastStatusChanger"
 --- Sometimes when Avante crashes, it leaves the keys mapped so things like `A` won't append at the end of the line.
 --- Very annoying. It also leaves extra avante windows open, which are difficult to focus and close, so automatically
 --- close all of those as well.
-local function reset_avante()
+M.reset_avante = function()
 	local avante = require("avante")
 	local sidebar = avante.get()
 	pcall(vim.keymap.del, "n", "A")
@@ -19,7 +20,7 @@ local function reset_avante()
 end
 
 ---@type PluginModule
-return {
+M.plugins = {
 	{
 		"yetone/avante.nvim",
 		keys = {
@@ -89,7 +90,7 @@ return {
 			},
 			{
 				"<leader>ax",
-				reset_avante,
+				M.reset_avante,
 				desc = "avante: reset",
 			},
 		},
@@ -176,3 +177,5 @@ return {
 		end,
 	},
 }
+
+return M

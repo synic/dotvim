@@ -443,8 +443,8 @@ M.plugins = {
 
 			local notifier_ignore_messages = {
 				"No information available",
-				"[oil] could not find adapter for buffer '://'",
-				"Could not find oil adapter for scheme '://'",
+				"%[oil%] could not find adapter for buffer",
+				"Could not find oil adapter for scheme",
 			}
 			---@type snacks.Config
 			return vim.tbl_deep_extend("force", {
@@ -467,8 +467,10 @@ M.plugins = {
 					width = { min = notification_width, max = notification_width },
 					margin = { top = 0, right = 1, bottom = 1 },
 					filter = function(notif)
-						if tbl.contains(notifier_ignore_messages, notif.msg) then
-							return false
+						for _, m in ipairs(notifier_ignore_messages) do
+							if notif.msg:match("^" .. m) then
+								return false
+							end
 						end
 
 						return true
@@ -508,7 +510,7 @@ M.plugins = {
 		event = "VeryLazy",
 		init = function()
 			vim.o.timeout = true
-			vim.o.timeoutlen = 700
+			vim.o.timeoutlen = 500
 		end,
 		---@type wk["Opts"]
 		---@diagnostic disable-next-line: missing-fields
