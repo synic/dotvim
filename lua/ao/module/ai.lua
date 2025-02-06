@@ -7,13 +7,12 @@ local laststatus_augroup = vim.api.nvim_create_augroup("AvanteLastStatusChanger"
 --- Very annoying. It also leaves extra avante windows open, which are difficult to focus and close, so automatically
 --- close all of those as well.
 M.reset_avante = function()
-	local avante = require("avante")
-	local sidebar = avante.get()
 	pcall(vim.keymap.del, "n", "A")
 	pcall(vim.keymap.del, "n", "a")
-	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+	for _, win in ipairs(vim.api.nvim_list_wins()) do
+		local buf = vim.api.nvim_win_get_buf(win)
 		local had_value, ft = pcall(vim.fn.getbufvar, buf, "&filetype")
-		if had_value and ft:find("^Avante") ~= nil or (sidebar and sidebar:in_code_win()) then
+		if had_value and ft:find("^Avante") ~= nil then
 			pcall(vim.api.nvim_buf_delete, buf, { force = true })
 		end
 	end

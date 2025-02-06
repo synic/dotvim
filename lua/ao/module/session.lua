@@ -18,7 +18,8 @@ vim.api.nvim_create_autocmd("VimLeavePre", {
 
 		for _, nr in ipairs(tabpages) do
 			vim.api.nvim_set_current_tabpage(nr)
-			table.insert(lines, "tabnext " .. nr)
+			local tab_number = vim.api.nvim_tabpage_get_number(nr)
+			table.insert(lines, "tabnext " .. tab_number)
 
 			local has_tcd = vim.fn.haslocaldir(-1, vim.api.nvim_tabpage_get_number(nr))
 			if has_tcd == 1 then
