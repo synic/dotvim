@@ -80,8 +80,8 @@ end
 ---@return nil
 function M.setup(opts, startup_callback_fn)
 	config.options = vim.tbl_deep_extend("force", config.options, opts)
-	if config.options.appearance.guifont then
-		vim.o.guifont = config.options.appearance.guifont
+	if config.options.appearance.font then
+		vim.o.guifont = config.options.appearance.font
 	end
 
 	local lazy, installed = M.install_plugin_manager()

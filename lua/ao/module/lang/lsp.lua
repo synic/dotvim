@@ -111,9 +111,11 @@ M.get_plugins = function(langs, servers, handlers, nonels)
 
 				vim.diagnostic.config(opts.diagnostic)
 
-				vim.lsp.handlers[methods.textDocument_hover] = M.enhanced_float_handler(vim.lsp.handlers.hover)
-				vim.lsp.handlers[methods.textDocument_signatureHelp] =
-					M.enhanced_float_handler(vim.lsp.handlers.signature_help)
+				if vim.fn.has("nvim-0.11") ~= 1 then
+					vim.lsp.handlers[methods.textDocument_hover] = M.enhanced_float_handler(vim.lsp.handlers.hover)
+					vim.lsp.handlers[methods.textDocument_signatureHelp] =
+						M.enhanced_float_handler(vim.lsp.handlers.signature_help)
+				end
 
 				local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 				for type, icon in pairs(signs) do

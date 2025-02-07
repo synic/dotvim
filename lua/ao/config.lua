@@ -6,8 +6,8 @@
 ---@field cmd? string
 
 ---@class AppearanceConfig
----@field guifont string
----@field theme string
+---@field font string|nil
+---@field theme string|nil
 
 ---@class LazyConfig
 ---@field install { install_missing: boolean }
@@ -21,6 +21,12 @@ vim.opt.listchars:append("eol:↴")
 vim.opt.listchars:append("tab| ")
 vim.o.winblend = 10
 vim.o.undofile = true
+
+if vim.fn.has("nvim-0.11") then
+	vim.o.numberwidth = 3
+	vim.o.signcolumn = "yes:1"
+	vim.o.statuscolumn = "%s%l "
+end
 
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "qf",
@@ -54,7 +60,7 @@ return {
 		},
 
 		appearance = {
-			guifont = "Hack Nerd Font Mono:h12",
+			font = nil, -- "Hack Nerd Font:h12",
 			theme = "gruvbox-material",
 		},
 

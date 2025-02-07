@@ -96,39 +96,17 @@ M.plugins = {
 		name = "rose-pine",
 		lazy = true,
 		opts = {
+			variant = "moon",
 			styles = {
 				transparency = false,
-			},
-			highlight_groups = {
-				TelescopeBackground = { bg = "none" },
-				TelescopeBorder = { fg = "highlight_high", bg = "none" },
-				TelescopeNormal = { bg = "none" },
-				TelescopePromptNormal = { bg = "none" },
-				TelescopeResultsNormal = { fg = "subtle", bg = "none" },
-				TelescopeSelection = { fg = "text", bg = "none" },
-				TelescopeSelectionCaret = { fg = "rose", bg = "rose" },
-				CurSearch = { fg = "base", bg = "rose", inherit = false },
-				Search = { bg = "rose", blend = 20, inherit = false },
+				italic = true,
 			},
 		},
 		config = function(_, opts)
 			local r = require("rose-pine")
 			r.setup(opts)
-			if vim.g.neovide then
-				vim.o.winblend = 30
-			end
 
 			on_colorscheme_load("^rose%-pine", function()
-				-- local highlights = vim.fn.getcompletion("", "highlight")
-				-- for _, highlight in ipairs(highlights) do
-				-- 	local current = vim.api.nvim_get_hl(0, { name = highlight })
-				-- 	if current.blend then
-				-- 		current.blend = 0
-				-- 		---@diagnostic disable-next-line: param-type-mismatch
-				-- 		vim.api.nvim_set_hl(0, highlight, current)
-				-- 	end
-				-- end
-
 				vim.api.nvim_set_hl(0, "TabLineSel", { bg = "#EBBCBA", bold = true, fg = "#191724", underline = false })
 			end)
 		end,
@@ -179,6 +157,8 @@ M.plugins = {
 					{ fg = "#383E4D", bold = true, bg = "#A3BE8C", underline = false }
 				)
 
+				---@diagnostic disable-next-line: param-type-mismatch
+				---@diagnostic disable-next-line: assign-type-mismatch
 				vim.api.nvim_set_hl(0, "Comment", { cterm = { italic = true }, fg = "#616E88", italic = true })
 			end)
 		end,

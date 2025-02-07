@@ -194,7 +194,7 @@ M.plugins = {
 			{ "<leader>ff", find_files_cwd, desc = "Find files" },
 			{ "<leader>fr", "<cmd>lua require('snacks').picker.recent()<cr>", desc = "Recent files" },
 			{ "<leader>fs", search_cwd, desc = "Search files in current dir" },
-			{ "<leader>,", "<cmd>lua require('snacks').picker.smart()<cr>", desc = "Smart Picker" },
+			{ "<leader>,", "<cmd>lua require('snacks').picker.files()<cr>", desc = "Smart Picker" },
 
 			-- spelling suggestions
 			{ "<leader>ss", "<cmd>lua require('snacks').picker.spelling()<cr>", desc = "Spelling suggestions" },

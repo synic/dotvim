@@ -192,10 +192,6 @@ function find_project_files(picker)
 	end
 end
 
-local function find_project_files_smart()
-	find_project_files("smart")
-end
-
 ---@param opts { cwd: string }
 ---@return Project[]
 function M.list(opts)
@@ -315,7 +311,7 @@ keymap.add({
 	{ "<leader>*", search_project_cursor_term, desc = "Search project for term", mode = { "n", "v" } },
 	{ "<leader>sp", search_project, desc = "Search project for text" },
 	{ "<leader>p/", search_project, desc = "Search project for text" },
-	{ "<leader>pf", find_project_files_smart, desc = "Find project file" },
+	{ "<leader>pf", find_project_files, desc = "Find project file" },
 	{ "<leader>pg", git_files, desc = "Find git files" },
 	{ "<leader>pp", pick_project, desc = "Pick project" },
 	{ "<leader>pP", switch_project, desc = "Switch project" },

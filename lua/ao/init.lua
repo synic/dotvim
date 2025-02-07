@@ -9,7 +9,6 @@ local config = {
 		root_names = { ".git", ".svn", ".project_root", "mix.exs" },
 	},
 	appearance = {
-		guifont = "Hack Nerd Font Mono:h12",
 		theme = "tokyonight",
 	},
 }
