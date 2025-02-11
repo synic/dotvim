@@ -1,15 +1,15 @@
-local fs = require("ao.fs")
 local theme = require("ao.module.theme")
+local proj = require("ao.module.proj")
 local M = {}
 
 local function search_cwd()
 	---@diagnostic disable-next-line: missing-fields
-	require("snacks").picker.grep({ cwd = fs.get_buffer_cwd() })
+	require("snacks").picker.grep({ cwd = proj.get_buffer_cwd() })
 end
 
 local function find_files_cwd()
 	---@diagnostic disable-next-line: missing-fields
-	require("snacks").picker.files({ cwd = fs.get_buffer_cwd() })
+	require("snacks").picker.files({ cwd = proj.get_buffer_cwd() })
 end
 
 local function pick_window()
@@ -49,7 +49,6 @@ local function pick_undo()
 end
 
 M.dir_picker = function(dir, prompt, cb)
-	local proj = require("ao.module.proj")
 	local snacks = require("snacks")
 	local layouts = require("snacks.picker.config.layouts")
 	local entries = {}
@@ -57,7 +56,7 @@ M.dir_picker = function(dir, prompt, cb)
 	if type(dir) == "table" then
 		entries = dir
 	else
-		local dirs = vim.fn.globpath(dir, "*", false, 1)
+		local dirs = vim.fn.globpath(dir, "*", false, true)
 		entries = {}
 		for _, d in ipairs(dirs) do
 			local name = string.match(d, "([^/\\]+)$")
@@ -194,7 +193,7 @@ M.plugins = {
 			{ "<leader>ff", find_files_cwd, desc = "Find files" },
 			{ "<leader>fr", "<cmd>lua require('snacks').picker.recent()<cr>", desc = "Recent files" },
 			{ "<leader>fs", search_cwd, desc = "Search files in current dir" },
-			{ "<leader>,", "<cmd>lua require('snacks').picker.files()<cr>", desc = "Smart Picker" },
+			{ "<leader>,", "<cmd>lua require('snacks').picker.smart()<cr>", desc = "Smart Picker" },
 
 			-- spelling suggestions
 			{ "<leader>ss", "<cmd>lua require('snacks').picker.spelling()<cr>", desc = "Spelling suggestions" },

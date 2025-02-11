@@ -1,5 +1,4 @@
 local keymap = require("ao.keymap")
-local tbl = require("ao.tbl")
 
 local lsp_formatting_group = vim.api.nvim_create_augroup("LspFormatting", {})
 local md_namespace = vim.api.nvim_create_namespace("synic/lsp_float")
@@ -73,7 +72,7 @@ M.get_plugins = function(langs, servers, handlers, nonels)
 		{
 			"williamboman/mason-lspconfig.nvim",
 			ft = langs,
-			cmd = "Mason",
+			event = "VeryLazy",
 			opts = {
 				ensure_installed = servers,
 				automatic_installation = true,
@@ -90,7 +89,6 @@ M.get_plugins = function(langs, servers, handlers, nonels)
 				"hrsh7th/nvim-cmp",
 			},
 			ft = langs,
-			cmd = "Mason",
 			opts = {
 				diagnostic = {
 					underline = true,
@@ -160,10 +158,15 @@ M.get_plugins = function(langs, servers, handlers, nonels)
 				end
 
 				return {
-					sources = tbl.concat({
-						require("none-ls.formatting.trim_whitespace"),
-						null_ls.builtins.diagnostics.trail_space,
-					}, sources),
+					sources = vim.iter({
+						{
+							require("none-ls.formatting.trim_whitespace"),
+							null_ls.builtins.diagnostics.trail_space,
+						},
+						sources,
+					})
+						:flatten()
+						:totable(),
 
 					on_attach = function(client, bufnr)
 						local ft = vim.bo[bufnr].filetype
@@ -177,7 +180,7 @@ M.get_plugins = function(langs, servers, handlers, nonels)
 										bufnr = bufnr,
 										timeout = 4000,
 										filter = function(c)
-											if tbl.contains(only_nonels_formatting_filetypes, ft) then
+											if vim.tbl_contains(only_nonels_formatting_filetypes, ft) then
 												return c.name == "null-ls"
 											end
 											return true

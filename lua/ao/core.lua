@@ -50,8 +50,6 @@ end
 
 ---@return LazySpec[]
 function M.load_plugins()
-	local tbl = require("ao.tbl")
-
 	---@type LazySpec[]
 	local plugins = {}
 	local path = vim.fn.stdpath("config") .. "/lua/ao/module"
@@ -64,10 +62,10 @@ function M.load_plugins()
 			local v = m.plugins
 
 			if v == nil then
-				plugins = tbl.concat(plugins, m)
+				plugins = vim.iter({ plugins, m }):flatten():totable()
 			else
 				---@diagnostic disable-next-line: param-type-mismatch
-				plugins = tbl.concat(plugins, (type(v) == "function" and v() or v))
+				plugins = vim.iter({ plugins, (type(v) == "function" and v() or v) }):flatten():totable()
 			end
 		end
 	end
@@ -111,7 +109,7 @@ function M.setup(opts, startup_callback_fn)
 		end,
 	})
 
-	require("ao.win").close_all_floating_windows()
+	require("ao.module.ui").close_all_floating_windows()
 	require("ao.keymap").setup_basic_keymap()
 end
 

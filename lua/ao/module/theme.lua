@@ -10,6 +10,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 	group = setup_colors_group,
 	pattern = "*",
 	callback = function()
+		vim.api.nvim_set_hl(0, "SnacksPicker", { ctermbg = 0, blend = vim.g.neovide and 40 or 7 })
 		vim.api.nvim_set_hl(0, "EasyMotionTarget", { link = "Search" })
 		vim.api.nvim_set_hl(0, "LirDir", { link = "netrwDir" })
 		vim.api.nvim_set_hl(0, "SignatureMarkText", { link = "DiagnosticSignInfo" })
@@ -65,7 +66,6 @@ M.plugins = {
 		config = function()
 			on_colorscheme_load("^catppuccin", function()
 				vim.api.nvim_set_hl(0, "TabLineSel", { fg = "#b4befe", bg = "#45475a" })
-				set_whitespace_colors()
 			end)
 		end,
 	},
@@ -95,13 +95,7 @@ M.plugins = {
 		priority = 1000,
 		name = "rose-pine",
 		lazy = true,
-		opts = {
-			variant = "moon",
-			styles = {
-				transparency = false,
-				italic = true,
-			},
-		},
+		opts = { variant = "moon", styles = { transparency = false, italic = true } },
 		config = function(_, opts)
 			local r = require("rose-pine")
 			r.setup(opts)

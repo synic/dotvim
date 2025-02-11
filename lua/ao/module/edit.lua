@@ -1,4 +1,3 @@
-local fs = require("ao.fs")
 local keymap = require("ao.keymap")
 local uv = vim.uv or vim.loop
 
@@ -175,7 +174,7 @@ local plugins = {
 -- if wakatime is installed/enabled but the configuration file doesn't exist,
 -- it becomes very annoying. Only try to enable it if the config file is already present.
 local wakatime_config = { "wakatime/vim-wakatime", event = "VeryLazy" }
-local wakatime_config_path = fs.join(os.getenv("HOME"), ".wakatime.cfg")
+local wakatime_config_path = vim.fs.joinpath(os.getenv("HOME"), ".wakatime.cfg")
 
 if uv.fs_stat(wakatime_config_path) then
 	plugins[#plugins + 1] = wakatime_config

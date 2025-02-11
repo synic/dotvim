@@ -181,7 +181,7 @@ M.setup_basic_keymap = function()
 		-- misc
 		{ "vig", "ggVG", desc = "Select whole buffer" },
 		{ "<leader>xq", "<cmd>qa!<cr>", desc = "Quit Vim" },
-		{ "<leader>xx", require("ao.win").close_all_floating_windows, desc = "Close all floating windows" },
+		{ "<leader>xx", require("ao.module.ui").close_all_floating_windows, desc = "Close all floating windows" },
 		{ "<leader>'", "<cmd>split<cr><cmd>term<cr><cmd>norm A<cr>", desc = "Open terminal" },
 		{
 			"<c-g>",

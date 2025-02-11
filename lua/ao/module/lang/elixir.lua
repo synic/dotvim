@@ -11,12 +11,12 @@ local function sort_alias_block(args)
 	local alias_end = nil
 
 	for i, line in ipairs(lines) do
-		if line:match("[%s\t]+alias%s+[A-Z]") then
+		if line:match("[%s\t]*alias%s+[A-Z]") then
 			if not alias_start then
 				alias_start = i - 1
 			end
 			alias_end = i - 1
-		elseif alias_start and not line:match("[%s\t]+alias%s+[A-Z]") then
+		elseif alias_start and not line:match("[%s\t]*alias%s+[A-Z]") then
 			break
 		end
 	end

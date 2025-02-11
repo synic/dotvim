@@ -175,11 +175,23 @@ snippet live "LiveView module"
     end
   end
 
-snippet vout
+snippet hvarout
   <%= ${1} %>
 
-snippet v
+snippet hvar
   <% ${1} %>
+
+snippet hif
+  <%= if ${1} do %>
+    ${2}
+  <% end %>
+
+snippet hifelse
+  <%= if ${1} do %>
+    ${2}
+  <% else %>
+    ${3}
+  <% end %>
 
 snippet livecomp "LiveComponent module"
   defmodule ${1:ModuleName}Component do

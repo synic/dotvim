@@ -26,6 +26,11 @@ if vim.fn.has("nvim-0.11") then
 	vim.o.numberwidth = 3
 	vim.o.signcolumn = "yes:1"
 	vim.o.statuscolumn = "%s%l "
+
+	-- disable deprecation warnings for now, tons of plugins are not ready for this update yet, and none of my code is
+	-- deprecated.
+	---@diagnostic disable-next-line: duplicate-set-field
+	vim.deprecate = function() end
 end
 
 vim.api.nvim_create_autocmd("FileType", {

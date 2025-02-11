@@ -1,4 +1,3 @@
--- local tbl = require("ao.tbl")
 -- local trigger_text = ";"
 -- local include_filetypes = { "AvanteInput" }
 -- local include_buftypes = {}
@@ -42,15 +41,6 @@ return {
 				mapping = cmp.mapping.preset.insert({
 					["<c-j>"] = cmp.mapping.select_next_item(),
 					["<c-k>"] = cmp.mapping.select_prev_item(),
-					["<c-space>"] = cmp.mapping.complete(),
-					["<c-l>"] = cmp.mapping.complete({ config = { sources = { { name = "luasnip" } } } }),
-					["<c-y>"] = cmp.mapping(function(fallback)
-						if luasnip.expand_or_locally_jumpable() then
-							luasnip.expand_or_jump()
-						else
-							fallback()
-						end
-					end, { "i", "s" }),
 					["<c-f>"] = cmp.mapping.scroll_docs(4),
 					["<c-e>"] = cmp.mapping.close(),
 					["<c-g>"] = cmp.mapping.abort(),
@@ -66,14 +56,6 @@ return {
 							luasnip.expand_or_jump()
 						elseif col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
 							fallback()
-						else
-							cmp.complete({
-								config = {
-									sources = {
-										{ name = "luasnip" },
-									},
-								},
-							})
 						end
 					end, { "i", "s" }),
 					["<s-tab>"] = cmp.mapping(function(fallback)
@@ -90,9 +72,10 @@ return {
 					{ name = "nvim_lsp", group_index = 1, priority = 4 },
 					{ name = "path", group_index = 1, priority = 2 },
 					{ name = "emoji", group_index = 1, priority = 1 },
+					{ name = "luasnip", group_index = 2, priority = 1 },
 					{
 						name = "buffer",
-						group_index = 2,
+						group_index = 3,
 						option = {
 							get_bufnrs = function()
 								return vim.api.nvim_list_bufs()
@@ -156,12 +139,12 @@ return {
 -- 			},
 -- 			enabled = function()
 -- 				if
--- 					tbl.contains(include_filetypes, vim.bo.filetype) or tbl.contains(include_buftypes, vim.bo.buftype)
+-- 					tbl.contains(include_filetypes, vim.bo.filetype) or vim.tbl_contains(include_buftypes, vim.bo.buftype)
 -- 				then
 -- 					return true
 -- 				end
--- 				return not tbl.contains(disabled_buftypes, vim.bo.buftype)
--- 					and not tbl.contains(disabled_filetypes, vim.bo.filetype)
+-- 				return not vim.tbl_contains(disabled_buftypes, vim.bo.buftype)
+-- 					and not vim.tbl_contains(disabled_filetypes, vim.bo.filetype)
 -- 					and vim.b.completion ~= false
 -- 			end,
 -- 			snippets = { preset = "luasnip" },

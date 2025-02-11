@@ -120,6 +120,14 @@ M.get_plugins = function(defs)
 				},
 			},
 		},
+
+		{
+			"nvim-treesitter/nvim-treesitter-context",
+			lazy = true,
+			opts = {
+				max_lines = 7,
+			},
+		},
 	}
 end
 

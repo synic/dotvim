@@ -1,7 +1,7 @@
 local M = {}
 local session_dir = vim.fn.stdpath("state") .. "/sessions"
-local session_file = session_dir .. "/main_session.vim"
-local extra_session_file = session_dir .. "/main_sessionx.vim"
+local session_file = session_dir .. "/main.vim"
+local extra_session_file = session_dir .. "/mainx.vim"
 
 vim.api.nvim_create_autocmd("VimLeavePre", {
 	group = vim.api.nvim_create_augroup("SessionSave", { clear = true }),
@@ -39,7 +39,7 @@ vim.api.nvim_create_autocmd("VimLeavePre", {
 			end
 		end
 
-		table.insert(lines, "tabnext " .. current_nr)
+		table.insert(lines, "tabnext " .. vim.api.nvim_tabpage_get_number(current_nr))
 		table.insert(lines, "redrawtabline")
 
 		vim.fn.writefile(lines, extra_session_file)

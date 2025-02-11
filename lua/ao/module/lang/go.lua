@@ -3,6 +3,7 @@ return {
 	servers = {
 		["gopls"] = function()
 			require("lspconfig").gopls.setup({
+				cmd = { "/Users/synic/.go/bin/gopls" },
 				settings = {
 					gopls = {
 						buildFlags = { "-tags=debug,release,mage,tools" },

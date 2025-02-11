@@ -1,5 +1,4 @@
 local config = require("ao.config")
-local fs = require("ao.fs")
 local keymap = require("ao.keymap")
 
 ---@class Project
@@ -192,6 +191,36 @@ function find_project_files(picker)
 	end
 end
 
+local function find_project_files_smart()
+	find_project_files("smart")
+end
+
+local function remove_oil(path)
+	if path == "oil:" then
+		return true, "/"
+	elseif path:find("^oil://") then
+		return true, string.sub(path, 7)
+	end
+	return false, path
+end
+
+function M.get_buffer_cwd(bufnr, winnr)
+	local path = vim.api.nvim_buf_get_name(bufnr or 0)
+
+	if not path or path == "" then
+		-- only check cwd if bufnr wasn't passed
+		if not bufnr then
+			path = vim.fn.getcwd(winnr or 0)
+		end
+	elseif path:find("^oil:") then
+		_, path = remove_oil(path)
+	else
+		path = vim.fs.dirname(path)
+	end
+
+	return path
+end
+
 ---@param opts { cwd: string }
 ---@return Project[]
 function M.list(opts)
@@ -262,7 +291,7 @@ end
 ---@return string|nil
 function M.find_buffer_root(buf)
 	buf = buf or 0
-	local cwd = vim.bo[buf].filetype == "oil" and require("oil").get_current_dir(buf) or fs.get_buffer_cwd(buf)
+	local cwd = vim.bo[buf].filetype == "oil" and require("oil").get_current_dir(buf) or M.get_buffer_cwd(buf)
 	return M.find_path_root(cwd)
 end
 
@@ -311,7 +340,7 @@ keymap.add({
 	{ "<leader>*", search_project_cursor_term, desc = "Search project for term", mode = { "n", "v" } },
 	{ "<leader>sp", search_project, desc = "Search project for text" },
 	{ "<leader>p/", search_project, desc = "Search project for text" },
-	{ "<leader>pf", find_project_files, desc = "Find project file" },
+	{ "<leader>pf", find_project_files_smart, desc = "Find project file" },
 	{ "<leader>pg", git_files, desc = "Find git files" },
 	{ "<leader>pp", pick_project, desc = "Pick project" },
 	{ "<leader>pP", switch_project, desc = "Switch project" },

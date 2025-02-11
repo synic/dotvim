@@ -1,5 +1,4 @@
 -- @diagnostic disable: inject-field
-local tbl = require("ao.tbl")
 local proj = require("ao.module.proj")
 
 local notification_width = 70
@@ -7,6 +6,15 @@ local clear_winbar_group = vim.api.nvim_create_augroup("WinBarHlClearBg", { clea
 
 ---@type PluginModule
 local M = {}
+
+function M.close_all_floating_windows()
+	for _, win in ipairs(vim.api.nvim_list_wins()) do
+		local config = vim.api.nvim_win_get_config(win)
+		if config.relative ~= "" then -- is_floating_window?
+			vim.api.nvim_win_close(win, false) -- do not force
+		end
+	end
+end
 
 ---@param full? boolean
 function M.buffer_show_path(full)
@@ -198,14 +206,14 @@ M.plugins = {
 			return {
 				bar = {
 					enable = function(buf, win)
-						if tbl.contains(include, vim.bo[buf].filetype) then
+						if vim.tbl_contains(include, vim.bo[buf].filetype) then
 							return true
 						end
 
 						return vim.fn.win_gettype(win) == ""
 							and vim.wo[win].winbar == ""
 							and vim.bo[buf].bt == ""
-							and not tbl.contains(ignore, vim.bo[buf].ft)
+							and not vim.tbl_contains(ignore, vim.bo[buf].ft)
 							and (
 								vim.bo[buf].ft == "markdown"
 								or (
@@ -455,7 +463,7 @@ M.plugins = {
 						---@diagnostic disable-next-line: undefined-field
 						return vim.g.snacks_indent ~= false
 							and vim.b[buf].snacks_indent ~= false
-							and not tbl.contains(disable_scope_filetypes, vim.bo[buf].filetype)
+							and not vim.tbl_contains(disable_scope_filetypes, vim.bo[buf].filetype)
 							and vim.bo[buf].buftype == ""
 					end,
 				},
