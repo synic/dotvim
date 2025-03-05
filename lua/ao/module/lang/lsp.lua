@@ -84,9 +84,8 @@ M.get_plugins = function(langs, servers, handlers, nonels)
 		{
 			"neovim/nvim-lspconfig",
 			dependencies = {
-				-- "saghen/blink.cmp",
+				"saghen/blink.cmp",
 				"williamboman/mason-lspconfig.nvim",
-				"hrsh7th/nvim-cmp",
 			},
 			ft = langs,
 			opts = {
@@ -121,8 +120,7 @@ M.get_plugins = function(langs, servers, handlers, nonels)
 					vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 				end
 
-				-- defaults.capabilities = require("blink.cmp").get_lsp_capabilities()
-				defaults.capabilities = require("cmp_nvim_lsp").default_capabilities()
+				defaults.capabilities = require("blink.cmp").get_lsp_capabilities()
 			end,
 		},
 
@@ -158,13 +156,14 @@ M.get_plugins = function(langs, servers, handlers, nonels)
 				end
 
 				return {
-					sources = vim.iter({
-						{
-							require("none-ls.formatting.trim_whitespace"),
-							null_ls.builtins.diagnostics.trail_space,
-						},
-						sources,
-					})
+					sources = vim
+						.iter({
+							{
+								require("none-ls.formatting.trim_whitespace"),
+								null_ls.builtins.diagnostics.trail_space,
+							},
+							sources,
+						})
 						:flatten()
 						:totable(),
 
