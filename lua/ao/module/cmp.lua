@@ -36,7 +36,8 @@ return {
 			},
 			enabled = function()
 				if
-					vim.tbl_contains(include_filetypes, vim.bo.filetype) or vim.tbl_contains(include_buftypes, vim.bo.buftype)
+					vim.tbl_contains(include_filetypes, vim.bo.filetype)
+					or vim.tbl_contains(include_buftypes, vim.bo.buftype)
 				then
 					return true
 				end
@@ -114,7 +115,7 @@ return {
 						max_items = 8,
 						min_keyword_length = 1,
 						module = "blink.cmp.sources.snippets",
-						score_offset = 25,
+						score_offset = 50,
 					},
 					emoji = {
 						module = "blink-emoji",
@@ -131,7 +132,7 @@ return {
 						enabled = true,
 						module = "blink.cmp.sources.buffer",
 						should_show_items = true,
-						score_offset = 50,
+						score_offset = 25,
 						opts = {
 							get_bufnrs = function()
 								return vim.api.nvim_list_bufs()

@@ -70,7 +70,7 @@ local plugins = {
 	-- surround plugin
 	{
 		"kylechui/nvim-surround",
-		version = "*",
+		version = "^3.0.0",
 		event = "VeryLazy",
 
 		opts = {
