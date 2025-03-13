@@ -69,23 +69,20 @@ M.get_plugins = function(langs, servers, handlers, nonels)
 			},
 		},
 
-		{
-			"williamboman/mason-lspconfig.nvim",
-			ft = langs,
-			event = "VeryLazy",
-			opts = {
-				ensure_installed = servers,
-				automatic_installation = true,
-				handlers = handlers,
-			},
-		},
-
 		-- lsp
 		{
 			"neovim/nvim-lspconfig",
 			dependencies = {
+				"zeioth/garbage-day.nvim",
 				"saghen/blink.cmp",
-				"williamboman/mason-lspconfig.nvim",
+				{
+					"williamboman/mason-lspconfig.nvim",
+					opts = {
+						ensure_installed = servers,
+						automatic_installation = true,
+						handlers = handlers,
+					},
+				},
 			},
 			ft = langs,
 			opts = {
@@ -156,14 +153,13 @@ M.get_plugins = function(langs, servers, handlers, nonels)
 				end
 
 				return {
-					sources = vim
-						.iter({
-							{
-								require("none-ls.formatting.trim_whitespace"),
-								null_ls.builtins.diagnostics.trail_space,
-							},
-							sources,
-						})
+					sources = vim.iter({
+						{
+							require("none-ls.formatting.trim_whitespace"),
+							null_ls.builtins.diagnostics.trail_space,
+						},
+						sources,
+					})
 						:flatten()
 						:totable(),
 
@@ -198,11 +194,7 @@ M.get_plugins = function(langs, servers, handlers, nonels)
 			"j-hui/fidget.nvim",
 			event = "LspAttach",
 			opts = {
-				notification = {
-					window = {
-						winblend = 20,
-					},
-				},
+				notification = { window = { winblend = 20 } },
 				progress = {
 					suppress_on_insert = true,
 					ignore_done_already = false,
