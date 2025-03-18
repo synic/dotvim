@@ -15,7 +15,7 @@ return {
 			"edte/blink-go-import.nvim",
 			"saghen/blink.compat",
 		},
-		tag = "v0.12.4",
+		tag = "v0.14.0",
 
 		---@module 'blink.cmp'
 		---@type blink.cmp.Config
@@ -84,7 +84,6 @@ return {
 						name = "LSP",
 						module = "blink.cmp.sources.lsp",
 						score_offset = 2000,
-						fallbacks = { "snippets" },
 					},
 					avante_commands = {
 						name = "avante_commands",
