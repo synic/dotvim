@@ -128,22 +128,23 @@ end
 local function open_gitblame()
 	local current_win = vim.fn.win_getid()
 
-	if not require("blame").is_open() then
-		vim.api.nvim_create_autocmd("FileType", {
-			pattern = "blame",
-			callback = function()
-				vim.api.nvim_create_autocmd("WinClosed", {
-					pattern = tostring(vim.fn.win_getid()),
-					callback = function()
-						pcall(vim.api.nvim_set_current_win, current_win)
-					end,
-					once = true,
-				})
-			end,
-			once = true,
-		})
-	end
-	vim.cmd.BlameToggle()
+	-- if not require("blame").is_open() then
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = "fugitiveblame",
+		-- pattern = "blame",
+		callback = function()
+			vim.api.nvim_create_autocmd("WinClosed", {
+				pattern = tostring(vim.fn.win_getid()),
+				callback = function()
+					pcall(vim.api.nvim_set_current_win, current_win)
+				end,
+				once = true,
+			})
+		end,
+		once = true,
+	})
+	-- end
+	vim.cmd.Git("blame")
 end
 
 M.plugins = {
@@ -151,13 +152,21 @@ M.plugins = {
 	{ "akinsho/git-conflict.nvim", event = "VeryLazy", version = "*", config = true },
 
 	-- git utilities
+	-- {
+	-- 	"FabijanZulj/blame.nvim",
+	-- 	opts = {
+	-- 		date_format = "%Y.%m.%d %H:%M",
+	-- 	},
+	-- 	keys = {
+	-- 		{ "<leader>gb", open_gitblame, desc = "Git blame" },
+	-- 	},
+	-- },
+
 	{
-		"FabijanZulj/blame.nvim",
-		opts = {
-			date_format = "%Y.%m.%d %H:%M",
-		},
+		"tpope/vim-fugitive",
 		keys = {
 			{ "<leader>gb", open_gitblame, desc = "Git blame" },
+			{ "<leader>ga", "<cmd>Git add %<cr>", desc = "Git add" },
 		},
 	},
 
