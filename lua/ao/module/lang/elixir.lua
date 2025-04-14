@@ -51,6 +51,7 @@ return {
 			})
 		end,
 	},
+	nonels = { "formatting.mix" },
 	plugins = {
 		{
 			"synic/refactorex.nvim",

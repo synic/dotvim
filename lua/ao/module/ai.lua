@@ -97,6 +97,9 @@ M.plugins = {
 			window = {
 				width = 25,
 			},
+			behavior = {
+				use_cwd_as_project_root = true,
+			},
 			mappings = {
 				diff = {
 					ours = "co",
