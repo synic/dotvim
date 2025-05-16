@@ -11,7 +11,6 @@ local M = {}
 ---@type WhichKey.Spec
 ---@diagnostic disable-next-line: missing-fields
 M.categories = {
-	{ "<leader>a", group = "ai" },
 	{ "<leader>b", group = "buffers" },
 	{ "<leader>c", group = "configuration" },
 	{ "<leader>cp", group = "plugins" },
