@@ -17,7 +17,7 @@ function M.close_all_floating_windows()
 end
 
 ---@param full? boolean
-function M.buffer_show_path(full)
+function M.buffer_copy_path(full)
 	local pattern = "%p"
 
 	if full then
@@ -26,12 +26,20 @@ function M.buffer_show_path(full)
 
 	local path = vim.fn.expand(pattern)
 	vim.fn.setreg("+", path)
-	vim.notify(path)
-	vim.print(path)
+	vim.notify("Copied to clipboard: " .. path)
 end
 
-function M.buffer_show_full_path()
-	M.buffer_show_path(true)
+function M.buffer_copy_full_path()
+	M.buffer_copy_path(true)
+end
+
+function M.buffer_copy_path_and_line()
+	local pattern = "%:p"
+	local path = vim.fn.expand(pattern)
+	local line = vim.fn.line(".")
+	local path_with_line = path .. ":" .. line
+	vim.fn.setreg("+", path_with_line)
+	vim.notify("Copied to clipboard: " .. path_with_line)
 end
 
 -- excluding the current window, move all cursors to 0 position on their current line
@@ -487,6 +495,37 @@ M.plugins = {
 				git = { enabled = true },
 				gitbrowse = { enabled = true },
 				scratch = { enabled = true },
+				styles = {
+					terminal = {
+						bo = {
+							filetype = "snacks_terminal",
+						},
+						wo = {},
+						keys = {
+							q = "hide",
+							gf = function(self)
+								local f = vim.fn.findfile(vim.fn.expand("<cfile>"), "**")
+								if f == "" then
+									Snacks.notify.warn("No file under cursor")
+								else
+									self:hide()
+									vim.schedule(function()
+										vim.cmd("e " .. f)
+									end)
+								end
+							end,
+							term_normal = {
+								"<c-g>",
+								function(_)
+									vim.cmd("stopinsert")
+								end,
+								mode = "t",
+								expr = true,
+								desc = "Escape to normal mode",
+							},
+						},
+					},
+				},
 			}, opts)
 		end,
 	},

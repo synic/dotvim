@@ -11,6 +11,7 @@ local M = {}
 ---@type WhichKey.Spec
 ---@diagnostic disable-next-line: missing-fields
 M.categories = {
+	{ "<leader>a", group = "ai" },
 	{ "<leader>b", group = "buffers" },
 	{ "<leader>c", group = "configuration" },
 	{ "<leader>cp", group = "plugins" },
@@ -47,6 +48,11 @@ M.setup_basic_keymap = function()
 		{ "<leader>wj", "<cmd>wincmd j<cr>", desc = "Go down" },
 		{ "<leader>wh", "<cmd>wincmd h<cr>", desc = "Go left" },
 		{ "<leader>wl", "<cmd>wincmd l<cr>", desc = "Go right" },
+		-- terminal mode window navigation
+		{ "<leader>wk", "<C-\\><C-n><cmd>wincmd k<cr>", mode = {"t"}, desc = "Go up from terminal" },
+		{ "<leader>wj", "<C-\\><C-n><cmd>wincmd j<cr>", mode = {"t"}, desc = "Go down from terminal" },
+		{ "<leader>wh", "<C-\\><C-n><cmd>wincmd h<cr>", mode = {"t"}, desc = "Go left from terminal" },
+		{ "<leader>wl", "<C-\\><C-n><cmd>wincmd l<cr>", mode = {"t"}, desc = "Go right from terminal" },
 		{ "<leader>w/", "<cmd>vs<cr>", desc = "Split vertically" },
 		{ "<leader>w-", "<cmd>sp<cr>", desc = "Split horizontally" },
 		{ "<leader>wc", "<cmd>close<cr>", desc = "Close window" },
@@ -124,8 +130,9 @@ M.setup_basic_keymap = function()
 		{ "<leader><tab>", "<cmd>b#<cr>", desc = "Previous buffer" },
 		{ "<leader>b<tab>", "<cmd>b#<cr>", desc = "Previous buffer" },
 		{ "<leader>bd", "<cmd>bdelete!<cr>", desc = "Close current window and quit buffer" },
-		{ "<leader>bp", require("ao.module.ui").buffer_show_path, desc = "Show buffer path" },
-		{ "<leader>bP", require("ao.module.ui").buffer_show_full_path, desc = "Show full buffer path" },
+		{ "<leader>bp", require("ao.module.ui").buffer_copy_path, desc = "Copy buffer path" },
+		{ "<leader>bP", require("ao.module.ui").buffer_copy_full_path, desc = "Copy full buffer path" },
+		{ "<leader>bl", require("ao.module.ui").buffer_copy_path_and_line, desc = "Copy path with line number" },
 		{ "<leader>bn", "<cmd>enew<cr>", desc = "New buffer" },
 
 		-- help

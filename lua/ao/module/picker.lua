@@ -242,6 +242,25 @@ M.plugins = {
 								end,
 							})
 						end,
+						send_to_ai = function(picker)
+							local selected = picker.list.selected
+							if #selected == 0 then
+								selected = { picker.list:current() }
+							end
+
+							local paths = {}
+							for _, item in ipairs(selected) do
+								if item and item.file then
+									table.insert(paths, item.file)
+								elseif item and item.path then
+									table.insert(paths, item.path)
+								end
+							end
+
+							if #paths > 0 then
+								require("ao.module.ai").add_paths_to_window(paths)
+							end
+						end,
 					},
 					win = {
 						input = {
@@ -250,6 +269,7 @@ M.plugins = {
 								["--"] = { "edit_split", desc = "Edit in horizontal split", mode = { "i" } },
 								["<a-s>"] = { "flash", mode = { "n", "i" } },
 								["s"] = { "flash" },
+								["<a-a>"] = { "send_to_ai", desc = "Send paths to AI", mode = { "n", "i" } },
 							},
 						},
 					},
