@@ -1,6 +1,7 @@
 return {
 	treesitter = { "lua" },
 	nonels = { "formatting.stylua" },
+	only_nonels_formatting = true,
 	servers = {
 		["lua_ls"] = function()
 			require("lspconfig").lua_ls.setup({

@@ -1,6 +1,6 @@
 local M = {}
 
-M.get_plugins = function(defs)
+M.get_plugins = function(lang_defs)
 	return {
 		-- treesitter
 		{
@@ -31,7 +31,12 @@ M.get_plugins = function(defs)
 					disable = { "dart", "htmldjango" },
 				},
 				auto_install = true,
-				ensure_installed = defs,
+				ensure_installed = vim.iter(lang_defs)
+					:map(function(def)
+						return def.treesitter or {}
+					end)
+					:flatten()
+					:totable(),
 				incremental_selection = {
 					enable = true,
 					keymaps = {

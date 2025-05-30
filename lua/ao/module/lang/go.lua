@@ -1,5 +1,6 @@
 return {
 	treesitter = { "go", "gomod", "gosum" },
+	only_nonels_formatting = true,
 	servers = {
 		["gopls"] = function()
 			require("lspconfig").gopls.setup({

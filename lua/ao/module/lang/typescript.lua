@@ -1,5 +1,6 @@
 return {
 	treesitter = { "typescript", "javascript" },
+	only_nonels_formatting = true,
 	-- currently, typescript-tools does what ts-ls normally did
 	-- handlers = {
 	-- 	["ts_ls"] = function()

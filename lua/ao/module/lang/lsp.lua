@@ -54,7 +54,39 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
-M.get_plugins = function(langs, servers, handlers, nonels)
+M.get_plugins = function(lang_defs)
+	local langs = {}
+	local servers = {}
+	local handlers = {}
+	local nonels = {}
+
+	for _, def in ipairs(lang_defs) do
+		if def.treesitter then
+			langs = vim.iter({ langs, def.treesitter }):flatten():totable()
+		end
+
+		if def.servers then
+			for server, handler in pairs(def.servers) do
+				if type(server) == "number" then
+					table.insert(servers, handler)
+				else
+					table.insert(servers, server)
+					handlers[server] = handler
+				end
+			end
+		end
+
+		if def.nonels then
+			for k, v in pairs(def.nonels) do
+				if type(k) == "number" then
+					table.insert(nonels, v)
+				else
+					nonels[k] = v
+				end
+			end
+		end
+	end
+
 	table.insert(handlers, function(server_name)
 		server_name = server_name == "tsserver" and "ts_ls" or server_name -- fix weird tsserver naming situation
 		require("lspconfig")[server_name].setup({})
@@ -133,16 +165,6 @@ M.get_plugins = function(langs, servers, handlers, nonels)
 			opts = function()
 				local null_ls = require("null-ls")
 
-				-- only use none-ls for formatting these filetypes; the rest can use any formatter
-				local only_nonels_formatting_filetypes = {
-					"lua",
-					"typescript",
-					"javascript",
-					-- "elixir",
-					"go",
-					"svelte",
-				}
-
 				local sources = {}
 
 				for source, args in pairs(nonels) do
@@ -176,8 +198,14 @@ M.get_plugins = function(langs, servers, handlers, nonels)
 										bufnr = bufnr,
 										timeout = 4000,
 										filter = function(c)
-											if vim.tbl_contains(only_nonels_formatting_filetypes, ft) then
-												return c.name == "null-ls"
+											for _, def in ipairs(lang_defs) do
+												if
+													def.only_nonels_formatting
+													and def.treesitter
+													and vim.tbl_contains(def.treesitter, ft)
+												then
+													return c.name == "null-ls"
+												end
 											end
 											return true
 										end,
