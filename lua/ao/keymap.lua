@@ -49,10 +49,10 @@ M.setup_basic_keymap = function()
 		{ "<leader>wh", "<cmd>wincmd h<cr>", desc = "Go left" },
 		{ "<leader>wl", "<cmd>wincmd l<cr>", desc = "Go right" },
 		-- terminal mode window navigation
-		{ "<leader>wk", "<C-\\><C-n><cmd>wincmd k<cr>", mode = {"t"}, desc = "Go up from terminal" },
-		{ "<leader>wj", "<C-\\><C-n><cmd>wincmd j<cr>", mode = {"t"}, desc = "Go down from terminal" },
-		{ "<leader>wh", "<C-\\><C-n><cmd>wincmd h<cr>", mode = {"t"}, desc = "Go left from terminal" },
-		{ "<leader>wl", "<C-\\><C-n><cmd>wincmd l<cr>", mode = {"t"}, desc = "Go right from terminal" },
+		{ "<leader>wk", "<C-\\><C-n><cmd>wincmd k<cr>", mode = { "t" }, desc = "Go up from terminal" },
+		{ "<leader>wj", "<C-\\><C-n><cmd>wincmd j<cr>", mode = { "t" }, desc = "Go down from terminal" },
+		{ "<leader>wh", "<C-\\><C-n><cmd>wincmd h<cr>", mode = { "t" }, desc = "Go left from terminal" },
+		{ "<leader>wl", "<C-\\><C-n><cmd>wincmd l<cr>", mode = { "t" }, desc = "Go right from terminal" },
 		{ "<leader>w/", "<cmd>vs<cr>", desc = "Split vertically" },
 		{ "<leader>w-", "<cmd>sp<cr>", desc = "Split horizontally" },
 		{ "<leader>wc", "<cmd>close<cr>", desc = "Close window" },
@@ -132,25 +132,17 @@ M.setup_basic_keymap = function()
 		{ "<leader>bd", "<cmd>bdelete!<cr>", desc = "Close current window and quit buffer" },
 		{ "<leader>bp", require("ao.module.ui").buffer_copy_path, desc = "Copy buffer path" },
 		{ "<leader>bP", require("ao.module.ui").buffer_copy_full_path, desc = "Copy full buffer path" },
-		{ "<leader>bl", require("ao.module.ui").buffer_copy_path_and_line, desc = "Copy path with line number" },
+		{
+			"<leader>bl",
+			require("ao.module.ui").buffer_copy_path_and_line,
+			desc = "Copy path with line number",
+		},
 		{ "<leader>bn", "<cmd>enew<cr>", desc = "New buffer" },
 
 		-- help
-		{
-			"<leader>hh",
-			function()
-				get_help()
-			end,
-			desc = "Show help",
-		},
+		{ "<leader>hh", get_help, desc = "Show help" },
 		{ "<leader>hc", "<cmd>execute 'help ' .. expand('<cword>')<cr>", desc = "Help for word under cursor" },
-		{
-			"<leader>?",
-			function()
-				get_help()
-			end,
-			desc = "Show help",
-		},
+		{ "<leader>?", get_help, desc = "Show help" },
 
 		-- quickfix
 		{ "<leader>qq", "<cmd>copen<cr>", desc = "Open quickfix" }, -- overridden in trouble.nvim
@@ -231,6 +223,11 @@ function M.add(keymap)
 		if should_apply then
 			local left = key_data[1]
 			local right = key_data[2]
+
+			if right == nil then
+				print("ERROR: nil keymap for key: " .. tostring(left))
+				print("Key data:", vim.inspect(key_data))
+			end
 
 			key_data[1] = nil
 			key_data[2] = nil

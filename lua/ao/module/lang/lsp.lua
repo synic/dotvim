@@ -138,7 +138,7 @@ M.get_plugins = function(langs, servers, handlers, nonels)
 					"lua",
 					"typescript",
 					"javascript",
-					"elixir",
+					-- "elixir",
 					"go",
 					"svelte",
 				}

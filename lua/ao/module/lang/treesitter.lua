@@ -5,6 +5,7 @@ M.get_plugins = function(defs)
 		-- treesitter
 		{
 			"nvim-treesitter/nvim-treesitter",
+			branch = "master",
 			build = ":TSUpdate",
 			-- if you lazy load treesitter, you'll get an error when opening a lua file from the command line, even if you use
 			-- the `VeryLazy` event, so do not lazy load.

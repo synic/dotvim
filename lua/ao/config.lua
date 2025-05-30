@@ -20,6 +20,7 @@ vim.o.shada = "!,'20,<50,s10,h"
 vim.opt.listchars:append("eol:↴")
 vim.opt.listchars:append("tab| ")
 vim.o.winblend = 10
+vim.o.winborder = "single"
 vim.o.undofile = true
 
 if vim.fn.has("nvim-0.11") then

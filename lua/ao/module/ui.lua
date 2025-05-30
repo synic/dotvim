@@ -34,10 +34,8 @@ function M.buffer_copy_full_path()
 end
 
 function M.buffer_copy_path_and_line()
-	local pattern = "%:p"
-	local path = vim.fn.expand(pattern)
-	local line = vim.fn.line(".")
-	local path_with_line = path .. ":" .. line
+	local edit = require("ao.module.edit")
+	local path_with_line = edit.get_path_with_line_info()
 	vim.fn.setreg("+", path_with_line)
 	vim.notify("Copied to clipboard: " .. path_with_line)
 end

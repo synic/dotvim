@@ -40,17 +40,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
 return {
 	treesitter = { "elixir", "heex" },
-	servers = {
-		["nextls"] = function()
-			require("lspconfig").nextls.setup({
-				init_options = {
-					experimental = {
-						completions = { enable = true },
-					},
-				},
-			})
-		end,
-	},
+	servers = { "elixirls" },
 	nonels = { "formatting.mix" },
 	plugins = {
 		{
