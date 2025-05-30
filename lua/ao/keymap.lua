@@ -85,7 +85,7 @@ M.setup_basic_keymap = function()
 		{ "<leader>w9", "<cmd>9windo norm! m'<cr>", desc = "Goto window #9" },
 
 		-- layouts/tabs
-		{ "<leader>ln", "<cmd>tabnew<cr>", desc = "New layout" },
+		{ "<leader>ln", "<cmd>tabnew<cr><cmd>set showtabline=1<cr>", desc = "New layout" },
 		{ "<leader>l1", "1gt", desc = "Go to layout #1" },
 		{ "<leader>l2", "2gt", desc = "Go to layout #2" },
 		{ "<leader>l3", "3gt", desc = "Go to layout #3" },
@@ -108,7 +108,8 @@ M.setup_basic_keymap = function()
 		{ "<leader>lj", "<cmd>tabnext<cr>", desc = "Next layout" },
 		{ "<leader>lk", "<cmd>tabprev<cr>", desc = "Previous layout" },
 		{ "<leader>l<tab>", "g<Tab>", desc = "Go to last layout" },
-		{ "<leader>lN", require("ao.module.ui").layout_set_name, desc = "Set layout name" },
+		{ "<leader>lN", require("ao.module.layout").set_name, desc = "Set layout name" },
+		{ "<leader>ll", require("ao.module.layout").pick, desc = "List layouts" },
 
 		-- toggles
 		{ "<leader>th", "<cmd>let &hls = !&hls<cr>", desc = "Toggle search highlights" },

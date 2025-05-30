@@ -332,6 +332,10 @@ function M.open(dir, name)
 	update_frecency(dir)
 	---@diagnostic disable-next-line: missing-fields
 	require("snacks").picker.files({ cwd = dir })
+	-- beacuse there appears to be a bug with snacks dashboard - the dashboard itself is supposed to save the value, set
+	-- it to 0, and then set it back when the dashboard is closed. However, if you just nagivate away with some other
+	-- keybinding, it doesn't set it back.
+	vim.o.showtabline = 1
 end
 
 keymap.add({
