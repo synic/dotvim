@@ -1,5 +1,5 @@
-local theme = require("ao.module.theme")
 local proj = require("ao.module.proj")
+local theme = require("ao.module.theme")
 local M = {}
 
 local function search_cwd()
