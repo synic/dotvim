@@ -1,12 +1,11 @@
 vim.filetype.add({ extension = { templ = "templ" } })
 
 return {
-	treesitter = { "templ" },
 	servers = {
-		["templ"] = function()
-			require("lspconfig").templ.setup({
-				filetypes = { "templ" },
-			})
-		end,
+		["templ"] = {
+			cmd = { "templ", "lsp" },
+			filetypes = { "templ" },
+			root_markers = { "go.work", "go.mod", ".git" },
+		},
 	},
 }

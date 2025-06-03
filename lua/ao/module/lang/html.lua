@@ -1,35 +1,28 @@
 return {
 	treesitter = { "html", "css", "javascript", "typescript" },
 	servers = {
-		["emmet_language_server"] = function()
-			require("lspconfig").emmet_language_server.setup({
+		["emmet_language_server"] = {
+			{
+				cmd = { "emmet-language-server", "--stdio" },
 				filetypes = {
+					"astro",
 					"css",
 					"eruby",
 					"html",
-					"javascript",
-					"javascriptreact",
+					"htmlangular",
 					"htmldjango",
+					"javascriptreact",
 					"less",
+					"pug",
 					"sass",
 					"scss",
 					"svelte",
-					"pug",
+					"templ",
 					"typescriptreact",
 					"vue",
-					"templ",
-					"heex",
-					"elixir",
 				},
-				init_options = {
-					html = {
-						options = {
-							-- For possible options, see: https://github.com/emmetio/emmet/blob/master/src/config.ts#L79-L267
-							["bem.enabled"] = true,
-						},
-					},
-				},
-			})
-		end,
+				root_markers = { ".git" },
+			},
+		},
 	},
 }

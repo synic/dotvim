@@ -20,6 +20,17 @@ return {
 		---@module 'blink.cmp'
 		---@type blink.cmp.Config
 		opts = {
+			cmdline = {
+				keymap = {
+					preset = "cmdline",
+					["<up>"] = { "select_prev", "fallback" },
+					["<down>"] = { "select_next", "fallback" },
+					["<c-k>"] = { "select_prev", "fallback" },
+					["<c-j>"] = { "select_next", "fallback" },
+				},
+				completion = { menu = { auto_show = false } },
+				enabled = true,
+			},
 			keymap = {
 				preset = "enter",
 				["<up>"] = { "select_prev", "fallback" },
@@ -85,24 +96,6 @@ return {
 						module = "blink.cmp.sources.lsp",
 						score_offset = 2000,
 					},
-					avante_commands = {
-						name = "avante_commands",
-						module = "blink.compat.source",
-						score_offset = 90,
-						opts = {},
-					},
-					avante_files = {
-						name = "avante_files",
-						module = "blink.compat.source",
-						score_offset = 100,
-						opts = {},
-					},
-					avante_mentions = {
-						name = "avante_mentions",
-						module = "blink.compat.source",
-						score_offset = 1000,
-						opts = {},
-					},
 					lazydev = {
 						name = "LazyDev",
 						module = "lazydev.integrations.blink",
@@ -127,8 +120,7 @@ return {
 						name = "pkgs",
 					},
 					buffer = {
-						name = "Buffer",
-						enabled = true,
+						name = "buffer",
 						module = "blink.cmp.sources.buffer",
 						should_show_items = true,
 						score_offset = 25,
@@ -138,8 +130,14 @@ return {
 							end,
 						},
 					},
+					cmdline = {
+						name = "cmdline",
+						enabled = true,
+						module = "blink.cmp.sources.cmdline",
+					},
 				},
 				default = {
+					"cmdline",
 					"lazydev",
 					"lsp",
 					"path",
@@ -147,12 +145,14 @@ return {
 					"snippets",
 					"emoji",
 					"go_pkgs",
-					"avante_commands",
-					"avante_files",
-					"avante_mentions",
 				},
 			},
 		},
 		opts_extend = { "sources.default" },
+		config = function(_, opts)
+			local b = require("blink.cmp")
+			vim.lsp.config["*"].capabilities.completion = b.get_lsp_capabilities()["completion"]
+			b.setup(opts)
+		end,
 	},
 }

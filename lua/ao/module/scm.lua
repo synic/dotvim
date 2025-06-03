@@ -44,8 +44,6 @@ function M.git_get_current_branch()
 	return nil
 end
 
-local function create_gist_from_selection() end
-
 local function gitsigns_on_attach(bufnr)
 	local gs = package.loaded.gitsigns
 
@@ -122,16 +120,29 @@ end
 
 -- Open GitBlame
 --
--- This function attaches an event to the blame window to make it so that when blame is closed (either through toggle
--- or through `q`), it puts the cursor back in the window that opened the blame, instead of just focusing whatever
--- window is on the left of the blame.
+-- This function goes through all open buffers, closes any existing fugitiveblame windows (removing their WinClosed
+-- events first), and then opens a new blame window. It also attaches an event to the new blame window to make it so
+-- that when blame is closed (either through toggle or through `q`), it puts the cursor back in the window that opened
+-- the blame, instead of just focusing whatever window is on the left of the blame.
 local function open_gitblame()
 	local current_win = vim.fn.win_getid()
 
-	-- if not require("blame").is_open() then
+	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+		if vim.bo[buf].filetype == "fugitiveblame" then
+			for _, win in ipairs(vim.api.nvim_list_wins()) do
+				if vim.api.nvim_win_get_buf(win) == buf then
+					vim.api.nvim_clear_autocmds({
+						event = "WinClosed",
+						pattern = tostring(win),
+					})
+					vim.api.nvim_win_close(win, true)
+				end
+			end
+		end
+	end
+
 	vim.api.nvim_create_autocmd("FileType", {
 		pattern = "fugitiveblame",
-		-- pattern = "blame",
 		callback = function()
 			vim.api.nvim_create_autocmd("WinClosed", {
 				pattern = tostring(vim.fn.win_getid()),
@@ -143,24 +154,12 @@ local function open_gitblame()
 		end,
 		once = true,
 	})
-	-- end
 	vim.cmd.Git("blame")
 end
 
 M.plugins = {
 	-- display conflicts
 	{ "akinsho/git-conflict.nvim", event = "VeryLazy", version = "*", config = true },
-
-	-- git utilities
-	-- {
-	-- 	"FabijanZulj/blame.nvim",
-	-- 	opts = {
-	-- 		date_format = "%Y.%m.%d %H:%M",
-	-- 	},
-	-- 	keys = {
-	-- 		{ "<leader>gb", open_gitblame, desc = "Git blame" },
-	-- 	},
-	-- },
 
 	{
 		"tpope/vim-fugitive",

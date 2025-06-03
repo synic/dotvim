@@ -1,5 +1,5 @@
 ---@alias KeymapOpts { buffer?: boolean|integer, desc?: string, expr?: boolean, modes?: string[], silent?: boolean, test?: boolean }
----@alias Keymap { [1]: string, [2]: string|function, desc?: string, buffer?: boolean, expr?: boolean, mode?: string[], silent?: boolean, test?: boolean|number }
+---@alias Keymap { [1]: string, [2]: string|function, desc?: string, buffer?: boolean|integer, expr?: boolean, mode?: string[], silent?: boolean, test?: boolean|number }
 ---
 local get_help
 local M = {}

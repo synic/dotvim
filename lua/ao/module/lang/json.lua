@@ -1,3 +1,1 @@
-return {
-	treesitter = { "json" },
-}
+return {}

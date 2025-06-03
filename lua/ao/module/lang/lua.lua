@@ -1,22 +1,32 @@
 return {
-	treesitter = { "lua" },
 	nonels = { "formatting.stylua" },
 	only_nonels_formatting = true,
 	servers = {
-		["lua_ls"] = function()
-			require("lspconfig").lua_ls.setup({
-				settings = {
-					Lua = {
-						runtime = {
-							version = "LuaJIT",
-							path = { "?.lua", "?/init.lua", "lua/?.lua", "lua/?/init.lua" },
-						},
-						diagnostics = { globals = { "vim", "hs" } },
-						completion = { callSnippet = "Replace", autoRequire = true, displayContext = 7 },
+		["lua_ls"] = {
+			cmd = { "lua-language-server" },
+			filetypes = { "lua" },
+			root_markers = {
+				".luarc.json",
+				".luarc.jsonc",
+				".luacheckrc",
+				".stylua.toml",
+				"stylua.toml",
+				"selene.toml",
+				"selene.yml",
+				".git",
+			},
+
+			settings = {
+				Lua = {
+					runtime = {
+						version = "LuaJIT",
+						path = { "?.lua", "?/init.lua", "lua/?.lua", "lua/?/init.lua" },
 					},
+					diagnostics = { globals = { "vim", "hs" } },
+					completion = { callSnippet = "Replace", autoRequire = true, displayContext = 7 },
 				},
-			})
-		end,
+			},
+		},
 	},
 	plugins = {
 		-- neovim development
