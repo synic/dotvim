@@ -6,7 +6,6 @@ function M.pick()
 	local layouts = require("snacks.picker.config.layouts")
 	local entries = {}
 
-	-- Get all layouts (tabs)
 	local tabs = vim.api.nvim_list_tabpages()
 	for _, tab in ipairs(tabs) do
 		local tabnr = vim.api.nvim_tabpage_get_number(tab)
@@ -21,9 +20,17 @@ function M.pick()
 		}
 	end
 
-	-- Sort by tab number
+	local current_tab = vim.api.nvim_get_current_tabpage()
+	local current_tabnr = vim.api.nvim_tabpage_get_number(current_tab)
+
 	table.sort(entries, function(a, b)
-		return a.tabnr < b.tabnr
+		if a.tabnr == current_tabnr then
+			return true
+		elseif b.tabnr == current_tabnr then
+			return false
+		else
+			return a.tabnr < b.tabnr
+		end
 	end)
 
 	local width = 80

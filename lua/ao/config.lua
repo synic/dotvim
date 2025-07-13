@@ -46,10 +46,18 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("TermOpen", {
 	pattern = "*",
 	callback = function()
-		vim.notify("Type <C-g> to exit terminal input mode")
 		vim.opt_local.number = false
 		vim.opt_local.relativenumber = false
 		vim.opt_local.signcolumn = "no"
+
+		require("ao.keymap").add({
+			{
+				"<leader>ac",
+				"<cmd>ClaudeCode<cr>",
+				desc = "Hide terminal",
+				mode = { "t" },
+			},
+		})
 	end,
 })
 
@@ -59,7 +67,7 @@ return {
 		projects = {
 			entries = {},
 			directory = { path = os.getenv("HOME") .. "/Projects", skip = {} },
-			root_names = { ".git", ".svn", ".project_root", "mix.exs" },
+			root_names = { ".git", ".svn", ".project_root", "mix.exs", "package.json" },
 			-- example command to list and sort by mtime on macos with coreutils:
 			-- cmd = 'find /Users/synic/Projects ! -name ".*" -mindepth 1 -maxdepth 1 -type d -print0 | xargs -0 ls -1 -td',
 			bookmarks = {},

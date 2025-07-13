@@ -67,33 +67,6 @@ local M = {}
 
 M.get_path_with_line_info = get_path_with_line_info
 
-function M.copy_selection_and_path()
-	local mode = vim.fn.mode()
-
-	if mode == "v" or mode == "V" then
-		local filetype = vim.bo.filetype
-		local start_line = vim.fn.line("'<")
-		local pattern = "%p"
-		local path = vim.fn.expand(pattern)
-		local path_with_line = string.format("%s:%d", path, start_line)
-
-		-- Copy the selected text
-		vim.cmd([[silent normal! "xy]])
-		local selected_text = vim.fn.getreg("x"):gsub("^%s+", ""):gsub("%s+$", "")
-
-		-- Build the formatted string
-		local result = string.format("%s\n\n```%s\n%s\n```\n\n", path_with_line, filetype, selected_text)
-
-		vim.fn.setreg("+", result)
-		vim.notify("Copied selection with path to clipboard")
-	else
-		-- Normal mode: just copy path and line number
-		local path_with_line = get_path_with_line_info()
-		vim.fn.setreg("+", path_with_line)
-		vim.notify("Copied to clipboard: " .. path_with_line)
-	end
-end
-
 -- set up keys
 keymap.add({
 	{ "<leader>cp", "<cmd>Lazy<cr>", desc = "Plugin manager" },
@@ -101,7 +74,6 @@ keymap.add({
 	{ "<leader>cPs", "<cmd>Lazy sync<cr>", desc = "Sync plugins" },
 	{ "<leader>wM", zoom_toggle, desc = "Zoom window" },
 	{ "<leader>y", copy_normalized_block, mode = { "v" }, desc = "Copy normalized block" },
-	{ "<leader>@", M.copy_selection_and_path, mode = { "v", "n" }, desc = "Copy normalized block" },
 })
 
 local plugins = {

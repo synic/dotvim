@@ -165,17 +165,8 @@ M.default_lsp_config = {
 }
 
 vim.diagnostic.config({
-	underline = true,
-	update_in_insert = false,
-	inlay_hints = true,
-	-- virtual_text = {
-	-- 	spacing = 4,
-	-- 	source = "if_many",
-	-- 	prefix = "●",
-	-- },
-	virtual_lines = true,
-	virtual_text = false,
-	severity_sort = true,
+	virtual_lines = false,
+	virtual_text = true,
 })
 
 local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }

@@ -10,7 +10,7 @@ local M = {}
 function M.close_all_floating_windows()
 	for _, win in ipairs(vim.api.nvim_list_wins()) do
 		local config = vim.api.nvim_win_get_config(win)
-		if config.relative ~= "" then -- is_floating_window?
+		if config.relative ~= "" then     -- is_floating_window?
 			vim.api.nvim_win_close(win, false) -- do not force
 		end
 	end
@@ -34,10 +34,30 @@ function M.buffer_copy_full_path()
 end
 
 function M.buffer_copy_path_and_line()
-	local edit = require("ao.module.edit")
-	local path_with_line = edit.get_path_with_line_info()
-	vim.fn.setreg("+", path_with_line)
-	vim.notify("Copied to clipboard: " .. path_with_line)
+	local mode = vim.fn.mode()
+
+	if mode == "V" then
+		local filetype = vim.bo.filetype
+		local start_pos = vim.fn.getpos("v")
+		local end_pos = vim.fn.getpos(".")
+		local start_line = math.min(start_pos[2], end_pos[2])
+		local pattern = "%p"
+		local path = vim.fn.expand(pattern)
+		local path_with_line = string.format("%s:%d", path, start_line)
+
+		vim.cmd([[silent normal! "xy]])
+		local selected_text = vim.fn.getreg("x")
+
+		local result = string.format("%s\n\n```%s\n%s\n```\n\n", path_with_line, filetype, selected_text)
+
+		vim.fn.setreg("+", result)
+		vim.notify("Copied selection with path to clipboard")
+	else
+		local edit = require("ao.module.edit")
+		local path_with_line = edit.get_path_with_line_info()
+		vim.fn.setreg("+", path_with_line)
+		vim.notify("Copied to clipboard: " .. path_with_line)
+	end
 end
 
 -- excluding the current window, move all cursors to 0 position on their current line
@@ -195,7 +215,7 @@ M.plugins = {
 	},
 
 	-- show marks in gutter
-	{ "kshenoy/vim-signature", event = "VeryLazy" },
+	{ "kshenoy/vim-signature",              event = "VeryLazy" },
 
 	{
 		"Bekaboo/dropbar.nvim",
@@ -217,19 +237,19 @@ M.plugins = {
 						end
 
 						return vim.fn.win_gettype(win) == ""
-							and vim.wo[win].winbar == ""
-							and vim.bo[buf].bt == ""
-							and not vim.tbl_contains(ignore, vim.bo[buf].ft)
-							and (
-								vim.bo[buf].ft == "markdown"
-								or (
-									buf
+								and vim.wo[win].winbar == ""
+								and vim.bo[buf].bt == ""
+								and not vim.tbl_contains(ignore, vim.bo[buf].ft)
+								and (
+									vim.bo[buf].ft == "markdown"
+									or (
+										buf
 										and vim.api.nvim_buf_is_valid(buf)
 										and (pcall(vim.treesitter.get_parser, buf, vim.bo[buf].ft))
 										and true
-									or false
+										or false
+									)
 								)
-							)
 					end,
 				},
 				menu = {
@@ -405,9 +425,9 @@ M.plugins = {
 						{ "filename", file_status = true, path = 1 },
 					},
 					lualine_x = {
-						{ "encoding", fmt = lualine_trunc(0, 0, 120) },
+						{ "encoding",   fmt = lualine_trunc(0, 0, 120) },
 						{ "fileformat", fmt = lualine_trunc(0, 0, 120) },
-						{ "filetype", fmt = lualine_trunc(0, 0, 120) },
+						{ "filetype",   fmt = lualine_trunc(0, 0, 120) },
 					},
 					lualine_y = {
 						{ "progress", fmt = lualine_trunc(0, 0, 100) },
@@ -427,10 +447,10 @@ M.plugins = {
 		"folke/snacks.nvim",
 		event = "VeryLazy",
 		keys = {
-			{ "<leader>gB", "<cmd>lua require('snacks').gitbrowse()<cr>", desc = "Open github in browser" },
+			{ "<leader>gg", "<cmd>lua require('snacks').gitbrowse()<cr>",      desc = "Open github in browser" },
 			{ "<leader>g,", "<cmd>lua require('snacks').git.blame_line()<cr>", desc = "Blame line" },
-			{ "<leader>:", "<cmd>lua require('snacks').scratch()<cr>", desc = "Scratch Buffers" },
-			{ "<leader>^", "<cmd>lua require('snacks').dashboard()<cr>", desc = "Dashboard" },
+			{ "<leader>:",  "<cmd>lua require('snacks').scratch()<cr>",        desc = "Scratch Buffers" },
+			{ "<leader>^",  "<cmd>lua require('snacks').dashboard()<cr>",      desc = "Dashboard" },
 			{
 				"<leader>sn",
 				"<cmd>lua require('snacks').notifier.show_history()<cr>",
@@ -468,9 +488,9 @@ M.plugins = {
 					filter = function(buf)
 						---@diagnostic disable-next-line: undefined-field
 						return vim.g.snacks_indent ~= false
-							and vim.b[buf].snacks_indent ~= false
-							and not vim.tbl_contains(disable_scope_filetypes, vim.bo[buf].filetype)
-							and vim.bo[buf].buftype == ""
+								and vim.b[buf].snacks_indent ~= false
+								and not vim.tbl_contains(disable_scope_filetypes, vim.bo[buf].filetype)
+								and vim.bo[buf].buftype == ""
 					end,
 				},
 				scope = {},
@@ -501,6 +521,7 @@ M.plugins = {
 						wo = {},
 						keys = {
 							q = "hide",
+							["<c-x>"] = "hide",
 							gf = function(self)
 								local f = vim.fn.findfile(vim.fn.expand("<cfile>"), "**")
 								if f == "" then
@@ -512,6 +533,8 @@ M.plugins = {
 									end)
 								end
 							end,
+
+							["<leader>ac"] = "hide",
 							term_normal = {
 								"<c-g>",
 								function(_)
@@ -544,10 +567,10 @@ M.plugins = {
 	},
 
 	-- show search/replace results as they are being typed
-	{ "haya14busa/incsearch.vim", event = "VeryLazy" },
+	{ "haya14busa/incsearch.vim",           event = "VeryLazy" },
 
 	-- automatically close inactive buffers
-	{ "chrisgrieser/nvim-early-retirement", config = true, event = { "BufAdd" } },
+	{ "chrisgrieser/nvim-early-retirement", config = true,     event = { "BufAdd" } },
 
 	-- key discoverability
 	{
