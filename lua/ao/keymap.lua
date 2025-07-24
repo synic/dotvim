@@ -44,35 +44,10 @@ M.categories = {
 M.setup_basic_keymap = function()
 	M.add({
 		-- windows
-		{ "<leader>wk", "<cmd>wincmd k<cr>", desc = "Go up" },
-		{ "<leader>wj", "<cmd>wincmd j<cr>", desc = "Go down" },
-		{ "<leader>wh", "<cmd>wincmd h<cr>", desc = "Go left" },
-		{ "<leader>wl", "<cmd>wincmd l<cr>", desc = "Go right" },
-		-- terminal mode window navigation
-		{
-			"<leader>wk",
-			"<C-\\><C-n><cmd>wincmd k<cr>",
-			mode = { "t" },
-			desc = "Go up from terminal",
-		},
-		{
-			"<leader>wj",
-			"<C-\\><C-n><cmd>wincmd j<cr>",
-			mode = { "t" },
-			desc = "Go down from terminal",
-		},
-		{
-			"<leader>wh",
-			"<C-\\><C-n><cmd>wincmd h<cr>",
-			mode = { "t" },
-			desc = "Go left from terminal",
-		},
-		{
-			"<leader>wl",
-			"<C-\\><C-n><cmd>wincmd l<cr>",
-			mode = { "t" },
-			desc = "Go right from terminal",
-		},
+		{ "<leader>wk",  "<cmd>wincmd k<cr>",               desc = "Go up" },
+		{ "<leader>wj",  "<cmd>wincmd j<cr>",               desc = "Go down" },
+		{ "<leader>wh",  "<cmd>wincmd h<cr>",               desc = "Go left" },
+		{ "<leader>wl",  "<cmd>wincmd l<cr>",               desc = "Go right" },
 		{ "<leader>w/",  "<cmd>vs<cr>",                     desc = "Split vertically" },
 		{ "<leader>w-",  "<cmd>sp<cr>",                     desc = "Split horizontally" },
 		{ "<leader>wc",  "<cmd>close<cr>",                  desc = "Close window" },

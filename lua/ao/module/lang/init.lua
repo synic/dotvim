@@ -93,10 +93,10 @@ local function setup_on_attach_event(lang_defs)
 					buffer = buf,
 					mode = { "n", "v" },
 				},
-				{ "=", vim.lsp.buf.format, desc = "Format selection", buffer = buf, mode = { "v" } },
+				{ "=",  vim.lsp.buf.format,      desc = "Format selection", buffer = buf, mode = { "v" } },
 
-				{ "gd", picker.lsp_definitions, desc = "Definition(s)", buffer = buf },
-				{ "gD", vim.lsp.buf.declaration, desc = "Declaration(s)", buffer = buf },
+				{ "gd", picker.lsp_definitions,  desc = "Definition(s)",    buffer = buf },
+				{ "gD", vim.lsp.buf.declaration, desc = "Declaration(s)",   buffer = buf },
 				{
 					"g/",
 					"<cmd>vsplit<cr><cmd>lua require('snacks').picker.lsp_definitions()<cr>",
@@ -232,11 +232,11 @@ function M.get_treesitter_plugins(defs)
 				},
 				auto_install = true,
 				ensure_installed = vim.iter(defs)
-					:map(function(def)
-						return def.treesitter or {}
-					end)
-					:flatten()
-					:totable(),
+						:map(function(def)
+							return def.treesitter or {}
+						end)
+						:flatten()
+						:totable(),
 				incremental_selection = {
 					enable = true,
 					keymaps = {
@@ -316,18 +316,6 @@ function M.get_treesitter_plugins(defs)
 		},
 
 		{
-			"windwp/nvim-ts-autotag",
-			lazy = true,
-			opts = {
-				opts = {
-					enable_close = false,
-					enable_rename = true,
-					enable_close_on_slash = true,
-				},
-			},
-		},
-
-		{
 			"nvim-treesitter/nvim-treesitter-context",
 			lazy = true,
 			opts = {
@@ -392,14 +380,14 @@ function M.get_lsp_plugins(defs)
 
 				return {
 					sources = vim.iter({
-						{
-							require("none-ls.formatting.trim_whitespace"),
-							null_ls.builtins.diagnostics.trail_space,
-						},
-						sources,
-					})
-						:flatten()
-						:totable(),
+								{
+									require("none-ls.formatting.trim_whitespace"),
+									null_ls.builtins.diagnostics.trail_space,
+								},
+								sources,
+							})
+							:flatten()
+							:totable(),
 
 					on_attach = function(client, bufnr)
 						local ft = vim.bo[bufnr].filetype
@@ -415,9 +403,9 @@ function M.get_lsp_plugins(defs)
 										filter = function(c)
 											for _, def in ipairs(defs) do
 												if
-													def.only_nonels_formatting
-													and def.treesitter
-													and vim.tbl_contains(def.treesitter, ft)
+														def.only_nonels_formatting
+														and (def.treesitter or def._lang)
+														and (vim.tbl_contains(def.treesitter or {}, ft) or def._lang == ft)
 												then
 													return c.name == "null-ls"
 												end
@@ -486,11 +474,11 @@ function M.get_lsp_plugins(defs)
 end
 
 M.plugins = vim.iter({
-	plugins,
-	M.get_treesitter_plugins(lang_defs),
-	M.get_lsp_plugins(lang_defs),
-})
-	:flatten()
-	:totable()
+			plugins,
+			M.get_treesitter_plugins(lang_defs),
+			M.get_lsp_plugins(lang_defs),
+		})
+		:flatten()
+		:totable()
 
 return M

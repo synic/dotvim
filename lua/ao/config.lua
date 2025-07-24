@@ -52,9 +52,11 @@ vim.api.nvim_create_autocmd("TermOpen", {
 
 		require("ao.keymap").add({
 			{
-				"<leader>ac",
-				"<cmd>ClaudeCode<cr>",
-				desc = "Hide terminal",
+				"<S-CR>",
+				function()
+					vim.api.nvim_feedkeys("\n", "t", false)
+				end,
+				desc = "Send newline",
 				mode = { "t" },
 			},
 		})

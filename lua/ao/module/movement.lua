@@ -126,4 +126,20 @@ return {
 			{ "<C-l>", "<cmd>Treewalker Right<cr>", mode = { "n", "v" } },
 		},
 	},
+
+	{
+		"christoomey/vim-tmux-navigator",
+		cmd = {
+			"TmuxNavigateLeft",
+			"TmuxNavigateDown",
+			"TmuxNavigateUp",
+			"TmuxNavigateRight",
+		},
+		keys = {
+			{ "<leader>wh", "<cmd>TmuxNavigateLeft<cr>", desc = "Go left" },
+			{ "<leader>wj", "<cmd>TmuxNavigateDown<cr>", desc = "Go down" },
+			{ "<leader>wk", "<cmd>TmuxNavigateUp<cr>", desc = "Go up" },
+			{ "<leader>wl", "<cmd>TmuxNavigateRight<cr>", desc = "Go right" },
+		},
+	},
 }

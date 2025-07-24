@@ -15,7 +15,7 @@ return {
 			"edte/blink-go-import.nvim",
 			"saghen/blink.compat",
 		},
-		tag = "v1.3.1",
+		tag = "v1.5.1",
 
 		---@module 'blink.cmp'
 		---@type blink.cmp.Config
