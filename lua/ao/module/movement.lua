@@ -1,11 +1,91 @@
+local keymap = require("ao.keymap")
+
+local M = {}
 ---@alias HopOpts { keys: string, quit_key: string, case_insensitive: boolean }
 ---@alias TreewalkerOpts { highlight: boolean }
 
 ---@type string
 local target_keys = "asdfghjkletovxpzwciubrnym;,ASDFGHJKLETOVXPZWCIUBRNYM"
+local last_edit_pos = nil
+local toggle_pos = nil
 
+local function get_current_pos()
+	return {
+		buf = vim.api.nvim_get_current_buf(),
+		row = vim.api.nvim_win_get_cursor(0)[1],
+		col = vim.api.nvim_win_get_cursor(0)[2],
+	}
+end
+
+local function go_to_pos(pos)
+	if not vim.api.nvim_buf_is_valid(pos.buf) then
+		print("Buffer no longer exists")
+		return false
+	end
+	
+	if pos.buf ~= vim.api.nvim_get_current_buf() then
+		vim.api.nvim_set_current_buf(pos.buf)
+	end
+	
+	local line_count = vim.api.nvim_buf_line_count(pos.buf)
+	if pos.row > line_count then
+		print("Line no longer exists")
+		return false
+	end
+	
+	vim.api.nvim_win_set_cursor(0, { pos.row, pos.col })
+	return true
+end
+
+function M.toggle_last_edit()
+	if not last_edit_pos then
+		print("No previous edit location")
+		return
+	end
+
+	local current_pos = get_current_pos()
+
+	if
+		last_edit_pos.buf == current_pos.buf
+		and last_edit_pos.row == current_pos.row
+		and last_edit_pos.col == current_pos.col
+		and toggle_pos
+	then
+		if not go_to_pos(toggle_pos) then
+			toggle_pos = nil
+		end
+	else
+		toggle_pos = current_pos
+		if not go_to_pos(last_edit_pos) then
+			last_edit_pos = nil
+		end
+	end
+end
+
+local function track_edit()
+	local buftype = vim.api.nvim_get_option_value("buftype", { buf = 0 })
+	local filetype = vim.api.nvim_get_option_value("filetype", { buf = 0 })
+	
+	if buftype == "" and filetype ~= "oil" then
+		last_edit_pos = get_current_pos()
+	end
+end
+
+vim.api.nvim_create_augroup("TrackEdits", { clear = true })
+vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
+	group = "TrackEdits",
+	callback = track_edit,
+})
+
+keymap.add({
+	{
+		"<leader>'",
+		M.toggle_last_edit,
+		desc = "Toggle last edit location",
+	},
+})
 ---@type PluginModule
-return {
+M.plugins = {
 	{
 		"smoka7/hop.nvim",
 		version = "*",
@@ -143,3 +223,5 @@ return {
 		},
 	},
 }
+
+return M

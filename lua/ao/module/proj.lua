@@ -229,8 +229,8 @@ function M.list(opts)
 	local dirs = vim.split(vim.fn.glob(opts.cwd .. "/*"), "\n", { trimempty = true })
 
 	-- Add configured entries to items list instead of projects directly
-	for _, entry in ipairs(config.options.projects.entries) do
-		items[#items + 1] = entry
+	for entry_name, entry_path in pairs(config.options.projects.entries) do
+		items[#items + 1] = { name = entry_name, path = entry_path }
 	end
 
 	for _, dir in ipairs(dirs) do

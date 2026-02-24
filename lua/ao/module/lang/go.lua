@@ -3,9 +3,6 @@ return {
 	only_nonels_formatting = true,
 	servers = {
 		["gopls"] = {
-			cmd = { "gopls" },
-			filetypes = { "go", "gomod", "gowork", "gotmpl" },
-			root_markers = { "go.mod", "go.work", ".git" },
 			settings = {
 				gopls = {
 					buildFlags = { "-tags=debug,release,mage,tools" },

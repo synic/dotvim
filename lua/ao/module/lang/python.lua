@@ -18,24 +18,8 @@ end
 
 return {
 	servers = {
-		["ruff"] = {
-			cmd = { "ruff", "server" },
-			filetypes = { "python" },
-			root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml", ".git" },
-			settings = {},
-		},
+		["ruff"] = {},
 		["pyright"] = {
-			cmd = { "pyright-langserver", "--stdio" },
-			filetypes = { "python" },
-			root_markers = {
-				"pyproject.toml",
-				"setup.py",
-				"setup.cfg",
-				"requirements.txt",
-				"Pipfile",
-				"pyrightconfig.json",
-				".git",
-			},
 			settings = {
 				python = {
 					analysis = {

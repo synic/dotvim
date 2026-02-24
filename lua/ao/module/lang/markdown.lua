@@ -1,3 +1,3 @@
 return {
-	nonels = { "diagnostics.markdownlint_cli2" },
+	nonels = { "diagnostics.markdownlint_cli2", "formatting.mdformat" },
 }

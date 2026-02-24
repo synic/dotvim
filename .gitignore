@@ -24,6 +24,7 @@ plugin/packer_compiled.lua
 
 # elixir
 .elixir-tools/
+.expert/
 
 # local config
 lua/local_config.lua

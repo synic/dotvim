@@ -2,7 +2,6 @@
 ---@field entries table
 ---@field directory { path: string, skip: string[] }
 ---@field root_names string[]
----@field bookmarks table
 ---@field cmd? string
 
 ---@class AppearanceConfig
@@ -72,7 +71,6 @@ return {
 			root_names = { ".git", ".svn", ".project_root", "mix.exs", "package.json" },
 			-- example command to list and sort by mtime on macos with coreutils:
 			-- cmd = 'find /Users/synic/Projects ! -name ".*" -mindepth 1 -maxdepth 1 -type d -print0 | xargs -0 ls -1 -td',
-			bookmarks = {},
 		},
 
 		appearance = {

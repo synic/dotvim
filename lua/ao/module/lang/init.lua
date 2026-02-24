@@ -93,10 +93,12 @@ local function setup_on_attach_event(lang_defs)
 					buffer = buf,
 					mode = { "n", "v" },
 				},
-				{ "=",  vim.lsp.buf.format,      desc = "Format selection", buffer = buf, mode = { "v" } },
+				{ "=", vim.lsp.buf.format, desc = "Format selection", buffer = buf, mode = { "v" } },
 
-				{ "gd", picker.lsp_definitions,  desc = "Definition(s)",    buffer = buf },
-				{ "gD", vim.lsp.buf.declaration, desc = "Declaration(s)",   buffer = buf },
+				{ "gd", picker.lsp_definitions, desc = "Definition(s)", buffer = buf },
+				{ "gD", vim.lsp.buf.declaration, desc = "Declaration(s)", buffer = buf },
+				{ "grs", picker.lsp_symbols, desc = "Document symbols", buffer = buf },
+				{ "grw", picker.lsp_workspace_symbols, desc = "Workspace symbols", buffer = buf },
 				{
 					"g/",
 					"<cmd>vsplit<cr><cmd>lua require('snacks').picker.lsp_definitions()<cr>",
@@ -123,31 +125,6 @@ local function setup_on_attach_event(lang_defs)
 		end,
 	})
 end
-
-vim.api.nvim_create_user_command("LspInfo", function()
-	vim.cmd.checkhealth("lsp")
-end, {})
-
-vim.api.nvim_create_user_command("LspRestart", function(cmd)
-	local parts = vim.split(vim.trim(cmd.args), "%s+")
-	if cmd.args == "" then
-		parts = {}
-	end
-
-	local clients = vim.lsp.get_clients({ bufnr = 0 })
-
-	if #parts > 0 then
-		clients = vim.tbl_filter(function(client)
-			return vim.tbl_contains(parts, client.name)
-		end, clients)
-	end
-
-	vim.lsp.stop_client(clients)
-	vim.cmd.update()
-	vim.defer_fn(vim.cmd.edit, 1000)
-end, {
-	nargs = "*",
-})
 
 local function unique(...)
 	return vim.fn.uniq(vim.fn.sort(vim.iter({ ... }):flatten():totable()))
@@ -188,7 +165,7 @@ for _, lang in ipairs(to_import) do
 		local ok, m = pcall(require, "ao.module.lang." .. lang)
 
 		if not ok then
-			vim.notify("unable to initialize language: " .. lang)
+			table.insert(lang_defs, {})
 		else
 			table.insert(lang_defs, m)
 
@@ -232,11 +209,11 @@ function M.get_treesitter_plugins(defs)
 				},
 				auto_install = true,
 				ensure_installed = vim.iter(defs)
-						:map(function(def)
-							return def.treesitter or {}
-						end)
-						:flatten()
-						:totable(),
+					:map(function(def)
+						return def.treesitter or {}
+					end)
+					:flatten()
+					:totable(),
 				incremental_selection = {
 					enable = true,
 					keymaps = {
@@ -328,6 +305,7 @@ end
 function M.get_lsp_plugins(defs)
 	local langs = {}
 	local nonels = {}
+	local servers = {}
 
 	for _, def in ipairs(defs) do
 		if def.treesitter then
@@ -338,6 +316,7 @@ function M.get_lsp_plugins(defs)
 
 		if type(def.servers) == "table" then
 			for server, conf in pairs(def.servers) do
+				servers[#servers + 1] = server
 				vim.lsp.config[server] = conf
 				vim.lsp.enable(server)
 			end
@@ -355,6 +334,8 @@ function M.get_lsp_plugins(defs)
 	end
 
 	setup_on_attach_event(defs)
+	vim.notify(vim.inspect(servers))
+
 	return {
 		-- diagnostics and formatting
 		{
@@ -366,8 +347,6 @@ function M.get_lsp_plugins(defs)
 			},
 			ft = langs,
 			opts = function()
-				local null_ls = require("null-ls")
-
 				local sources = {}
 
 				for source, args in pairs(nonels) do
@@ -379,15 +358,7 @@ function M.get_lsp_plugins(defs)
 				end
 
 				return {
-					sources = vim.iter({
-								{
-									require("none-ls.formatting.trim_whitespace"),
-									null_ls.builtins.diagnostics.trail_space,
-								},
-								sources,
-							})
-							:flatten()
-							:totable(),
+					sources = sources,
 
 					on_attach = function(client, bufnr)
 						local ft = vim.bo[bufnr].filetype
@@ -403,9 +374,9 @@ function M.get_lsp_plugins(defs)
 										filter = function(c)
 											for _, def in ipairs(defs) do
 												if
-														def.only_nonels_formatting
-														and (def.treesitter or def._lang)
-														and (vim.tbl_contains(def.treesitter or {}, ft) or def._lang == ft)
+													def.only_nonels_formatting
+													and (def.treesitter or def._lang)
+													and (vim.tbl_contains(def.treesitter or {}, ft) or def._lang == ft)
 												then
 													return c.name == "null-ls"
 												end
@@ -419,6 +390,18 @@ function M.get_lsp_plugins(defs)
 					end,
 				}
 			end,
+		},
+
+		{
+			"mason-org/mason-lspconfig.nvim",
+			opts = {
+				automatic_enable = servers,
+				ensure_installed = servers,
+			},
+			dependencies = {
+				{ "mason-org/mason.nvim", opts = {} },
+				"neovim/nvim-lspconfig",
+			},
 		},
 
 		-- to show lsp progress
@@ -474,11 +457,14 @@ function M.get_lsp_plugins(defs)
 end
 
 M.plugins = vim.iter({
-			plugins,
-			M.get_treesitter_plugins(lang_defs),
-			M.get_lsp_plugins(lang_defs),
-		})
-		:flatten()
-		:totable()
+	plugins,
+	{
+		{ "mason-org/mason.nvim", opts = {}, lazy = false },
+	},
+	M.get_treesitter_plugins(lang_defs),
+	M.get_lsp_plugins(lang_defs),
+})
+	:flatten()
+	:totable()
 
 return M

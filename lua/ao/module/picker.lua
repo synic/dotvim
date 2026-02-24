@@ -2,6 +2,8 @@ local proj = require("ao.module.proj")
 local theme = require("ao.module.theme")
 local M = {}
 
+vim.api.nvim_set_hl(0, "SnacksPickerBufModified", { link = "DiagnosticWarn" })
+
 local function search_cwd()
 	---@diagnostic disable-next-line: missing-fields
 	require("snacks").picker.grep({ cwd = proj.get_buffer_cwd() })
@@ -212,6 +214,9 @@ M.plugins = {
 		},
 		opts = function(_, opts)
 			local snacks = require("snacks")
+			local a = require("snacks.picker.util").align
+			local fmt = require("snacks.picker.format")
+
 			local last_picker = "files"
 
 			return vim.tbl_deep_extend("force", {
@@ -339,6 +344,23 @@ M.plugins = {
 									},
 								},
 							},
+						},
+						buffers = {
+							format = function(item, picker)
+								local mod = vim.bo[item.buf] and vim.bo[item.buf].modified
+								local ret = {}
+
+								ret[#ret + 1] = { a(tostring(item.buf), 3), "SnacksPickerBufNr" }
+								ret[#ret + 1] = {
+									a(mod and "●" or " ", 2),
+									mod and "SnacksPickerBufModified" or "SnacksPickerDimmed",
+								}
+								ret[#ret + 1] = { a(item.flags, 2, { align = "right" }), "SnacksPickerBufFlags" }
+								ret[#ret + 1] = { " " }
+
+								vim.list_extend(ret, fmt.filename(item, picker))
+								return ret
+							end,
 						},
 					},
 				},
