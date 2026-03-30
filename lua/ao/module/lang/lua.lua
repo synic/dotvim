@@ -1,6 +1,6 @@
 return {
 	nonels = { "formatting.stylua" },
-	only_nonels_formatting = true,
+	format_on_save = "nonels",
 	servers = {
 		["lua_ls"] = {
 			settings = {

@@ -73,6 +73,14 @@ M.enhanced_float_handler = function(handler)
 	end
 end
 
+local function find_lang_def(lang_defs, ft)
+	for _, def in ipairs(lang_defs) do
+		if vim.tbl_contains(def.treesitter or {}, ft) or def._lang == ft then
+			return def
+		end
+	end
+end
+
 local function setup_on_attach_event(lang_defs)
 	vim.api.nvim_create_autocmd("LspAttach", {
 		group = vim.api.nvim_create_augroup("UserLspConfig", {}),
@@ -114,12 +122,35 @@ local function setup_on_attach_event(lang_defs)
 				{ "K", vim.lsp.buf.hover, desc = "Hover", buffer = buf },
 			})
 
-			if vim.tbl_contains(lang_defs, ft) then
-				local lang_on_attach = lang_defs[ft].on_attach
+			local def = find_lang_def(lang_defs, ft)
 
+			if def then
+				local lang_on_attach = def.on_attach
 				if type(lang_on_attach) == "function" then
 					local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
 					lang_on_attach(client)
+				end
+
+				local format_on_save = def.format_on_save
+				if format_on_save == nil then
+					format_on_save = true
+				end
+
+				if format_on_save then
+					vim.api.nvim_clear_autocmds({ group = lsp_formatting_group, buffer = buf })
+					vim.api.nvim_create_autocmd("BufWritePre", {
+						group = lsp_formatting_group,
+						buffer = buf,
+						callback = function()
+							local format_opts = { bufnr = buf, timeout = 4000 }
+							if format_on_save == "nonels" then
+								format_opts.filter = function(c)
+									return c.name == "null-ls"
+								end
+							end
+							vim.lsp.buf.format(format_opts)
+						end,
+					})
 				end
 			end
 		end,
@@ -182,21 +213,34 @@ function M.get_treesitter_plugins(defs)
 		-- treesitter
 		{
 			"nvim-treesitter/nvim-treesitter",
-			branch = "master",
+			branch = "main",
 			build = ":TSUpdate",
 			-- if you lazy load treesitter, you'll get an error when opening a lua file from the command line, even if you use
 			-- the `VeryLazy` event, so do not lazy load.
 			lazy = false,
 			dependencies = {
-				"nvim-treesitter/nvim-treesitter-textobjects",
-				"nvim-treesitter/nvim-treesitter-context",
+				{ "nvim-treesitter/nvim-treesitter-textobjects", branch = "main" },
+				{
+					"nvim-treesitter/nvim-treesitter-context",
+					opts = { max_lines = 7 },
+				},
 				"windwp/nvim-ts-autotag",
 			},
 			keys = {
 				{ "<leader>t.", "<cmd>TSContextToggle<cr>", desc = "Toggle treesitter context" },
 			},
 			init = function()
+				vim.api.nvim_create_autocmd("FileType", {
+					pattern = "*",
+					callback = function()
+						pcall(vim.treesitter.start)
+					end,
+				})
+
 				vim.hl = vim.highlight -- treesitter workaround
+			end,
+			config = function(_, opts)
+				require("nvim-treesitter").setup(opts)
 			end,
 			opts = {
 				highlight = {
@@ -287,17 +331,6 @@ function M.get_treesitter_plugins(defs)
 					},
 				},
 			},
-			config = function(_, opts)
-				require("nvim-treesitter.configs").setup(opts)
-			end,
-		},
-
-		{
-			"nvim-treesitter/nvim-treesitter-context",
-			lazy = true,
-			opts = {
-				max_lines = 7,
-			},
 		},
 	}
 end
@@ -305,7 +338,7 @@ end
 function M.get_lsp_plugins(defs)
 	local langs = {}
 	local nonels = {}
-	local servers = {}
+	local mason_servers = {}
 
 	for _, def in ipairs(defs) do
 		if def.treesitter then
@@ -316,7 +349,17 @@ function M.get_lsp_plugins(defs)
 
 		if type(def.servers) == "table" then
 			for server, conf in pairs(def.servers) do
-				servers[#servers + 1] = server
+				local use_mason = true
+
+				if conf.use_mason ~= nil then
+					use_mason = conf.use_mason
+					conf.use_mason = nil
+				end
+
+				if use_mason then
+					mason_servers[#mason_servers + 1] = server
+				end
+
 				vim.lsp.config[server] = conf
 				vim.lsp.enable(server)
 			end
@@ -334,7 +377,6 @@ function M.get_lsp_plugins(defs)
 	end
 
 	setup_on_attach_event(defs)
-	vim.notify(vim.inspect(servers))
 
 	return {
 		-- diagnostics and formatting
@@ -357,46 +399,15 @@ function M.get_lsp_plugins(defs)
 					end
 				end
 
-				return {
-					sources = sources,
-
-					on_attach = function(client, bufnr)
-						local ft = vim.bo[bufnr].filetype
-						if client.supports_method("textDocument/formatting") then
-							vim.api.nvim_clear_autocmds({ group = lsp_formatting_group, buffer = bufnr })
-							vim.api.nvim_create_autocmd("BufWritePre", {
-								group = lsp_formatting_group,
-								buffer = bufnr,
-								callback = function()
-									vim.lsp.buf.format({
-										bufnr = bufnr,
-										timeout = 4000,
-										filter = function(c)
-											for _, def in ipairs(defs) do
-												if
-													def.only_nonels_formatting
-													and (def.treesitter or def._lang)
-													and (vim.tbl_contains(def.treesitter or {}, ft) or def._lang == ft)
-												then
-													return c.name == "null-ls"
-												end
-											end
-											return true
-										end,
-									})
-								end,
-							})
-						end
-					end,
-				}
+				return { sources = sources }
 			end,
 		},
 
 		{
 			"mason-org/mason-lspconfig.nvim",
 			opts = {
-				automatic_enable = servers,
-				ensure_installed = servers,
+				automatic_enable = mason_servers,
+				ensure_installed = mason_servers,
 			},
 			dependencies = {
 				{ "mason-org/mason.nvim", opts = {} },

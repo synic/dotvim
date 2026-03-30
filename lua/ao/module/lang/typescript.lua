@@ -1,6 +1,6 @@
 return {
 	treesitter = { "typescript", "javascript" },
-	only_nonels_formatting = true,
+	format_on_save = "nonels",
 	nonels = {
 		["formatting.prettier"] = {
 			filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "templ", "svelte" },

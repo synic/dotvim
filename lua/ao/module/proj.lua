@@ -91,6 +91,10 @@ local function setup_autochdir()
 	vim.api.nvim_create_autocmd(chdir_aucmds, {
 		group = chdir_group,
 		callback = function(opts)
+			if vim.t.project_dir then
+				vim.cmd.lcd(vim.t.project_dir)
+				return
+			end
 			for _, pattern in ipairs(skip_filetype_patterns) do
 				if vim.bo[opts.buf].filetype:find(pattern) ~= nil then
 					return
@@ -112,7 +116,7 @@ end
 local function search_project_cursor_term()
 	local picker = require("snacks").picker
 	local current_word = vim.fn.expand("<cword>")
-	local root = M.find_buffer_root()
+	local root = M.get_root()
 
 	---@diagnostic disable-next-line: missing-fields
 	picker.grep({ cwd = (root or "."), search = current_word })
@@ -121,7 +125,7 @@ end
 local function git_files()
 	local picker = require("snacks").picker
 
-	local root = M.find_buffer_root()
+	local root = M.get_root()
 	if root and root ~= "" then
 		---@diagnostic disable-next-line: missing-fields
 		picker.git_files({ cwd = (root or ".") })
@@ -171,14 +175,14 @@ end
 
 local function search_project()
 	---@diagnostic disable-next-line: missing-fields
-	require("snacks").picker.grep({ cwd = (M.find_buffer_root() or ".") })
+	require("snacks").picker.grep({ cwd = (M.get_root() or ".") })
 end
 
 function find_project_files(picker)
 	local snacks = require("snacks")
 	picker = picker or "files"
 
-	local root = M.find_buffer_root()
+	local root = M.get_root()
 	if root and root ~= "" then
 		if not vim.t.project_dir then
 			M.set(root)
@@ -192,7 +196,7 @@ function find_project_files(picker)
 end
 
 local function find_project_files_smart()
-	find_project_files("smart")
+	find_project_files("files")
 end
 
 local function remove_oil(path)
@@ -295,6 +299,22 @@ function M.find_buffer_root(buf)
 	return M.find_path_root(cwd)
 end
 
+---@return string|nil
+function M.get_root()
+	local buffer_root = M.find_buffer_root()
+	local project_dir = vim.t.project_dir
+
+	if not project_dir then
+		return buffer_root
+	end
+
+	if buffer_root and not vim.startswith(buffer_root, project_dir) then
+		return buffer_root
+	end
+
+	return project_dir
+end
+
 ---@param tabnr number|nil
 ---@return string|nil
 function M.get_dir(tabnr)
@@ -350,6 +370,7 @@ keymap.add({
 	{ "<leader>pP", switch_project, desc = "Switch project" },
 	{ "<leader>ph", goto_project, desc = "Go to project home" },
 	{ "<leader>pS", set_project, desc = "Set project home" },
+	{ "<leader>pe", "<cmd>Pick explorer<cr>", desc = "Open file tree" },
 })
 
 M.plugins = {}

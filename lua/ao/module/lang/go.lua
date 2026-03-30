@@ -1,6 +1,6 @@
 return {
 	treesitter = { "go", "gomod", "gosum" },
-	only_nonels_formatting = true,
+	format_on_save = "nonels",
 	servers = {
 		["gopls"] = {
 			settings = {

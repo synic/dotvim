@@ -227,26 +227,6 @@ M.plugins = {
 					layout = { preset = "telescope" },
 					ui_select = true,
 					actions = {
-						flash = function(picker)
-							---@diagnostic disable-next-line: missing-fields
-							require("flash").jump({
-								pattern = "^",
-								label = { after = { 0, 0 } },
-								search = {
-									mode = "search",
-									exclude = {
-										function(win)
-											return vim.bo[vim.api.nvim_win_get_buf(win)].filetype
-												~= "snacks_picker_list"
-										end,
-									},
-								},
-								action = function(match)
-									local idx = picker.list:row2idx(match.pos[1])
-									picker.list:_move(idx, true, true)
-								end,
-							})
-						end,
 						send_to_ai = function(picker)
 							local selected = picker.list.selected
 							if #selected == 0 then
@@ -272,8 +252,6 @@ M.plugins = {
 							keys = {
 								["//"] = { "edit_vsplit", desc = "Edit in vertical split", mode = { "i" } },
 								["--"] = { "edit_split", desc = "Edit in horizontal split", mode = { "i" } },
-								["<a-s>"] = { "flash", mode = { "n", "i" } },
-								["s"] = { "flash" },
 								["<a-a>"] = { "send_to_ai", desc = "Send paths to AI", mode = { "n", "i" } },
 							},
 						},

@@ -17,7 +17,7 @@ M.browse_directory = function(type, precmd)
 			-- automatically.
 			vim.cmd.Oil()
 		else
-			local pathname = proj.find_buffer_root()
+			local pathname = proj.get_root()
 			vim.cmd.Oil((pathname or "."))
 		end
 	end
@@ -61,16 +61,6 @@ local function oil_add_to_git()
 	end
 end
 
-local function oil_goto_file(name)
-	local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-	for i, line in ipairs(lines) do
-		if line:match(vim.pesc(name) .. "$") then
-			vim.api.nvim_win_set_cursor(0, { i, 0 })
-			break
-		end
-	end
-end
-
 local function oil_touch()
 	local oil = require("oil")
 	local path = require("plenary.path")
@@ -98,18 +88,6 @@ local function oil_touch()
 
 		vim.cmd.normal("O" .. name)
 		vim.cmd.write()
-
-		if not name:match("/$") then
-			vim.ui.select({ "Yes", "No" }, {
-				prompt = "Add file to git?",
-			}, function(choice)
-				if choice == "Yes" then
-					local full_path = dir .. name
-					vim.fn.system({ "git", "add", full_path })
-				end
-				oil_goto_file(name)
-			end)
-		end
 	end)
 end
 
