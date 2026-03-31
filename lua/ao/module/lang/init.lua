@@ -175,9 +175,17 @@ M.default_lsp_config = {
 vim.diagnostic.config({
 	virtual_lines = false,
 	virtual_text = true,
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = " ", -- Nerd Font error icon
+			[vim.diagnostic.severity.WARN] = " ", -- Nerd Font warning icon
+			[vim.diagnostic.severity.INFO] = " ", -- Nerd Font info icon
+			[vim.diagnostic.severity.HINT] = " ", -- Nerd Font hint icon
+		},
+	},
 })
 
-local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 for type, icon in pairs(signs) do
 	local hl = "DiagnosticSign" .. type
 	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
