@@ -1,11 +1,11 @@
 # My VIM Configuration
 
-Most of the configuration is happening for NeoVim at this time, and that
-configuration is set up in the lua directory (see `lua/init.lua`). General
-configuration like the leader, escape, etc, is still done in `init.vim`.
+This is my old VIM-enabled configuration. As I move more and more to NeoVim
+exclusively, this repository is getting archived. My new NeoVim repository can
+be found at https://github.com/synic/dotnvim.
 
-I've left the configuration that works with VIM there, though I don't work on
-it much. It comes in handy when I'm on a system where NeoVim is unavailable.
+Some of the configuration is just for NeoVim, but I've left most of the vim
+configuration intact and it works in regular VIM as of this writing.
 
 To install for regular VIM, run the following:
 
