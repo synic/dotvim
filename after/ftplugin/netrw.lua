@@ -1,0 +1,7 @@
+vim.keymap.set("n", "h", "-", { buffer = true })
+vim.keymap.set("n", "l", "<cr>", { buffer = true })
+vim.keymap.set("n", "q", "<cmd>bd<cr>", { buffer = true })
+vim.keymap.set("", "<space><space>", "<plug>(easymotion-bd-f)", { buffer = true })
+vim.keymap.set("n", "<space><space>", "<plug>(easymotion-overwin-f)", { buffer = true })
+vim.keymap.set("", "f", "<cmd>normal %<cr>", { buffer = true })
+vim.keymap.set("", "+", "<cmd>normal d<cr>", { buffer = true })

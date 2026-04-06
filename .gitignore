@@ -27,4 +27,7 @@ plugin/packer_compiled.lua
 .expert/
 
 # local config
-lua/local_config.lua
+local_config.lua
+
+# logs
+nvim.log

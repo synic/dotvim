@@ -1,4 +1,4 @@
-local keymap = require("ao.keymap")
+local keymap = require("modules.keymap")
 local opt = vim.opt_local
 
 opt.expandtab = true
